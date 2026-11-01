@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <radialGradient id="faceGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="70%" stop-color="#f59f00"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </radialGradient>
+    <linearGradient id="tearGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <style>
+    @keyframes laughHead {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      25% { transform: rotate(-5deg) translateY(-4px); }
+      75% { transform: rotate(5deg) translateY(2px); }
+    }
+    @keyframes tearSquirtLeft {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.9; }
+      50% { transform: translate(-10px, 8px) scale(1.2); opacity: 1; }
+    }
+    @keyframes tearSquirtRight {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.9; }
+      50% { transform: translate(10px, 8px) scale(1.2); opacity: 1; }
+    }
+    .head { transform-origin: 50px 50px; animation: laughHead 0.4s ease-in-out infinite; }
+    .tear-l { transform-origin: 18px 46px; animation: tearSquirtLeft 0.5s ease-in-out infinite; }
+    .tear-r { transform-origin: 82px 46px; animation: tearSquirtRight 0.5s ease-in-out infinite; }
+  </style>
+  <g class="head">
+    <circle cx="50" cy="50" r="44" fill="url(#faceGrad)" stroke="#b45309" stroke-width="2"/>
+    <!-- Closed laughing eyes -->
+    <path d="M22 38 Q34 26 44 40" fill="none" stroke="#78350f" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M56 40 Q66 26 78 38" fill="none" stroke="#78350f" stroke-width="4.5" stroke-linecap="round"/>
+    <!-- Big open mouth -->
+    <path d="M24 54 Q50 92 76 54 Q50 62 24 54 Z" fill="#671e1e"/>
+    <path d="M30 55 Q50 64 70 55 Q50 78 30 55 Z" fill="#ffffff"/>
+    <path d="M36 68 Q50 62 64 68 Q50 86 36 68 Z" fill="#ef4444"/>
+  </g>
+  <!-- Tears -->
+  <path class="tear-l" d="M18 46 C6 46 2 58 12 68 C16 62 18 54 18 46 Z" fill="url(#tearGrad)"/>
+  <path class="tear-r" d="M82 46 C94 46 98 58 88 68 C84 62 82 54 82 46 Z" fill="url(#tearGrad)"/>
+</svg>
