@@ -1,0 +1,1917 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#0284c7" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Chato" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <title>شاتو - Chato Messenger</title>
+    <link rel="stylesheet" href="./styles.css?v=3.6" />
+  </head>
+  <body>
+    <canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+    <!-- زر تبديل اللغة أعلى اليسار -->
+    <button class="lang-toggle-badge" id="langToggleBtn" type="button" aria-label="تغيير اللغة / Switch Language" title="تغيير اللغة / Switch Language">ع</button>
+
+    <!-- شريط وبنر تثبيت وتحميل التطبيق الذكي على الهاتف والكمبيوتر (PWA Smart Install) -->
+    <aside id="appInstallBanner" class="app-install-banner" hidden>
+      <div class="install-banner-content">
+        <img src="/logo.png" alt="Chato" class="install-banner-icon" />
+        <div class="install-banner-text">
+          <strong class="install-banner-title">تطبيق شاتو (Chato) 💬</strong>
+          <span class="install-banner-desc">ثبّت التطبيق على جهازك الآن ليبقى معك دائماً مع الإشعارات الحقيقية 📲</span>
+        </div>
+      </div>
+      <div class="install-banner-actions">
+        <button type="button" id="appInstallBtn" class="install-btn-action">
+          <span>📥 تثبيت التطبيق</span>
+        </button>
+        <button type="button" id="dismissInstallBannerBtn" class="dismiss-install-btn" aria-label="إغلاق">✕</button>
+      </div>
+    </aside>
+
+    <main class="shell" id="shell">
+      <section class="login-screen" id="loginScreen" aria-labelledby="loginTitle">
+        <!-- واجهة ترحيب الموبايل تيليجرام ستايل (Image 1) - مخصصة للهواتف فقط -->
+        <div class="mobile-intro-screen" id="mobileIntroScreen">
+          <!-- زر تبديل الوضع الليلي أعلى اليمين كما في الصورة 1 -->
+          <div class="mobile-intro-top-bar">
+            <button type="button" class="intro-dark-toggle-btn" id="introDarkToggleBtn" aria-label="تبديل الوضع الليلي" title="الوضع الليلي">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- محتوى الشريحة الترحيبية في المنتصف -->
+          <div class="mobile-intro-body">
+            <!-- شكل السحابة الزرقاء بالأيقونات كما في الصورة 1 بالكامل -->
+            <div class="intro-cloud-illustration">
+              <svg viewBox="0 0 220 160" width="190" height="142" class="cloud-svg-graphic">
+                <defs>
+                  <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#2ea5f5" />
+                    <stop offset="100%" stop-color="#1e88e5" />
+                  </linearGradient>
+                </defs>
+                <path fill="url(#cloudGrad)" d="M165 140 H55 C24.6 140 0 115.4 0 85 C0 56.6 21.5 33.2 49.3 30.5 C59.6 12.3 79.3 0 102 0 C131.3 0 155.8 20.3 162.2 47.6 C164.8 47.2 167.4 47 170 47 C197.6 47 220 69.4 220 97 C220 120.8 203.4 140 180 140 Z" />
+                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(88, 50)">
+                  <path d="M19 19H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l2-3h4l2 3h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2z" />
+                  <circle cx="12" cy="13" r="3.5" />
+                </g>
+                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(112, 85)">
+                  <circle cx="11" cy="11" r="9" />
+                  <circle cx="8" cy="9" r="1.2" fill="#fff" />
+                  <circle cx="14" cy="9" r="1.2" fill="#fff" />
+                  <path d="M7 13.5 Q11 17 15 13.5" stroke-linecap="round" />
+                </g>
+                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(118, 25)">
+                  <path d="M18 10c0 4.4-3.6 8-8 8-1.5 0-2.8-.4-4-1.1L2 18l1.3-3.8C2.5 13 2 11.5 2 10 2 5.6 5.6 2 10 2s8 3.6 8 8z" />
+                </g>
+                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(75, 90)">
+                  <rect x="2" y="4" width="13" height="11" rx="2" />
+                  <polygon points="15 8 20 5 20 14 15 11" fill="#fff" />
+                </g>
+                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(142, 90)">
+                  <path d="M13 3l4 4L7 17H3v-4L13 3z" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="intro-text-wrapper">
+              <h1 class="intro-headline" id="introHeadline">تخزين سحابي</h1>
+              <p class="intro-subtext" id="introSubtext">شاتو يتيح لك الوصول لرسائلك من أجهزة متعددة بأمان وسرعة فائقة.</p>
+
+              <!-- نقاط التنقل بين الشرائح (6 نقاط كما في الصورة 1) -->
+              <div class="intro-pagination-dots" id="introPaginationDots">
+                <span class="intro-dot" data-index="0"></span>
+                <span class="intro-dot" data-index="1"></span>
+                <span class="intro-dot" data-index="2"></span>
+                <span class="intro-dot" data-index="3"></span>
+                <span class="intro-dot" data-index="4"></span>
+                <span class="intro-dot active" data-index="5"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- زر البدء والمتابعة للدخول/إنشاء الحساب -->
+          <div class="mobile-intro-bottom">
+            <button type="button" class="intro-primary-action-btn" id="introContinueBtn">
+              بدء المراسلة
+            </button>
+          </div>
+        </div>
+
+        <div class="login-layout" id="loginLayout">
+          <div class="login-intro">
+            <div class="brand-mark" aria-hidden="true">
+              <img src="/logo.png" alt="Chato Logo" class="brand-logo-img" style="width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 10px 28px rgba(2, 132, 199, 0.38); object-fit: contain;" />
+            </div>
+            <p class="login-brand-name">Chato</p>
+            <h1 id="loginTitle" data-i18n="loginTitle">أهلاً بك</h1>
+            <p class="login-tagline" data-i18n="loginTagline">دردشاتك، مجموعاتك، وأصحابك في مكان واحد.</p>
+          </div>
+
+          <!-- شريط الرجوع الآمن عند وضع إضافة حساب جديد -->
+          <div class="add-account-top-bar" id="addAccountTopBar" hidden>
+            <button type="button" class="back-to-account-btn" id="backToCurrentAccountBtn">
+              <span style="font-size: 18px;">←</span>
+              <span>الرجوع إلى حسابك الحالي (<strong id="backCurrentAccountName">...</strong>)</span>
+            </button>
+          </div>
+
+          <div class="login-card">
+            <!-- زر العودة للشاشة الترحيبية على الموبايل -->
+            <div class="mobile-intro-back-wrap" id="mobileIntroBackWrap">
+              <button type="button" class="back-to-intro-link" id="backToIntroBtn">
+                <span>←</span>
+                <span>العودة لشاشة الترحيب</span>
+              </button>
+            </div>
+
+            <!-- زران في الأعلى للتبديل بين تسجيل الدخول وإنشاء حساب -->
+            <div class="auth-tabs" role="tablist">
+              <button type="button" class="auth-tab-btn active" id="tabSignInBtn" data-i18n="tabSignIn">تسجيل الدخول</button>
+              <button type="button" class="auth-tab-btn" id="tabSignUpBtn" data-i18n="tabSignUp">إنشاء حساب</button>
+            </div>
+
+            <!-- 1. شاشة تسجيل الدخول (مفتوحة تلقائياً كشاشة أساسية) -->
+            <form id="signInForm" autocomplete="on" novalidate>
+              <div class="login-card-head">
+                <div class="auth-brand-logo-wrap">
+                  <img src="./logo.png" alt="Chato Logo" class="auth-brand-logo" />
+                </div>
+                <h2 data-i18n="signInHeading">مرحباً بعودتك</h2>
+                <p data-i18n="signInSubheading">أدخل بريدك الإلكتروني والرقم السري للدخول.</p>
+              </div>
+
+              <label class="field">
+                <span data-i18n="emailLabel">البريد الإلكتروني</span>
+                <input id="loginEmailInput" name="email" type="email" autocomplete="username email" placeholder="name@email.com" required />
+              </label>
+
+              <label class="field">
+                <span data-i18n="passwordLabel">الرقم السري</span>
+                <div class="password-wrapper">
+                  <input id="loginPasswordInput" name="password" type="password" autocomplete="current-password" placeholder="أدخل الرقم السري" required />
+                  <button type="button" class="password-toggle-btn" data-target="loginPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+                </div>
+              </label>
+
+              <p class="error-line" id="loginError" role="alert"></p>
+
+              <button class="primary-action" id="signInSubmitBtn" type="submit" data-i18n="enterBtn">دخول</button>
+              <button type="button" class="secondary-action qr-login-trigger-btn" id="openQrScannerBtn" style="margin-top: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span>📷</span>
+                <span>الدخول بالباركود (QR Code)</span>
+              </button>
+            </form>
+
+            <!-- 2. شاشة إنشاء حساب جديد -->
+            <form id="signUpForm" autocomplete="on" novalidate hidden>
+              <div class="login-card-head">
+                <div class="auth-brand-logo-wrap">
+                  <img src="./logo.png" alt="Chato Logo" class="auth-brand-logo" />
+                </div>
+                <h2 data-i18n="signUpHeading">إنشاء حساب جديد</h2>
+                <p data-i18n="signUpSubheading">سجل بياناتك الشخصية ووثق بريدك الإلكتروني.</p>
+              </div>
+
+              <!-- صورة الحساب -->
+              <label class="login-avatar-picker" for="regImageInput">
+                <input id="regImageInput" name="avatar" type="file" accept="image/*" />
+                <span id="regImagePreview">+</span>
+                <small data-i18n="avatarOptional">صورة شخصية اختيارية</small>
+              </label>
+
+              <label class="field">
+                <span data-i18n="nameLabel">الاسم</span>
+                <input id="regNameInput" name="name" type="text" autocomplete="name" placeholder="مثال: أحمد" maxlength="24" required />
+              </label>
+
+              <label class="field">
+                <span data-i18n="emailLabel">البريد الإلكتروني</span>
+                <div class="inline-field-with-btn">
+                  <input id="regEmailInput" name="email" type="email" autocomplete="username email" placeholder="name@email.com" required />
+                  <button type="button" class="secondary-action" id="sendVerificationCodeBtn" data-i18n="sendCodeBtn">إرسال الكود</button>
+                </div>
+              </label>
+
+              <!-- خانة توثيق الإيميل بالكود -->
+              <label class="field" id="verificationCodeField">
+                <span data-i18n="verificationCodeLabel">كود توثيق الإيميل</span>
+                <input id="regVerificationCodeInput" name="one-time-code" type="text" maxlength="6" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" placeholder="كود التجربة: 123456" value="123456" required />
+                <small class="field-hint" id="codeSentStatus" style="color: #0d9488; font-weight: bold; font-size: 13px; display: block; margin-top: 5px;">كود التجربة المباشر: 123456</small>
+              </label>
+
+              <label class="field">
+                <span data-i18n="passwordLabel">الرقم السري</span>
+                <div class="password-wrapper">
+                  <input id="regPasswordInput" name="password" type="password" autocomplete="new-password" placeholder="8+ أحرف مع حرف كبير وصغير" required />
+                  <button type="button" class="password-toggle-btn" data-target="regPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+                </div>
+                <small class="field-hint" data-i18n="passwordRuleHint">8 أحرف على الأقل، تتضمن حرفاً كبيراً (A-Z) وحرفاً صغيراً (a-z)</small>
+              </label>
+
+              <label class="field">
+                <span data-i18n="confirmPasswordLabel">تأكيد الرقم السري</span>
+                <div class="password-wrapper">
+                  <input id="regConfirmPasswordInput" name="confirm-password" type="password" autocomplete="new-password" placeholder="أعد إدخال الرقم السري" required />
+                  <button type="button" class="password-toggle-btn" data-target="regConfirmPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+                </div>
+              </label>
+
+              <p class="error-line" id="registerError" role="alert"></p>
+
+              <button class="primary-action" id="signUpSubmitBtn" type="submit" data-i18n="signUpSubmitBtn">تأكيد وإنشاء الحساب</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="app-screen" id="appScreen" hidden>
+        <aside class="rail" aria-label="القائمة">
+          <div class="rail-top">
+            <!-- عنصر أيقونة الاستوري بصورة الحساب وعلامة + -->
+            <div class="my-story-container" id="myStoryRailBtn" title="حالتي - اضغط للمشاهدة أو إضافة حالة جديدة">
+              <div class="story-avatar-ring" id="myStoryAvatarRing">
+                <img 
+                  id="myStoryAvatarImg"
+                  src="" 
+                  alt="حالتي" 
+                  class="story-avatar-img" 
+                />
+              </div>
+              <!-- علامة + الصغيرة لإضافة استوري جديد -->
+              <button 
+                type="button" 
+                class="story-add-plus-badge" 
+                id="myStoryPlusBtn"
+                title="إضافة حالة جديدة"
+              >
+                +
+              </button>
+              <input 
+                type="file" 
+                id="storyFileInput" 
+                accept="image/*,video/*" 
+                hidden 
+              />
+            </div>
+            <button class="rail-button" id="createGroupButton" type="button" aria-label="إنشاء مجموعة" data-title="إنشاء مجموعة" data-i18n-title="createGroup">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16 20v-1.8c0-2.2-1.8-4-4-4H7c-2.2 0-4 1.8-4 4V20" />
+                <circle cx="9.5" cy="7" r="4" />
+                <path d="M19 8v6M22 11h-6M20.5 20v-1.2c0-1.5-.8-2.7-2-3.4" />
+              </svg>
+            </button>
+            <button class="rail-button" id="supportButton" type="button" aria-label="دعم فني" data-title="دعم فني" data-i18n-title="support">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
+                <path d="M18 19c2.2 0 3-1.2 3-3v-2c0-1.1-.9-2-2-2h-1v7Z" />
+                <path d="M6 19H5c-1.1 0-2-.9-2-2v-3c0-1.1.9-2 2-2h1v7Z" />
+                <path d="M12 21h2c1.7 0 3-1.3 3-3" />
+              </svg>
+            </button>
+            <button class="rail-button" id="addFriendButton" type="button" aria-label="إضافة أصدقاء" data-title="إضافة أصدقاء" data-i18n-title="addFriends">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 20v-1.5c0-2-1.6-3.5-3.5-3.5h-5C4.6 15 3 16.6 3 18.5V20" />
+                <circle cx="9" cy="8" r="4" />
+                <path d="M19 8v6M22 11h-6" />
+              </svg>
+            </button>
+
+            <!-- شريط فاصل صغير وزر الذكاء الاصطناعي Chato Assistant -->
+            <div class="rail-separator" aria-hidden="true"></div>
+            <button class="rail-button ai-rail-button" id="aiChatButton" type="button" aria-label="Chato Assistant" data-title="Chato Assistant" data-i18n-title="aiChatTitle">
+              <svg class="ai-flower-icon" viewBox="0 0 32 32" aria-hidden="true">
+                <defs>
+                  <linearGradient id="aiGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f472b6" />
+                    <stop offset="100%" stop-color="#c084fc" />
+                  </linearGradient>
+                  <linearGradient id="aiGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#c084fc" />
+                    <stop offset="100%" stop-color="#818cf8" />
+                  </linearGradient>
+                  <linearGradient id="aiGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#818cf8" />
+                    <stop offset="100%" stop-color="#60a5fa" />
+                  </linearGradient>
+                  <linearGradient id="aiGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#60a5fa" />
+                    <stop offset="100%" stop-color="#38bdf8" />
+                  </linearGradient>
+                </defs>
+                <g transform="translate(16, 16)">
+                  <ellipse cx="0" cy="-8.5" rx="3.3" ry="5.8" fill="url(#aiGrad1)" />
+                  <ellipse cx="6" cy="-6" rx="3.3" ry="5.8" transform="rotate(45, 6, -6)" fill="url(#aiGrad1)" />
+                  <ellipse cx="8.5" cy="0" rx="3.3" ry="5.8" transform="rotate(90, 8.5, 0)" fill="url(#aiGrad2)" />
+                  <ellipse cx="6" cy="6" rx="3.3" ry="5.8" transform="rotate(135, 6, 6)" fill="url(#aiGrad2)" />
+                  <ellipse cx="0" cy="8.5" rx="3.3" ry="5.8" transform="rotate(180, 0, 8.5)" fill="url(#aiGrad3)" />
+                  <ellipse cx="-6" cy="6" rx="3.3" ry="5.8" transform="rotate(225, -6, 6)" fill="url(#aiGrad3)" />
+                  <ellipse cx="-8.5" cy="0" rx="3.3" ry="5.8" transform="rotate(270, -8.5, 0)" fill="url(#aiGrad4)" />
+                  <ellipse cx="-6" cy="-6" rx="3.3" ry="5.8" transform="rotate(315, -6, -6)" fill="url(#aiGrad4)" />
+                </g>
+              </svg>
+            </button>
+          </div>
+
+          <!-- 4. الملف الشخصي بالأسفل + 5. زر الإعدادات -->
+          <div class="rail-bottom">
+            <button class="rail-button" id="profileButton" type="button" aria-label="الملف الشخصي" data-title="الملف الشخصي" data-i18n-title="profile">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21v-2.5A5.5 5.5 0 0 1 9.5 13h5a5.5 5.5 0 0 1 5.5 5.5V21" />
+              </svg>
+            </button>
+            <button class="rail-button settings-rail-button" id="settingsButton" type="button" aria-label="الإعدادات" data-title="الإعدادات" data-i18n-title="settings">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+              </svg>
+            </button>
+          </div>
+        </aside>
+
+        <section class="workspace">
+          <header class="topbar">
+            <div class="topbar-user-info">
+              <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="القائمة الرئيسية" title="القائمة">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+                  <line x1="4" y1="6" x2="20" y2="6"></line>
+                  <line x1="4" y1="12" x2="20" y2="12"></line>
+                  <line x1="4" y1="18" x2="20" y2="18"></line>
+                </svg>
+              </button>
+              <div>
+                <p class="eyebrow" data-i18n="onlineNow">متصل الآن</p>
+                <h2 id="userTitle">...</h2>
+              </div>
+            </div>
+            <div class="topbar-actions">
+              <button class="install-header-pill" id="installHeaderPillBtn" type="button" title="تثبيت التطبيق على جهازك">
+                <span>📲 تثبيت التطبيق</span>
+              </button>
+              <button class="notification-button" id="notificationButton" type="button" aria-label="الإشعارات">
+                <span aria-hidden="true">🔔</span><b id="notificationCount" hidden>0</b>
+              </button>
+              <span class="brand-word">Chato</span>
+            </div>
+          </header>
+
+          <!-- قائمة الثلاث شُرط للموبايل -->
+          <div class="mobile-dropdown-menu" id="mobileDropdownMenu" hidden>
+            <button class="mobile-menu-item" id="mMenuInstallApp" type="button" style="color: var(--teal, #0284c7); font-weight: 600;">
+              <svg viewBox="0 0 24 24" class="menu-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>تثبيت التطبيق على جهازك 📲</span>
+            </button>
+            <button class="mobile-menu-item" id="mMenuAddFriend" type="button">
+              <svg viewBox="0 0 24 24" class="menu-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 20v-1.5c0-2-1.6-3.5-3.5-3.5h-5C4.6 15 3 16.6 3 18.5V20" />
+                <circle cx="9" cy="8" r="4" />
+                <path d="M19 8v6M22 11h-6" />
+              </svg>
+              <span>إضافة أصدقاء</span>
+            </button>
+            <button class="mobile-menu-item" id="mMenuCreateGroup" type="button">
+              <svg viewBox="0 0 24 24" class="menu-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 20v-1.8c0-2.2-1.8-4-4-4H7c-2.2 0-4 1.8-4 4V20" />
+                <circle cx="9.5" cy="7" r="4" />
+                <path d="M19 8v6M22 11h-6M20.5 20v-1.2c0-1.5-.8-2.7-2-3.4" />
+              </svg>
+              <span>إنشاء مجموعة جديدة</span>
+            </button>
+            <button class="mobile-menu-item" id="mMenuSupport" type="button">
+              <svg viewBox="0 0 24 24" class="menu-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
+                <path d="M18 19c2.2 0 3-1.2 3-3v-2c0-1.1-.9-2-2-2h-1v7Z" />
+                <path d="M6 19H5c-1.1 0-2-.9-2-2v-3c0-1.1.9-2 2-2h1v7Z" />
+                <path d="M12 21h2c1.7 0 3-1.3 3-3" />
+              </svg>
+              <span>الدعم الفني المباشر</span>
+            </button>
+            <div class="mobile-menu-divider"></div>
+            <button class="mobile-menu-item" id="mMenuProfile" type="button">
+              <svg viewBox="0 0 24 24" class="menu-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21v-2.5A5.5 5.5 0 0 1 9.5 13h5a5.5 5.5 0 0 1 5.5 5.5V21" />
+              </svg>
+              <span>الملف الشخصي</span>
+            </button>
+            <button class="mobile-menu-item" id="mMenuSettings" type="button">
+              <svg viewBox="0 0 24 24" class="menu-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+              </svg>
+              <span>الإعدادات</span>
+            </button>
+            <button class="mobile-menu-item danger" id="mMenuLogout" type="button">
+              <svg viewBox="0 0 24 24" class="menu-svg-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              <span>تسجيل الخروج</span>
+            </button>
+          </div>
+
+          <!-- 1. بانر الإعلانات والتنبيهات الإدارية -->
+          <div class="announcement-banner" id="announcementBanner" hidden>
+            <span class="ad-tag" data-i18n="adTag">📢 إعلان</span>
+            <div class="ad-content-wrap">
+              <strong id="adBannerTitle"></strong>: <span id="adBannerText"></span>
+              <a id="adBannerLink" href="#" target="_blank" hidden>عرض المزيد ↗</a>
+            </div>
+            <button class="close-ad-btn" id="closeAdBtn" type="button" aria-label="إغلاق">✕</button>
+          </div>
+
+          <div class="content-grid" id="contentGrid">
+            <aside class="conversation-list" aria-label="المحادثات">
+              <div class="list-head">
+                <h3 data-i18n="conversationsHeading">المحادثات</h3>
+                <span id="conversationCount">0</span>
+              </div>
+
+              <!-- شريط حالات الحسابات على طريقة واتساب (Stories Bar) -->
+              <div class="stories-feed-bar" id="storiesFeedBar">
+                <div class="stories-bar-scroll" id="storiesBarScroll">
+                  <!-- بطاقة حالتي -->
+                  <div class="story-bar-item" id="myStoryBarItem" title="حالتي">
+                    <div class="story-bar-avatar-wrap">
+                      <div class="story-avatar-ring" id="myStoryBarRing">
+                        <img id="myStoryBarImg" src="" alt="حالتي" class="story-avatar-img" />
+                      </div>
+                      <button type="button" class="story-add-plus-badge" id="myStoryBarPlusBtn" title="إضافة حالة">+</button>
+                    </div>
+                    <span class="story-bar-name" data-i18n="myStory">حالتي</span>
+                  </div>
+                  <!-- حالات الحسابات الأخرى تُرندر هنا عبر JS -->
+                  <div class="stories-list-items" id="storiesListItems"></div>
+                </div>
+              </div>
+
+              <!-- تبويبات وفلاتر تصنيف المحادثات (Chat Filter Tabs) -->
+              <div class="chat-filter-tabs" id="chatFilterTabs">
+                <button type="button" class="chat-filter-btn active" data-filter="all">الكل</button>
+                <button type="button" class="chat-filter-btn" data-filter="direct">أصدقاء</button>
+                <button type="button" class="chat-filter-btn" data-filter="groups">مجموعات</button>
+                <button type="button" class="chat-filter-btn" data-filter="unread">غير مقروءة</button>
+              </div>
+
+              <div id="conversationList" class="list-items"></div>
+
+              <!-- زر الذكاء الاصطناعي العائم للموبايل مثل Meta AI في واتساب -->
+              <button class="ai-mobile-fab" id="mobileAiFab" type="button" aria-label="Chato Assistant" title="Chato Assistant">
+                <svg class="ai-flower-icon" viewBox="0 0 32 32" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="aiFabGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#f472b6" />
+                      <stop offset="100%" stop-color="#c084fc" />
+                    </linearGradient>
+                    <linearGradient id="aiFabGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#c084fc" />
+                      <stop offset="100%" stop-color="#818cf8" />
+                    </linearGradient>
+                    <linearGradient id="aiFabGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#818cf8" />
+                      <stop offset="100%" stop-color="#60a5fa" />
+                    </linearGradient>
+                    <linearGradient id="aiFabGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#60a5fa" />
+                      <stop offset="100%" stop-color="#38bdf8" />
+                    </linearGradient>
+                  </defs>
+                  <g transform="translate(16, 16)">
+                    <ellipse cx="0" cy="-8.5" rx="3.3" ry="5.8" fill="url(#aiFabGrad1)" />
+                    <ellipse cx="6" cy="-6" rx="3.3" ry="5.8" transform="rotate(45, 6, -6)" fill="url(#aiFabGrad1)" />
+                    <ellipse cx="8.5" cy="0" rx="3.3" ry="5.8" transform="rotate(90, 8.5, 0)" fill="url(#aiFabGrad2)" />
+                    <ellipse cx="6" cy="6" rx="3.3" ry="5.8" transform="rotate(135, 6, 6)" fill="url(#aiFabGrad2)" />
+                    <ellipse cx="0" cy="8.5" rx="3.3" ry="5.8" transform="rotate(180, 0, 8.5)" fill="url(#aiFabGrad3)" />
+                    <ellipse cx="-6" cy="6" rx="3.3" ry="5.8" transform="rotate(225, -6, 6)" fill="url(#aiFabGrad3)" />
+                    <ellipse cx="-8.5" cy="0" rx="3.3" ry="5.8" transform="rotate(270, -8.5, 0)" fill="url(#aiFabGrad4)" />
+                    <ellipse cx="-6" cy="-6" rx="3.3" ry="5.8" transform="rotate(315, -6, -6)" fill="url(#aiFabGrad4)" />
+                  </g>
+                </svg>
+                <span class="ai-fab-label">Chato Assistant</span>
+              </button>
+            </aside>
+
+            <section class="chat-panel" aria-label="الدردشة">
+              <div class="chat-head" id="chatHead">
+                <button class="back-chat-btn" id="backChatBtn" type="button" aria-label="رجوع" title="رجوع">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <div class="avatar" id="chatAvatar">و</div>
+                <div>
+                  <h3 id="chatName">وصلة</h3>
+                  <p id="chatMeta" data-i18n="readyToChat">جاهز للدردشة</p>
+                </div>
+                <button class="delete-friend-button" id="deleteFriendButton" type="button" hidden data-i18n="deleteFriend">حذف الصديق</button>
+                <button class="ai-image-gen-btn" id="generateAiImageBtn" type="button" hidden>🎨 إنشاء صورة</button>
+                <div class="chat-actions">
+                  <div class="chat-menu-wrapper chat-options-dropdown" id="chatOptionsDropdown" style="position: relative; z-index: 9999;">
+                    <button 
+                      type="button" 
+                      class="three-dots-btn head-icon chat-menu-trigger-btn" 
+                      id="chat-options-trigger"
+                      onclick="toggleChatDropdown(event)"
+                      ontouchend="toggleChatDropdown(event)"
+                      aria-label="خيارات المحادثة" 
+                      title="خيارات المحادثة"
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24">
+                        <circle cx="12" cy="5" r="2" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                        <circle cx="12" cy="19" r="2" fill="currentColor"/>
+                      </svg>
+                    </button>
+                    <!-- القائمة المنسدلة -->
+                    <div id="chat-dropdown-menu" class="chat-dropdown chat-dropdown-menu" hidden>
+                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatPinOption" onclick="toggleActiveChatPin()">
+                        <span class="dropdown-item-icon">📌</span>
+                        <span class="dropdown-item-text" id="chatPinOptionText">تثبيت المحادثة (الحد 3)</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" onclick="openChatMedia()">
+                        <span class="dropdown-item-icon">📁</span>
+                        <span class="dropdown-item-text">الوسائط والمستندات</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" onclick="toggleMuteChat()">
+                        <span class="dropdown-item-icon">🔔</span>
+                        <span class="dropdown-item-text" id="muteChatOptionText">كتم التنبيهات</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatWallpaperButton" onclick="openWallpaperModal()">
+                        <span class="dropdown-item-icon">🎨</span>
+                        <span class="dropdown-item-text">تغيير الخلفية (بلاس)</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatLockButton" onclick="lockChatModal()">
+                        <span class="dropdown-item-icon">🔒</span>
+                        <span class="dropdown-item-text">قفل المحادثة</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatDisappearingButton">
+                        <span class="dropdown-item-icon">⏱️</span>
+                        <span class="dropdown-item-text">الرسائل ذاتية الاختفاء</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatSearchButton">
+                        <span class="dropdown-item-icon">⌕</span>
+                        <span class="dropdown-item-text">بحث داخل المحادثة</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" id="voiceCallButton">
+                        <span class="dropdown-item-icon">☎</span>
+                        <span class="dropdown-item-text">مكالمة صوتية</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item" id="videoCallButton">
+                        <span class="dropdown-item-icon">▣</span>
+                        <span class="dropdown-item-text">مكالمة فيديو</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item text-danger" id="chatBlockOption" onclick="toggleActiveChatBlock()">
+                        <span class="dropdown-item-icon">🚫</span>
+                        <span class="dropdown-item-text" id="chatBlockOptionText">حظر هذا المستخدم</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item text-warning" id="chatReportOption" onclick="openReportModal()">
+                        <span class="dropdown-item-icon">🚩</span>
+                        <span class="dropdown-item-text">إبلاغ عن هذا الحساب</span>
+                      </button>
+                      <button type="button" class="dropdown-item chat-dropdown-item text-danger" onclick="clearCurrentChat()">
+                        <span class="dropdown-item-icon">🗑️</span>
+                        <span class="dropdown-item-text">مسح محتوى المحادثة</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="message-search" id="messageSearch" hidden>
+                <input id="messageSearchInput" type="search" placeholder="ابحث في الرسائل" />
+                <button id="closeSearchButton" type="button" aria-label="إغلاق البحث">×</button>
+              </div>
+
+              <!-- شريط الرسائل المثبتة في أعلى المحادثة (Pinned Messages Bar) -->
+              <div class="chat-pinned-banner" id="chatPinnedBanner" hidden>
+                <div class="pinned-banner-content" id="pinnedBannerContent">
+                  <span class="pinned-banner-icon">📌</span>
+                  <div class="pinned-banner-text">
+                    <strong id="pinnedBannerSender">رسالة مثبتة</strong>
+                    <span id="pinnedBannerSnippet">نص الرسالة...</span>
+                  </div>
+                </div>
+                <div class="pinned-banner-actions">
+                  <span class="pinned-banner-count" id="pinnedBannerCount">1 / 3</span>
+                  <button type="button" class="pinned-banner-nav" id="pinnedBannerPrevBtn" title="السابقة">‹</button>
+                  <button type="button" class="pinned-banner-nav" id="pinnedBannerNextBtn" title="التالية">›</button>
+                  <button type="button" class="pinned-banner-close" id="pinnedBannerCloseBtn" title="إلغاء التثبيت">×</button>
+                </div>
+              </div>
+
+              <!-- شريط تنبيه تفعيل الرسائل ذاتية الحذف -->
+              <div class="disappearing-notice-banner" id="disappearingNotice" hidden style="background: #fef3c7; color: #92400e; padding: 7px 14px; font-size: 12px; font-weight: 600; text-align: center; border-bottom: 1px solid #fde68a;">
+                <span>⏱️ الرسائل ذاتية الاختفاء مفعّلة في هذه المحادثة (<span id="disappearingTimerText">24 ساعة</span>)</span>
+              </div>
+
+              <div class="messages" id="messages" aria-live="polite"></div>
+
+              <!-- زر النزول التلقائي لأسفل المحادثة مع عداد الرسائل الجديدة -->
+              <button type="button" class="scroll-to-bottom-btn" id="scrollToBottomBtn" hidden aria-label="النزول للأسفل" title="النزول لآخر الرسائل">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <path d="M11 4v12.17l-4.59-4.59L5 13l7 7 7-7-1.41-1.41L13 16.17V4h-2z"/>
+                </svg>
+                <span class="scroll-badge" id="scrollUnreadBadge" hidden>0</span>
+              </button>
+
+              <!-- 2. رسالة التنبيه في حالة الرسائل الإدارية الخاصة غير القابلة للرد -->
+              <div class="readonly-notice-banner" id="readOnlyNotice" hidden>
+                <span>🔒 هذه رسالة إدارية رسمية خاصة بك من إدارة التطبيق - لا يمكن الرد على هذا الإشعار.</span>
+              </div>
+
+              <!-- شريط معاينة الرد والاقتباس على الرسائل (Reply Preview Bar) -->
+              <div class="reply-preview-bar" id="replyPreviewBar" hidden>
+                <div class="reply-bar-indicator"></div>
+                <div class="reply-bar-text">
+                  <strong id="replySenderName">اسم المرسل</strong>
+                  <span id="replySnippetText">نص الرسالة...</span>
+                </div>
+                <button type="button" class="reply-bar-close" id="closeReplyBtn" aria-label="إلغاء الرد">✕</button>
+              </div>
+
+              <!-- قائمة المرفقات المنبثقة -->
+              <div class="attach-menu" id="attachMenu" hidden>
+                <button type="button" class="attach-menu-item" id="attachLocationBtn">
+                  <span class="attach-item-icon">📍</span>
+                  <span class="attach-item-text" data-i18n="sendLocation">إرسال موقع</span>
+                </button>
+                <button type="button" class="attach-menu-item" id="attachPollBtn">
+                  <span class="attach-item-icon">📊</span>
+                  <span class="attach-item-text" data-i18n="createPoll">استطلاع رأي</span>
+                </button>
+                <button type="button" class="attach-menu-item" id="attachStickerBtn">
+                  <span class="attach-item-icon">🎭</span>
+                  <span class="attach-item-text" data-i18n="stickers">استيكرات</span>
+                </button>
+                <button type="button" class="attach-menu-item" id="attachDocBtn">
+                  <span class="attach-item-icon">📄</span>
+                  <span class="attach-item-text">مستند أو ملف</span>
+                </button>
+                <input type="file" id="docFileInput" style="display: none;" accept=".pdf,.doc,.docx,.txt,.zip,.rar,.xls,.xlsx" />
+              </div>
+
+              <!-- شريط تنبيه الحظر (عند حظر المستخدم) -->
+              <div id="blockedChatBanner" class="blocked-chat-banner" hidden>
+                <div class="blocked-banner-content">
+                  <span class="blocked-icon">🚫</span>
+                  <span class="blocked-text">لقد قمت بحظر هذا المستخدم. لن تتمكن من إرسال أو استقبال الرسائل معه.</span>
+                </div>
+                <button type="button" class="btn-unblock-pill" onclick="toggleActiveChatBlock()">إلغاء الحظر 🔓</button>
+              </div>
+
+              <form class="composer" id="composer">
+                <!-- زر تفعيل الذكاء الاصطناعي Chato Assistant في المحادثة (حصري لشاتو بلاس) -->
+                <button type="button" class="chat-ai-sparkle-btn" id="chatAiSparkleBtn" title="تفعيل Chato Assistant في المحادثة (حصري لشاتو بلاس)" aria-label="تفعيل الذكاء الاصطناعي">
+                  <svg viewBox="0 0 24 24" class="ai-sparkle-svg" width="22" height="22" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="aiSparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#a855f7" />
+                        <stop offset="50%" stop-color="#ec4899" />
+                        <stop offset="100%" stop-color="#38bdf8" />
+                      </linearGradient>
+                    </defs>
+                    <path fill="url(#aiSparkleGrad)" d="M12 2C12.4 6.8 15.2 9.6 20 10C15.2 10.4 12.4 13.2 12 18C11.6 13.2 8.8 10.4 4 10C8.8 9.6 11.6 6.8 12 2Z" />
+                    <path fill="url(#aiSparkleGrad)" d="M5.5 2.5C5.7 4.2 6.8 5.3 8.5 5.5C6.8 5.7 5.7 6.8 5.5 8.5C5.3 6.8 4.2 5.7 2.5 5.5C4.2 5.3 5.3 4.2 5.5 2.5Z" opacity="0.9" />
+                    <path fill="url(#aiSparkleGrad)" d="M18.5 15.5C18.6 16.8 19.4 17.6 20.7 17.7C19.4 17.8 18.6 18.6 18.5 19.9C18.4 18.6 17.6 17.8 16.3 17.7C17.6 17.6 18.4 16.8 18.5 15.5Z" opacity="0.85" />
+                  </svg>
+                </button>
+                <button class="voice-button" id="voiceButton" type="button" aria-label="تسجيل صوت">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 14a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v4a4 4 0 0 0 4 4Z" />
+                    <path d="M19 10a7 7 0 0 1-14 0" />
+                    <path d="M12 17v4M8 21h8" />
+                  </svg>
+                </button>
+                <!-- زر مشبك الورق للمرفقات (موقع / poll / استيكر) -->
+                <button class="tool-button attach-menu-button" id="attachButton" type="button" aria-label="مرفقات" title="مرفقات">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                  </svg>
+                </button>
+                <label class="tool-button attach-button" id="imageAttachButton" for="imageInput" aria-label="إرسال صورة">
+                  <input id="imageInput" type="file" accept="image/*" />
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <circle cx="8" cy="10" r="2" />
+                    <path d="m21 15-5-5L5 19" />
+                  </svg>
+                </label>
+                <button class="tool-button emoji-button" id="emojiButton" type="button" aria-label="إضافة إيموجي">😊</button>
+                <input id="messageInput" type="text" placeholder="اكتب رسالة" autocomplete="off" />
+                <button class="send-button" type="submit" aria-label="إرسال">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m22 2-7 20-4-9-9-4 20-7Z" />
+                    <path d="M22 2 11 13" />
+                  </svg>
+                </button>
+              </form>
+              <div class="emoji-tray" id="emojiTray" hidden>
+                <div class="emoji-tray-tabs">
+                  <button type="button" class="emoji-tab-btn active" id="emojiTabStandardBtn">😊 الرموز الأساسية</button>
+                  <button type="button" class="emoji-tab-btn vip-tab-btn" id="emojiTabVipBtn">⭐ رموز بلاس المتحركة</button>
+                </div>
+                <div class="emoji-tray-content" id="standardEmojiList">
+                  <button type="button">😀</button>
+                  <button type="button">😂</button>
+                  <button type="button">❤️</button>
+                  <button type="button">🔥</button>
+                  <button type="button">👍</button>
+                  <button type="button">🙏</button>
+                  <button type="button">😎</button>
+                  <button type="button">🎉</button>
+                  <button type="button">👏</button>
+                  <button type="button">🌹</button>
+                  <button type="button">☕</button>
+                  <button type="button">✨</button>
+                </div>
+                <div class="emoji-tray-content vip-emoji-content" id="vipEmojiList" hidden>
+                  <!-- يتم بناؤها ديناميكياً عبر JS مع دعم الرموز الحصرية المتحركة -->
+                </div>
+              </div>
+              <!-- إشعار منع الإرسال لغير المشرفين في المجموعات المقيدة -->
+              <div id="groupReadOnlyNotice" class="group-readonly-notice" hidden>
+                <span>🔒 إرسال الرسائل في هذه المجموعة مقتصر على المشرفين فقط</span>
+              </div>
+
+              <!-- لوحة الاستيكرات والملصقات المتحركة الحقيقية -->
+              <div class="sticker-tray" id="stickerTray" hidden>
+                <div class="sticker-tray-head">
+                  <div class="sticker-tray-tabs" id="stickerTrayTabs">
+                    <button type="button" class="sticker-tab-btn active" data-pack="pack_chato_animated">🌟 ملصقات متحركة</button>
+                    <button type="button" class="sticker-tab-btn" data-pack="pack_chato_vip">👑 VIP متحركة</button>
+                    <button type="button" class="sticker-tab-btn" data-pack="pack_emoji">🎭 إيموجي</button>
+                  </div>
+                  <button type="button" class="close-tray-btn" id="closeStickerTrayBtn">×</button>
+                </div>
+                <div class="sticker-grid" id="stickerGrid">
+                  <!-- يتم تعبئة الملصقات المتحركة ديناميكياً عبر JS -->
+                </div>
+              </div>
+              <p class="recorder-status" id="recorderStatus" role="status"></p>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- نافذة إنشاء مجموعة -->
+    <dialog class="modal" id="groupDialog">
+      <form method="dialog" class="modal-card" id="groupForm">
+        <div class="modal-head">
+          <h3 data-i18n="createGroupHeading">إنشاء مجموعة</h3>
+          <button class="close-button" type="button" data-close="groupDialog" aria-label="إغلاق">×</button>
+        </div>
+        <label class="image-picker" for="groupImage">
+          <input id="groupImage" type="file" accept="image/*" />
+          <span id="groupImagePreview">+</span>
+        </label>
+        <label class="field">
+          <span data-i18n="groupNameLabel">اسم الجروب</span>
+          <input id="groupName" type="text" maxlength="28" placeholder="مثال: صحاب المدرسة" />
+        </label>
+        <div class="field">
+          <span data-i18n="groupMembersLabel">اختيار الأعضاء من قائمة الأصدقاء</span>
+          <div class="group-friends-picker" id="groupFriendsPicker"></div>
+          <input id="groupMembers" type="hidden" />
+        </div>
+        <div class="field group-permission-field" style="margin-top: 10px;">
+          <span style="display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px;">صلاحية إرسال الرسائل في المجموعة:</span>
+          <div class="group-perm-radios" style="display: flex; gap: 18px; padding: 10px 14px; background: rgba(0,0,0,0.05); border: 1px solid var(--border); border-radius: 10px;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; font-weight: 500;">
+              <input type="radio" name="who_can_send" value="everyone" checked />
+              <span>الجميع 👥</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; font-weight: 500;">
+              <input type="radio" name="who_can_send" value="admins_only" />
+              <span>المشرف فقط 🔒</span>
+            </label>
+          </div>
+        </div>
+        <p class="error-line" id="groupError" role="alert"></p>
+        <button class="primary-action" type="submit" data-i18n="createBtn">إنشاء المجموعة</button>
+      </form>
+    </dialog>
+
+    <!-- نافذة إنشاء استطلاع رأي (Poll) -->
+    <dialog class="modal" id="pollDialog">
+      <form method="dialog" class="modal-card" id="pollForm">
+        <div class="modal-head">
+          <h3 data-i18n="createPollHeading">إنشاء استطلاع رأي 📊</h3>
+          <button class="close-button" type="button" data-close="pollDialog" aria-label="إغلاق">×</button>
+        </div>
+        <label class="field">
+          <span data-i18n="pollQuestionLabel">سؤال الاستطلاع</span>
+          <input id="pollQuestionInput" type="text" maxlength="140" placeholder="مثال: نتقابل فين النهاردة؟" required />
+        </label>
+        <div class="field">
+          <span data-i18n="pollOptionsLabel">الخيارات</span>
+          <div class="poll-options-box" id="pollOptionsBox">
+            <input class="poll-option-field" type="text" placeholder="الخيار الأول (مطلوب)" required />
+            <input class="poll-option-field" type="text" placeholder="الخيار الثاني (مطلوب)" required />
+            <input class="poll-option-field" type="text" placeholder="الخيار الثالث (اختياري)" />
+            <input class="poll-option-field" type="text" placeholder="الخيار الرابع (اختياري)" />
+          </div>
+        </div>
+        <p class="error-line" id="pollError" role="alert"></p>
+        <button class="primary-action" type="submit" id="submitPollBtn" data-i18n="publishPoll">نشر الاستطلاع</button>
+      </form>
+    </dialog>
+
+    <!-- نافذة إضافة أصدقاء -->
+    <dialog class="modal" id="friendDialog">
+      <form method="dialog" class="modal-card" id="friendForm">
+        <div class="modal-head">
+          <h3 data-i18n="addFriendsHeading">إضافة أصدقاء</h3>
+          <button class="close-button" type="button" data-close="friendDialog" aria-label="إغلاق">×</button>
+        </div>
+        <label class="field">
+          <span data-i18n="friendSearchLabel">اسم أو بريد الشخص</span>
+          <input id="friendSearch" type="text" maxlength="80" placeholder="مثال: منة أو menna@email.com" />
+        </label>
+        <div class="search-result" id="friendResult"></div>
+      </form>
+    </dialog>
+
+    <!-- 6. نافذة الملف الشخصي مع حماية وتغيير كلمة المرور -->
+    <dialog class="modal" id="profileDialog">
+      <form method="dialog" class="modal-card" id="profileForm">
+        <div class="modal-head">
+          <h3 data-i18n="profileHeading">الملف الشخصي</h3>
+          <button class="close-button" type="button" data-close="profileDialog" aria-label="إغلاق">×</button>
+        </div>
+        <label class="image-picker" for="profileImageEdit">
+          <input id="profileImageEdit" type="file" accept="image/*" />
+          <span id="profileImageEditPreview">+</span>
+        </label>
+        <label class="field">
+          <span data-i18n="nameLabel">الاسم</span>
+          <input id="profileNameInput" type="text" maxlength="24" />
+        </label>
+        <label class="field">
+          <span data-i18n="emailLabel">البريد الإلكتروني</span>
+          <input id="profileEmailInput" type="email" disabled />
+        </label>
+        <p class="muted" data-i18n="emailFixedNote">البريد مُثبت ولا يمكن تغييره من الملف الشخصي.</p>
+
+        <!-- حقل كلمة المرور المخفية وزر التغيير بعد التحقق -->
+        <div class="profile-password-section">
+          <div class="profile-password-summary">
+            <div>
+              <span class="password-label" data-i18n="passwordTitle">كلمة المرور</span>
+              <p class="password-dots" id="passwordMaskedDisplay">••••••••</p>
+            </div>
+            <button type="button" class="secondary-action change-pw-btn" id="toggleChangePasswordBtn" data-i18n="changePwBtn">تغيير كلمة المرور</button>
+          </div>
+
+          <div class="change-password-box" id="changePasswordBox" hidden>
+            <p class="password-requirement-note" data-i18n="verifyCurrentPwNote">أدخل كلمة المرور الحالية أولاً لتتمكن من تعيين كلمة مرور جديدة:</p>
+            
+            <label class="field">
+              <span data-i18n="currentPwLabel">كلمة المرور الحالية</span>
+              <div class="password-wrapper">
+                <input id="currentPasswordInput" type="password" placeholder="كلمة المرور الحالية" autocomplete="current-password" />
+                <button type="button" class="password-toggle-btn" data-target="currentPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+              </div>
+            </label>
+
+            <label class="field">
+              <span data-i18n="newPwLabel">كلمة المرور الجديدة</span>
+              <div class="password-wrapper">
+                <input id="newPasswordInput" type="password" placeholder="8+ أحرف وبها حرف كبير وصغير" autocomplete="new-password" />
+                <button type="button" class="password-toggle-btn" data-target="newPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+              </div>
+              <small class="field-hint" data-i18n="passwordRuleHint">8 أحرف على الأقل، تتضمن حرفاً كبيراً (A-Z) وحرفاً صغيراً (a-z)</small>
+            </label>
+
+            <label class="field">
+              <span data-i18n="confirmNewPwLabel">تأكيد كلمة المرور الجديدة</span>
+              <div class="password-wrapper">
+                <input id="confirmNewPasswordInput" type="password" placeholder="أعد إدخال كلمة المرور الجديدة" autocomplete="new-password" />
+                <button type="button" class="password-toggle-btn" data-target="confirmNewPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <p class="error-line" id="profileError" role="alert"></p>
+        <p class="success-line" id="profileSuccess" role="status"></p>
+        <button class="primary-action" type="submit" data-i18n="saveChangesBtn">حفظ التغييرات</button>
+      </form>
+    </dialog>
+
+    <!-- 5. نافذة الإعدادات (نظام الأيقونات المقسمة: الحساب، الاشتراكات، الخصوصية، الإشعارات) -->
+    <dialog class="modal" id="settingsDialog">
+      <div class="modal-card settings-card">
+        <div class="modal-head settings-head">
+          <button class="settings-back-btn" id="settingsBackBtn" type="button" aria-label="رجوع" hidden>←</button>
+          <h3 id="settingsDialogTitle" data-i18n="settings">الإعدادات</h3>
+          <button class="close-button" type="button" data-close="settingsDialog" aria-label="إغلاق">×</button>
+        </div>
+
+        <!-- 1. الشاشة الرئيسية للإعدادات (أيقونات الأقسام) -->
+        <div id="settingsMainView">
+          <!-- الحساب الحالي -->
+          <div class="settings-current-account">
+            <div class="avatar" id="settingsAvatar"></div>
+            <div class="settings-user-info">
+              <strong id="settingsUserName">...</strong>
+              <p class="muted" id="settingsUserEmail">...</p>
+            </div>
+            <span class="active-pill" data-i18n="activeAccountBadge">نشط حالياً</span>
+          </div>
+
+          <!-- شبكة / قائمة الأقسام بنظام الأيقونات -->
+          <div class="settings-menu-list">
+            <!-- قسم 1: الحساب والأمان -->
+            <button type="button" class="settings-menu-item" id="settingsNavAccount">
+              <div class="settings-menu-icon icon-account">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20v-1a6 6 0 0 1 12 0v1" />
+                </svg>
+              </div>
+              <div class="settings-menu-text">
+                <strong>الحساب</strong>
+                <p>إضافة حساب، مفاتيح المرور، تبديل الحسابات</p>
+              </div>
+              <span class="settings-menu-arrow">‹</span>
+            </button>
+
+            <!-- قسم 2: الاشتراكات وباقة AI -->
+            <button type="button" class="settings-menu-item" id="settingsNavSubscriptions">
+              <div class="settings-menu-icon icon-subscription">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+              </div>
+              <div class="settings-menu-text">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <strong>الاشتراكات</strong>
+                  <span class="settings-menu-badge" id="settingsSubBadge">بلاس AI</span>
+                </div>
+                <p>باقة بلاس AI شاتو (500 كلمة، 20 صورة يومياً)</p>
+              </div>
+              <span class="settings-menu-arrow">‹</span>
+            </button>
+
+            <!-- قسم 3: الخصوصية والمحادثات -->
+            <button type="button" class="settings-menu-item" id="settingsNavPrivacy">
+              <div class="settings-menu-icon icon-privacy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+              <div class="settings-menu-text">
+                <strong>الخصوصية والمحادثات</strong>
+                <p>قفل المحادثات برمز PIN، الرسائل ذاتية الحذف</p>
+              </div>
+              <span class="settings-menu-arrow">‹</span>
+            </button>
+
+            <!-- قسم 4: الإشعارات والمظهر -->
+            <button type="button" class="settings-menu-item" id="settingsNavAppearance">
+              <div class="settings-menu-icon icon-appearance">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+              </div>
+              <div class="settings-menu-text">
+                <strong>الإشعارات والمظهر</strong>
+                <p>نغمات التنبيهات، تغيير اللغة والمظهر</p>
+              </div>
+              <span class="settings-menu-arrow">‹</span>
+            </button>
+          </div>
+
+          <!-- زر تسجيل الخروج -->
+          <div class="settings-actions">
+            <button class="logout-action-btn" id="logoutButton" type="button">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M10 17 15 12l-5-5" />
+                <path d="M15 12H3" />
+                <path d="M21 3v18" />
+              </svg>
+              <span data-i18n="logoutAction">تسجيل الخروج</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. القسم الأول: شاشة الحساب (Account Sub-View) -->
+        <div id="settingsAccountView" hidden>
+          <!-- الحسابات المسجلة للتبديل الفوري -->
+          <div class="settings-block">
+            <div class="settings-block-head">
+              <h4 style="margin: 0; font-size: 14px;">الحسابات المسجلة على هذا الجهاز</h4>
+              <span class="field-hint" style="font-size: 11px;">اضغط على أي حساب للتبديل الفوري</span>
+            </div>
+            <div class="saved-accounts-list" id="savedAccountsList"></div>
+          </div>
+
+          <!-- إضافة حساب جديد -->
+          <div style="margin: 14px 0;">
+            <button type="button" class="primary-action add-new-account-btn" id="addNewAccountBtn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>➕</span>
+              <span>إضافة حساب جديد إلى هذا الجهاز</span>
+            </button>
+          </div>
+
+          <!-- مفاتيح المرور المحمية بالباسورد القديم -->
+          <div class="settings-block" style="margin-top: 18px;">
+            <div class="settings-block-head">
+              <h4 style="margin: 0; font-size: 14px;">الأمان ومفاتيح المرور</h4>
+            </div>
+            <button type="button" class="passkeys-open-card" id="openPasskeysBtn">
+              <div class="passkeys-card-icon">🔑</div>
+              <div class="passkeys-card-text">
+                <strong>مفاتيح المرور وإدارة كلمة المرور</strong>
+                <p>عرض كلمة المرور المحفوظة وتغييرها (محمية بكلمة المرور الحالية)</p>
+              </div>
+              <span class="settings-menu-arrow">‹</span>
+            </button>
+          </div>
+
+          <!-- باركود الحساب للدخول السريع بالكاميرا (Account QR Code) -->
+          <div class="settings-block" style="margin-top: 14px;">
+            <div class="settings-block-head">
+              <h4 style="margin: 0; font-size: 14px;">باركود الدخول السريع (QR Code)</h4>
+            </div>
+            <button type="button" class="passkeys-open-card" id="openAccountQrBtn">
+              <div class="passkeys-card-icon">🔲</div>
+              <div class="passkeys-card-text">
+                <strong>باركود تسجيل الدخول الخاص بحسابك</strong>
+                <p>امسح الباركود من أي جهاز آخر لتسجيل الدخول الفوري دون كتابة باسورد</p>
+              </div>
+              <span class="settings-menu-arrow">‹</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. القسم الثاني: شاشة الاشتراكات (Subscriptions Sub-View - مطابقة للصورة 3 لجميع الأجهزة) -->
+        <div id="settingsSubscriptionsView" hidden>
+          <!-- 1. الشاشة الرئيسية للاشتراكات (Image 3 WhatsApp / Meta Style) -->
+          <div class="sub-screen-hub" id="subScreenHub">
+            <div class="sub-screen-header">
+              <h2 class="sub-screen-main-title">الاشتراكات</h2>
+              <p class="sub-screen-main-subtitle">يمكنك العثور على اشتراكاتك وإدارتها كلها في مكان واحد.</p>
+            </div>
+
+            <!-- بطاقة الاشتراكات المجمعة بتصميم واتساب/ميتا (Image 3) -->
+            <div class="sub-ios-grouped-box">
+              <!-- الصف 1: شاتو بلاس Chato Plus (مثل WhatsApp Plus بالصورة 3) -->
+              <button type="button" class="sub-ios-item-row" id="subRowChatPlus">
+                <span class="sub-ios-arrow">‹</span>
+                <div class="sub-ios-text-col">
+                  <div class="sub-ios-title-line">
+                    <strong class="sub-ios-title">Chato Plus</strong>
+                    <span class="sub-ios-active-pill" id="subRowBadgeChat" hidden>نشط</span>
+                  </div>
+                  <p class="sub-ios-desc">طرق أكثر لجعل شاتو يناسبك تماماً.</p>
+                </div>
+                <div class="sub-ios-icon-badge badge-green-star">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+              </button>
+
+              <div class="sub-ios-separator"></div>
+
+              <!-- الصف 2: شاتو AI بلاس Chato AI Plus (مثل Meta One بالصورة 3) -->
+              <button type="button" class="sub-ios-item-row" id="subRowAiPlus">
+                <span class="sub-ios-arrow">‹</span>
+                <div class="sub-ios-text-col">
+                  <div class="sub-ios-title-line">
+                    <strong class="sub-ios-title">Chato AI Plus</strong>
+                    <span class="sub-ios-active-pill" id="subRowBadgeAi" hidden>نشط</span>
+                  </div>
+                  <p class="sub-ios-desc">المزيد من الميزات للتواصل وإنشاء المحتوى وتحقيق التميّز.</p>
+                </div>
+                <div class="sub-ios-icon-badge badge-blue-meta">
+                  <span class="meta-digit-icon">1</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. تفاصيل باقة شاتو بلاس Chato Plus (تفتح عند الضغط على الصف 1) -->
+          <div class="sub-plan-detail-view" id="subPlanChatPanel" hidden>
+            <div style="margin-bottom: 14px;">
+              <button type="button" class="back-to-subs-hub-btn" id="backFromChatDetailBtn">
+                <span>←</span>
+                <span>العودة إلى الاشتراكات</span>
+              </button>
+            </div>
+
+            <div class="subscription-hero-card chat-plus-hero">
+              <div class="sub-hero-top">
+                <div class="sub-hero-badge chat-plus-badge">شاتو بلاس 👑💬</div>
+                <div class="sub-hero-status" id="subChatActiveStatus">ترقية</div>
+              </div>
+              <h3 class="sub-hero-title">Chato Plus</h3>
+              <p class="sub-hero-desc">باقة مميزات الدردشة الحصرية الفائقة للمحادثات، الثيمات، الترجمة، والإيموجي النادر.</p>
+              
+              <div class="sub-features-grid">
+                <div class="sub-feature-item">
+                  <span class="feat-icon">🎨</span>
+                  <div>
+                    <strong>خلفيات وثيمات مخصصة للدردشة</strong>
+                    <p>تغيير وتخصيص خلفيات وألوان محادثاتك وصور خاصة بكل صديق</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">🌐</span>
+                  <div>
+                    <strong>ترجمة فورية داخل الدردشة</strong>
+                    <p>زر ترجمة فورية بضغطة واحدة لأي رسالة مباشرة داخل فقاعتها</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">⭐</span>
+                  <div>
+                    <strong>رموز تعبيرية متحركة ونادرة</strong>
+                    <p>تبويب حصري يحتوي على ملصقات وإيموجي نادرة ومتحركة</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">🤖</span>
+                  <div>
+                    <strong>ذكاء اصطناعي Chato Assistant مدمج في المحادثات</strong>
+                    <p>إمكانية استدعاء Chato Assistant ليتحدث ويتفاعل داخل أي شات مع أصدقائك بذكر عبارة (تشات جى بى تى)</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">📌</span>
+                  <div>
+                    <strong>تثبيت حتى 25 رسالة في كل شات</strong>
+                    <p>رفع سقف تثبيت الرسائل الهامة بدلاً من 3 رسائل فقط</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">⏳</span>
+                  <div>
+                    <strong>صلاحية شهرين كاملين</strong>
+                    <p>60 يوماً كاملة من تاريخ التفعيل مع إمكانية التجديد</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- بطاقة حالة باقة المحادثات -->
+            <div class="sub-quotas-card">
+              <div class="chat-plus-status-box">
+                <div class="status-box-header">
+                  <span>حالة باقة المحادثات:</span>
+                  <strong id="chatPlusStatusDisplay">غير مشترك</strong>
+                </div>
+                <div class="status-box-meta" style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 13px;">
+                  <p style="margin: 0;">📅 الأيام المتبقية: <strong id="chatPlusDaysRemaining">0 يوم</strong></p>
+                  <p style="margin: 0;">✨ مميزات الدردشة: <strong id="chatPlusPerksUnlocked">مقفل - اشترك للتفعيل</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- زر تفعيل أو تجديد باقة شاتو بلاس -->
+            <div style="margin-top: 16px;">
+              <button type="button" class="primary-action sub-upgrade-btn" id="subscribeChatPlusBtn" style="width: 100%;">
+                👑 تفعيل باقة شاتو بلاس (99 ريال / شهرين)
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. تفاصيل باقة شاتو AI بلاس Chato AI Plus (تفتح عند الضغط على الصف 2) -->
+          <div class="sub-plan-detail-view" id="subPlanAiPanel" hidden>
+            <div style="margin-bottom: 14px;">
+              <button type="button" class="back-to-subs-hub-btn" id="backFromAiDetailBtn">
+                <span>←</span>
+                <span>العودة إلى الاشتراكات</span>
+              </button>
+            </div>
+
+            <div class="subscription-hero-card">
+              <div class="sub-hero-top">
+                <div class="sub-hero-badge" id="subPlanTitleBadge">شاتو AI بلاس ⚡🤖</div>
+                <div class="sub-hero-status" id="subAiActiveStatus">نشط</div>
+              </div>
+              <h3 class="sub-hero-title">Chato AI Plus</h3>
+              <p class="sub-hero-desc">باقة الذكاء الاصطناعي الفائقة مع نماذج Chato Assistant المتقدمة لتوليد النصوص والصور.</p>
+              
+              <div class="sub-features-grid">
+                <div class="sub-feature-item">
+                  <span class="feat-icon">✨</span>
+                  <div>
+                    <strong>500 كلمة يومياً</strong>
+                    <p>تتجدد تلقائياً كل 24 ساعة (إنقاص كلمة بكلمة)</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">🎨</span>
+                  <div>
+                    <strong>20 صورة بالذكاء الاصطناعي</strong>
+                    <p>توليد وتعديل الصور بدقة فائقة يومياً</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">🖼️</span>
+                  <div>
+                    <strong>إرسال صور بلا حدود</strong>
+                    <p>إرسال ومشاركة الصور بلا قيود مع Chato Assistant</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">⚡</span>
+                  <div>
+                    <strong>استجابة فائقة السرعة</strong>
+                    <p>أولوية معالجة فورية بنماذج الذكاء الاصطناعي</p>
+                  </div>
+                </div>
+                <div class="sub-feature-item">
+                  <span class="feat-icon">⏳</span>
+                  <div>
+                    <strong>صلاحية شهرين كاملين</strong>
+                    <p>60 يوماً كاملة من تاريخ التفعيل مع التجديد</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- عداد الحصص اليومية الحية لـ AI -->
+            <div class="sub-quotas-card">
+              <div class="quota-row">
+                <div class="quota-info">
+                  <span>الكلمات المتبقية اليوم</span>
+                  <strong id="quotaWordsDisplay">500 / 500</strong>
+                </div>
+                <div class="quota-progress-bg">
+                  <div class="quota-progress-bar" id="quotaWordsProgress" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <div class="quota-row" style="margin-top: 12px;">
+                <div class="quota-info">
+                  <span>الصور المتبقية اليوم</span>
+                  <strong id="quotaImagesDisplay">20 / 20</strong>
+                </div>
+                <div class="quota-progress-bg">
+                  <div class="quota-progress-bar" id="quotaImagesProgress" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <div class="quota-footer-details">
+                <p>⏱️ موعد التجديد القادم: <strong id="quotaNextResetTime">خلال 24 ساعة</strong></p>
+                <p>📅 صلاحية الاشتراك: <strong id="quotaExpiryDisplay">60 يوماً</strong></p>
+              </div>
+            </div>
+
+            <!-- زر تفعيل أو تجديد باقة AI -->
+            <div style="margin-top: 16px;">
+              <button type="button" class="primary-action sub-upgrade-btn" id="subscribeAiPlusBtn" style="width: 100%;">
+                ⚡ تفعيل باقة شاتو AI بلاس (99 ريال / شهرين)
+              </button>
+              <button type="button" class="primary-action sub-upgrade-btn" id="subUpgradeActionBtn" style="display: none;"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- نافذة التحقق من كلمة المرور القديمة للدخول لمفاتيح المرور -->
+    <dialog class="modal" id="verifyPasswordModal">
+      <form method="dialog" class="modal-card" id="verifyPasswordForm" style="max-width: 380px;">
+        <div class="modal-head">
+          <h3>🔒 التحقق من الهوية</h3>
+          <button class="close-button" type="button" data-close="verifyPasswordModal" aria-label="إغلاق">×</button>
+        </div>
+        <p style="font-size: 13px; color: var(--muted); margin: 0 0 14px;">لحماية حسابك، يرجى كتابة كلمة المرور الحالية للمتابعة إلى مفاتيح المرور:</p>
+        <label class="field">
+          <span>كلمة المرور الحالية</span>
+          <div class="password-wrapper">
+            <input id="verifyCurrentPasswordInput" type="password" placeholder="أدخل كلمة المرور الحالية" required />
+            <button type="button" class="password-toggle-btn" data-target="verifyCurrentPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+          </div>
+        </label>
+        <p class="error-line" id="verifyPasswordError" role="alert"></p>
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <button class="primary-action" id="verifyPasswordSubmitBtn" type="submit" style="flex: 1;">تأكيد المتابعة</button>
+          <button class="secondary-action" type="button" data-close="verifyPasswordModal">إلغاء</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- نافذة إدارة مفاتيح المرور وتغيير كلمة المرور -->
+    <dialog class="modal" id="passkeysManagerModal">
+      <div class="modal-card" style="max-width: 440px;">
+        <div class="modal-head">
+          <h3>🔑 مفاتيح المرور وكلمة المرور</h3>
+          <button class="close-button" type="button" data-close="passkeysManagerModal" aria-label="إغلاق">×</button>
+        </div>
+        <p style="font-size: 13px; color: var(--muted); margin: 0 0 14px;">إدارة بيانات الدخول الخاصة بحسابك: <b id="passkeysUserEmail">...</b></p>
+
+        <!-- 1. عرض كلمة المرور الحالية الموثقة -->
+        <div class="passkey-vault-card">
+          <div class="passkey-vault-head">
+            <span>🔐 كلمة المرور الحالية المسجلة</span>
+            <button type="button" class="passkey-copy-btn" id="copyCurrentPasswordBtn" title="نسخ كلمة المرور">📋 نسخ</button>
+          </div>
+          <div class="password-wrapper" style="margin-top: 8px;">
+            <input id="passkeysCurrentDisplay" type="password" readonly style="background: var(--surface); cursor: default; font-family: monospace;" />
+            <button type="button" class="password-toggle-btn" data-target="passkeysCurrentDisplay" aria-label="إظهار / إخفاء">👁</button>
+          </div>
+        </div>
+
+        <!-- 2. تغيير كلمة المرور -->
+        <form id="passkeysChangeForm" style="margin-top: 18px;">
+          <h4 style="margin: 0 0 10px; font-size: 14px;">تغيير كلمة المرور</h4>
+          <label class="field">
+            <span>كلمة المرور الجديدة</span>
+            <div class="password-wrapper">
+              <input id="passkeysNewPassword" type="password" placeholder="8+ أحرف مع حرف كبير وصغير" required />
+              <button type="button" class="password-toggle-btn" data-target="passkeysNewPassword" aria-label="إظهار / إخفاء">👁</button>
+            </div>
+            <small class="field-hint">8 أحرف على الأقل، تتضمن حرفاً كبيراً (A-Z) وحرفاً صغيراً (a-z)</small>
+          </label>
+
+          <label class="field" style="margin-top: 10px;">
+            <span>تأكيد كلمة المرور الجديدة</span>
+            <div class="password-wrapper">
+              <input id="passkeysConfirmPassword" type="password" placeholder="أعد إدخال كلمة المرور الجديدة" required />
+              <button type="button" class="password-toggle-btn" data-target="passkeysConfirmPassword" aria-label="إظهار / إخفاء">👁</button>
+            </div>
+          </label>
+
+          <p class="error-line" id="passkeysChangeError" role="alert"></p>
+          <p class="success-line" id="passkeysChangeSuccess" style="color: #0d9488; font-size: 13px; font-weight: 600; margin: 4px 0;" role="status"></p>
+
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <button class="primary-action" id="passkeysSaveBtn" type="submit" style="flex: 1;">حفظ كلمة المرور الجديدة</button>
+            <button class="secondary-action" type="button" data-close="passkeysManagerModal">إغلاق</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- نافذة الإشعارات -->
+    <dialog class="modal" id="notificationsDialog">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3 data-i18n="notificationsHeading">الإشعارات</h3>
+          <button class="close-button" type="button" data-close="notificationsDialog" aria-label="إغلاق">×</button>
+        </div>
+        <div class="notification-list" id="notificationList"></div>
+      </div>
+    </dialog>
+
+    <!-- نافذة المكالمات -->
+    <dialog class="modal" id="callDialog">
+      <div class="modal-card call-card">
+        <div class="call-avatar" id="callAvatar">د</div>
+        <h3 id="callTitle" data-i18n="callHeading">مكالمة</h3>
+        <p id="callStatus" data-i18n="callingStatus">جاري الاتصال...</p>
+        <div class="call-controls">
+          <button class="head-icon" id="muteCallButton" type="button" aria-label="كتم الصوت">⌁</button>
+          <button class="primary-action" id="answerCallButton" type="button" style="display: none; background: #10b981; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 22px; cursor: pointer; color: #fff; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);" aria-label="رد على المكالمة">📞</button>
+          <button class="end-call" id="endCallButton" type="button" aria-label="إنهاء المكالمة">☎</button>
+        </div>
+      </div>
+    </dialog>
+    <audio id="remoteAudio" autoplay playsinline style="display: none;"></audio>
+
+    <!-- 3. نافذة تقديم طلب الدعم الفني المباشر -->
+    <dialog class="modal" id="supportRequestDialog">
+      <form method="dialog" class="modal-card" id="supportRequestForm">
+        <div class="modal-head">
+          <h3 data-i18n="supportLiveHeading">الدعم الفني المباشر</h3>
+          <button class="close-button" type="button" data-close="supportRequestDialog" aria-label="إغلاق">×</button>
+        </div>
+        <p class="instruction-note" style="font-size: 13px; color: var(--muted); margin: 0 0 14px;">أدخل اسمك واشرح مشكلتك بالتفصيل ليتواصل معك مسؤول الدعم مباشرة:</p>
+        <label class="field">
+          <span data-i18n="nameLabel">الاسم</span>
+          <input id="supportNameInput" type="text" maxlength="24" required />
+        </label>
+        <label class="field">
+          <span>ما هي مشكلتك بالتفصيل؟</span>
+          <textarea id="supportIssueInput" rows="4" placeholder="اكتب المشكلة التي تواجهك هنا..." style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--line); font-family:inherit; resize:vertical;" required></textarea>
+        </label>
+        <p class="error-line" id="supportRequestError" role="alert"></p>
+        <button class="primary-action" type="submit">تأكيد وإرسال المشكلة</button>
+      </form>
+    </dialog>
+
+    <!-- نافذة ترقية باقة الذكاء الاصطناعي (99 ريال / شهرين) -->
+    <dialog class="modal" id="aiUpgradeDialog">
+      <div class="modal-card ai-upgrade-card">
+        <div class="modal-head">
+          <h3>ترقية باقة Chato Assistant VIP 🤖</h3>
+          <button class="close-button" type="button" data-close="aiUpgradeDialog" aria-label="إغلاق">×</button>
+        </div>
+        <div class="ai-upgrade-content">
+          <div class="ai-upgrade-badge">
+            <span class="ai-crown-icon">👑</span>
+            <h4>باقة VIP الذهبية (شهران)</h4>
+            <div class="ai-price-tag">99 ريال <span>/ شهرين كاملين (60 يوماً)</span></div>
+          </div>
+          <p id="aiUpgradeReason" class="ai-upgrade-desc">
+            لقد استهلكت رصيدك اليومي المجاني (90 كلمة / 3 صور).
+          </p>
+          <ul class="ai-features-list">
+            <li>✨ <strong>500 كلمة يومياً</strong> تتجدد تلقائياً كل 24 ساعة</li>
+            <li>🎨 <strong>20 صورة بالذكاء الاصطناعي يومياً</strong> بجودة فائقة</li>
+            <li>🖼️ <strong>إرسال صور بلا حدود</strong> إلى الذكاء الاصطناعي والأصدقاء</li>
+            <li>⏳ <strong>صلاحية شهرين كاملين (60 يوماً)</strong> وبعد الشهرين يتم التجديد</li>
+            <li>⚡ استجابة فائقة السرعة بأحدث نماذج Chato Assistant</li>
+          </ul>
+          <p class="ai-renew-note">
+            💡 ملاحظة: الرصيد المجاني (90 كلمة و 3 صور) يتجدد تلقائياً كل 24 ساعة مجاناً.
+          </p>
+          <div class="ai-upgrade-actions">
+            <button class="primary-action ai-pay-btn" id="confirmAiPayBtn" type="button">
+              💳 دفع 99 ريال وتفعيل باقة VIP (شهران)
+            </button>
+            <button class="secondary-action" type="button" data-close="aiUpgradeDialog">
+              الانتظار حتى يتجدد الرصيد غداً
+            </button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- نافذة توليد صورة بالذكاء الاصطناعي -->
+    <dialog class="modal" id="aiImagePromptDialog">
+      <form method="dialog" class="modal-card" id="aiImagePromptForm">
+        <div class="modal-head">
+          <h3>🎨 إنشاء صورة بالذكاء الاصطناعي</h3>
+          <button class="close-button" type="button" data-close="aiImagePromptDialog" aria-label="إغلاق">×</button>
+        </div>
+        <p class="instruction-note" style="font-size: 13px; color: var(--muted); margin: 0 0 14px;">
+          اكتب وصفاً للصورة التي تريد من الذكاء الاصطناعي رسمها (متبقي <strong id="aiImagesRemainingBadge">3</strong> صور اليوم):
+        </p>
+        <label class="field">
+          <span>وصف الصورة (Prompt)</span>
+          <textarea id="aiImagePromptInput" rows="3" placeholder="مثال: رائد فضاء يستكشف غابة سحرية على كوكب آخر بأسلوب واقعي..." style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--line); font-family:inherit; resize:vertical;" required></textarea>
+        </label>
+        <p class="error-line" id="aiImagePromptError" role="alert"></p>
+        <button class="primary-action" type="submit" id="submitAiImageBtn">توليد الصورة الآن ✨</button>
+      </form>
+    </dialog>
+
+    <!-- نافذة قفل / فك قفل المحادثة برمز PIN -->
+    <dialog class="modal" id="chatPinDialog">
+      <form method="dialog" class="modal-card" id="chatPinForm" style="max-width: 360px;">
+        <div class="modal-head">
+          <h3 id="chatPinDialogTitle">🔒 قفل المحادثة برمز سري</h3>
+          <button class="close-button" type="button" data-close="chatPinDialog" aria-label="إغلاق">×</button>
+        </div>
+        <p id="chatPinDialogDesc" style="font-size: 13px; color: var(--muted); margin: 0 0 14px;">أدخل رمز PIN مكوّن من 4 إلى 6 أرقام:</p>
+        <label class="field">
+          <span>رمز الـ PIN</span>
+          <input id="chatPinInput" type="password" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="••••" required style="font-size: 24px; letter-spacing: 6px; text-align: center; font-weight: bold;" />
+        </label>
+        <p class="error-line" id="chatPinError" role="alert"></p>
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <button class="primary-action" id="chatPinSubmitBtn" type="submit" style="flex: 1;">تأكيد</button>
+          <button class="secondary-action" id="chatPinRemoveBtn" type="button" style="display: none; color: #ef4444; border-color: #ef4444;">إلغاء القفل</button>
+          <button class="secondary-action" id="chatPinCancelBtn" type="button" data-close="chatPinDialog">إلغاء</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- نافذة مؤقت الرسائل ذاتية الاختفاء -->
+    <dialog class="modal" id="disappearingDialog">
+      <form method="dialog" class="modal-card" id="disappearingForm" style="max-width: 400px;">
+        <div class="modal-head">
+          <h3>⏱️ الرسائل ذاتية الاختفاء</h3>
+          <button class="close-button" type="button" data-close="disappearingDialog" aria-label="إغلاق">×</button>
+        </div>
+        <p style="font-size: 13px; color: var(--muted); margin: 0 0 14px;">اختر مدة بقاء الرسائل قبل حذفها نهائياً من قاعدة البيانات لدى الجميع:</p>
+        <div class="disappearing-options" style="display: flex; flex-direction: column; gap: 10px;">
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface);">
+            <input type="radio" name="disappearingOption" value="0" checked />
+            <div><b>إيقاف (معطل)</b><br><small style="color: var(--muted);">تبقى الرسائل بشكل دائم</small></div>
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface);">
+            <input type="radio" name="disappearingOption" value="3600" />
+            <div><b>1 ساعة</b><br><small style="color: var(--muted);">تُحذف الرسائل بعد 60 دقيقة من إرسالها</small></div>
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface);">
+            <input type="radio" name="disappearingOption" value="86400" />
+            <div><b>24 ساعة (يوم كامل)</b><br><small style="color: var(--muted);">تُحذف الرسائل بعد 24 ساعة من إرسالها</small></div>
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface);">
+            <input type="radio" name="disappearingOption" value="604800" />
+            <div><b>7 أيام (أسبوع كامل)</b><br><small style="color: var(--muted);">تُحذف الرسائل بعد 7 أيام من إرسالها</small></div>
+          </label>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 18px;">
+          <button class="primary-action" id="saveDisappearingBtn" type="button" style="flex: 1;">حفظ المؤقت</button>
+          <button class="secondary-action" type="button" data-close="disappearingDialog">إلغاء</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- نافذة معاينة وإضافة حالة جديدة (Story Upload Modal) -->
+    <dialog class="modal" id="storyUploadModal">
+      <div class="modal-card" style="max-width: 440px; padding: 20px;">
+        <div class="modal-head">
+          <h3>✨ إضافة حالة جديدة (24 ساعة)</h3>
+          <button class="close-button" type="button" data-close="storyUploadModal">×</button>
+        </div>
+        <div id="storyUploadPreviewBox" style="background: #090e11; border-radius: 12px; overflow: hidden; max-height: 360px; display: flex; align-items: center; justify-content: center; margin: 12px 0; border: 1px solid var(--line);">
+          <img id="storyPreviewImg" src="" alt="معاينة الصورة" style="max-width: 100%; max-height: 340px; object-fit: contain; display: none;" />
+          <video id="storyPreviewVideo" src="" controls playsinline style="max-width: 100%; max-height: 340px; display: none;"></video>
+        </div>
+        <form id="storyUploadForm">
+          <label class="field">
+            <span>شرح أو تعليق اختياري (Caption):</span>
+            <input id="storyCaptionInput" type="text" placeholder="اكتب تعليقاً على حالتك..." maxlength="500" autocomplete="off" />
+          </label>
+          <p class="error-line" id="storyUploadError" role="alert"></p>
+          <div style="display: flex; gap: 8px; margin-top: 14px;">
+            <button class="primary-action" id="storyUploadSubmitBtn" type="submit" style="flex: 1;">🚀 نشر الحالة الآن</button>
+            <button class="secondary-action" type="button" data-close="storyUploadModal">إلغاء</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- 4. نافذة إعادة توجيه الرسالة (Forward Message Modal) -->
+    <dialog class="modal" id="forwardMessageModal">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3>🔁 إعادة توجيه الرسالة</h3>
+          <button class="close-button" type="button" data-close="forwardMessageModal" aria-label="إغلاق">×</button>
+        </div>
+        <p style="font-size: 13.5px; color: var(--muted); margin: 0 0 12px;">اختر المحادثة أو الصديق المراد تحويل الرسالة إليه:</p>
+        <div class="forward-chat-list" id="forwardChatList" style="max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;"></div>
+      </div>
+    </dialog>
+
+    <!-- حاوية الإشعارات السريعة (Toast Notification System) -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- مشغل الحالات كامل الشاشة على طريقة واتساب (WhatsApp-Style Full-Screen Story Viewer) -->
+    <div class="story-viewer-overlay" id="storyViewerOverlay" hidden>
+      <div class="story-viewer-card">
+        <!-- أشرطة التقدم العلوية المقسمة (Segmented Progress Bars) -->
+        <div class="story-progress-bars" id="storyProgressBars"></div>
+
+        <!-- ترويسة المشغل: الأفاتار، الاسم، الوقت، وزر الحذف والإغلاق -->
+        <div class="story-viewer-header">
+          <div class="story-viewer-user" id="storyViewerUser">
+            <div class="story-viewer-av" id="storyViewerAv"></div>
+            <div class="story-viewer-meta">
+              <strong id="storyViewerName">...</strong>
+              <span id="storyViewerTime">منذ لحظات</span>
+            </div>
+          </div>
+          <div class="story-viewer-actions">
+            <button type="button" class="story-action-btn" id="storyViewerAddBtn" title="إضافة حالة أخرى" hidden>➕</button>
+            <button type="button" class="story-action-btn danger" id="storyViewerDeleteBtn" title="حذف هذه الحالة" hidden>🗑️</button>
+            <button type="button" class="story-action-btn close" id="storyViewerCloseBtn" title="إغلاق">✕</button>
+          </div>
+        </div>
+
+        <!-- منطقة الوسائط (صورة أو فيديو) مع مناطق النقر للتنقل يمين/يسار -->
+        <div class="story-viewer-body" id="storyViewerBody">
+          <div class="story-touch-nav prev" id="storyTouchPrev" title="السابق"></div>
+          <div class="story-touch-nav next" id="storyTouchNext" title="التالي"></div>
+          <img id="storyViewerImg" src="" alt="الحالة" style="display: none;" />
+          <video id="storyViewerVideo" playsinline style="display: none;"></video>
+        </div>
+
+        <!-- نص الشرح بالأسفل (Caption) -->
+        <div class="story-viewer-caption" id="storyViewerCaption" hidden></div>
+
+        <!-- شريط المشاهدات لصاحب الحالة (Views Bar) -->
+        <div class="story-views-bar" id="storyViewsBar" hidden>
+          <button type="button" class="story-views-toggle-btn" id="storyViewsToggleBtn">
+            <span>👁️</span> <b id="storyViewsCountNum">0</b> مشاهدات <span style="font-size: 11px; opacity: 0.85;">▲ انقر لعرض من شاهد حالتك</span>
+          </button>
+        </div>
+
+        <!-- درج المشاهدات المنسدل للأعلى (Views Drawer) -->
+        <div class="story-views-drawer" id="storyViewsDrawer" hidden>
+          <div class="story-views-drawer-head">
+            <h4>المشاهدات (<span id="storyDrawerCount">0</span>)</h4>
+            <button type="button" class="story-drawer-close" id="storyDrawerCloseBtn">✕</button>
+          </div>
+          <div class="story-views-list" id="storyViewsList">
+            <!-- قائمة المشاهدين عبر JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. نافذة مسح الباركود بالكاميرا لتسجيل الدخول السريع (Camera QR Scanner Modal) -->
+    <dialog class="modal-dialog qr-scanner-dialog" id="qrScannerModal" aria-labelledby="qrScannerTitle">
+      <div class="modal-card">
+        <div class="modal-card-head">
+          <h3 id="qrScannerTitle">📷 الدخول السريع بمسح الباركود (QR)</h3>
+          <button type="button" class="modal-close-btn" id="closeQrScannerModalBtn" aria-label="إغلاق">✕</button>
+        </div>
+        <p class="modal-card-subhead">وجه الكاميرا نحو باركود الحساب في جهازك الآخر ليتم تسجيل دخولك فوراً دون كلمة سر.</p>
+        
+        <div class="qr-camera-viewport">
+          <video id="qrScannerVideo" playsinline autoplay muted></video>
+          <div class="qr-scanner-overlay">
+            <div class="qr-scanner-frame">
+              <div class="qr-laser-line"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="error-line" id="qrScannerStatus" role="status" style="margin-top: 10px;"></p>
+
+        <div class="qr-scanner-actions" style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
+          <label class="secondary-action qr-upload-fallback-btn" style="cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0;">
+            <span>📁</span>
+            <span>اختيار صورة باركود من هذا الجهاز</span>
+            <input type="file" id="qrScannerFileInput" accept="image/*" style="display: none;" />
+          </label>
+          <button type="button" class="secondary-action" id="cancelQrScannerBtn">إلغاء</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- 2. نافذة بطاقة باركود الحساب للدخول السريع (Account QR Card Modal) -->
+    <dialog class="modal-dialog account-qr-dialog" id="accountQrModal" aria-labelledby="accountQrTitle">
+      <div class="modal-card">
+        <div class="modal-card-head">
+          <h3 id="accountQrTitle">🔲 باركود تسجيل الدخول الخاص بحسابك</h3>
+          <button type="button" class="modal-close-btn" id="closeAccountQrModalBtn" aria-label="إغلاق">✕</button>
+        </div>
+        <p class="modal-card-subhead">يمكنك تصوير هذا الباركود بكاميرا أي هاتف أو جهاز آخر للدخول فوراً دون الحاجة لإدخال كلمة المرور.</p>
+
+        <div class="account-qr-card-view">
+          <div class="account-qr-user-badge">
+            <div class="account-qr-avatar" id="accountQrAvatar">و</div>
+            <div class="account-qr-user-info">
+              <strong id="accountQrName">أحمد</strong>
+              <span id="accountQrEmail">ahmed@example.com</span>
+            </div>
+          </div>
+
+          <div class="account-qr-box" id="accountQrCanvasContainer">
+            <!-- سيتم توليد الـ QR Code هنا عبر QRCode.js -->
+          </div>
+          
+          <div class="account-qr-meta">
+            <span class="qr-badge-security">🔒 مشفر ومحمي برمز أمان فريد</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <button type="button" class="primary-action" id="downloadAccountQrBtn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>💾</span>
+            <span>حفظ كصورة</span>
+          </button>
+          <button type="button" class="secondary-action" id="regenerateAccountQrBtn" title="إلغاء صلاحية الباركود القديم وتوليد باركود جديد">
+            <span>🔄 تجديد الباركود</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- 3. نافذة تخصيص خلفيات وثيمات الدردشة الحصرية لبلاس (Chat Wallpapers & Themes Modal) -->
+    <dialog class="modal-dialog chat-wallpaper-dialog" id="chatWallpaperModal" aria-labelledby="chatWallpaperTitle">
+      <div class="modal-card">
+        <div class="modal-card-head">
+          <h3 id="chatWallpaperTitle">🎨 مظهر وخلفية المحادثة</h3>
+          <button type="button" class="modal-close-btn" id="closeChatWallpaperModalBtn" aria-label="إغلاق">✕</button>
+        </div>
+
+        <!-- شريط التنبيه إن لم يكن المستخدم مشتركاً في بلاس -->
+        <div class="vip-perk-locked-banner" id="wallpaperVipLockedBanner" hidden>
+          <div class="vip-locked-icon">👑</div>
+          <div class="vip-locked-text">
+            <strong>ميزة حصرية لمشتركي بلاس AI شاتو 🌟</strong>
+            <p>خصص خلفية وألوان أي محادثة بالثيمات والألوان والصور المفضلة لديك.</p>
+          </div>
+          <button type="button" class="primary-action" id="wallpaperUpgradeBtn">ترقية الآن</button>
+        </div>
+
+        <p class="modal-card-subhead">اختر مظهراً مخصصاً أو خلفية مفضلة لهذه المحادثة:</p>
+
+        <div class="wallpaper-presets-grid" id="wallpaperPresetsGrid">
+          <div class="wallpaper-preset-item active" data-theme="default" data-bg="">
+            <div class="preset-preview preview-default"></div>
+            <span>الافتراضي</span>
+          </div>
+          <div class="wallpaper-preset-item" data-theme="night-sky" data-bg="linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)">
+            <div class="preset-preview preview-night-sky"></div>
+            <span>سماء الليل 🌌</span>
+          </div>
+          <div class="wallpaper-preset-item" data-theme="emerald" data-bg="linear-gradient(135deg, #064e3b 0%, #022c22 100%)">
+            <div class="preset-preview preview-emerald"></div>
+            <span>زمردي فاخر 💎</span>
+          </div>
+          <div class="wallpaper-preset-item" data-theme="sunset" data-bg="linear-gradient(135deg, #831843 0%, #500724 100%)">
+            <div class="preset-preview preview-sunset"></div>
+            <span>غروب ملكي 🌅</span>
+          </div>
+          <div class="wallpaper-preset-item" data-theme="amoled" data-bg="#09090b">
+            <div class="preset-preview preview-amoled"></div>
+            <span>أسود داكن 🖤</span>
+          </div>
+          <div class="wallpaper-preset-item" data-theme="cyberpunk" data-bg="linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%)">
+            <div class="preset-preview preview-cyberpunk"></div>
+            <span>نيون فضائي ⚡</span>
+          </div>
+          <div class="wallpaper-preset-item" data-theme="golden" data-bg="linear-gradient(135deg, #78350f 0%, #451a03 100%)">
+            <div class="preset-preview preview-golden"></div>
+            <span>رمال ذهبية 🏜️</span>
+          </div>
+          <label class="wallpaper-preset-item custom-upload" id="wallpaperCustomUploadItem">
+            <input type="file" id="chatWallpaperFileInput" accept="image/*" style="display: none;" />
+            <div class="preset-preview preview-custom"><span>🖼️+</span></div>
+            <span>صورة من جهازك</span>
+          </label>
+        </div>
+
+        <p class="error-line" id="wallpaperError" role="alert"></p>
+
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <button type="button" class="primary-action" id="saveChatWallpaperBtn" style="flex: 1;">تطبيق المظهر</button>
+          <button type="button" class="secondary-action" id="resetChatWallpaperBtn">استعادة الافتراضي</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- 1. نافذة استعراض وتكبير الوسائط بملء الشاشة (Media Lightbox) -->
+    <dialog class="media-lightbox-dialog" id="mediaLightboxModal">
+      <div class="lightbox-toolbar">
+        <button type="button" class="lightbox-tool-btn" id="lightboxRotateBtn" title="تدوير الصورة">🔄 تدوير</button>
+        <a id="lightboxDownloadBtn" class="lightbox-tool-btn" download="chat-media.jpg" title="تحميل الصورة">⬇️ حفظ</a>
+        <button type="button" class="lightbox-close-btn" id="lightboxCloseBtn" title="إغلاق">✕</button>
+      </div>
+      <div class="lightbox-body">
+        <img id="lightboxImg" src="" alt="معاينة الصورة" />
+      </div>
+    </dialog>
+
+    <!-- 2. درج معلومات جهة الاتصال والوسائط المشتركة (Chat Contact Info) -->
+    <dialog class="modal chat-info-modal" id="chatInfoModal">
+      <div class="modal-card chat-info-card">
+        <div class="modal-head">
+          <h3>معلومات المحادثة</h3>
+          <button class="close-button" type="button" data-close="chatInfoModal" aria-label="إغلاق">×</button>
+        </div>
+        <div class="chat-info-profile-area">
+          <div class="chat-info-avatar-large" id="chatInfoAvatar">و</div>
+          <h2 id="chatInfoName">الاسم</h2>
+          <p id="chatInfoEmail">email@domain.com</p>
+          <span class="chat-info-status-pill" id="chatInfoStatusPill">جاهز للدردشة</span>
+        </div>
+        <div class="chat-info-stats-row">
+          <div class="info-stat-box">
+            <strong id="chatInfoMsgCount">0</strong>
+            <span>رسائل</span>
+          </div>
+          <div class="info-stat-box">
+            <strong id="chatInfoMediaCount">0</strong>
+            <span>وسائط</span>
+          </div>
+          <div class="info-stat-box">
+            <strong id="chatInfoVoiceCount">0</strong>
+            <span>صوت</span>
+          </div>
+        </div>
+        <div class="chat-info-media-section">
+          <h4>الوسائط المشتركة في هذه المحادثة</h4>
+          <div class="chat-info-media-grid" id="chatInfoMediaGrid"></div>
+        </div>
+        <div class="chat-info-quick-actions">
+          <button type="button" class="secondary-action" id="chatInfoChangeWallpaperBtn">🎨 تخصيص مظهر المحادثة</button>
+          <button type="button" class="secondary-action" id="chatInfoLockPinBtn">🔒 قفل المحادثة برمز PIN</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- 3. نافذة تعديل الرسالة المرسلة (Edit Message Modal) -->
+    <dialog class="modal" id="editMessageModal">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3>✏️ تعديل الرسالة</h3>
+          <button class="close-button" type="button" data-close="editMessageModal" aria-label="إغلاق">×</button>
+        </div>
+        <form id="editMessageForm">
+          <label class="field">
+            <span>نص الرسالة المعدل:</span>
+            <textarea id="editMessageInput" rows="3" required style="width: 100%; border-radius: var(--radius); padding: 10px; border: 1.5px solid var(--line); font-family: inherit; font-size: 14.5px;"></textarea>
+          </label>
+          <p class="error-line" id="editMessageError" role="alert"></p>
+          <div style="display: flex; gap: 8px; margin-top: 14px;">
+            <button class="primary-action" type="submit" style="flex: 1;">حفظ التعديل</button>
+            <button class="secondary-action" type="button" data-close="editMessageModal">إلغاء</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- 4. نافذة إعادة توجيه الرسالة (Forward Message Modal) -->
+    <dialog class="modal" id="forwardMessageModal">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3>🔁 إعادة توجيه الرسالة</h3>
+          <button class="close-button" type="button" data-close="forwardMessageModal" aria-label="إغلاق">×</button>
+        </div>
+        <p style="font-size: 13.5px; color: var(--muted); margin: 0 0 12px;">اختر المحادثة أو الصديق المراد تحويل الرسالة إليه:</p>
+        <div class="forward-chat-list" id="forwardChatList" style="max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;"></div>
+      </div>
+    </dialog>
+
+    <!-- حاوية الإشعارات السريعة (Toast Notification System) -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- نافذة إرشاد التثبيت لهواتف الآيفون (iOS Safari) -->
+    <dialog id="iosInstallModal" class="modal-dialog-ios">
+      <div class="ios-modal-card">
+        <div class="ios-modal-head">
+          <img src="/logo.png" alt="Chato" class="ios-modal-icon" />
+          <h3>تثبيت تطبيق Chato على الآيفون 📲</h3>
+          <p>لتثبيت التطبيق على شاشة هاتفك الرئيسية كبرنامج دائم:</p>
+        </div>
+        <div class="ios-steps-list">
+          <div class="ios-step-item">
+            <span class="ios-step-num">1</span>
+            <div class="ios-step-info">
+              <strong>اضغط على زر المشاركة</strong>
+              <span>اضغط على أيقونة المشاركة (Share) أسفل شاشة متصفح سفاري.</span>
+            </div>
+          </div>
+          <div class="ios-step-item">
+            <span class="ios-step-num">2</span>
+            <div class="ios-step-info">
+              <strong>اختر إضافة إلى الشاشة الرئيسية</strong>
+              <span>مرر للأسفل واضغط على <strong>"إضافة إلى الشاشة الرئيسية ➕"</strong> (Add to Home Screen).</span>
+            </div>
+          </div>
+          <div class="ios-step-item">
+            <span class="ios-step-num">3</span>
+            <div class="ios-step-info">
+              <strong>اضغط "إضافة" (Add)</strong>
+              <span>سيظهر تطبيق Chato فوراً على شاشتك الرئيسية ويعمل كتطبيق كامل ومستقل!</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-primary ios-close-btn" id="closeIosInstallModalBtn">فهمت ذلك ✓</button>
+      </div>
+    </dialog>
+
+    <!-- نافذة إرسال البلاغات والشكاوى ضد المستخدمين -->
+    <dialog class="modal" id="reportDialog">
+      <form method="dialog" class="modal-card" id="reportForm" style="max-width: 440px;" onsubmit="handleReportSubmit(event)">
+        <div class="modal-head">
+          <h3>🚩 إبلاغ عن محتوى أو مستخدم</h3>
+          <button type="button" class="modal-close" onclick="closeDialog(reportDialog)">✕</button>
+        </div>
+        <div class="modal-body" style="display: flex; flex-direction: column; gap: 14px; padding: 18px 20px;">
+          <p style="font-size: 13.5px; color: var(--muted); margin: 0;">
+            أنت تقوم بالإبلاغ عن: <strong id="reportTargetName" style="color: var(--leaf, #38bdf8);"></strong>
+          </p>
+          <label style="font-size: 13px; font-weight: 600; display: flex; flex-direction: column; gap: 6px;">
+            سبب الإبلاغ:
+            <select id="reportReasonSelect" style="padding: 10px; border-radius: 8px; background: var(--bg-card, #111b21); color: #fff; border: 1px solid var(--border, rgba(255,255,255,0.15)); font-size: 13.5px;">
+              <option value="inappropriate">⚠️ محتوى غير لائق أو رسائل مسيئة</option>
+              <option value="spam">📢 رسائل مزعجة أو غير مرغوب فيها (سبام)</option>
+              <option value="scam">🎭 احتيال أو انتحال شخصية</option>
+              <option value="harassment">🛑 مضايقة أو انتهاك للخصوصية</option>
+              <option value="other">📝 سبب آخر</option>
+            </select>
+          </label>
+          <label style="font-size: 13px; font-weight: 600; display: flex; flex-direction: column; gap: 6px;">
+            تفاصيل إضافية (اختياري):
+            <textarea id="reportDetailsInput" rows="3" placeholder="اشرح المشكلة لمساعدة فريق الإشراف في التحقق..." style="padding: 10px; border-radius: 8px; background: var(--bg-card, #111b21); color: #fff; border: 1px solid var(--border, rgba(255,255,255,0.15)); resize: vertical; font-size: 13px;"></textarea>
+          </label>
+          <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px;">
+            <button type="button" class="btn btn-secondary" onclick="closeDialog(reportDialog)" style="padding: 8px 16px; border-radius: 8px;">إلغاء</button>
+            <button type="submit" class="btn btn-danger" style="background: #ef4444; color: #fff; font-weight: 700; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;">إرسال البلاغ 🚩</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./qrcode.min.js"></script>
+    <script src="./jsqr.min.js"></script>
+    <script src="./app.js?v=3.6"></script>
+  </body>
+</html>
