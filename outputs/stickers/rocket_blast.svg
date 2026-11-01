@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="rocketBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="fireTrail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+  <style>
+    @keyframes rocketShake {
+      0%, 100% { transform: translate(0, 0) rotate(45deg); }
+      25% { transform: translate(-2px, -3px) rotate(43deg); }
+      75% { transform: translate(2px, -5px) rotate(47deg); }
+    }
+    @keyframes trailPulse {
+      0%, 100% { transform: scaleY(1); opacity: 0.9; }
+      50% { transform: scaleY(1.35); opacity: 1; }
+    }
+    .rocket { transform-origin: 50px 50px; animation: rocketShake 0.35s ease-in-out infinite; }
+    .trail { transform-origin: 32px 68px; animation: trailPulse 0.25s ease-in-out infinite; }
+  </style>
+  <g class="rocket">
+    <!-- Fins -->
+    <path d="M30 65 L18 78 L32 74 Z" fill="#ef4444"/>
+    <path d="M65 30 L78 18 L74 32 Z" fill="#ef4444"/>
+    <!-- Body -->
+    <path d="M40 70 C30 50 40 25 65 15 C75 40 50 50 40 70 Z" fill="url(#rocketBody)" stroke="#334155" stroke-width="2"/>
+    <!-- Window -->
+    <circle cx="52" cy="38" r="7" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/>
+    <!-- Tip -->
+    <path d="M65 15 C60 20 62 26 65 15 Z" fill="#ef4444"/>
+    <!-- Flame trail -->
+    <polygon class="trail" points="35,68 22,88 28,74 15,92 38,72" fill="url(#fireTrail)"/>
+  </g>
+</svg>
