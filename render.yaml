@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: chato
+    env: node
+    plan: free
+    nodeVersion: 22.13.0
+    buildCommand: ""
+    startCommand: node work/server.mjs
+    envVars:
+      - key: PORT
+        value: 10000
