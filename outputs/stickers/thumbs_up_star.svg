@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <radialGradient id="thumbGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="70%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </radialGradient>
+  </defs>
+  <style>
+    @keyframes thumbPop {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.15) rotate(-6deg); }
+    }
+    @keyframes sparkleBurst {
+      0%, 100% { opacity: 0.2; transform: scale(0.6); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+    .thumb { transform-origin: 45px 65px; animation: thumbPop 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) infinite; }
+    .spark { transform-origin: center; animation: sparkleBurst 1s ease-in-out infinite; }
+  </style>
+  <g class="thumb">
+    <!-- Hand base -->
+    <path d="M30 52 L30 84 A6 6 0 0 0 36 90 L68 90 A10 10 0 0 0 78 80 L78 54 A8 8 0 0 0 70 46 L54 46 L58 30 A8 8 0 0 0 50 18 L44 26 L34 46 A6 6 0 0 0 30 52 Z" fill="url(#thumbGrad)" stroke="#713f12" stroke-width="2.5" stroke-linejoin="round"/>
+    <line x1="48" y1="56" x2="68" y2="56" stroke="#713f12" stroke-width="2"/>
+    <line x1="48" y1="66" x2="68" y2="66" stroke="#713f12" stroke-width="2"/>
+    <line x1="48" y1="76" x2="66" y2="76" stroke="#713f12" stroke-width="2"/>
+  </g>
+  <polygon class="spark" points="80,18 83,26 91,28 84,32 86,40 79,35 73,39 76,31 70,27 77,25" fill="#facc15"/>
+</svg>
