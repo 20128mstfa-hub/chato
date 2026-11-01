@@ -1,0 +1,8 @@
+build
+.git
+.user_uploaded
+node_modules
+*.log
+*.lnk
+work/cloudflared.exe
+work/databases/
