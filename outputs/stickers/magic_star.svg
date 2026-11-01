@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <radialGradient id="starGrad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#fef08a"/>
+      <stop offset="80%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </radialGradient>
+  </defs>
+  <style>
+    @keyframes spinGlow {
+      0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 4px #eab308); }
+      50% { transform: rotate(180deg) scale(1.15); filter: drop-shadow(0 0 16px #facc15); }
+      100% { transform: rotate(360deg) scale(1); filter: drop-shadow(0 0 4px #eab308); }
+    }
+    .star-main { transform-origin: 50px 50px; animation: spinGlow 3s ease-in-out infinite; }
+  </style>
+  <path class="star-main" d="M50 8 C52 32 68 48 92 50 C68 52 52 68 50 92 C48 68 32 52 8 50 C32 48 48 32 50 8 Z" fill="url(#starGrad)"/>
+</svg>
