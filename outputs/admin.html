@@ -1,0 +1,2037 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>لوحة تحكم شاتو | Chato Control Panel</title>
+    <style>
+      :root {
+        --bg-main: #0c1418;
+        --bg-card: #132026;
+        --bg-card-hover: #192a32;
+        --line: #223742;
+        --text: #e2edf0;
+        --muted: #829ca6;
+        --teal: #13b7a4;
+        --teal-glow: rgba(19, 183, 164, 0.25);
+        --blue: #2f73ff;
+        --rose: #ee5a78;
+        --gold: #ffb703;
+        --leaf: #2fbf71;
+        --radius: 10px;
+      }
+
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+        background: var(--bg-main);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      button, input, textarea, select {
+        font: inherit;
+        color: inherit;
+      }
+      button { cursor: pointer; }
+
+      /* شاشة قفل المالك المستقلة */
+      .lock-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .lock-card {
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 36px 30px;
+        width: min(420px, 100%);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      .lock-card h1 {
+        margin: 12px 0 6px;
+        font-size: 24px;
+        color: var(--teal);
+      }
+      .lock-card p {
+        margin: 0 0 24px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .field {
+        text-align: right;
+        margin-bottom: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .field span { font-size: 13px; color: var(--muted); }
+      .field input, .field textarea, .field select {
+        width: 100%;
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 12px 14px;
+        color: #fff;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .field input:focus, .field textarea:focus, .field select:focus {
+        border-color: var(--teal);
+      }
+      .btn-primary {
+        width: 100%;
+        background: var(--teal);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        padding: 12px;
+        border-radius: var(--radius);
+        font-size: 15px;
+        transition: opacity 0.2s;
+      }
+      .btn-primary:hover { opacity: 0.9; }
+
+      /* الإطار الرئيسي للوحة التحكم - مخفي حتى فتح القفل */
+      .admin-layout {
+        display: none;
+        grid-template-columns: 260px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+      .sidebar {
+        background: var(--bg-card);
+        border-left: 1px solid var(--line);
+        padding: 24px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .brand-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand-badge {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        font-size: 20px;
+        color: #fff;
+      }
+      .brand-header h2 { margin: 0; font-size: 18px; }
+      .brand-header span { font-size: 11px; color: var(--teal); font-weight: 700; }
+
+      .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 12px 14px;
+        background: transparent;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--muted);
+        text-align: right;
+        transition: background 0.15s, color 0.15s;
+      }
+      .nav-btn:hover, .nav-btn.active {
+        background: var(--bg-card-hover);
+        color: #fff;
+      }
+      .nav-btn.active {
+        border-right: 3px solid var(--teal);
+        color: var(--teal);
+      }
+      .nav-btn .badge-pill {
+        margin-inline-start: auto;
+        background: var(--rose);
+        color: #fff;
+        font-size: 11px;
+        padding: 2px 7px;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      .content-area {
+        padding: 28px;
+        overflow-y: auto;
+        max-height: 100vh;
+      }
+
+      .top-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+      .top-nav h1 { margin: 0; font-size: 24px; font-weight: 800; }
+      .btn-sm-outline {
+        background: transparent;
+        border: 1px solid var(--line);
+        padding: 8px 14px;
+        border-radius: var(--radius);
+        font-size: 13px;
+        color: var(--muted);
+        transition: all 0.2s;
+      }
+      .btn-sm-outline:hover { color: #fff; border-color: var(--muted); }
+      .btn-sm-outline.danger:hover { color: #fff; background: var(--rose); border-color: var(--rose); }
+
+      /* بطاقات الإحصائيات */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+      }
+      .stat-card span { font-size: 13px; color: var(--muted); }
+      .stat-card strong { display: block; font-size: 28px; margin-top: 6px; color: #fff; }
+
+      /* جداول وبطاقات */
+      .card-box {
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin-bottom: 24px;
+      }
+      .card-box h3 { margin: 0 0 16px; font-size: 17px; display: flex; align-items: center; justify-content: space-between; }
+
+      /* قسم الإعلانات */
+      .ads-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .ad-item-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px;
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        margin-bottom: 10px;
+      }
+      .ad-item-row .ad-copy { flex: 1; }
+      .ad-item-row strong { display: block; font-size: 15px; color: #fff; }
+      .ad-item-row p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+
+      /* قسم المستخدمين */
+      .user-search-bar {
+        margin-bottom: 16px;
+      }
+      .users-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .users-table th, .users-table td {
+        padding: 12px 14px;
+        text-align: right;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .users-table th { color: var(--muted); font-weight: 600; }
+      .users-table tr:hover td { background: var(--bg-card-hover); }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+      .status-pill.online { background: rgba(47, 191, 113, 0.15); color: var(--leaf); }
+      .status-pill.offline { background: rgba(130, 156, 166, 0.15); color: var(--muted); }
+      .status-pill.banned { background: rgba(238, 90, 120, 0.2); color: var(--rose); }
+      .status-pill.suspended { background: rgba(255, 183, 3, 0.2); color: var(--gold); }
+
+      .action-btns {
+        display: flex;
+        gap: 6px;
+      }
+      .btn-action-icon {
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        padding: 5px 9px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: var(--muted);
+        transition: all 0.15s;
+      }
+      .btn-action-icon:hover { color: #fff; border-color: var(--teal); }
+      .btn-action-icon.danger:hover { color: #fff; background: var(--rose); border-color: var(--rose); }
+      .btn-action-icon.warn:hover { color: #000; background: var(--gold); border-color: var(--gold); }
+      .btn-action-icon.success:hover { color: #fff; background: var(--leaf); border-color: var(--leaf); }
+
+      /* قسم الدعم الفني المباشر */
+      .support-layout {
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        gap: 16px;
+        height: 680px;
+      }
+      .tickets-list {
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .ticket-item {
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        cursor: pointer;
+        transition: background 0.15s;
+        text-align: right;
+      }
+      .ticket-item:hover, .ticket-item.active {
+        background: var(--bg-card);
+      }
+      .ticket-item.active {
+        border-right: 3px solid var(--teal);
+      }
+      .ticket-item strong { display: block; font-size: 14px; }
+      .ticket-item .issue-preview {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 4px 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ticket-item .time-meta { font-size: 10px; color: var(--teal); margin-top: 4px; }
+
+      .support-chat-panel {
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        display: flex;
+        flex-direction: column;
+      }
+      .support-chat-head {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .support-chat-head strong { font-size: 16px; }
+      .support-chat-head span { font-size: 12px; color: var(--muted); }
+      .ticket-issue-banner {
+        padding: 10px 18px;
+        background: rgba(19, 183, 164, 0.08);
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--teal);
+      }
+      .support-messages {
+        flex: 1;
+        padding: 18px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .chat-msg {
+        max-width: 70%;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .chat-msg.from-user {
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        align-self: flex-start;
+      }
+      .chat-msg.from-admin {
+        background: var(--teal);
+        color: #000;
+        align-self: flex-end;
+        font-weight: 500;
+      }
+      .chat-msg time {
+        display: block;
+        font-size: 10px;
+        margin-top: 4px;
+        opacity: 0.7;
+      }
+      .support-chat-input-form {
+        padding: 12px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        gap: 10px;
+      }
+      .support-chat-input-form input {
+        flex: 1;
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 10px 14px;
+        color: #fff;
+      }
+      .support-chat-input-form button {
+        background: var(--teal);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        padding: 0 20px;
+        border-radius: var(--radius);
+      }
+
+      /* Modal */
+      dialog.admin-modal {
+        background: var(--bg-card);
+        color: #fff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 24px;
+        max-width: 480px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      }
+      dialog.admin-modal::backdrop {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+      }
+      dialog.admin-modal h3 { margin: 0 0 16px; font-size: 18px; }
+      .modal-btns {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .btn-secondary {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        padding: 8px 16px;
+        border-radius: var(--radius);
+      }
+
+      /* نظام مراقبة وتصفح المحادثات بالكامل */
+      .conv-layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 16px;
+        height: 740px;
+      }
+      .conv-sidebar {
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .conv-search-box {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--bg-card);
+      }
+      .conv-search-box input {
+        width: 100%;
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 8px 12px;
+        font-size: 13px;
+        color: #fff;
+        outline: none;
+      }
+      .conv-search-box input:focus {
+        border-color: var(--teal);
+      }
+      .conv-list {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .conv-item {
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        cursor: pointer;
+        transition: background 0.15s;
+        text-align: right;
+      }
+      .conv-item:hover {
+        background: var(--bg-card);
+      }
+      .conv-item.active {
+        background: rgba(19, 183, 164, 0.12);
+        border-right: 4px solid var(--teal);
+      }
+      .conv-item-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+      }
+      .conv-item-names {
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .conv-item-time {
+        font-size: 11px;
+        color: var(--teal);
+      }
+      .conv-item-preview {
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .conv-item-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 6px;
+        font-size: 11px;
+      }
+      .conv-chat-panel {
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .conv-chat-head {
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--line);
+        background: var(--bg-card);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .conv-participants {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .conv-user-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+      .conv-user-pill .av {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #223742;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 700;
+        overflow: hidden;
+      }
+      .conv-user-pill .av img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .conv-messages-container {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        background: radial-gradient(circle at 50% 50%, rgba(19, 183, 164, 0.03) 0%, transparent 100%);
+      }
+      .conv-bubble-row {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .conv-bubble-row.from-a {
+        align-items: flex-start;
+      }
+      .conv-bubble-row.from-b {
+        align-items: flex-end;
+      }
+      .conv-bubble {
+        max-width: 78%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        line-height: 1.5;
+        font-size: 14px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+      .conv-bubble-row.from-a .conv-bubble {
+        background: #12252e;
+        border: 1px solid #1c3e4c;
+        border-top-right-radius: 2px;
+      }
+      .conv-bubble-row.from-b .conv-bubble {
+        background: #182436;
+        border: 1px solid #233956;
+        border-top-left-radius: 2px;
+      }
+      .conv-bubble-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 6px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .conv-bubble-sender {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .conv-bubble-tag {
+        font-size: 10px;
+        padding: 2px 7px;
+        border-radius: 10px;
+        font-weight: 700;
+      }
+      .conv-bubble-row.from-a .conv-bubble-tag {
+        background: rgba(19, 183, 164, 0.2);
+        color: var(--teal);
+      }
+      .conv-bubble-row.from-b .conv-bubble-tag {
+        background: rgba(47, 115, 255, 0.2);
+        color: var(--blue);
+      }
+      .conv-bubble-content {
+        margin: 6px 0;
+        word-break: break-word;
+      }
+      .conv-bubble-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 8px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .conv-btn-del {
+        background: transparent;
+        border: 1px solid rgba(238, 90, 120, 0.4);
+        color: var(--rose);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .conv-btn-del:hover {
+        background: var(--rose);
+        color: #fff;
+      }
+      .conv-media-img {
+        max-width: 280px;
+        max-height: 220px;
+        border-radius: 8px;
+        display: block;
+        margin-top: 6px;
+        cursor: pointer;
+        border: 1px solid var(--line);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .conv-media-img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+      .quick-selector-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #090f13;
+        border: 1px solid var(--line);
+        padding: 12px 16px;
+        border-radius: var(--radius);
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .quick-selector-box select {
+        flex: 1;
+        min-width: 200px;
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        padding: 9px 12px;
+        border-radius: var(--radius);
+        color: #fff;
+        font-size: 13px;
+        outline: none;
+      }
+      .quick-selector-box select:focus {
+        border-color: var(--teal);
+      }
+      .badge-count {
+        background: var(--teal);
+        color: #000;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1. شاشة قفل المالك المستقلة المنفصلة تماماً -->
+    <div class="lock-screen" id="lockScreen">
+      <div class="lock-card">
+        <div class="brand-badge" style="margin: 0 auto 12px; width: 54px; height: 54px; font-size: 26px;">ش</div>
+        <h1>لوحة تحكم شاتو</h1>
+        <p>الوصول مقتصر على مالك التطبيق فقط</p>
+        <form id="lockForm">
+          <label class="field">
+            <span>رمز المرور الرئيسي (Master PIN)</span>
+            <input id="masterPinInput" type="password" placeholder="أدخل رمز المالك" required autofocus />
+          </label>
+          <p id="lockError" style="color: var(--rose); font-size: 13px; margin: 0 0 12px;" role="alert"></p>
+          <button class="btn-primary" type="submit">دخول لوحة التحكم</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2. لوحة التحكم الرئيسية (لا تظهر إلا بعد كتابة الرمز السري بنجاح) -->
+    <div class="admin-layout" id="adminLayout">
+      <!-- القائمة الجانبية -->
+      <aside class="sidebar">
+        <div class="brand-header">
+          <div class="brand-badge">ش</div>
+          <div>
+            <h2>Chato Admin</h2>
+            <span>مالك التطبيق</span>
+          </div>
+        </div>
+
+        <button class="nav-btn active" data-tab="usersTab">
+          <span>👥</span> إدارة المستخدمين
+        </button>
+
+        <button class="nav-btn" data-tab="reportsTab">
+          <span>🚩</span> البلاغات والشكاوى
+          <span class="badge-pill" id="reportsBadge" style="background: var(--rose); color: #fff;" hidden>0</span>
+        </button>
+
+        <button class="nav-btn" data-tab="aiConfigTab">
+          <span>🤖</span> الذكاء الاصطناعي
+        </button>
+
+        <button class="nav-btn" data-tab="supportTab">
+          <span>🎧</span> الدعم الفني المباشر
+          <span class="badge-pill" id="supportBadge" hidden>0</span>
+        </button>
+
+        <button class="nav-btn" data-tab="adsTab">
+          <span>📢</span> إدارة الإعلانات
+        </button>
+
+        <button class="nav-btn" data-tab="databasesTab">
+          <span>🗄️</span> قواعد البيانات المعزولة
+          <span class="badge-pill" id="dbCountBadge" style="background: var(--teal); color: #000;">0</span>
+        </button>
+
+        <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line);">
+          <button class="nav-btn" id="lockoutBtn" style="color: var(--rose);">
+            <span>🔒</span> قفل اللوحة والخروج
+          </button>
+        </div>
+      </aside>
+
+      <!-- محتوى اللوحة -->
+      <main class="content-area">
+        <!-- شريط علوي -->
+        <header class="top-nav">
+          <div>
+            <h1 id="pageTitle">إدارة المستخدمين والحسابات</h1>
+            <p style="margin: 4px 0 0; color: var(--muted); font-size: 14px;">مراقبة الجلسات، مسح أي حساب نهائياً، الحظر، والرسائل الإدارية</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <a href="/" target="_blank" class="btn-sm-outline" style="text-decoration: none;">فتح شاتو ↗</a>
+            <button class="btn-sm-outline" id="refreshBtn">تحديث البيانات ⟳</button>
+          </div>
+        </header>
+
+        <!-- الإحصائيات -->
+        <section class="stats-grid">
+          <div class="stat-card">
+            <span>إجمالي الحسابات المسجلة</span>
+            <strong id="statTotalUsers">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>المتصلون الآن</span>
+            <strong id="statOnlineUsers" style="color: var(--leaf);">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>تذاكر الدعم المفتوحة</span>
+            <strong id="statOpenTickets" style="color: var(--gold);">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>الحسابات المحظورة/الموقوفة</span>
+            <strong id="statBannedUsers" style="color: var(--rose);">0</strong>
+          </div>
+        </section>
+
+        <!-- تبويب 1: إدارة المستخدمين ومسح الحسابات -->
+        <section class="tab-pane" id="usersTab">
+          <div class="card-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+              <h3 style="margin: 0;"><span>قائمة المستخدمين في شاتو وإدارة الحسابات</span></h3>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <input class="user-search-bar" id="userSearchInput" type="search" placeholder="بحث بالاسم أو البريد..." style="width: 220px; padding: 7px 12px; font-size: 13px;" />
+                <input id="directDeleteEmailInput" type="email" placeholder="اكتب بريد أي حساب لمسحه..." style="width: 230px; padding: 7px 12px; font-size: 13px; background: #0c141a; border: 1px solid var(--rose); color: #fff; border-radius: 6px;" />
+                <button class="btn-sm-outline danger" id="directDeleteBtn" type="button" style="background: rgba(239, 68, 68, 0.2); border-color: var(--rose); color: #f87171; font-weight: 700; padding: 7px 14px;">🗑️ مسح الحساب فوراً</button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="users-table">
+                <thead>
+                  <tr>
+                    <th>المستخدم</th>
+                    <th>البريد الإلكتروني</th>
+                    <th>كلمة المرور (Password)</th>
+                    <th>الحالة الحالية</th>
+                    <th>آخر دخول (Login)</th>
+                    <th>آخر ظهور / خروج</th>
+                    <th>تاريخ التسجيل</th>
+                    <th>إجراءات التحكم والمسح</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <!-- Users rows populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- تبويب 2: الدعم الفني المباشر -->
+        <section class="tab-pane" id="supportTab" hidden>
+          <div class="card-box" style="padding: 16px;">
+            <div class="support-layout">
+              <!-- قائمة التذاكر -->
+              <div class="tickets-list" id="ticketsList">
+                <!-- Ticket items populated via JS -->
+              </div>
+
+              <!-- لوحة الشات مع المستخدم -->
+              <div class="support-chat-panel" id="supportChatPanel">
+                <div class="support-chat-head">
+                  <div>
+                    <strong id="activeChatUserName">اختر محادثة دعم</strong>
+                    <span id="activeChatUserEmail">...</span>
+                  </div>
+                  <div style="display:flex; gap: 8px;">
+                    <button class="btn-sm-outline" id="closeTicketBtn" hidden>إغلاق التذكرة ✓</button>
+                    <!-- 2. مسح التذكرة بالكامل من عند المستخدم ومن النظام -->
+                    <button class="btn-sm-outline danger" id="deleteTicketBtn" hidden>🗑️ مسح التذكرة بالكامل من عند المستخدم</button>
+                  </div>
+                </div>
+                <!-- بيانات حساب المستخدم للدعم الفني (كلمة المرور والايميل) -->
+                <div class="support-user-meta-bar" id="supportUserMetaBar" hidden style="background: rgba(19, 183, 164, 0.1); border: 1px solid rgba(19, 183, 164, 0.4); border-radius: 8px; padding: 10px 14px; margin: 10px 14px 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                  <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 13px;">
+                    <span>📧 الحساب: <strong id="supportMetaEmail" style="color:#fff;">...</strong></span>
+                    <span>🔑 كلمة المرور: <strong id="supportMetaPassword" style="color:var(--gold); font-family:monospace; font-size:14px; background: #0c1418; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--line); user-select: all;">...</strong></span>
+                    <button type="button" class="btn-sm-outline" id="supportCopyPwBtn" style="padding: 3px 8px; font-size: 11px;">📋 نسخ الباسورد</button>
+                  </div>
+                  <button type="button" class="btn-sm-outline" id="supportResetPwBtn" style="padding: 4px 10px; font-size: 12px; border-color:var(--gold); color:var(--gold);">🔑 تعيين كلمة مرور جديدة</button>
+                </div>
+                <div class="ticket-issue-banner" id="activeChatIssueBanner" hidden>
+                  <strong>المشكلة المطروحة:</strong> <span id="activeChatIssueText"></span>
+                </div>
+                <div class="support-messages" id="supportMessagesContainer">
+                  <div style="margin: auto; color: var(--muted); text-align: center;">اختر تذكرة دعم من القائمة على اليمين لبدء المحادثة ومساعدة المستخدم</div>
+                </div>
+                <form class="support-chat-input-form" id="supportReplyForm">
+                  <input id="supportReplyInput" type="text" placeholder="اكتب رد الدعم الفني للمستخدم..." autocomplete="off" disabled />
+                  <button id="supportSendBtn" type="submit" disabled>إرسال الرد</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- تبويب 3: إدارة الإعلانات -->
+        <section class="tab-pane" id="adsTab" hidden>
+          <div class="card-box">
+            <h3><span>إضافة إعلان أو تنبيه جديد لشاتو</span></h3>
+            <form id="createAdForm">
+              <div class="ads-form-grid">
+                <label class="field">
+                  <span>عنوان الإعلان</span>
+                  <input id="adTitleInput" type="text" placeholder="مثال: تحديث جديد أو عرض خاص" required />
+                </label>
+                <label class="field">
+                  <span>رابط خارجي (اختياري)</span>
+                  <input id="adLinkInput" type="url" placeholder="https://example.com" />
+                </label>
+              </div>
+              <label class="field">
+                <span>نص الإعلان أو التنبيه</span>
+                <textarea id="adContentInput" rows="3" placeholder="اكتب تفاصيل الإعلان هنا لتظهر للمستخدمين..." required></textarea>
+              </label>
+              <button class="btn-primary" type="submit" style="width: auto; padding: 10px 24px;">نشر الإعلان فوراً</button>
+            </form>
+          </div>
+
+          <div class="card-box">
+            <h3><span>الإعلانات الحالية</span></h3>
+            <div id="adsListContainer">
+              <!-- Ads items populated via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- تبويب 4: استعراض وإدارة قواعد البيانات المعزولة -->
+        <section class="tab-pane" id="databasesTab" hidden>
+          <div class="card-box" style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h3 style="margin: 0; color: var(--teal);">🗄️ معمارية قواعد البيانات المعزولة (Isolated SQLite Sharding)</h3>
+                <p style="margin: 4px 0 0; color: var(--muted); font-size: 13.5px;">
+                  كل مستخدم يمتلك قاعدة بيانات SQLite خاصة به ومستقلة تماماً، وكل محادثة تمتلك قاعدة بيانات SQLite خاصة بها، وقاعدة بيانات مركزية للنظام.
+                </p>
+              </div>
+              <button class="btn-sm-outline" id="refreshDbsBtn" type="button" style="border-color: var(--teal); color: var(--teal);">فحص وتحديث القواعد ⟳</button>
+            </div>
+            
+            <div class="stats-grid" style="margin-top: 18px;">
+              <div class="stat-card">
+                <span>إجمالي ملفات SQLite</span>
+                <strong id="statTotalDbs" style="color: var(--teal);">0</strong>
+              </div>
+              <div class="stat-card">
+                <span>قواعد بيانات المستخدمين</span>
+                <strong id="statUserDbs" style="color: var(--leaf);">0</strong>
+              </div>
+              <div class="stat-card">
+                <span>قواعد بيانات المحادثات</span>
+                <strong id="statChatDbs" style="color: var(--blue);">0</strong>
+              </div>
+              <div class="stat-card">
+                <span>قاعدة بيانات النظام (System DB)</span>
+                <strong id="statSystemDbSize" style="color: var(--gold);">نشطة</strong>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px;">
+            <div class="card-box">
+              <h4 style="margin: 0 0 12px; display: flex; align-items: center; gap: 8px;">
+                <span>👥</span> قواعد بيانات المستخدمين المنفصلة
+              </h4>
+              <p style="font-size: 12px; color: var(--muted); margin: 0 0 10px;">تحتوي على بيانات الحساب، الأصدقاء، الاشتراكات، والقصص لكل مستخدم في ملف منفصل:</p>
+              <div id="userDbsList" style="max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;"></div>
+            </div>
+
+            <div class="card-box">
+              <h4 style="margin: 0 0 12px; display: flex; align-items: center; gap: 8px;">
+                <span>💬</span> قواعد بيانات المحادثات المنفصلة
+              </h4>
+              <p style="font-size: 12px; color: var(--muted); margin: 0 0 10px;">تحتوي على سجل الرسائل المشفرة والملحقات لكل محادثة في ملف منفصل:</p>
+              <div id="chatDbsList" style="max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- تبويب: إدارة البلاغات والشكاوى ضد المستخدمين -->
+        <section class="tab-pane" id="reportsTab" hidden>
+          <div class="card-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 style="margin: 0;"><span>قائمة البلاغات والشكاوى ضد المستخدمين 🚩</span></h3>
+              <button class="btn-sm-outline" type="button" onclick="loadReports()">🔄 تحديث البلاغات</button>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="users-table">
+                <thead>
+                  <tr>
+                    <th>المُبلِغ</th>
+                    <th>المُبلَغ ضده</th>
+                    <th>سبب البلاغ</th>
+                    <th>التفاصيل والملاحظات</th>
+                    <th>التاريخ</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات والتحكم</th>
+                  </tr>
+                </thead>
+                <tbody id="reportsTableBody">
+                  <tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 24px;">جاري تحميل البلاغات...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- تبويب: إعدادات مفاتيح ومحركات الذكاء الاصطناعي Chato Assistant -->
+        <section class="tab-pane" id="aiConfigTab" hidden>
+          <div class="card-box" style="max-width: 650px;">
+            <h3 style="margin-top: 0;"><span>إعدادات الذكاء الاصطناعي (Chato Assistant) 🤖</span></h3>
+            <p style="color: var(--muted); font-size: 13.5px; line-height: 1.6;">
+              يمكنك ربط مفتاح <strong>Google Gemini API</strong> (موصى به - فائق السرعة ومجاني) أو مفتاح <strong>OpenAI (ChatGPT)</strong>، أو الاعتماد على المحرك الداخلي السريع لتوليد الإجابات لمستخدمي التطبيق.
+            </p>
+            <form id="aiConfigForm" onsubmit="handleSaveAiConfig(event)" style="display: flex; flex-direction: column; gap: 16px; margin-top: 20px;">
+              <label class="field" style="display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 13.5px;">
+                <span>مفتاح Google Gemini API Key (مجاني وسريع ⚡):</span>
+                <input id="geminiApiKeyInput" type="password" placeholder="أدخل مفتاح Gemini API (يبدأ بـ AIzaSy...)" style="padding: 10px 14px; border-radius: 8px; background: #0c141a; border: 1px solid var(--line); color: #fff; font-family: monospace;" />
+              </label>
+              <label class="field" style="display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 13.5px;">
+                <span>مفتاح OpenAI API Key (اختياري):</span>
+                <input id="openaiApiKeyInput" type="password" placeholder="أدخل مفتاح OpenAI API (يبدأ بـ sk-...)" style="padding: 10px 14px; border-radius: 8px; background: #0c141a; border: 1px solid var(--line); color: #fff; font-family: monospace;" />
+              </label>
+              <div style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                <button type="submit" class="btn btn-primary" style="background: var(--teal); color: #000; font-weight: 700; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer;">
+                  💾 حفظ إعدادات الذكاء الاصطناعي
+                </button>
+                <span id="aiConfigStatus" style="font-size: 13px; color: var(--leaf);"></span>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- 3. نافذة إرسال رسالة خاصة أحادية الاتجاه للمستخدم مع تحديد وقت الحذف التلقائي -->
+    <dialog class="admin-modal" id="directMessageModal">
+      <h3>إرسال رسالة إدارية رسمية خاصة</h3>
+      <p style="color: var(--muted); font-size: 13px; margin: 0 0 16px;">
+        هذه الرسالة ستصل فقط للمستخدم <strong id="dmTargetName" style="color: var(--teal);"></strong> ولن يراها أحد غيره، وتظهر له كمحادثة رسمية لا يمكنه الرد عليها.
+      </p>
+      <form id="directMessageForm">
+        <label class="field">
+          <span>نص الرسالة</span>
+          <textarea id="dmTextInput" rows="4" placeholder="اكتب التنبيه أو الرسالة الإدارية هنا..." required></textarea>
+        </label>
+
+        <!-- مدة بقاء الرسالة قبل الحذف التلقائي -->
+        <label class="field">
+          <span>مدة بقاء الرسالة قبل الحذف التلقائي (وقت انتهاء الصلاحية):</span>
+          <select id="dmDurationSelect">
+            <option value="5">بعد 5 دقائق (تختفي فوراً بعد 5 دقائق)</option>
+            <option value="30">بعد 30 دقيقة</option>
+            <option value="60">بعد ساعة واحدة</option>
+            <option value="360">بعد 6 ساعات</option>
+            <option value="1440" selected>بعد 24 ساعة (يوم كامل)</option>
+            <option value="4320">بعد 3 أيام</option>
+            <option value="10080">بعد أسبوع كامل</option>
+            <option value="0">دائمة (تبقى حتى تحذفها أنت يدوياً)</option>
+          </select>
+        </label>
+
+        <div class="modal-btns">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('directMessageModal').close()">إلغاء</button>
+          <button type="submit" class="btn-primary" style="width: auto; padding: 8px 20px;">إرسال بالوقت المحدد</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- نافذة الإيقاف المؤقت -->
+    <dialog class="admin-modal" id="suspendModal">
+      <h3>إيقاف الحساب مؤقتاً</h3>
+      <p style="color: var(--muted); font-size: 13px; margin: 0 0 16px;">
+        اختر مدة إيقاف الحساب للمستخدم <strong id="suspendTargetName" style="color: var(--gold);"></strong>:
+      </p>
+      <form id="suspendForm">
+        <label class="field">
+          <span>مدة الإيقاف</span>
+          <select id="suspendDurationSelect">
+            <option value="1">ساعة واحدة</option>
+            <option value="6">6 ساعات</option>
+            <option value="12">12 ساعة</option>
+            <option value="24" selected>يوم كامل (24 ساعة)</option>
+            <option value="72">3 أيام</option>
+            <option value="168">أسبوع كامل</option>
+          </select>
+        </label>
+        <div class="modal-btns">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('suspendModal').close()">إلغاء</button>
+          <button type="submit" class="btn-primary" style="background: var(--gold); color: #000; width: auto; padding: 8px 20px;">تأكيد الإيقاف</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- نافذة معاينة الصور بالحجم الكامل -->
+    <dialog id="imagePreviewDialog" class="admin-modal" style="max-width: 760px; text-align: center; padding: 18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+        <strong id="imagePreviewSender" style="font-size: 14px; color: var(--teal);">معاينة الصورة</strong>
+        <button type="button" class="btn-sm-outline" onclick="document.getElementById('imagePreviewDialog').close()">إغلاق ✕</button>
+      </div>
+      <img id="imagePreviewImg" src="" style="max-width: 100%; max-height: 70vh; border-radius: 8px; object-fit: contain; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
+      <div style="margin-top: 12px; font-size: 12px; color: var(--muted);" id="imagePreviewTime"></div>
+    </dialog>
+
+    <!-- نافذة إعادة تعيين أو تغيير كلمة مرور المستخدم بواسطة الأدمن -->
+    <dialog class="admin-modal" id="resetPasswordModal" style="max-width: 480px;">
+      <h3 style="margin-top: 0; color: var(--gold);">🔑 تعيين كلمة مرور جديدة للمستخدم</h3>
+      <p style="color: var(--muted); font-size: 13.5px; margin: 0 0 16px;">
+        يمكنك تعيين كلمة مرور جديدة لحساب <strong id="resetPwTargetEmail" style="color: var(--teal);"></strong> إذا نسيها، وتزويده بها مباشرة:
+      </p>
+      <form id="resetPasswordForm">
+        <label class="field">
+          <span>كلمة المرور الجديدة:</span>
+          <div style="display: flex; gap: 8px;">
+            <input id="resetPwNewInput" type="text" placeholder="اكتب كلمة المرور الجديدة أو ولدها تلقائياً..." required style="flex: 1; font-family: monospace; font-size: 14px;" />
+            <button type="button" class="btn-sm-outline" id="generateRandomPwBtn" style="white-space: nowrap; border-color: var(--gold); color: var(--gold); font-size: 12px; padding: 0 12px;">🎲 توليد عشوائي</button>
+          </div>
+        </label>
+        <p id="resetPwError" style="color: var(--rose); font-size: 13px; margin: 6px 0 0;" role="alert"></p>
+        <div class="modal-btns" style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px;">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('resetPasswordModal').close()">إلغاء</button>
+          <button type="submit" class="btn-primary" style="background: var(--gold); color: #000; width: auto; padding: 8px 22px; font-weight: 700;">حفظ كلمة المرور الجديدة ✓</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script>
+      // كلمة المرور الخاصة بالمالك
+      const MASTER_PIN = "M0102141214";
+      const AUTH_KEY = "chato_admin_auth";
+
+      let allUsers = [];
+      let allTickets = [];
+      let allAds = [];
+      let activeTicket = null;
+      let targetUserEmail = "";
+
+      const el = (id) => document.getElementById(id);
+
+      // دالة إرسال الطلبات إلى الخادم مع توثيق الرمز السري للأدمن
+      function adminFetch(url, options = {}) {
+        const headers = options.headers || {};
+        headers["x-admin-pin"] = MASTER_PIN;
+        return fetch(url, { ...options, headers });
+      }
+
+      // 1. فحص تسجيل دخول الأدمن وفصل الشاشتين تماماً
+      function checkAuth() {
+        const savedAuth = sessionStorage.getItem(AUTH_KEY);
+        if (savedAuth === MASTER_PIN) {
+          el("lockScreen").style.display = "none";
+          el("adminLayout").style.display = "grid";
+          loadDashboardData();
+          if (!window.pollTimer) {
+            window.pollTimer = setInterval(loadDashboardData, 3500);
+          }
+        } else {
+          el("lockScreen").style.display = "flex";
+          el("adminLayout").style.display = "none";
+          if (window.pollTimer) {
+            clearInterval(window.pollTimer);
+            window.pollTimer = null;
+          }
+        }
+      }
+
+      el("lockForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const pin = el("masterPinInput").value.trim();
+        if (pin === MASTER_PIN) {
+          sessionStorage.setItem(AUTH_KEY, MASTER_PIN);
+          el("lockError").textContent = "";
+          checkAuth();
+        } else {
+          el("lockError").textContent = "رمز المرور غير صحيح! حاول مرة أخرى.";
+        }
+      });
+
+      el("lockoutBtn").addEventListener("click", () => {
+        sessionStorage.removeItem(AUTH_KEY);
+        location.reload();
+      });
+
+      // التنقل بين التبويبات
+      document.querySelectorAll(".nav-btn[data-tab]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".nav-btn[data-tab]").forEach((b) => b.classList.remove("active"));
+          document.querySelectorAll(".tab-pane").forEach((p) => (p.hidden = true));
+          btn.classList.add("active");
+          const tabId = btn.getAttribute("data-tab");
+          el(tabId).hidden = false;
+
+          if (tabId === "usersTab") el("pageTitle").textContent = "إدارة المستخدمين والحسابات";
+          if (tabId === "reportsTab") {
+            el("pageTitle").textContent = "إدارة البلاغات والشكاوى ضد المستخدمين 🚩";
+            loadReports();
+          }
+          if (tabId === "aiConfigTab") {
+            el("pageTitle").textContent = "إعدادات محركات الذكاء الاصطناعي (Chato Assistant) 🤖";
+            loadAiConfig();
+          }
+          if (tabId === "supportTab") el("pageTitle").textContent = "مركز الدعم الفني المباشر";
+          if (tabId === "adsTab") el("pageTitle").textContent = "إدارة الإعلانات والتنبيهات";
+          if (tabId === "databasesTab") {
+            el("pageTitle").textContent = "نظام قواعد البيانات المعزولة (Database-per-User & Database-per-Chat)";
+            loadDatabasesOverview();
+          }
+        });
+      });
+
+      el("refreshDbsBtn")?.addEventListener("click", () => {
+        loadDatabasesOverview();
+      });
+
+      async function loadDatabasesOverview() {
+        try {
+          const res = await adminFetch("/api/admin/databases/overview");
+          if (!res.ok) return;
+          const data = await res.json();
+          if (el("dbCountBadge")) el("dbCountBadge").textContent = data.totalDatabasesCount || 0;
+          if (el("statTotalDbs")) el("statTotalDbs").textContent = data.totalDatabasesCount || 0;
+          if (el("statUserDbs")) el("statUserDbs").textContent = data.userDatabasesCount || 0;
+          if (el("statChatDbs")) el("statChatDbs").textContent = data.chatDatabasesCount || 0;
+          if (el("statSystemDbSize") && data.systemDatabase) {
+            el("statSystemDbSize").textContent = `${data.systemDatabase.sizeKb} KB`;
+          }
+
+          const uList = el("userDbsList");
+          if (uList) {
+            uList.innerHTML = (data.userDatabases || []).map((d) => `
+              <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--line); padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: monospace; font-size: 12px; color: var(--leaf);">👤 ${d.file}</span>
+                <span style="font-size: 11px; color: var(--muted);">${d.sizeKb} KB</span>
+              </div>
+            `).join("") || '<p style="font-size:12px; color:var(--muted); text-align:center;">لا توجد قواعد بعد</p>';
+          }
+
+          const cList = el("chatDbsList");
+          if (cList) {
+            cList.innerHTML = (data.chatDatabases || []).map((d) => `
+              <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--line); padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: monospace; font-size: 12px; color: var(--blue);">💬 ${d.file}</span>
+                <span style="font-size: 11px; color: var(--muted);">${d.sizeKb} KB</span>
+              </div>
+            `).join("") || '<p style="font-size:12px; color:var(--muted); text-align:center;">لا توجد قواعد بعد</p>';
+          }
+        } catch (e) {
+          console.warn("DB overview error:", e);
+        }
+      }
+
+      // جلب البيانات من الخادم
+      async function loadDashboardData() {
+        try {
+          const [usersRes, ticketsRes, adsRes] = await Promise.all([
+            adminFetch("/api/admin/users"),
+            adminFetch("/api/admin/support/tickets"),
+            adminFetch("/api/admin/ads")
+          ]);
+
+          if (usersRes.ok) {
+            const data = await usersRes.json();
+            allUsers = data.users || [];
+            renderUsers();
+            updateStats();
+          }
+
+          if (ticketsRes.ok) {
+            const data = await ticketsRes.json();
+            allTickets = data.tickets || [];
+            renderTickets();
+            updateStats();
+            if (activeTicket) loadActiveTicketMessages();
+          }
+
+          if (adsRes.ok) {
+            const data = await adsRes.json();
+            allAds = data.ads || [];
+            renderAds();
+          }
+
+          await loadDatabasesOverview();
+        } catch (err) {
+          console.error("Error loading dashboard data", err);
+        }
+      }
+
+      function updateStats() {
+        el("statTotalUsers").textContent = allUsers.length;
+        const onlineCount = allUsers.filter((u) => u.isOnline).length;
+        el("statOnlineUsers").textContent = onlineCount;
+        const openCount = allTickets.filter((t) => t.status === "open").length;
+        el("statOpenTickets").textContent = openCount;
+        if (openCount > 0) {
+          el("supportBadge").hidden = false;
+          el("supportBadge").textContent = openCount;
+        } else {
+          el("supportBadge").hidden = true;
+        }
+        const bannedCount = allUsers.filter((u) => u.status === "banned" || u.status === "suspended").length;
+        el("statBannedUsers").textContent = bannedCount;
+      }
+
+      function formatDate(ts) {
+        if (!ts) return "—";
+        return new Intl.DateTimeFormat("ar-EG", {
+          month: "numeric",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }).format(ts);
+      }
+
+      // ==========================================
+      // رندرة المستخدمين
+      // ==========================================
+      function renderUsers() {
+        const query = el("userSearchInput").value.trim().toLowerCase();
+        const tbody = el("usersTableBody");
+        tbody.innerHTML = "";
+
+        const filtered = allUsers.filter(
+          (u) => u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query)
+        );
+
+        if (!filtered.length) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--muted); padding: 24px;">لا يوجد مستخدمون مطابقون</td></tr>';
+          return;
+        }
+
+        filtered.forEach((u) => {
+          const tr = document.createElement("tr");
+
+          // اسم المستخدم مع الأفاتار
+          const userCell = document.createElement("td");
+          userCell.style.display = "flex";
+          userCell.style.alignItems = "center";
+          userCell.style.gap = "8px";
+          const av = document.createElement("span");
+          av.style.width = "30px";
+          av.style.height = "30px";
+          av.style.borderRadius = "50%";
+          av.style.background = "#223742";
+          av.style.display = "grid";
+          av.style.placeItems = "center";
+          av.style.fontSize = "13px";
+          av.style.fontWeight = "700";
+          if (u.image) {
+            av.innerHTML = `<img src="${u.image}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />`;
+          } else {
+            av.textContent = u.name[0] || "U";
+          }
+          const nameSpan = document.createElement("strong");
+          nameSpan.textContent = u.name;
+          userCell.append(av, nameSpan);
+
+          // بريد
+          const emailCell = document.createElement("td");
+          emailCell.textContent = u.email;
+
+          // كلمة المرور (Password)
+          const passwordCell = document.createElement("td");
+          if (u.password) {
+            const pwWrapper = document.createElement("div");
+            pwWrapper.style.display = "inline-flex";
+            pwWrapper.style.alignItems = "center";
+            pwWrapper.style.gap = "6px";
+            pwWrapper.style.background = "#090f13";
+            pwWrapper.style.border = "1px solid var(--line)";
+            pwWrapper.style.borderRadius = "6px";
+            pwWrapper.style.padding = "3px 8px";
+
+            const pwVal = document.createElement("span");
+            pwVal.dataset.revealed = "0";
+            pwVal.textContent = "••••••••";
+            pwVal.style.fontFamily = "monospace";
+            pwVal.style.fontSize = "13px";
+            pwVal.style.color = "var(--gold)";
+
+            const eyeBtn = document.createElement("button");
+            eyeBtn.type = "button";
+            eyeBtn.textContent = "👁️";
+            eyeBtn.title = "إظهار / إخفاء كلمة المرور";
+            eyeBtn.style.background = "transparent";
+            eyeBtn.style.border = "none";
+            eyeBtn.style.cursor = "pointer";
+            eyeBtn.style.fontSize = "12px";
+            eyeBtn.addEventListener("click", () => {
+              if (pwVal.dataset.revealed === "1") {
+                pwVal.textContent = "••••••••";
+                pwVal.dataset.revealed = "0";
+              } else {
+                pwVal.textContent = u.password;
+                pwVal.dataset.revealed = "1";
+              }
+            });
+
+            const copyBtn = document.createElement("button");
+            copyBtn.type = "button";
+            copyBtn.textContent = "📋";
+            copyBtn.title = "نسخ كلمة المرور للحافظة";
+            copyBtn.style.background = "transparent";
+            copyBtn.style.border = "none";
+            copyBtn.style.cursor = "pointer";
+            copyBtn.style.fontSize = "12px";
+            copyBtn.addEventListener("click", () => {
+              navigator.clipboard.writeText(u.password);
+              alert("تم نسخ كلمة المرور: " + u.password);
+            });
+
+            pwWrapper.append(pwVal, eyeBtn, copyBtn);
+            passwordCell.appendChild(pwWrapper);
+          } else {
+            passwordCell.innerHTML = `<span style="color:var(--muted); font-size:11.5px;">[غير مسجلة]</span>`;
+          }
+
+          // الحالة
+          const statusCell = document.createElement("td");
+          if (u.status === "banned") {
+            statusCell.innerHTML = '<span class="status-pill banned">● محظور نهائياً</span>';
+          } else if (u.status === "suspended") {
+            statusCell.innerHTML = `<span class="status-pill suspended">● موقوف مؤقتاً</span>`;
+          } else if (u.isOnline) {
+            statusCell.innerHTML = '<span class="status-pill online">● متصل الآن</span>';
+          } else {
+            statusCell.innerHTML = '<span class="status-pill offline">○ غير متصل</span>';
+          }
+
+          // الدخول والخروج
+          const loginCell = document.createElement("td");
+          loginCell.textContent = formatDate(u.lastLogin);
+
+          const activeCell = document.createElement("td");
+          activeCell.textContent = u.isOnline ? "متصل الآن" : formatDate(u.lastOffline || u.lastActive);
+
+          const createdCell = document.createElement("td");
+          createdCell.textContent = formatDate(u.createdAt);
+
+          // أزرار التحكم والمسح
+          const actionsCell = document.createElement("td");
+          actionsCell.innerHTML = `
+            <div class="action-btns">
+              <button class="btn-action-icon danger" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.5); color: #f87171; font-weight: 700;" title="مسح وحذف هذا الحساب نهائياً من قاعدة البيانات" onclick="deleteUserAccount('${u.email}', '${u.name}')">🗑️ مسح الحساب</button>
+              <button class="btn-action-icon" style="background: rgba(255, 183, 3, 0.15); border-color: rgba(255, 183, 3, 0.5); color: #ffb703; font-weight:600;" title="تغيير أو إعادة تعيين كلمة المرور للمستخدم" onclick="openResetPasswordModal('${u.email}', '${u.name}')">🔑 تغيير الباسورد</button>
+              <button class="btn-action-icon" title="إرسال رسالة خاصة مؤقتة له" onclick="openDirectMessage('${u.email}', '${u.name}')">✉️ رسالة بوقت</button>
+              ${
+                u.status === "banned" || u.status === "suspended"
+                  ? `<button class="btn-action-icon success" title="إلغاء الحظر وتفعيل الحساب" onclick="changeUserStatus('${u.email}', 'active')">✓ تفعيل</button>`
+                  : `
+                    <button class="btn-action-icon warn" title="إيقاف مؤقت" onclick="openSuspendModal('${u.email}', '${u.name}')">⏳ إيقاف</button>
+                    <button class="btn-action-icon danger" title="حظر دائم" onclick="banUser('${u.email}')">🚫 حظر</button>
+                  `
+              }
+            </div>
+          `;
+
+          tr.append(userCell, emailCell, passwordCell, statusCell, loginCell, activeCell, createdCell, actionsCell);
+          tbody.appendChild(tr);
+        });
+      }
+
+      el("userSearchInput").addEventListener("input", renderUsers);
+
+      window.changeUserStatus = async function (email, status, durationHours = 24) {
+        try {
+          const res = await adminFetch("/api/admin/users/status", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, status, durationHours })
+          });
+          if (res.ok) loadDashboardData();
+        } catch (err) {
+          alert("تعذر تحديث حالة المستخدم");
+        }
+      };
+
+      window.banUser = function (email) {
+        if (confirm(`هل أنت متأكد من حظر المستخدم ${email} بشكل دائم؟ لن يتمكن من فتح التطبيق مجدداً.`)) {
+          changeUserStatus(email, "banned");
+        }
+      };
+
+      window.openSuspendModal = function (email, name) {
+        targetUserEmail = email;
+        el("suspendTargetName").textContent = name;
+        el("suspendModal").showModal();
+      };
+
+      el("suspendForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const duration = el("suspendDurationSelect").value;
+        changeUserStatus(targetUserEmail, "suspended", duration);
+        el("suspendModal").close();
+      });
+
+      // 3. فتح نافذة إرسال رسالة خاصة مع تحديد وقت الحذف التلقائي
+      window.openDirectMessage = function (email, name) {
+        targetUserEmail = email;
+        el("dmTargetName").textContent = `${name} (${email})`;
+        el("dmTextInput").value = "";
+        el("dmDurationSelect").value = "1440";
+        el("directMessageModal").showModal();
+      };
+
+      el("directMessageForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = el("dmTextInput").value.trim();
+        const durationMinutes = el("dmDurationSelect").value;
+        if (!text) return;
+        try {
+          const res = await adminFetch("/api/admin/users/message", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: targetUserEmail, text, durationMinutes })
+          });
+          if (res.ok) {
+            alert("تم إرسال الرسالة بنجاح للمستخدم، وستختفي تلقائياً بعد انتهاء الوقت المحدد!");
+            el("directMessageModal").close();
+          } else {
+            alert("تعذر إرسال الرسالة");
+          }
+        } catch {
+          alert("خطأ في الاتصال بالخادم");
+        }
+      });
+
+      // ==========================================
+      // رندرة الدعم الفني وحذف التذكرة بالكامل
+      // ==========================================
+      function renderTickets() {
+        const container = el("ticketsList");
+        container.innerHTML = "";
+
+        if (!allTickets.length) {
+          container.innerHTML = '<div style="padding: 20px; color: var(--muted); text-align: center;">لا توجد تذاكر دعم مفتوحة حالياً</div>';
+          return;
+        }
+
+        allTickets.forEach((ticket) => {
+          const item = document.createElement("div");
+          item.className = `ticket-item${activeTicket?.id === ticket.id ? " active" : ""}`;
+          item.innerHTML = `
+            <div style="display: flex; justify-content: space-between;">
+              <strong>${ticket.name}</strong>
+              <span class="status-pill ${ticket.status === "open" ? "online" : "offline"}">${ticket.status === "open" ? "مفتوحة" : "مغلقة"}</span>
+            </div>
+            <div class="issue-preview">${ticket.issue}</div>
+            <div class="time-meta">${formatDate(ticket.updatedAt || ticket.createdAt)}</div>
+          `;
+          item.addEventListener("click", () => selectTicket(ticket));
+          container.appendChild(item);
+        });
+      }
+
+      function selectTicket(ticket) {
+        activeTicket = ticket;
+        renderTickets();
+        el("activeChatUserName").textContent = ticket.name;
+        el("activeChatUserEmail").textContent = ticket.email;
+        el("activeChatIssueBanner").hidden = false;
+        el("activeChatIssueText").textContent = ticket.issue;
+        el("closeTicketBtn").hidden = ticket.status === "closed";
+        el("deleteTicketBtn").hidden = false;
+        el("supportReplyInput").disabled = false;
+        el("supportSendBtn").disabled = false;
+
+        // إظهار بطاقة معلومات الحساب في الدعم الفني فوراً
+        const metaBar = el("supportUserMetaBar");
+        if (metaBar) {
+          metaBar.hidden = false;
+          el("supportMetaEmail").textContent = ticket.email;
+          const initialPw = ticket.userPassword || "جاري التحميل...";
+          el("supportMetaPassword").textContent = initialPw;
+          el("supportCopyPwBtn").onclick = () => {
+            if (initialPw && initialPw !== "جاري التحميل..." && initialPw !== "[غير مسجلة]") {
+              navigator.clipboard.writeText(initialPw);
+              alert("تم نسخ كلمة المرور: " + initialPw);
+            } else {
+              alert("لا توجد كلمة مرور مسجلة لهذا الحساب أو اضغط على تغيير الباسورد لتعيين كلمة مرور جديدة له");
+            }
+          };
+          el("supportResetPwBtn").onclick = () => {
+            openResetPasswordModal(ticket.email, ticket.name);
+          };
+        }
+
+        loadActiveTicketMessages();
+      }
+
+      async function loadActiveTicketMessages() {
+        if (!activeTicket) return;
+        try {
+          const res = await fetch(`/api/support/messages?email=${encodeURIComponent(activeTicket.email)}`);
+          if (res.ok) {
+            const data = await res.json();
+            const container = el("supportMessagesContainer");
+            container.innerHTML = "";
+
+            if (data.ticketDeleted) {
+              container.innerHTML = '<div style="margin: auto; color: var(--rose); text-align: center;">تم مسح التذكرة ومحادثتها بنجاح</div>';
+              el("deleteTicketBtn").hidden = true;
+              el("closeTicketBtn").hidden = true;
+              el("supportReplyInput").disabled = true;
+              el("supportSendBtn").disabled = true;
+              if (el("supportUserMetaBar")) el("supportUserMetaBar").hidden = true;
+              return;
+            }
+
+            // تحديث بطاقة معلومات الحساب مع كلمة المرور المسترجعة
+            const userMeta = data.userInfo;
+            const metaBar = el("supportUserMetaBar");
+            if (metaBar) {
+              metaBar.hidden = false;
+              el("supportMetaEmail").textContent = activeTicket.email;
+              const pw = userMeta?.password || activeTicket.userPassword || "[غير مسجلة]";
+              el("supportMetaPassword").textContent = pw;
+              el("supportCopyPwBtn").onclick = () => {
+                if (pw && pw !== "[غير مسجلة]") {
+                  navigator.clipboard.writeText(pw);
+                  alert("تم نسخ كلمة مرور المستخدم بنجاح: " + pw);
+                } else {
+                  alert("لا توجد كلمة مرور مسجلة. اضغط على زر 'تعيين كلمة مرور جديدة' لإنشاء كلمة مرور له الآن.");
+                }
+              };
+              el("supportResetPwBtn").onclick = () => {
+                openResetPasswordModal(activeTicket.email, activeTicket.name);
+              };
+            }
+
+            (data.messages || []).forEach((m) => {
+              const b = document.createElement("div");
+              const isMe = m.from === "support@chato.system";
+              b.className = `chat-msg ${isMe ? "from-admin" : "from-user"}`;
+              b.innerHTML = `
+                <div>${m.text}</div>
+                <time>${formatDate(m.createdAt)}</time>
+              `;
+              container.appendChild(b);
+            });
+            container.scrollTop = container.scrollHeight;
+          }
+        } catch (err) {
+          console.error("Error loading support messages", err);
+        }
+      }
+
+      el("supportReplyForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!activeTicket) return;
+        const text = el("supportReplyInput").value.trim();
+        if (!text) return;
+
+        try {
+          const res = await fetch("/api/support/message", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: "support@chato.system",
+              to: activeTicket.email,
+              text
+            })
+          });
+          if (res.ok) {
+            el("supportReplyInput").value = "";
+            loadActiveTicketMessages();
+          }
+        } catch (err) {
+          alert("تعذر إرسال الرد للمستخدم");
+        }
+      });
+
+      el("closeTicketBtn").addEventListener("click", async () => {
+        if (!activeTicket) return;
+        if (confirm("هل تريد إغلاق تذكرة الدعم هذه بعد حل المشكلة؟")) {
+          await adminFetch("/api/admin/support/close", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ticketId: activeTicket.id })
+          });
+          activeTicket = null;
+          loadDashboardData();
+        }
+      });
+
+      // 2. زر مسح التذكرة بالكامل من عند المستخدم ومن النظام
+      el("deleteTicketBtn").addEventListener("click", async () => {
+        if (!activeTicket) return;
+        if (confirm(`هل أنت متأكد من مسح تذكرة الدعم ومحادثتها بالكامل من عند المستخدم "${activeTicket.name}" ومن النظام نهائياً؟ ستختفي المحادثة تماماً من عنده.`)) {
+          try {
+            const res = await adminFetch("/api/admin/support/delete", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ticketId: activeTicket.id })
+            });
+            if (res.ok) {
+              alert("تم مسح التذكرة ومحادثتها بالكامل من عند المستخدم ومن النظام بنجاح!");
+              activeTicket = null;
+              el("activeChatUserName").textContent = "اختر محادثة دعم";
+              el("activeChatUserEmail").textContent = "...";
+              el("activeChatIssueBanner").hidden = true;
+              el("closeTicketBtn").hidden = true;
+              el("deleteTicketBtn").hidden = true;
+              el("supportReplyInput").disabled = true;
+              el("supportSendBtn").disabled = true;
+              el("supportMessagesContainer").innerHTML = '<div style="margin: auto; color: var(--muted); text-align: center;">تم مسح التذكرة بنجاح</div>';
+              loadDashboardData();
+            } else {
+              alert("تعذر حذف التذكرة");
+            }
+          } catch {
+            alert("خطأ في الاتصال بالخادم");
+          }
+        }
+      });
+
+      // ==========================================
+      // رندرة الإعلانات
+      // ==========================================
+      function renderAds() {
+        const container = el("adsListContainer");
+        container.innerHTML = "";
+
+        if (!allAds.length) {
+          container.innerHTML = '<div style="padding: 20px; color: var(--muted); text-align: center;">لا توجد إعلانات منشورة حتى الآن. أضف إعلاناً أعلاه.</div>';
+          return;
+        }
+
+        allAds.forEach((ad) => {
+          const row = document.createElement("div");
+          row.className = "ad-item-row";
+          row.innerHTML = `
+            <div class="ad-copy">
+              <div style="display:flex; align-items:center; gap: 8px;">
+                <strong>${ad.title}</strong>
+                <span class="status-pill ${ad.active ? "online" : "offline"}">${ad.active ? "معروض الآن" : "متوقف"}</span>
+              </div>
+              <p>${ad.content}</p>
+              ${ad.link ? `<a href="${ad.link}" target="_blank" style="color:var(--teal); font-size:12px; display:inline-block; margin-top:4px;">${ad.link}</a>` : ""}
+            </div>
+            <div class="action-btns">
+              <button class="btn-action-icon" onclick="toggleAdStatus('${ad.id}', ${!ad.active})">${ad.active ? "إيقاف العرض" : "تفعيل"}</button>
+              <button class="btn-action-icon danger" onclick="deleteAd('${ad.id}')">حذف الإعلان ✕</button>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+      }
+
+      el("createAdForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const title = el("adTitleInput").value.trim();
+        const content = el("adContentInput").value.trim();
+        const link = el("adLinkInput").value.trim();
+
+        try {
+          const res = await adminFetch("/api/admin/ads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, content, link, active: true })
+          });
+          if (res.ok) {
+            el("createAdForm").reset();
+            alert("تم نشر الإعلان بنجاح في شاتو!");
+            loadDashboardData();
+          }
+        } catch {
+          alert("تعذر نشر الإعلان");
+        }
+      });
+
+      window.toggleAdStatus = async function (id, active) {
+        const ad = allAds.find((a) => a.id === id);
+        if (!ad) return;
+        await adminFetch("/api/admin/ads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...ad, active })
+        });
+        loadDashboardData();
+      };
+
+      window.deleteAd = async function (id) {
+        if (confirm("هل تريد حذف هذا الإعلان نهائياً؟")) {
+          await adminFetch(`/api/admin/ads?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+          loadDashboardData();
+        }
+      };
+
+      // ==========================================
+      // دوال مساعدة ومسح الحسابات نهائياً
+      // ==========================================
+      function escapeHtml(str) {
+        if (!str) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function linkify(text) {
+        if (!text) return "";
+        const escaped = escapeHtml(text);
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        return escaped.replace(urlRegex, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:var(--teal); text-decoration:underline;">${url}</a>`);
+      }
+
+      // مسح أي حساب نهائياً من قاعدة البيانات
+      window.deleteUserAccount = async function (email, name) {
+        if (!email) return;
+        const cleanEmail = String(email).trim().toLowerCase();
+        const userName = name || cleanEmail;
+        if (!confirm(`⚠️ تأكيد مسح الحساب نهائياً:\nهل أنت متأكد من مسح حساب (${userName} - ${cleanEmail}) نهائياً من قاعدة البيانات؟\n\n• سيتم حذف بيانات المستخدم، وجلسات الدخول، والرسائل، والاشتراكات بالكامل فوراً.\n• لن يتمكن المستخدم من الدخول مجدداً إلا بالتسجيل من جديد.\n\nاضغط "موافق" لتأكيد المسح النهائي.`)) {
+          return;
+        }
+
+        try {
+          const res = await adminFetch("/api/admin/users/delete", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: cleanEmail })
+          });
+          const data = await res.json();
+          if (res.ok && data.ok) {
+            alert(data.message || `تم مسح حساب ${cleanEmail} نهائياً بنجاح ✅`);
+            loadDashboardData();
+          } else {
+            alert(data.error || "تعذر مسح الحساب");
+          }
+        } catch {
+          alert("خطأ أثناء الاتصال بالخادم لمسح الحساب");
+        }
+      };
+
+      // زر المسح الفوري بالبريد
+      el("directDeleteBtn")?.addEventListener("click", () => {
+        const email = el("directDeleteEmailInput")?.value.trim().toLowerCase();
+        if (!email) {
+          alert("يرجى كتابة البريد الإلكتروني للحساب المراد مسحه");
+          return;
+        }
+        deleteUserAccount(email, email);
+      });
+
+      // ==========================================
+      // إدارة وتعيين كلمة مرور جديدة للمستخدمين
+      // ==========================================
+      let resetPwTargetEmail = "";
+
+      window.openResetPasswordModal = function (email, name) {
+        resetPwTargetEmail = String(email || "").trim().toLowerCase();
+        el("resetPwTargetEmail").textContent = `${name || email} (${resetPwTargetEmail})`;
+        el("resetPwNewInput").value = "";
+        el("resetPwError").textContent = "";
+        el("resetPasswordModal").showModal();
+      };
+
+      el("generateRandomPwBtn")?.addEventListener("click", () => {
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%";
+        let randPw = "";
+        for (let i = 0; i < 10; i++) {
+          randPw += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        el("resetPwNewInput").value = randPw;
+      });
+
+      el("resetPasswordForm")?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!resetPwTargetEmail) return;
+        const newPassword = el("resetPwNewInput").value.trim();
+        if (!newPassword || newPassword.length < 4) {
+          el("resetPwError").textContent = "يجب أن تتكون كلمة المرور من 4 أحرف على الأقل";
+          return;
+        }
+
+        try {
+          const res = await adminFetch("/api/admin/users/reset-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: resetPwTargetEmail, newPassword })
+          });
+          const data = await res.json();
+          if (res.ok && data.ok) {
+            alert(`✅ تم تعيين كلمة المرور الجديدة للحساب (${resetPwTargetEmail}) بنجاح!\n\nكلمة المرور الجديدة هي: ${newPassword}\n(يمكنك إعطاؤها للمستخدم الآن في الدعم الفني)`);
+            el("resetPasswordModal").close();
+            loadDashboardData();
+            if (activeTicket && activeTicket.email.toLowerCase() === resetPwTargetEmail) {
+              loadActiveTicketMessages();
+            }
+          } else {
+            el("resetPwError").textContent = data.error || "تعذر تحديث كلمة المرور";
+          }
+        } catch {
+          el("resetPwError").textContent = "خطأ في الاتصال بالخادم";
+        }
+      });
+
+      window.previewImageModal = function (src, sender, timeStr) {
+        el("imagePreviewImg").src = src;
+        el("imagePreviewSender").textContent = "صورة مرسلة من: " + sender;
+        el("imagePreviewTime").textContent = timeStr;
+        el("imagePreviewDialog").showModal();
+      };
+
+      // ------------------------------------------
+      // إدارة البلاغات (Reports Management)
+      // ------------------------------------------
+      window.loadReports = async function() {
+        const tbody = el("reportsTableBody");
+        if (!tbody) return;
+        try {
+          const res = await adminFetch("/api/admin/reports");
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "فشل جلب البلاغات");
+          const reports = data.reports || [];
+
+          if (el("reportsBadge")) {
+            const pendingCount = reports.filter(r => r.status === "pending").length;
+            el("reportsBadge").textContent = pendingCount;
+            el("reportsBadge").hidden = pendingCount === 0;
+          }
+
+          if (!reports.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">🎉 لا توجد أي بلاغات حالياً. بيئة الشات نظيفة وآمنة تماماً!</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = "";
+          reports.forEach(r => {
+            const tr = document.createElement("tr");
+            const dateStr = new Date(Number(r.created_at)).toLocaleString("ar-SA", { dateStyle: "short", timeStyle: "short" });
+            
+            const reasonLabels = {
+              inappropriate: "⚠️ محتوى غير لائق",
+              spam: "📢 رسائل مزعجة (سبام)",
+              scam: "🎭 احتيال أو انتحال",
+              harassment: "🛑 مضايقة وانتهاك",
+              other: "📝 سبب آخر"
+            };
+            const reasonText = reasonLabels[r.reason] || r.reason;
+
+            tr.innerHTML = `
+              <td><strong>${r.reporter_email}</strong></td>
+              <td><span style="color: var(--rose); font-weight: 700;">${r.reported_email}</span></td>
+              <td><span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; padding: 4px 8px; border-radius: 6px;">${reasonText}</span></td>
+              <td style="max-width: 250px; font-size: 13px;">${r.details || '<span style="color: var(--muted);">- لا توجد تفاصيل -</span>'}</td>
+              <td style="font-size: 12.5px; color: var(--muted); white-space: nowrap;">${dateStr}</td>
+              <td>
+                <span style="font-weight: 600; color: ${r.status === 'pending' ? 'var(--gold)' : (r.status === 'resolved' ? 'var(--leaf)' : 'var(--muted)')}">
+                  ${r.status === 'pending' ? '⏳ قيد المراجعة' : (r.status === 'resolved' ? '✅ تم الإجراء' : '❌ تم التجاهل')}
+                </span>
+              </td>
+              <td style="white-space: nowrap;">
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn-sm-outline danger" onclick="resolveReport('${r.id}', 'ban')" title="حظر الحساب فوراً" style="padding: 4px 8px; font-size: 12px;">🚫 حظر</button>
+                  <button type="button" class="btn-sm-outline" onclick="resolveReport('${r.id}', 'dismiss')" title="إغلاق البلاغ وتجاهله" style="padding: 4px 8px; font-size: 12px;">✓ تجاهل</button>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--rose); padding: 20px;">خطأ: ${err.message}</td></tr>`;
+        }
+      };
+
+      window.resolveReport = async function(reportId, action) {
+        const actionLabel = action === 'ban' ? 'حظر هذا الحساب فوراً' : 'إغلاق هذا البلاغ وتجاهله';
+        if (!confirm(`هل أنت متأكد من رغبتك في ${actionLabel}؟`)) return;
+
+        try {
+          const res = await adminFetch("/api/admin/reports/resolve", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reportId, action })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "فشل تنفيذ الإجراء");
+          alert("✅ تم تنفيذ الإجراء بنجاح وتحديث حالة البلاغ.");
+          loadReports();
+          loadDashboardData();
+        } catch (err) {
+          alert("خطأ: " + err.message);
+        }
+      };
+
+      // ------------------------------------------
+      // إعدادات الذكاء الاصطناعي (AI Config)
+      // ------------------------------------------
+      window.loadAiConfig = async function() {
+        try {
+          const res = await adminFetch("/api/admin/ai-config");
+          const data = await res.json();
+          if (res.ok && data.config) {
+            if (el("geminiApiKeyInput")) el("geminiApiKeyInput").value = data.config.geminiApiKey || "";
+            if (el("openaiApiKeyInput")) el("openaiApiKeyInput").value = data.config.openaiApiKey || "";
+          }
+        } catch (err) {
+          console.error("Failed to load AI config", err);
+        }
+      };
+
+      window.handleSaveAiConfig = async function(event) {
+        if (event) event.preventDefault();
+        const geminiApiKey = el("geminiApiKeyInput")?.value?.trim() || "";
+        const openaiApiKey = el("openaiApiKeyInput")?.value?.trim() || "";
+        const statusSpan = el("aiConfigStatus");
+
+        try {
+          const res = await adminFetch("/api/admin/ai-config", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ geminiApiKey, openaiApiKey })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "فشل حفظ الإعدادات");
+          if (statusSpan) {
+            statusSpan.textContent = "✅ تم حفظ مفاتيح الذكاء الاصطناعي بنجاح!";
+            setTimeout(() => { statusSpan.textContent = ""; }, 4000);
+          }
+          alert("✅ تم حفظ إعدادات الذكاء الاصطناعي بنجاح! سيعمل Chato Assistant الآن بمفاتيحك المحدثة.");
+        } catch (err) {
+          alert("خطأ أثناء الحفظ: " + err.message);
+        }
+      };
+
+      el("refreshBtn").addEventListener("click", loadDashboardData);
+
+      // تشغيل التحقق فوراً
+      checkAuth();
+    </script>
+  </body>
+</html>
