@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.chato.messenger",
+        "sha256_cert_fingerprints": ["5B:58:06:FA:EB:DB:0A:3E:08:75:BC:6D:4C:E8:40:2F:A3:68:6F:77:78:A4:51:11:66:9F:EC:9E:01:98:E9:87"]
+      }
+    }]
