@@ -111,6 +111,37 @@
       "status": "sent",
       "read": false,
       "createdAt": 1793718209261
+    },
+    {
+      "id": "952e4100-9bbb-4c6f-8305-13a543fad043",
+      "chat_id": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "type": "sticker",
+      "text": "",
+      "is_encrypted": false,
+      "encryption_iv": null,
+      "encryption_auth_tag": null,
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": {
+        "url": "/stickers/laugh_cry.svg",
+        "sticker_url": "/stickers/laugh_cry.svg",
+        "emoji": "😂",
+        "id": "stk_laugh"
+      },
+      "sticker_url": "/stickers/laugh_cry.svg",
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1793718267891
     }
   ],
   "aiUsage": [],
@@ -174,8 +205,8 @@
       "direct_pair": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1793718209261,
-      "last_message_content": ".",
+      "last_message_at": 1793718267891,
+      "last_message_content": "ملصق متحرك",
       "created_at": 1793717825559
     }
   ],
