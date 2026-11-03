@@ -61,6 +61,56 @@
       "status": "sent",
       "read": false,
       "createdAt": 1793717825560
+    },
+    {
+      "id": "5a6cf11c-ffab-4fd3-9125-720ad7335ad9",
+      "chat_id": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "202.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "b2",
+      "is_encrypted": true,
+      "encryption_iv": "60c5c7035f463f242c668d48",
+      "encryption_auth_tag": "a06215d9bbe999e957d84cf893746d61",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1793718208630
+    },
+    {
+      "id": "66fae3d9-8ce4-454f-a78e-3399f1959d2d",
+      "chat_id": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "202.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "63",
+      "is_encrypted": true,
+      "encryption_iv": "a1c28eb5124c380ceccdbd7f",
+      "encryption_auth_tag": "4552482843401e78be7482a4bd1ede7c",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1793718209261
     }
   ],
   "aiUsage": [],
@@ -124,8 +174,8 @@
       "direct_pair": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1793717916808,
-      "last_message_content": "انت يابني",
+      "last_message_at": 1793718209261,
+      "last_message_content": ".",
       "created_at": 1793717825559
     }
   ],
@@ -345,5 +395,6 @@
       "width": 256,
       "height": 256
     }
-  ]
+  ],
+  "groups": []
 }
