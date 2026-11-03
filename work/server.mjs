@@ -3975,7 +3975,7 @@ async function handleApi(req, res, url) {
       const isOnline = Boolean(u.lastActive && now - u.lastActive < 65000 && (!u.lastOffline || u.lastActive > u.lastOffline));
       return {
         id: u.id,
-        name: u.name,
+        name: u.name || u.displayName || u.username || (u.email ? u.email.split("@")[0] : "مستخدم"),
         email: u.email,
         password: u.password || "",
         pin: u.pin || "",
