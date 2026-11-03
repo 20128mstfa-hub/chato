@@ -8,7 +8,210 @@
       "createdAt": 1793714782069
     }
   ],
+  "friendships": [],
+  "friendRequests": [],
   "messages": [],
+  "aiUsage": [],
+  "ads": [],
+  "supportTickets": [],
+  "userDevices": [],
+  "pushSubscriptions": [],
+  "emailVerifications": [],
   "chats": [],
-  "friendships": []
+  "chatParticipants": [],
+  "chatSettings": [],
+  "userSubscriptions": [],
+  "userStories": [],
+  "storyViews": [],
+  "pinnedMessages": [],
+  "exclusiveEmojis": [
+    {
+      "id": "vip_crown",
+      "code": ":vip_crown:",
+      "title": "التاج الذهبي الملكي",
+      "symbol": "👑✨",
+      "rarity": "legendary",
+      "is_plus_only": true
+    },
+    {
+      "id": "fire_heart",
+      "code": ":fire_heart:",
+      "title": "قلب مشتعل ناري",
+      "symbol": "❤️‍🔥",
+      "rarity": "epic",
+      "is_plus_only": true
+    },
+    {
+      "id": "sparkle_diamond",
+      "code": ":sparkle_diamond:",
+      "title": "جوهرة نادرة براقة",
+      "symbol": "💎✨",
+      "rarity": "legendary",
+      "is_plus_only": true
+    },
+    {
+      "id": "rocket_boost",
+      "code": ":rocket_boost:",
+      "title": "صاروخ نفاث فائق",
+      "symbol": "🚀⚡",
+      "rarity": "epic",
+      "is_plus_only": true
+    },
+    {
+      "id": "magic_wand",
+      "code": ":magic_wand:",
+      "title": "عصا السحر الخارقة",
+      "symbol": "🪄✨",
+      "rarity": "rare",
+      "is_plus_only": true
+    },
+    {
+      "id": "star_eyes",
+      "code": ":star_eyes:",
+      "title": "عيون نجوم متلألئة",
+      "symbol": "🤩⭐",
+      "rarity": "rare",
+      "is_plus_only": true
+    },
+    {
+      "id": "golden_cup",
+      "code": ":golden_cup:",
+      "title": "كأس البطولة الذهبية",
+      "symbol": "🏆🌟",
+      "rarity": "epic",
+      "is_plus_only": true
+    },
+    {
+      "id": "galaxy_spin",
+      "code": ":galaxy_spin:",
+      "title": "مجرة دوارة متوهجة",
+      "symbol": "🌌✨",
+      "rarity": "legendary",
+      "is_plus_only": true
+    },
+    {
+      "id": "dragon_fire",
+      "code": ":dragon_fire:",
+      "title": "تنين ناري أسطوري",
+      "symbol": "🐉🔥",
+      "rarity": "legendary",
+      "is_plus_only": true
+    },
+    {
+      "id": "rich_cash",
+      "code": ":rich_cash:",
+      "title": "أموال طائرة وثراء",
+      "symbol": "💸✨",
+      "rarity": "rare",
+      "is_plus_only": true
+    },
+    {
+      "id": "party_popper",
+      "code": ":party_vip:",
+      "title": "مفرقعة احتفال ملكي",
+      "symbol": "🎉🎊",
+      "rarity": "rare",
+      "is_plus_only": true
+    },
+    {
+      "id": "lightning_bolt",
+      "code": ":lightning_power:",
+      "title": "برق الطاقة القصوى",
+      "symbol": "⚡🔥",
+      "rarity": "rare",
+      "is_plus_only": true
+    }
+  ],
+  "stickerPacks": [
+    {
+      "id": "pack_chato_animated",
+      "title": "ملصقات شاتو المتحركة 🌟",
+      "thumbnail_url": "/stickers/heart_beat.svg",
+      "is_animated": true,
+      "is_plus_only": false,
+      "created_at": 1730000000000
+    },
+    {
+      "id": "pack_chato_vip",
+      "title": "باقة VIP الذهبية 👑",
+      "thumbnail_url": "/stickers/vip_crown_glow.svg",
+      "is_animated": true,
+      "is_plus_only": true,
+      "created_at": 1730000000000
+    }
+  ],
+  "animatedStickers": [
+    {
+      "id": "stk_heart",
+      "pack_id": "pack_chato_animated",
+      "sticker_url": "/stickers/heart_beat.svg",
+      "emoji_tag": "❤️",
+      "title": "قلب نابض",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "stk_laugh",
+      "pack_id": "pack_chato_animated",
+      "sticker_url": "/stickers/laugh_cry.svg",
+      "emoji_tag": "😂",
+      "title": "ضحك هستيري",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "stk_fire",
+      "pack_id": "pack_chato_animated",
+      "sticker_url": "/stickers/fire_blaze.svg",
+      "emoji_tag": "🔥",
+      "title": "نار مشتعلة",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "stk_party",
+      "pack_id": "pack_chato_animated",
+      "sticker_url": "/stickers/party_popper.svg",
+      "emoji_tag": "🎉",
+      "title": "احتفال وفرح",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "stk_thumbs",
+      "pack_id": "pack_chato_animated",
+      "sticker_url": "/stickers/thumbs_up_star.svg",
+      "emoji_tag": "👍",
+      "title": "إعجاب متلألئ",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "stk_rocket",
+      "pack_id": "pack_chato_animated",
+      "sticker_url": "/stickers/rocket_blast.svg",
+      "emoji_tag": "🚀",
+      "title": "انطلاق صاروخي",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "stk_star",
+      "pack_id": "pack_chato_animated",
+      "sticker_url": "/stickers/magic_star.svg",
+      "emoji_tag": "✨",
+      "title": "نجمة متوهجة",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "id": "stk_crown",
+      "pack_id": "pack_chato_vip",
+      "sticker_url": "/stickers/vip_crown_glow.svg",
+      "emoji_tag": "👑",
+      "title": "تاج الملوك VIP",
+      "width": 256,
+      "height": 256
+    }
+  ]
 }
