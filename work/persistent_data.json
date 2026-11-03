@@ -1,15 +1,6 @@
 {
   "users": [
     {
-      "id": "usr_root_mstfa",
-      "username": "mostafa",
-      "displayName": "مصطفى",
-      "email": "2012.8.mstfa@gmail.com",
-      "createdAt": 1793714782069,
-      "lastActive": 1793716922878,
-      "lastOffline": 1793716919856
-    },
-    {
       "id": "fca346d0-6722-4fc5-a07d-0e33c5c1955d",
       "name": "Mustafa Am",
       "email": "2012..mstfa@gmail.com",
@@ -20,41 +11,14 @@
       "createdAt": 1793716720421,
       "lastLogin": 1793716799613,
       "lastActive": 1793716815646
-    },
-    {
-      "id": "e049d712-6bff-468d-b7b8-f36ef7da26a2",
-      "name": "92012..mstfa",
-      "email": "92012..mstfa@gmail.com",
-      "createdAt": 1793716992258,
-      "lastActive": 1793717000881
     }
   ],
-  "friendships": [
-    {
-      "id": "08a1058e-7115-4b04-852a-b1c6bde65598",
-      "from": "92012..mstfa@gmail.com",
-      "to": "2012.8.mstfa@gmail.com",
-      "status": "accepted",
-      "createdAt": 1793717001655
-    }
-  ],
+  "friendships": [],
   "friendRequests": [],
   "messages": [],
   "aiUsage": [
     {
-      "email": "2012.8.mstfa@gmail.com",
-      "day": "2026-11-03",
-      "words": 1,
-      "images": 0
-    },
-    {
       "email": "2012..mstfa@gmail.com",
-      "day": "2026-11-03",
-      "words": 0,
-      "images": 0
-    },
-    {
-      "email": "92012..mstfa@gmail.com",
       "day": "2026-11-03",
       "words": 0,
       "images": 0
@@ -101,26 +65,6 @@
   "chatParticipants": [],
   "chatSettings": [],
   "userSubscriptions": [
-    {
-      "id": "57940c4b-4458-47a6-ad3e-c7d907c2c800",
-      "user_id": "usr_root_mstfa",
-      "email": "2012.8.mstfa@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1793716661142,
-      "next_quota_reset_at": 1793803061142,
-      "started_at": 1793716661142,
-      "expires_at": 1798900661142,
-      "auto_renew": true,
-      "created_at": 1793716661142,
-      "updated_at": 1793716661142
-    },
     {
       "id": "c4d299d5-8f5e-40f0-a4d4-3c876c843105",
       "user_id": "fca346d0-6722-4fc5-a07d-0e33c5c1955d",
