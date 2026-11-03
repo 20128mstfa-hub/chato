@@ -26,9 +26,43 @@
       "lastActive": 1793717813987
     }
   ],
-  "friendships": [],
+  "friendships": [
+    {
+      "id": "1fa5e1e3-6c42-40c1-a9ec-ba8d41f786be",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "status": "accepted",
+      "createdAt": 1793717821728
+    }
+  ],
   "friendRequests": [],
-  "messages": [],
+  "messages": [
+    {
+      "id": "c96934d4-6961-4815-b097-1b5435d5d0fb",
+      "chat_id": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "1baa87c79615",
+      "is_encrypted": true,
+      "encryption_iv": "b9807f6458a55370394b51ca",
+      "encryption_auth_tag": "e967f2e442ce368748924bac6ef0d04e",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1793717825560
+    }
+  ],
   "aiUsage": [],
   "ads": [],
   "supportTickets": [],
@@ -84,7 +118,17 @@
     }
   ],
   "emailVerifications": [],
-  "chats": [],
+  "chats": [
+    {
+      "id": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
+      "direct_pair": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1793717825559,
+      "last_message_content": "هلا",
+      "created_at": 1793717825559
+    }
+  ],
   "chatParticipants": [],
   "chatSettings": [],
   "userSubscriptions": [
@@ -301,5 +345,6 @@
       "width": 256,
       "height": 256
     }
-  ]
+  ],
+  "groups": []
 }
