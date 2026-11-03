@@ -1322,9 +1322,11 @@
         const tbody = el("usersTableBody");
         tbody.innerHTML = "";
 
-        const filtered = allUsers.filter(
-          (u) => u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query)
-        );
+        const filtered = allUsers.filter((u) => {
+          const uName = String(u.name || u.displayName || u.username || "").toLowerCase();
+          const uEmail = String(u.email || "").toLowerCase();
+          return uName.includes(query) || uEmail.includes(query);
+        });
 
         if (!filtered.length) {
           tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--muted); padding: 24px;">لا يوجد مستخدمون مطابقون</td></tr>';
@@ -1348,13 +1350,14 @@
           av.style.placeItems = "center";
           av.style.fontSize = "13px";
           av.style.fontWeight = "700";
+          const displayName = u.name || u.displayName || u.username || (u.email ? u.email.split("@")[0] : "مستخدم");
           if (u.image) {
             av.innerHTML = `<img src="${u.image}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />`;
           } else {
-            av.textContent = u.name[0] || "U";
+            av.textContent = (displayName[0] || "U").toUpperCase();
           }
           const nameSpan = document.createElement("strong");
-          nameSpan.textContent = u.name;
+          nameSpan.textContent = displayName;
           userCell.append(av, nameSpan);
 
           // بريد
