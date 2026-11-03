@@ -6,7 +6,20 @@
       "displayName": "مصطفى",
       "email": "2012.8.mstfa@gmail.com",
       "createdAt": 1793714782069,
-      "lastActive": 1793716662547
+      "lastActive": 1793716922878,
+      "lastOffline": 1793716919856
+    },
+    {
+      "id": "fca346d0-6722-4fc5-a07d-0e33c5c1955d",
+      "name": "Mustafa Am",
+      "email": "2012..mstfa@gmail.com",
+      "password_hash": "scrypt:42b7ecd60170df3ce736bff5d6bd4ee6:f7cc40772a364bf809e159b37c6455bc5f948c2a1a01e81d8b3ce06f6b0a5b5310d71536be0927b61423d3c950781aeb95eb0ab77f91eb38dd4ae98f35d1eaeb",
+      "password": "Xen34yH2tBkTnzp",
+      "image": "",
+      "status": "active",
+      "createdAt": 1793716720421,
+      "lastLogin": 1793716799613,
+      "lastActive": 1793716815646
     }
   ],
   "friendships": [],
@@ -18,12 +31,50 @@
       "day": "2026-11-03",
       "words": 1,
       "images": 0
+    },
+    {
+      "email": "2012..mstfa@gmail.com",
+      "day": "2026-11-03",
+      "words": 0,
+      "images": 0
     }
   ],
   "ads": [],
   "supportTickets": [],
-  "userDevices": [],
-  "pushSubscriptions": [],
+  "userDevices": [
+    {
+      "id": "f649f3cf-ac3c-4927-a9e1-1468f09d2944",
+      "user_id": "fca346d0-6722-4fc5-a07d-0e33c5c1955d",
+      "email": "2012..mstfa@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "access_token_hash": "0c137072ab7b69a85a4f277ba2162afd85e0dcc8faa45214822f936a78230887",
+      "refresh_token_hash": "a92a45ee267af4c271f5b969e9340c3408a540b675cd475ca82e7694da031164",
+      "expires_at": 1798900799613,
+      "last_active_at": 1793716799955,
+      "created_at": 1793716720422,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
+    },
+    {
+      "id": "910edf3a-87d3-43ea-bbce-575c43db3d67",
+      "email": "2012.8.mstfa@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
+      "created_at": 1793716793610,
+      "last_active_at": 1793716922825
+    }
+  ],
+  "pushSubscriptions": [
+    {
+      "id": "7a9913de-d23e-41ce-9e7a-57e626e0e366",
+      "user_email": "2012.8.mstfa@gmail.com",
+      "endpoint": "https://fcm.googleapis.com/fcm/send/c7mpE5878FE:APA91bH7Hu0j1LG0BOPCONAM30DFjBBkdvB02Qb13xXbaFacz8ho6m3iiYp2FdjQGwlSzGdEmSLSq1qw2u3szyUgOQdVroo97IlDYHxuj6_3Wir83BnER--tERQiRqVFFFO6k5UsVVZU",
+      "p256dh": "BGVxXiX5lnv7knAMCT9Lc_x_D1aNgDN55Mj5QMYHDMpLADReQKyBUE7EV4UCsjLQshcizqDNhYb7VY4-Lqit_O0",
+      "auth": "RWpUQi0TMLUOh7PNkbcfTg",
+      "created_at": 1793716816321
+    }
+  ],
   "emailVerifications": [],
   "chats": [],
   "chatParticipants": [],
@@ -48,6 +99,26 @@
       "auto_renew": true,
       "created_at": 1793716661142,
       "updated_at": 1793716661142
+    },
+    {
+      "id": "c4d299d5-8f5e-40f0-a4d4-3c876c843105",
+      "user_id": "fca346d0-6722-4fc5-a07d-0e33c5c1955d",
+      "email": "2012..mstfa@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1793716758036,
+      "next_quota_reset_at": 1793803158036,
+      "started_at": 1793716758036,
+      "expires_at": 1798900758036,
+      "auto_renew": true,
+      "created_at": 1793716758036,
+      "updated_at": 1793716758036
     }
   ],
   "userStories": [],
