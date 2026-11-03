@@ -23,7 +23,9 @@
       "status": "active",
       "createdAt": 1793717813987,
       "lastLogin": 1793717813987,
-      "lastActive": 1793717813987
+      "lastActive": 1793717813987,
+      "chatPlusUntil": 1798902282457,
+      "isChatPlus": true
     }
   ],
   "friendships": [
@@ -83,8 +85,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1793718208630
     },
     {
@@ -108,8 +110,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1793718209261
     },
     {
@@ -232,6 +234,39 @@
       "auto_renew": true,
       "created_at": 1793717119208,
       "updated_at": 1793717119208
+    },
+    {
+      "id": "a7881311-5614-43d2-86e1-f144c1c82529",
+      "user_id": "ca5488e2-8716-4c84-a915-7f592ae134bc",
+      "email": "202.8.mstfa@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1793718277028,
+      "next_quota_reset_at": 1793804677028,
+      "started_at": 1793718277028,
+      "expires_at": 1798902277028,
+      "auto_renew": true,
+      "created_at": 1793718277028,
+      "updated_at": 1793718277028
+    },
+    {
+      "id": "88781343-0b60-4867-9e34-ce4c2e76dbee",
+      "user_id": "ca5488e2-8716-4c84-a915-7f592ae134bc",
+      "email": "202.8.mstfa@gmail.com",
+      "created_at": 1793718282457,
+      "plan_code": "chato_plus",
+      "plan_title": "شاتو بلاس",
+      "is_active": true,
+      "started_at": 1793718282457,
+      "expires_at": 1798902282457,
+      "auto_renew": true,
+      "updated_at": 1793718282457
     }
   ],
   "userStories": [],
@@ -426,6 +461,5 @@
       "width": 256,
       "height": 256
     }
-  ],
-  "groups": []
+  ]
 }
