@@ -61,31 +61,6 @@
       "status": "sent",
       "read": false,
       "createdAt": 1793717825560
-    },
-    {
-      "id": "48ffb6af-9511-4315-bbd6-32929884a171",
-      "chat_id": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
-      "from": "202.8.mstfa@gmail.com",
-      "to": "2012.8.mstfa@gmail.com",
-      "type": "text",
-      "text": "4bb44f08fdc8df17e90d5a8f0a45d350f0",
-      "is_encrypted": true,
-      "encryption_iv": "8501a111fcc65687fed53643",
-      "encryption_auth_tag": "1e07d60ca33b514355d8b0e068552c34",
-      "sender_public_key": null,
-      "expires_at": null,
-      "expiresAt": null,
-      "imageUrl": "",
-      "fileName": "",
-      "audioUrl": "",
-      "location": null,
-      "poll": null,
-      "sticker": null,
-      "document": null,
-      "reply_to": null,
-      "status": "sent",
-      "read": false,
-      "createdAt": 1793717916809
     }
   ],
   "aiUsage": [],
@@ -370,6 +345,5 @@
       "width": 256,
       "height": 256
     }
-  ],
-  "groups": []
+  ]
 }
