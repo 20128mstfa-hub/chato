@@ -5,13 +5,21 @@
       "username": "mostafa",
       "displayName": "مصطفى",
       "email": "2012.8.mstfa@gmail.com",
-      "createdAt": 1793714782069
+      "createdAt": 1793714782069,
+      "lastActive": 1793716662547
     }
   ],
   "friendships": [],
   "friendRequests": [],
   "messages": [],
-  "aiUsage": [],
+  "aiUsage": [
+    {
+      "email": "2012.8.mstfa@gmail.com",
+      "day": "2026-11-03",
+      "words": 1,
+      "images": 0
+    }
+  ],
   "ads": [],
   "supportTickets": [],
   "userDevices": [],
@@ -20,7 +28,28 @@
   "chats": [],
   "chatParticipants": [],
   "chatSettings": [],
-  "userSubscriptions": [],
+  "userSubscriptions": [
+    {
+      "id": "57940c4b-4458-47a6-ad3e-c7d907c2c800",
+      "user_id": "usr_root_mstfa",
+      "email": "2012.8.mstfa@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1793716661142,
+      "next_quota_reset_at": 1793803061142,
+      "started_at": 1793716661142,
+      "expires_at": 1798900661142,
+      "auto_renew": true,
+      "created_at": 1793716661142,
+      "updated_at": 1793716661142
+    }
+  ],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
