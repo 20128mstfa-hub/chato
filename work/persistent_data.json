@@ -1,29 +1,9 @@
 {
-  "users": [
-    {
-      "id": "fca346d0-6722-4fc5-a07d-0e33c5c1955d",
-      "name": "Mustafa Am",
-      "email": "2012..mstfa@gmail.com",
-      "password_hash": "scrypt:42b7ecd60170df3ce736bff5d6bd4ee6:f7cc40772a364bf809e159b37c6455bc5f948c2a1a01e81d8b3ce06f6b0a5b5310d71536be0927b61423d3c950781aeb95eb0ab77f91eb38dd4ae98f35d1eaeb",
-      "password": "Xen34yH2tBkTnzp",
-      "image": "",
-      "status": "active",
-      "createdAt": 1793716720421,
-      "lastLogin": 1793716799613,
-      "lastActive": 1793716815646
-    }
-  ],
+  "users": [],
   "friendships": [],
   "friendRequests": [],
   "messages": [],
-  "aiUsage": [
-    {
-      "email": "2012..mstfa@gmail.com",
-      "day": "2026-11-03",
-      "words": 0,
-      "images": 0
-    }
-  ],
+  "aiUsage": [],
   "ads": [],
   "supportTickets": [],
   "userDevices": [
@@ -64,28 +44,7 @@
   "chats": [],
   "chatParticipants": [],
   "chatSettings": [],
-  "userSubscriptions": [
-    {
-      "id": "c4d299d5-8f5e-40f0-a4d4-3c876c843105",
-      "user_id": "fca346d0-6722-4fc5-a07d-0e33c5c1955d",
-      "email": "2012..mstfa@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1793716758036,
-      "next_quota_reset_at": 1793803158036,
-      "started_at": 1793716758036,
-      "expires_at": 1798900758036,
-      "auto_renew": true,
-      "created_at": 1793716758036,
-      "updated_at": 1793716758036
-    }
-  ],
+  "userSubscriptions": [],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
