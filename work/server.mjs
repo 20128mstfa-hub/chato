@@ -12,6 +12,7 @@ import {
   getPinnedChats, setChatPin, getBlockedUsers, blockUser, unblockUser, isUserBlocked, addReport, getReports, resolveReport
 } from "./database_manager.mjs";
 import { initVapid, getVapidPublicKey, sendWebPush, sendPushToUser } from "./web_push.mjs";
+import { restoreFromCloud, saveToCloudNow, saveToCloudDebounced, startKeepAlive } from "./cloud_persistence.mjs";
 
 const startPort = Number(process.env.PORT || process.argv[2] || 4173);
 const workspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -579,6 +580,11 @@ async function writeDatabase(database) {
     console.warn("[ISOLATED DB SYNC ERROR]", isoErr.message);
   }
   await fs.writeFile(databaseFile, JSON.stringify(database, null, 2), "utf8");
+  try {
+    saveToCloudDebounced(database);
+  } catch (cloudErr) {
+    console.warn("[PERSISTENCE DEBOUNCED WARN]", cloudErr.message);
+  }
 }
 
 // 5. الحذف التلقائي للحالات بعد 24 ساعة (24h Auto-Cleanup Worker)
@@ -4583,6 +4589,10 @@ function createServer() {
       }
 
       const url = new URL(req.url || "/", "http://localhost");
+      if (url.pathname === "/api/ping" || url.pathname === "/ping") {
+        sendJson(res, 200, { ok: true, status: "alive", timestamp: Date.now(), service: "chato" });
+        return;
+      }
       if (url.pathname.startsWith("/api/")) {
         await handleApi(req, res, url);
         return;
@@ -4617,9 +4627,15 @@ async function listen(port, attempts = 12) {
     console.log(url);
     try {
       await initVapid(path.join(workspaceRoot, "work"));
+      try {
+        await restoreFromCloud();
+      } catch (cloudErr) {
+        console.warn("[PERSISTENCE STARTUP WARN]", cloudErr.message);
+      }
       const initialDb = await readDatabase();
       await writeDatabase(initialDb);
       console.log("[STORAGE] Dedicated SQLite & File engine ready. VAPID ready.");
+      startKeepAlive("https://chato-qs9z.onrender.com/api/ping");
     } catch (e) {
       console.warn("[INIT DB SYNC WARN]", e.message);
     }
