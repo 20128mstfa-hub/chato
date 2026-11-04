@@ -23,7 +23,7 @@
       "status": "active",
       "createdAt": 1793717813987,
       "lastLogin": 1793717813987,
-      "lastActive": 1793717813987,
+      "lastActive": 1793795411222,
       "chatPlusUntil": 1798902282457,
       "isChatPlus": true
     }
@@ -189,10 +189,10 @@
       "email": "202.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "71f4f128be207ac54594aa43e93fef76c900c1c87f4711ac5d7ed14135b11cd7",
+      "access_token_hash": "fcbc1f6684079db1aafa1a06b0c70c046d3e7dd2ddc47c9e80d722e26206f1a3",
       "refresh_token_hash": "f02b1e61454dbdba7e80fa8522bb666e1822a40ff56b68ac2ba555627c31ea23",
       "expires_at": 1798901813987,
-      "last_active_at": 1793717814361,
+      "last_active_at": 1793795373192,
       "created_at": 1793717813987,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmJsBW3tRF/Z4LXzwYNDu9lNLWcYSmuruIXIVaHwM5agAGX1v81QFiUrqVogLNONPHEVkwSTQgcmLiUuCCMvKYA=="
     },
@@ -283,26 +283,6 @@
       "expires_at": 1798902282457,
       "auto_renew": true,
       "updated_at": 1793718282457
-    },
-    {
-      "id": "bfeab2e9-cefc-48ea-8e97-37131a9cdadb",
-      "user_id": "az7077407@gmail.com",
-      "email": "az7077407@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1793740480698,
-      "next_quota_reset_at": 1793826880698,
-      "started_at": 1793740480698,
-      "expires_at": 1798924480698,
-      "auto_renew": true,
-      "created_at": 1793740480698,
-      "updated_at": 1793740480698
     }
   ],
   "userStories": [],
