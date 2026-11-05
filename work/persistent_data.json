@@ -313,6 +313,26 @@
       "expires_at": 1798902282457,
       "auto_renew": true,
       "updated_at": 1793718282457
+    },
+    {
+      "id": "112084a2-33b6-4809-a57b-630c48e0047b",
+      "user_id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
+      "email": "az7077407@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1793915537897,
+      "next_quota_reset_at": 1794001937897,
+      "started_at": 1793915537897,
+      "expires_at": 1799099537897,
+      "auto_renew": true,
+      "created_at": 1793915537897,
+      "updated_at": 1793915537897
     }
   ],
   "userStories": [],
