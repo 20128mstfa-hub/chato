@@ -10,7 +10,7 @@
       "status": "active",
       "createdAt": 1793717099198,
       "lastLogin": 1793718189698,
-      "lastActive": 1793720220488,
+      "lastActive": 1793915636874,
       "lastOffline": 1793720220592
     },
     {
@@ -47,6 +47,13 @@
       "to": "2012.8.mstfa@gmail.com",
       "status": "accepted",
       "createdAt": 1793717821728
+    },
+    {
+      "id": "e03823a4-14be-4bdb-a0c0-1c8ac7c345b3",
+      "from": "az7077407@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "status": "accepted",
+      "createdAt": 1793915552852
     }
   ],
   "friendRequests": [],
@@ -156,6 +163,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1793718267891
+    },
+    {
+      "id": "dbef36ac-b10f-481a-a48e-ae2cd4168d56",
+      "chat_id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "az7077407@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "1afa73088de5879d",
+      "is_encrypted": true,
+      "encryption_iv": "7543d181374e93cd9f841d87",
+      "encryption_auth_tag": "88d21c18152df82801e6602075e67ec1",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "read",
+      "read": true,
+      "createdAt": 1793915558121
     }
   ],
   "aiUsage": [
@@ -194,10 +226,10 @@
       "email": "2012.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "bfefcc8128e9529e6c670c92b4f4ffd7d5352a134bdeed467da046f59ef2020c",
+      "access_token_hash": "823ba4964b918227da16e3c7ae013c31d319e12eefbfbf411d35cf5daa217866",
       "refresh_token_hash": "efd36c17cc28df85cde511cd386bcdf10f91c35327401d989304b4d2f1111a84",
       "expires_at": 1798902189698,
-      "last_active_at": 1793720218462,
+      "last_active_at": 1793915550889,
       "created_at": 1793716793610,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
@@ -230,12 +262,12 @@
   ],
   "pushSubscriptions": [
     {
-      "id": "1d43a991-f4da-4570-845e-61a4ffff9f82",
+      "id": "1f123884-f336-4690-b615-cafdb49e6118",
       "user_email": "2012.8.mstfa@gmail.com",
       "endpoint": "https://fcm.googleapis.com/fcm/send/c7mpE5878FE:APA91bH7Hu0j1LG0BOPCONAM30DFjBBkdvB02Qb13xXbaFacz8ho6m3iiYp2FdjQGwlSzGdEmSLSq1qw2u3szyUgOQdVroo97IlDYHxuj6_3Wir83BnER--tERQiRqVFFFO6k5UsVVZU",
       "p256dh": "BGVxXiX5lnv7knAMCT9Lc_x_D1aNgDN55Mj5QMYHDMpLADReQKyBUE7EV4UCsjLQshcizqDNhYb7VY4-Lqit_O0",
       "auth": "RWpUQi0TMLUOh7PNkbcfTg",
-      "created_at": 1793720218904
+      "created_at": 1793915551387
     },
     {
       "id": "7baa583f-bb03-425c-9816-6b5e4fd38f25",
@@ -256,6 +288,15 @@
       "last_message_at": 1793718267891,
       "last_message_content": "ملصق متحرك",
       "created_at": 1793717825559
+    },
+    {
+      "id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "direct_pair": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1793915558120,
+      "last_message_content": "PMMGYJFH",
+      "created_at": 1793915558120
     }
   ],
   "chatParticipants": [],
@@ -313,26 +354,6 @@
       "expires_at": 1798902282457,
       "auto_renew": true,
       "updated_at": 1793718282457
-    },
-    {
-      "id": "112084a2-33b6-4809-a57b-630c48e0047b",
-      "user_id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
-      "email": "az7077407@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1793915537897,
-      "next_quota_reset_at": 1794001937897,
-      "started_at": 1793915537897,
-      "expires_at": 1799099537897,
-      "auto_renew": true,
-      "created_at": 1793915537897,
-      "updated_at": 1793915537897
     }
   ],
   "userStories": [],
