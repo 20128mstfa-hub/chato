@@ -26,6 +26,18 @@
       "lastActive": 1793795411222,
       "chatPlusUntil": 1798902282457,
       "isChatPlus": true
+    },
+    {
+      "id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
+      "name": "Ali Mohamed",
+      "email": "az7077407@gmail.com",
+      "password_hash": "scrypt:430177393b07be5a7ec324564d07eba1:8249fcc64824893f499c468605fdaaf07f7dbaa96b9ff43cec6f7960cc69a0b6290fb0641b0af03592570064b6dec86ee9474de57337704b868473cf1f663fb1",
+      "password": "HEfqMH3rui9L5Fc",
+      "image": "",
+      "status": "active",
+      "createdAt": 1793915522983,
+      "lastLogin": 1793915522983,
+      "lastActive": 1793915522983
     }
   ],
   "friendships": [
@@ -152,6 +164,12 @@
       "day": "2026-11-03",
       "words": 0,
       "images": 0
+    },
+    {
+      "email": "az7077407@gmail.com",
+      "day": "2026-11-05",
+      "words": 0,
+      "images": 0
     }
   ],
   "ads": [],
@@ -198,12 +216,16 @@
     },
     {
       "id": "1874312f-7241-4f8a-bc67-8fac15bdd346",
+      "user_id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
       "email": "az7077407@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg==",
+      "access_token_hash": "2628b899d919c262f9fbc6f9aca134e6c8fd855e8ddd1a10328c6864526075cc",
+      "refresh_token_hash": "dfecfdf6c870b5e6ddc01f75b77213ea8a5dce3af72b7c0a3d4b1a1891d4a9f5",
+      "expires_at": 1799099522986,
+      "last_active_at": 1793915523342,
       "created_at": 1793740480343,
-      "last_active_at": 1793740480343
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg=="
     }
   ],
   "pushSubscriptions": [
@@ -283,6 +305,26 @@
       "expires_at": 1798902282457,
       "auto_renew": true,
       "updated_at": 1793718282457
+    },
+    {
+      "id": "7180581c-ab8a-4227-bca2-20940a6e99ce",
+      "user_id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
+      "email": "az7077407@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1793915523451,
+      "next_quota_reset_at": 1794001923451,
+      "started_at": 1793915523451,
+      "expires_at": 1799099523451,
+      "auto_renew": true,
+      "created_at": 1793915523451,
+      "updated_at": 1793915523451
     }
   ],
   "userStories": [],
