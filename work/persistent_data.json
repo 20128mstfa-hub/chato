@@ -236,6 +236,14 @@
       "p256dh": "BGVxXiX5lnv7knAMCT9Lc_x_D1aNgDN55Mj5QMYHDMpLADReQKyBUE7EV4UCsjLQshcizqDNhYb7VY4-Lqit_O0",
       "auth": "RWpUQi0TMLUOh7PNkbcfTg",
       "created_at": 1793720218904
+    },
+    {
+      "id": "7baa583f-bb03-425c-9816-6b5e4fd38f25",
+      "user_email": "az7077407@gmail.com",
+      "endpoint": "https://fcm.googleapis.com/fcm/send/c549HqBQJQA:APA91bFWdkL8JznU0KjtX541eXPa4ZQjJJ29Ma1Ya3h7X_-G0DD2seD6cEEU65W6f5XRvQbDAWejiBVpmZPMFADnKzOCOZ2y4nCNcK_aiWkXges_g17PgaANeW0tPVCv-367IvoFojeR",
+      "p256dh": "BFaus9MDMIJqvJsGhwQ3Mg6j0qGw2AzKBaDeskUFQX5v0Cpo5-_4s94yVliJWpYSJ-HK_h9Tx9Itm6iZ3IcZ6gc",
+      "auth": "q7BaT4C3pTk0PxChyDKRsA",
+      "created_at": 1793915530765
     }
   ],
   "emailVerifications": [],
@@ -305,26 +313,6 @@
       "expires_at": 1798902282457,
       "auto_renew": true,
       "updated_at": 1793718282457
-    },
-    {
-      "id": "7180581c-ab8a-4227-bca2-20940a6e99ce",
-      "user_id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
-      "email": "az7077407@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1793915523451,
-      "next_quota_reset_at": 1794001923451,
-      "started_at": 1793915523451,
-      "expires_at": 1799099523451,
-      "auto_renew": true,
-      "created_at": 1793915523451,
-      "updated_at": 1793915523451
     }
   ],
   "userStories": [],
