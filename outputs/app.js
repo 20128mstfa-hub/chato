@@ -2728,10 +2728,15 @@ function toggleAttachMenu(event) {
   }
 
   const isHidden = aMenu.hasAttribute("hidden") || aMenu.style.display === "none";
+  const isMobile = window.innerWidth <= 768;
+
   if (isHidden) {
     aMenu.removeAttribute("hidden");
-    aMenu.style.display = "block";
-    if (aBackdrop) aBackdrop.removeAttribute("hidden");
+    aMenu.style.display = isMobile ? "flex" : "block";
+    // Show backdrop only on mobile
+    if (isMobile && aBackdrop) aBackdrop.removeAttribute("hidden");
+    else if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
+
     const eTray = document.getElementById("emojiTray");
     const sTray = document.getElementById("stickerTray");
     if (eTray) eTray.hidden = true;
@@ -5314,17 +5319,7 @@ if (pollForm) {
   pollForm.addEventListener("submit", submitPoll);
 }
 
-// إغلاق قائمة المرفقات عند النقر بالخارج أو على الخلفية
-document.addEventListener("click", (e) => {
-  const aMenu = document.getElementById("attachMenu");
-  const aBackdrop = document.getElementById("attachMenuBackdrop");
-  const aBtn = document.getElementById("attachButton");
-  if (!aMenu || aMenu.hasAttribute("hidden") || aMenu.style.display === "none") return;
 
-  if (e.target === aBackdrop || (!aMenu.contains(e.target) && e.target !== aBtn && !aBtn?.contains(e.target))) {
-    toggleAttachMenu();
-  }
-});
 
 imageInput.addEventListener("change", () => {
   sendImage(imageInput.files[0]);
@@ -7263,10 +7258,15 @@ window.toggleChatDropdown = function(event) {
   }
 
   const isHidden = menu.hasAttribute("hidden") || menu.style.display === "none";
+  const isMobile = window.innerWidth <= 768;
+
   if (isHidden) {
     menu.removeAttribute("hidden");
-    menu.style.display = "block";
-    if (backdrop) backdrop.removeAttribute("hidden");
+    menu.style.display = isMobile ? "flex" : "block";
+    // Show backdrop only on mobile
+    if (isMobile && backdrop) backdrop.removeAttribute("hidden");
+    else if (backdrop) backdrop.setAttribute("hidden", "true");
+
     if (typeof updateChatPinUI === "function") updateChatPinUI();
     if (typeof updateChatBlockUI === "function") updateChatBlockUI();
     if (typeof updateChatWallpaperUI === "function") updateChatWallpaperUI();
@@ -7506,14 +7506,30 @@ window.handleReportSubmit = async function(event) {
   }
 };
 
-// إغلاق قائمة خيارات المحادثة عند النقر في أي مكان آخر أو على الخلفية
+// إغلاق قوائم المحادثة عند النقر في أي مكان خارجها (على الكمبيوتر والموبايل)
 document.addEventListener("click", (e) => {
-  const menu = document.getElementById("chat-dropdown-menu");
-  const backdrop = document.getElementById("chatMenuBackdrop");
-  if (!menu || menu.hasAttribute("hidden") || menu.style.display === "none") return;
-  
-  if (e.target === backdrop || (!e.target.closest(".chat-menu-wrapper") && !e.target.closest("#chat-dropdown-menu"))) {
-    window.toggleChatDropdown();
+  // 1. قائمة خيارات المحادثة
+  const cMenu = document.getElementById("chat-dropdown-menu");
+  const cBackdrop = document.getElementById("chatMenuBackdrop");
+  const cTrigger = document.getElementById("chat-options-trigger");
+  if (cMenu && !cMenu.hasAttribute("hidden") && cMenu.style.display !== "none") {
+    if (e.target === cBackdrop || (!cMenu.contains(e.target) && e.target !== cTrigger && !cTrigger?.contains(e.target))) {
+      cMenu.setAttribute("hidden", "true");
+      cMenu.style.display = "none";
+      if (cBackdrop) cBackdrop.setAttribute("hidden", "true");
+    }
+  }
+
+  // 2. قائمة المرفقات
+  const aMenu = document.getElementById("attachMenu");
+  const aBackdrop = document.getElementById("attachMenuBackdrop");
+  const aBtn = document.getElementById("attachButton");
+  if (aMenu && !aMenu.hasAttribute("hidden") && aMenu.style.display !== "none") {
+    if (e.target === aBackdrop || (!aMenu.contains(e.target) && e.target !== aBtn && !aBtn?.contains(e.target))) {
+      aMenu.setAttribute("hidden", "true");
+      aMenu.style.display = "none";
+      if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
+    }
   }
 });
 
