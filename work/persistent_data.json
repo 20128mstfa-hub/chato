@@ -10,7 +10,7 @@
       "status": "active",
       "createdAt": 1793717099198,
       "lastLogin": 1793718189698,
-      "lastActive": 1794071193216,
+      "lastActive": 1794071313216,
       "lastOffline": 1793918686852
     },
     {
@@ -23,7 +23,7 @@
       "status": "active",
       "createdAt": 1793717813987,
       "lastLogin": 1793717813987,
-      "lastActive": 1794068963159,
+      "lastActive": 1794071321736,
       "chatPlusUntil": 1798902282457,
       "isChatPlus": true
     },
@@ -37,7 +37,7 @@
       "status": "active",
       "createdAt": 1793915522983,
       "lastLogin": 1793915522983,
-      "lastActive": 1794071184821,
+      "lastActive": 1794071304838,
       "lastOffline": 1794068419741,
       "chatPlusUntil": 1799253178425,
       "isChatPlus": true
@@ -581,10 +581,10 @@
       "email": "202.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "6c70b16dd0c3d11a49dcb94e7d82b554bac83c71844c26765673e56b9175f734",
+      "access_token_hash": "441828ebb60f686f823ad87c094b78bcac3062c06fc8ae7a6b82558f361f870e",
       "refresh_token_hash": "f02b1e61454dbdba7e80fa8522bb666e1822a40ff56b68ac2ba555627c31ea23",
       "expires_at": 1798901813987,
-      "last_active_at": 1794068623061,
+      "last_active_at": 1794071225866,
       "created_at": 1793717813987,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmJsBW3tRF/Z4LXzwYNDu9lNLWcYSmuruIXIVaHwM5agAGX1v81QFiUrqVogLNONPHEVkwSTQgcmLiUuCCMvKYA=="
     },
@@ -677,7 +677,9 @@
       "who_can_send": "everyone",
       "last_message_at": 1794068633528,
       "last_message_content": "الحمدالله",
-      "created_at": 1794068614368
+      "created_at": 1794068614368,
+      "disappearing_timer_seconds": 86400,
+      "updated_at": 1794071314726
     }
   ],
   "chatParticipants": [],
