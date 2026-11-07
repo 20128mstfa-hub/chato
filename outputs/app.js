@@ -2707,44 +2707,28 @@ function renderNotifications() {
 /* ==========================================================================
    7. أدوات المحادثة: إرسال موقع، استطلاع رأي، استيكرات
    ========================================================================== */
-let _lastAttachMenuToggle = 0;
 function toggleAttachMenu(event) {
   if (event && typeof event.stopPropagation === "function") event.stopPropagation();
-  const now = Date.now();
-  if (now - _lastAttachMenuToggle < 180) return;
-  _lastAttachMenuToggle = now;
+  const menu = document.getElementById("attachMenu");
+  if (!menu) return;
 
-  const aMenu = document.getElementById("attachMenu");
-  const aBackdrop = document.getElementById("attachMenuBackdrop");
-  if (!aMenu) return;
-
-  // Close chat dropdown if open
   const cMenu = document.getElementById("chat-dropdown-menu");
-  const cBackdrop = document.getElementById("chatMenuBackdrop");
-  if (cMenu && (!cMenu.hasAttribute("hidden") && cMenu.style.display !== "none")) {
+  if (cMenu) {
     cMenu.setAttribute("hidden", "true");
     cMenu.style.display = "none";
-    if (cBackdrop) cBackdrop.setAttribute("hidden", "true");
   }
 
-  const isHidden = aMenu.hasAttribute("hidden") || aMenu.style.display === "none";
-  const isMobile = window.innerWidth <= 768;
-
+  const isHidden = menu.hasAttribute("hidden") || menu.style.display === "none";
   if (isHidden) {
-    aMenu.removeAttribute("hidden");
-    aMenu.style.display = isMobile ? "flex" : "block";
-    // Show backdrop only on mobile
-    if (isMobile && aBackdrop) aBackdrop.removeAttribute("hidden");
-    else if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
-
+    menu.removeAttribute("hidden");
+    menu.style.display = "block";
     const eTray = document.getElementById("emojiTray");
     const sTray = document.getElementById("stickerTray");
     if (eTray) eTray.hidden = true;
     if (sTray) sTray.hidden = true;
   } else {
-    aMenu.setAttribute("hidden", "true");
-    aMenu.style.display = "none";
-    if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
+    menu.setAttribute("hidden", "true");
+    menu.style.display = "none";
   }
 }
 window.toggleAttachMenu = toggleAttachMenu;
@@ -7237,49 +7221,26 @@ async function startApplication() {
    ========================================================================== */
 let _lastChatDropdownToggle = 0;
 window.toggleChatDropdown = function(event) {
-  if (event) {
-    if (typeof event.stopPropagation === "function") event.stopPropagation();
-  }
-  const now = Date.now();
-  if (now - _lastChatDropdownToggle < 160) return;
-  _lastChatDropdownToggle = now;
-
+  if (event && typeof event.stopPropagation === "function") event.stopPropagation();
   const menu = document.getElementById("chat-dropdown-menu");
-  const backdrop = document.getElementById("chatMenuBackdrop");
   if (!menu) return;
 
-  // Close attach menu if open
   const aMenu = document.getElementById("attachMenu");
-  const aBackdrop = document.getElementById("attachMenuBackdrop");
-  if (aMenu && (!aMenu.hasAttribute("hidden") && aMenu.style.display !== "none")) {
+  if (aMenu) {
     aMenu.setAttribute("hidden", "true");
     aMenu.style.display = "none";
-    if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
   }
 
   const isHidden = menu.hasAttribute("hidden") || menu.style.display === "none";
-  const isMobile = window.innerWidth <= 768;
-
   if (isHidden) {
     menu.removeAttribute("hidden");
-    menu.style.display = isMobile ? "flex" : "flex";
-    if (isMobile && backdrop) {
-      backdrop.removeAttribute("hidden");
-    } else if (backdrop) {
-      backdrop.setAttribute("hidden", "true");
-      backdrop.style.display = "none";
-    }
-
+    menu.style.display = "flex";
     if (typeof updateChatPinUI === "function") updateChatPinUI();
     if (typeof updateChatBlockUI === "function") updateChatBlockUI();
     if (typeof updateChatWallpaperUI === "function") updateChatWallpaperUI();
   } else {
     menu.setAttribute("hidden", "true");
     menu.style.display = "none";
-    if (backdrop) {
-      backdrop.setAttribute("hidden", "true");
-      backdrop.style.display = "none";
-    }
   }
 };
 
@@ -7512,189 +7473,25 @@ window.handleReportSubmit = async function(event) {
   }
 };
 
-// إغلاق قوائم المحادثة عند النقر في أي مكان خارجها (على الكمبيوتر والموبايل)
+// إغلاق قوائم المحادثة عند النقر في أي مكان خارجها
 document.addEventListener("click", (e) => {
-  // 1. قائمة خيارات المحادثة
   const cMenu = document.getElementById("chat-dropdown-menu");
-  const cBackdrop = document.getElementById("chatMenuBackdrop");
   const cTrigger = document.getElementById("chat-options-trigger");
   if (cMenu && !cMenu.hasAttribute("hidden") && cMenu.style.display !== "none") {
-    if (e.target === cBackdrop || (!cMenu.contains(e.target) && e.target !== cTrigger && !cTrigger?.contains(e.target))) {
+    if (!cMenu.contains(e.target) && e.target !== cTrigger && !cTrigger?.contains(e.target)) {
       cMenu.setAttribute("hidden", "true");
       cMenu.style.display = "none";
-      if (cBackdrop) cBackdrop.setAttribute("hidden", "true");
     }
   }
 
-  // 2. قائمة المرفقات
   const aMenu = document.getElementById("attachMenu");
-  const aBackdrop = document.getElementById("attachMenuBackdrop");
   const aBtn = document.getElementById("attachButton");
   if (aMenu && !aMenu.hasAttribute("hidden") && aMenu.style.display !== "none") {
-    if (e.target === aBackdrop || (!aMenu.contains(e.target) && e.target !== aBtn && !aBtn?.contains(e.target))) {
+    if (!aMenu.contains(e.target) && e.target !== aBtn && !aBtn?.contains(e.target)) {
       aMenu.setAttribute("hidden", "true");
       aMenu.style.display = "none";
-      if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
     }
   }
-});
-
-/* ==========================================================================
-   8. إشعارات الخلفية الحقيقية (Web Push Notifications via Service Worker & VAPID)
-   ========================================================================== */
-async function registerWebPushNotifications() {
-  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-    console.log("Web Push is not supported in this browser.");
-    return;
-  }
-  try {
-    const reg = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
-    await navigator.serviceWorker.ready;
-
-    // طلب إذن الإشعارات إذا لم يتم منحه
-    let permission = Notification.permission;
-    if (permission === "default") {
-      try {
-        permission = await Notification.requestPermission();
-      } catch {}
-    }
-    if (permission !== "granted") {
-      console.log("Notification permission status:", permission);
-      return;
-    }
-
-    // جلب المفتاح العام VAPID من الخادم
-    const vapidRes = await fetch("/api/push/vapid-public-key");
-    if (!vapidRes.ok) return;
-    const { publicKey } = await vapidRes.json();
-    if (!publicKey) return;
-
-    function urlBase64ToUint8Array(base64String) {
-      const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-      const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
-      const rawData = window.atob(base64);
-      const outputArray = new Uint8Array(rawData.length);
-      for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-      }
-      return outputArray;
-    }
-
-    const convertedVapidKey = urlBase64ToUint8Array(publicKey);
-    let subscription = await reg.pushManager.getSubscription();
-    if (!subscription) {
-      subscription = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: convertedVapidKey
-      });
-    }
-
-    if (subscription && state.currentUser?.email) {
-      const subJson = subscription.toJSON ? subscription.toJSON() : subscription;
-      await fetch("/api/devices/save-push-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_email: state.currentUser.email,
-          subscription: subJson
-        })
-      });
-      console.log("Web Push notifications activated successfully.");
-    }
-  } catch (err) {
-    console.warn("Web Push registration error:", err);
-  }
-}
-
-/* ==========================================================================
-   محرك تثبيت وتحميل التطبيق على الهاتف والكمبيوتر (PWA App Installation Engine)
-   ========================================================================== */
-let deferredInstallPrompt = null;
-const isAppStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  if (!isAppStandalone) {
-    const banner = el("appInstallBanner");
-    if (banner && !sessionStorage.getItem("dismissed_install_banner")) {
-      banner.hidden = false;
-    }
-    const pill = el("installHeaderPillBtn");
-    if (pill) pill.hidden = false;
-  }
-});
-
-async function triggerAppInstall() {
-  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  if (isIos) {
-    const iosModal = el("iosInstallModal");
-    if (iosModal) {
-      if (typeof iosModal.showModal === "function") iosModal.showModal();
-      else iosModal.hidden = false;
-    }
-    return;
-  }
-
-  if (deferredInstallPrompt) {
-    try {
-      deferredInstallPrompt.prompt();
-      const choice = await deferredInstallPrompt.userChoice;
-      if (choice && choice.outcome === "accepted") {
-        el("appInstallBanner")?.setAttribute("hidden", "true");
-        el("installHeaderPillBtn")?.setAttribute("hidden", "true");
-      }
-      deferredInstallPrompt = null;
-    } catch (err) {
-      console.warn("Install prompt error:", err);
-    }
-  } else {
-    alert("لتثبيت تطبيق شاتو على جهازك:\n• أندرويد/كروم: اضغط على خيارات المتصفح (⋮) ثم اختر 'تثبيت التطبيق' أو 'إضافة إلى الشاشة الرئيسية'.\n• آيفون: اضغط زر المشاركة (Share) ثم 'إضافة إلى الشاشة الرئيسية'.\n• الكمبيوتر: اضغط على أيقونة التثبيت (⊕) في شريط عنوان المتصفح.");
-  }
-}
-
-window.addEventListener("appinstalled", () => {
-  el("appInstallBanner")?.setAttribute("hidden", "true");
-  el("installHeaderPillBtn")?.setAttribute("hidden", "true");
-  deferredInstallPrompt = null;
-  alert("تهانينا! 🎉 تم تثبيت تطبيق Chato على جهازك بنجاح. ستجده الآن على شاشتك الرئيسية دائماً!");
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  // إخفاء أزرار التثبيت إذا كان التطبيق مفتوحاً بالفعل من الشاشة الرئيسية
-  if (isAppStandalone) {
-    el("appInstallBanner")?.setAttribute("hidden", "true");
-    el("installHeaderPillBtn")?.setAttribute("hidden", "true");
-    el("mMenuInstallApp")?.setAttribute("hidden", "true");
-  } else {
-    // إظهار البنر للمستخدمين الجدد بعد ثانيتين من فتح الرابط لتشجيعهم على التثبيت
-    setTimeout(() => {
-      if (!isAppStandalone && !sessionStorage.getItem("dismissed_install_banner")) {
-        const banner = el("appInstallBanner");
-        if (banner) banner.hidden = false;
-      }
-    }, 2000);
-  }
-
-  el("appInstallBtn")?.addEventListener("click", triggerAppInstall);
-  el("installHeaderPillBtn")?.addEventListener("click", triggerAppInstall);
-  el("mMenuInstallApp")?.addEventListener("click", () => {
-    el("mobileDropdownMenu")?.setAttribute("hidden", "true");
-    triggerAppInstall();
-  });
-
-  el("dismissInstallBannerBtn")?.addEventListener("click", () => {
-    el("appInstallBanner")?.setAttribute("hidden", "true");
-    sessionStorage.setItem("dismissed_install_banner", "true");
-  });
-
-  el("closeIosInstallModalBtn")?.addEventListener("click", () => {
-    const modal = el("iosInstallModal");
-    if (modal) {
-      if (typeof modal.close === "function") modal.close();
-      else modal.hidden = true;
-    }
-  });
 });
 
 startApplication();
