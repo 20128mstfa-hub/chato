@@ -39,6 +39,18 @@
       "lastLogin": 1793915522983,
       "lastActive": 1794068417731,
       "lastOffline": 1794068419741
+    },
+    {
+      "id": "1738dbc6-95d1-436f-8d3e-04a9e94efd3c",
+      "name": "Mohamed Mustafa",
+      "email": "mo.mstfa.85@gmail.com",
+      "password_hash": "scrypt:d915777a59de8c98e512f27fbcfd7c7f:9ffd1f36e079c5f193db22b87b5c0ea842c672f305912207fabe3723191285e956aa015493eaf815bfb6281c14b12c1cbfa8385a51e4ffc64073b3385437a8c9",
+      "password": "Mm01021414214",
+      "image": "",
+      "status": "active",
+      "createdAt": 1794068581183,
+      "lastLogin": 1794068581183,
+      "lastActive": 1794068581183
     }
   ],
   "friendships": [
@@ -466,6 +478,19 @@
       "last_active_at": 1794068369268,
       "created_at": 1793740480343,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg=="
+    },
+    {
+      "id": "dc50d1ee-472b-474a-b30a-f9daefc3bb57",
+      "user_id": "1738dbc6-95d1-436f-8d3e-04a9e94efd3c",
+      "email": "mo.mstfa.85@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "access_token_hash": "98001a1c5410e7b3fbddb2c4f7035adb4170df42a73a453a0a683b8236c115b3",
+      "refresh_token_hash": "7a1e9194a821ef3188d230b7d96ed6ad98cdd14cb8927bf5dbe3bb4b3cca810b",
+      "expires_at": 1799252581183,
+      "last_active_at": 1794068581619,
+      "created_at": 1794068581183,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQ9kynxvvtvNG5f/KN3aOu5andD0ARFcbIks4pdPnSafSH8htG5q1EKHBqv5XiKYGCAMlTWc3SgUe2PMSiOo/rA=="
     }
   ],
   "pushSubscriptions": [
