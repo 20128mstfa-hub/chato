@@ -37,8 +37,10 @@
       "status": "active",
       "createdAt": 1793915522983,
       "lastLogin": 1793915522983,
-      "lastActive": 1794069144741,
-      "lastOffline": 1794068419741
+      "lastActive": 1794069267774,
+      "lastOffline": 1794068419741,
+      "chatPlusUntil": 1799253178425,
+      "isChatPlus": true
     },
     {
       "id": "1738dbc6-95d1-436f-8d3e-04a9e94efd3c",
@@ -723,7 +725,18 @@
     }
   ],
   "chatParticipants": [],
-  "chatSettings": [],
+  "chatSettings": [
+    {
+      "id": "a96097fe-52ef-47f7-82a8-799b99623b11",
+      "chatId": "friend:202.8.mstfa@gmail.com",
+      "email": "az7077407@gmail.com",
+      "is_locked": false,
+      "pin_hash": null,
+      "custom_wallpaper_url": "",
+      "custom_theme_code": "golden",
+      "updatedAt": 1794069205125
+    }
+  ],
   "userSubscriptions": [
     {
       "id": "f4754ba2-1378-4922-82c6-36ca9fd859cf",
@@ -777,6 +790,39 @@
       "expires_at": 1798902282457,
       "auto_renew": true,
       "updated_at": 1793718282457
+    },
+    {
+      "id": "d7311d8d-ced2-4521-8ce8-69f632856bfb",
+      "user_id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
+      "email": "az7077407@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1794069174830,
+      "next_quota_reset_at": 1794155574830,
+      "started_at": 1794069174830,
+      "expires_at": 1799253174830,
+      "auto_renew": true,
+      "created_at": 1794069174830,
+      "updated_at": 1794069174830
+    },
+    {
+      "id": "48ae06b4-980f-4447-90d9-684225b40a72",
+      "user_id": "f388eaa0-ec36-4071-b125-d985c78ec1be",
+      "email": "az7077407@gmail.com",
+      "created_at": 1794069178425,
+      "plan_code": "chato_plus",
+      "plan_title": "شاتو بلاس",
+      "is_active": true,
+      "started_at": 1794069178425,
+      "expires_at": 1799253178425,
+      "auto_renew": true,
+      "updated_at": 1794069178425
     }
   ],
   "userStories": [],
