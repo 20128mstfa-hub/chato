@@ -415,6 +415,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1794068405330
+    },
+    {
+      "id": "bbd59c53-935b-41d6-8383-da8adc9ae993",
+      "chat_id": "202.8.mstfa@gmail.com<->mo.mstfa.85@gmail.com",
+      "from": "mo.mstfa.85@gmail.com",
+      "to": "202.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "b65baec58a8bf25b74cab46d8f4f634ed714",
+      "is_encrypted": true,
+      "encryption_iv": "3f3f68046dc3cf48b10b80f2",
+      "encryption_auth_tag": "7336ee6c06a169090df0e0adad4691d6",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794068614368
     }
   ],
   "aiUsage": [
@@ -554,6 +579,15 @@
       "last_message_at": 1794068405330,
       "last_message_content": "نعم",
       "created_at": 1794068353173
+    },
+    {
+      "id": "202.8.mstfa@gmail.com<->mo.mstfa.85@gmail.com",
+      "direct_pair": "202.8.mstfa@gmail.com<->mo.mstfa.85@gmail.com",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1794068614368,
+      "last_message_content": "ازيك يا دو",
+      "created_at": 1794068614368
     }
   ],
   "chatParticipants": [],
@@ -805,5 +839,6 @@
       "width": 256,
       "height": 256
     }
-  ]
+  ],
+  "groups": []
 }
