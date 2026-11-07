@@ -37,7 +37,7 @@
       "status": "active",
       "createdAt": 1793915522983,
       "lastLogin": 1793915522983,
-      "lastActive": 1794069459494,
+      "lastActive": 1794069581775,
       "lastOffline": 1794068419741,
       "chatPlusUntil": 1799253178425,
       "isChatPlus": true
@@ -495,31 +495,6 @@
       "pinned": false
     },
     {
-      "id": "edbabd73-184a-4755-a732-8ba8ded0ff8b",
-      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
-      "from": "az7077407@gmail.com",
-      "to": "202.8.mstfa@gmail.com",
-      "type": "text",
-      "text": "4cac20744083cc9ff7cfc6858d65dfe63b",
-      "is_encrypted": true,
-      "encryption_iv": "e3f7fde5714e20a5047f3bec",
-      "encryption_auth_tag": "e1c4666de9033ed6571a259544a050e3",
-      "sender_public_key": null,
-      "expires_at": null,
-      "expiresAt": null,
-      "imageUrl": "",
-      "fileName": "",
-      "audioUrl": "",
-      "location": null,
-      "poll": null,
-      "sticker": null,
-      "document": null,
-      "reply_to": null,
-      "status": "read",
-      "read": true,
-      "createdAt": 1794068739004
-    },
-    {
       "id": "b540f32b-d215-4470-9fb5-b9ef04a7311a",
       "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
       "from": "az7077407@gmail.com",
@@ -543,31 +518,6 @@
       "status": "read",
       "read": true,
       "createdAt": 1794068771167
-    },
-    {
-      "id": "890834a8-69f2-45ed-8f11-b60fdd94aad4",
-      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
-      "from": "az7077407@gmail.com",
-      "to": "202.8.mstfa@gmail.com",
-      "type": "text",
-      "text": "c85a8e4e3a3f",
-      "is_encrypted": true,
-      "encryption_iv": "26dd7248b9a6e31e28e657e9",
-      "encryption_auth_tag": "c001d64eec8c6f57b2a978cebf171fc3",
-      "sender_public_key": null,
-      "expires_at": null,
-      "expiresAt": null,
-      "imageUrl": "",
-      "fileName": "",
-      "audioUrl": "",
-      "location": null,
-      "poll": null,
-      "sticker": null,
-      "document": null,
-      "reply_to": null,
-      "status": "sent",
-      "read": false,
-      "createdAt": 1794069066503
     }
   ],
   "aiUsage": [
@@ -585,6 +535,12 @@
     },
     {
       "email": "202.8.mstfa@gmail.com",
+      "day": "2026-11-07",
+      "words": 0,
+      "images": 0
+    },
+    {
+      "email": "az7077407@gmail.com",
       "day": "2026-11-07",
       "words": 0,
       "images": 0
