@@ -868,7 +868,9 @@
       "who_can_send": "everyone",
       "last_message_at": 1793718267891,
       "last_message_content": "ملصق متحرك",
-      "created_at": 1793717825559
+      "created_at": 1793717825559,
+      "disappearing_timer_seconds": 3600,
+      "updated_at": 1794086509053
     },
     {
       "id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
