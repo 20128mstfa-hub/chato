@@ -19,11 +19,11 @@
       "email": "202.8.mstfa@gmail.com",
       "password_hash": "scrypt:47901ee1587ccea4fa5be5f9115d45cc:81e214b0c4c9ffe82ae1b2635bda6f42d5f9e0f454679e3bc244e47d4685bc92ce7a891ef9baca4616e09d1b58b740b3aa8fa77b66b0f8503b2f52848aa90869",
       "password": "M0102141214m",
-      "image": "",
+      "image": "/uploads/a55632eb-2dad-4f84-a3eb-3c7fc5e90366.jpg",
       "status": "active",
       "createdAt": 1793717813987,
       "lastLogin": 1793717813987,
-      "lastActive": 1794068401751,
+      "lastActive": 1794068951485,
       "chatPlusUntil": 1798902282457,
       "isChatPlus": true
     },
@@ -37,7 +37,7 @@
       "status": "active",
       "createdAt": 1793915522983,
       "lastLogin": 1793915522983,
-      "lastActive": 1794068417731,
+      "lastActive": 1794068907737,
       "lastOffline": 1794068419741
     },
     {
@@ -46,11 +46,11 @@
       "email": "mo.mstfa.85@gmail.com",
       "password_hash": "scrypt:d915777a59de8c98e512f27fbcfd7c7f:9ffd1f36e079c5f193db22b87b5c0ea842c672f305912207fabe3723191285e956aa015493eaf815bfb6281c14b12c1cbfa8385a51e4ffc64073b3385437a8c9",
       "password": "Mm01021414214",
-      "image": "",
+      "image": "/uploads/1fdbbe32-a55e-494b-9c88-415a83d11627.jpg",
       "status": "active",
       "createdAt": 1794068581183,
       "lastLogin": 1794068581183,
-      "lastActive": 1794068581183
+      "lastActive": 1794068790377
     }
   ],
   "friendships": [
@@ -412,8 +412,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1794068405330
     },
     {
@@ -437,9 +437,110 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
+      "status": "read",
+      "read": true,
+      "createdAt": 1794068614368
+    },
+    {
+      "id": "fc9acf66-d32e-46ed-b150-3674c4efb1e0",
+      "chat_id": "202.8.mstfa@gmail.com<->mo.mstfa.85@gmail.com",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "mo.mstfa.85@gmail.com",
+      "type": "text",
+      "text": "d43dbe971c9a0460b7a119bd9a9032faf8cd",
+      "is_encrypted": true,
+      "encryption_iv": "31390f25529dbe10612b03fd",
+      "encryption_auth_tag": "725dde7cbe7b176586f89232d4803e20",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
       "status": "sent",
       "read": false,
-      "createdAt": 1794068614368
+      "createdAt": 1794068633528
+    },
+    {
+      "id": "296920ea-1708-4d11-ba51-e56d221698eb",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "az7077407@gmail.com",
+      "type": "text",
+      "text": "9758f9808afb4ec93d0a82c187e6dd",
+      "is_encrypted": true,
+      "encryption_iv": "40efa13a583f6e9c8409972c",
+      "encryption_auth_tag": "5921ec52e8884f665176ba1ba0b3a691",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "read",
+      "read": true,
+      "createdAt": 1794068672287,
+      "pinned": false
+    },
+    {
+      "id": "edbabd73-184a-4755-a732-8ba8ded0ff8b",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "az7077407@gmail.com",
+      "to": "202.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "4cac20744083cc9ff7cfc6858d65dfe63b",
+      "is_encrypted": true,
+      "encryption_iv": "e3f7fde5714e20a5047f3bec",
+      "encryption_auth_tag": "e1c4666de9033ed6571a259544a050e3",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "read",
+      "read": true,
+      "createdAt": 1794068739004
+    },
+    {
+      "id": "b540f32b-d215-4470-9fb5-b9ef04a7311a",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "az7077407@gmail.com",
+      "to": "202.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "7d3f270c26abea36bb25d1175719684cffb3e3",
+      "is_encrypted": true,
+      "encryption_iv": "dd8117f07e0906fadd80a455",
+      "encryption_auth_tag": "208084b0d9b2975c75c9d28f3a1e6f8f",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "read",
+      "read": true,
+      "createdAt": 1794068771167
     }
   ],
   "aiUsage": [
@@ -452,6 +553,12 @@
     {
       "email": "az7077407@gmail.com",
       "day": "2026-11-05",
+      "words": 0,
+      "images": 0
+    },
+    {
+      "email": "202.8.mstfa@gmail.com",
+      "day": "2026-11-07",
       "words": 0,
       "images": 0
     }
@@ -491,10 +598,10 @@
       "email": "202.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "6edde63b1e41c8c83cd518cc2eba49f93f836ebd3f81aae0012231c0826fb138",
+      "access_token_hash": "6c70b16dd0c3d11a49dcb94e7d82b554bac83c71844c26765673e56b9175f734",
       "refresh_token_hash": "f02b1e61454dbdba7e80fa8522bb666e1822a40ff56b68ac2ba555627c31ea23",
       "expires_at": 1798901813987,
-      "last_active_at": 1794068335804,
+      "last_active_at": 1794068623061,
       "created_at": 1793717813987,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmJsBW3tRF/Z4LXzwYNDu9lNLWcYSmuruIXIVaHwM5agAGX1v81QFiUrqVogLNONPHEVkwSTQgcmLiUuCCMvKYA=="
     },
@@ -504,10 +611,10 @@
       "email": "az7077407@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "6c0882ba9b1de2ed50e4d4e1873f0bcebb26edcb9c669b5e0401c5ab058004bf",
+      "access_token_hash": "fef6bbeab39952c389a5aaa9099c83e905cb0e02a2746f1df0e212ef8d586b69",
       "refresh_token_hash": "dfecfdf6c870b5e6ddc01f75b77213ea8a5dce3af72b7c0a3d4b1a1891d4a9f5",
       "expires_at": 1799099522986,
-      "last_active_at": 1794068369268,
+      "last_active_at": 1794068719633,
       "created_at": 1793740480343,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg=="
     },
@@ -517,10 +624,10 @@
       "email": "mo.mstfa.85@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "98001a1c5410e7b3fbddb2c4f7035adb4170df42a73a453a0a683b8236c115b3",
+      "access_token_hash": "cd795a4afc0c695bd4dc102fe741ce486575c2fd51d07b7ae5db5315d4adceb9",
       "refresh_token_hash": "7a1e9194a821ef3188d230b7d96ed6ad98cdd14cb8927bf5dbe3bb4b3cca810b",
       "expires_at": 1799252581183,
-      "last_active_at": 1794068581619,
+      "last_active_at": 1794068633384,
       "created_at": 1794068581183,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQ9kynxvvtvNG5f/KN3aOu5andD0ARFcbIks4pdPnSafSH8htG5q1EKHBqv5XiKYGCAMlTWc3SgUe2PMSiOo/rA=="
     }
@@ -543,12 +650,12 @@
       "created_at": 1793915530765
     },
     {
-      "id": "5f7f289e-ac32-47cc-8d39-3650983a9bca",
+      "id": "83a4bf75-0bfb-4299-ac38-4faf76ca5f0a",
       "user_email": "az7077407@gmail.com",
       "endpoint": "https://fcm.googleapis.com/fcm/send/foYnveD1tS4:APA91bHy4uvg7-4ULsQ6eWXvqE7jW5gD97zvdKkbJPZfYTjYsDZXtMnQ8STwGSWk2Hq6441kt4nFdkjEYu98bMLDeJVtAR4YXY4GtEetgM6OP4uT9k4ICcwqEuJPVMF8se_caph4XW4f",
       "p256dh": "BPsSBVF_xC4U5QHVPWxDOUxeELYhzOBUX2j3SB__XzcRn8D_pfH_DR2HyiAdXvSDyzLQR4dYi0N4v7ho--jfgfQ",
       "auth": "R_zt0FHH7qFOzQsbjFrfnA",
-      "created_at": 1794068369952
+      "created_at": 1794068719971
     }
   ],
   "emailVerifications": [],
@@ -576,8 +683,8 @@
       "direct_pair": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1794068405330,
-      "last_message_content": "نعم",
+      "last_message_at": 1794068771166,
+      "last_message_content": "الحمد الله",
       "created_at": 1794068353173
     },
     {
@@ -585,8 +692,8 @@
       "direct_pair": "202.8.mstfa@gmail.com<->mo.mstfa.85@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1794068614368,
-      "last_message_content": "ازيك يا دو",
+      "last_message_at": 1794068633528,
+      "last_message_content": "الحمدالله",
       "created_at": 1794068614368
     }
   ],
@@ -625,13 +732,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1793718277028,
-      "next_quota_reset_at": 1793804677028,
+      "last_quota_reset_at": 1794068845668,
+      "next_quota_reset_at": 1794155245668,
       "started_at": 1793718277028,
       "expires_at": 1798902277028,
       "auto_renew": true,
       "created_at": 1793718277028,
-      "updated_at": 1793718277028
+      "updated_at": 1794068845668
     },
     {
       "id": "88781343-0b60-4867-9e34-ce4c2e76dbee",
@@ -839,6 +946,5 @@
       "width": 256,
       "height": 256
     }
-  ],
-  "groups": []
+  ]
 }
