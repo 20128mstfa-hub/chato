@@ -10,7 +10,7 @@
       "status": "active",
       "createdAt": 1793717099198,
       "lastLogin": 1793718189698,
-      "lastActive": 1794076533253,
+      "lastActive": 1794076753290,
       "lastOffline": 1793918686852
     },
     {
@@ -37,7 +37,7 @@
       "status": "active",
       "createdAt": 1793915522983,
       "lastLogin": 1793915522983,
-      "lastActive": 1794076524977,
+      "lastActive": 1794076705008,
       "lastOffline": 1794068419741,
       "chatPlusUntil": 1799253178425,
       "isChatPlus": true
@@ -518,6 +518,109 @@
       "status": "read",
       "read": true,
       "createdAt": 1794068771167
+    },
+    {
+      "id": "6f02a333-100a-4f9e-82ac-1b258f7d28f4",
+      "chat_id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "az7077407@gmail.com",
+      "type": "text",
+      "text": "279bcf6c4e55",
+      "is_encrypted": true,
+      "encryption_iv": "43e3d211c2e943d0305088c5",
+      "encryption_auth_tag": "eedc44a45a845eba939a155df63ed357",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794076581352
+    },
+    {
+      "id": "047218a5-9dcd-460a-95eb-3345d4479fde",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "chatgpt",
+      "to": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "senderName": "ChatGPT",
+      "type": "text",
+      "text": "مرحباً بكم! أنا ChatGPT 🤖✨\nأصبحت الآن موجوداً معكم في هذه المحادثة لمساعدتكم والإجابة على أي سؤال.\n\n💬 للتحدث معي في أي وقت، اذكروا اسمي في رسالتكم: (تشات جى بى تى) وسأقوم بالرد فوراً!",
+      "is_encrypted": false,
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794076596544
+    },
+    {
+      "id": "ea388ee5-6dea-4750-bc12-c92d650cbad4",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "chatgpt",
+      "to": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "senderName": "ChatGPT",
+      "type": "text",
+      "text": "تم إيقاف تفعيل ChatGPT في هذه المحادثة ⏸️. يمكنكم إعادة تفعيله في أي وقت بالضغط على أيقونة الذكاء الاصطناعي ✨.",
+      "is_encrypted": false,
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794076608625
+    },
+    {
+      "id": "388ae204-47ab-4a3e-bafa-2f6c4b30d081",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "chatgpt",
+      "to": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "senderName": "ChatGPT",
+      "type": "text",
+      "text": "مرحباً بكم! أنا ChatGPT 🤖✨\nأصبحت الآن موجوداً معكم في هذه المحادثة لمساعدتكم والإجابة على أي سؤال.\n\n💬 للتحدث معي في أي وقت، اذكروا اسمي في رسالتكم: (تشات جى بى تى) وسأقوم بالرد فوراً!",
+      "is_encrypted": false,
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794076610033
+    },
+    {
+      "id": "29aa0ef0-8160-4683-8e56-79862f6087ab",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "chatgpt",
+      "to": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "senderName": "ChatGPT",
+      "type": "text",
+      "text": "تم إيقاف تفعيل ChatGPT في هذه المحادثة ⏸️. يمكنكم إعادة تفعيله في أي وقت بالضغط على أيقونة الذكاء الاصطناعي ✨.",
+      "is_encrypted": false,
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794076611209
+    },
+    {
+      "id": "d6e5db3f-8cc3-4768-8265-5d561927a289",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "chatgpt",
+      "to": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "senderName": "ChatGPT",
+      "type": "text",
+      "text": "مرحباً بكم! أنا ChatGPT 🤖✨\nأصبحت الآن موجوداً معكم في هذه المحادثة لمساعدتكم والإجابة على أي سؤال.\n\n💬 للتحدث معي في أي وقت، اذكروا اسمي في رسالتكم: (تشات جى بى تى) وسأقوم بالرد فوراً!",
+      "is_encrypted": false,
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794076612345
+    },
+    {
+      "id": "9a6eddf8-df69-4b64-bb60-206d357762db",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "chatgpt",
+      "to": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "senderName": "ChatGPT",
+      "type": "text",
+      "text": "تم إيقاف تفعيل ChatGPT في هذه المحادثة ⏸️. يمكنكم إعادة تفعيله في أي وقت بالضغط على أيقونة الذكاء الاصطناعي ✨.",
+      "is_encrypted": false,
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794076618490
     }
   ],
   "aiUsage": [
@@ -657,8 +760,8 @@
       "direct_pair": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1793966207579,
-      "last_message_content": "الو",
+      "last_message_at": 1794076581349,
+      "last_message_content": "على",
       "created_at": 1793915558120
     },
     {
@@ -668,7 +771,8 @@
       "who_can_send": "everyone",
       "last_message_at": 1794069066503,
       "last_message_content": "الو",
-      "created_at": 1794068353173
+      "created_at": 1794068353173,
+      "is_ai_active": false
     },
     {
       "id": "202.8.mstfa@gmail.com<->mo.mstfa.85@gmail.com",
