@@ -7241,7 +7241,7 @@ window.toggleChatDropdown = function(event) {
     if (typeof event.stopPropagation === "function") event.stopPropagation();
   }
   const now = Date.now();
-  if (now - _lastChatDropdownToggle < 180) return;
+  if (now - _lastChatDropdownToggle < 160) return;
   _lastChatDropdownToggle = now;
 
   const menu = document.getElementById("chat-dropdown-menu");
@@ -7262,10 +7262,13 @@ window.toggleChatDropdown = function(event) {
 
   if (isHidden) {
     menu.removeAttribute("hidden");
-    menu.style.display = isMobile ? "flex" : "block";
-    // Show backdrop only on mobile
-    if (isMobile && backdrop) backdrop.removeAttribute("hidden");
-    else if (backdrop) backdrop.setAttribute("hidden", "true");
+    menu.style.display = isMobile ? "flex" : "flex";
+    if (isMobile && backdrop) {
+      backdrop.removeAttribute("hidden");
+    } else if (backdrop) {
+      backdrop.setAttribute("hidden", "true");
+      backdrop.style.display = "none";
+    }
 
     if (typeof updateChatPinUI === "function") updateChatPinUI();
     if (typeof updateChatBlockUI === "function") updateChatBlockUI();
@@ -7273,7 +7276,10 @@ window.toggleChatDropdown = function(event) {
   } else {
     menu.setAttribute("hidden", "true");
     menu.style.display = "none";
-    if (backdrop) backdrop.setAttribute("hidden", "true");
+    if (backdrop) {
+      backdrop.setAttribute("hidden", "true");
+      backdrop.style.display = "none";
+    }
   }
 };
 
