@@ -531,7 +531,6 @@
                       class="three-dots-btn head-icon chat-menu-trigger-btn" 
                       id="chat-options-trigger"
                       onclick="toggleChatDropdown(event)"
-                      ontouchend="toggleChatDropdown(event)"
                       aria-label="خيارات المحادثة" 
                       title="خيارات المحادثة"
                     >
@@ -543,55 +542,102 @@
                     </button>
                     <!-- القائمة المنسدلة -->
                     <div id="chat-dropdown-menu" class="chat-dropdown chat-dropdown-menu" hidden>
-                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatPinOption" onclick="toggleActiveChatPin()">
-                        <span class="dropdown-item-icon">📌</span>
-                        <span class="dropdown-item-text" id="chatPinOptionText">تثبيت المحادثة (الحد 3)</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" onclick="openChatMedia()">
-                        <span class="dropdown-item-icon">📁</span>
-                        <span class="dropdown-item-text">الوسائط والمستندات</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" onclick="toggleMuteChat()">
-                        <span class="dropdown-item-icon">🔔</span>
-                        <span class="dropdown-item-text" id="muteChatOptionText">كتم التنبيهات</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatWallpaperButton" onclick="openWallpaperModal()">
-                        <span class="dropdown-item-icon">🎨</span>
-                        <span class="dropdown-item-text">تغيير الخلفية (بلاس)</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatLockButton" onclick="lockChatModal()">
-                        <span class="dropdown-item-icon">🔒</span>
-                        <span class="dropdown-item-text">قفل المحادثة</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatDisappearingButton">
-                        <span class="dropdown-item-icon">⏱️</span>
-                        <span class="dropdown-item-text">الرسائل ذاتية الاختفاء</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" id="chatSearchButton">
-                        <span class="dropdown-item-icon">⌕</span>
-                        <span class="dropdown-item-text">بحث داخل المحادثة</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" id="voiceCallButton">
-                        <span class="dropdown-item-icon">☎</span>
-                        <span class="dropdown-item-text">مكالمة صوتية</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item" id="videoCallButton">
-                        <span class="dropdown-item-icon">▣</span>
-                        <span class="dropdown-item-text">مكالمة فيديو</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item text-danger" id="chatBlockOption" onclick="toggleActiveChatBlock()">
-                        <span class="dropdown-item-icon">🚫</span>
-                        <span class="dropdown-item-text" id="chatBlockOptionText">حظر هذا المستخدم</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item text-warning" id="chatReportOption" onclick="openReportModal()">
-                        <span class="dropdown-item-icon">🚩</span>
-                        <span class="dropdown-item-text">إبلاغ عن هذا الحساب</span>
-                      </button>
-                      <button type="button" class="dropdown-item chat-dropdown-item text-danger" onclick="clearCurrentChat()">
-                        <span class="dropdown-item-icon">🗑️</span>
-                        <span class="dropdown-item-text">مسح محتوى المحادثة</span>
-                      </button>
+                      <div class="chat-sheet-handle-bar"></div>
+                      <div class="chat-sheet-head">
+                        <div class="chat-sheet-title">
+                          <span class="chat-sheet-title-icon">⚙️</span>
+                          <strong>خيارات وإعدادات المحادثة</strong>
+                        </div>
+                        <button type="button" class="chat-sheet-close-btn" onclick="toggleChatDropdown(event)" aria-label="إغلاق">✕</button>
+                      </div>
+                      <div class="chat-sheet-items-list">
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatPinOption" onclick="toggleActiveChatPin()">
+                          <span class="dropdown-item-icon">📌</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text" id="chatPinOptionText">تثبيت المحادثة</span>
+                            <span class="dropdown-item-sub">تثبيت المحادثة في أعلى قائمة الدردشات (الحد 3)</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" onclick="openChatMedia()">
+                          <span class="dropdown-item-icon">📁</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">الوسائط والمستندات المشتركة</span>
+                            <span class="dropdown-item-sub">عرض كافة الصور ومقاطع الفيديو والملفات</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" onclick="toggleMuteChat()">
+                          <span class="dropdown-item-icon">🔔</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text" id="muteChatOptionText">كتم التنبيهات</span>
+                            <span class="dropdown-item-sub">إيقاف الإشعارات وأصوات الرسائل الجديدة مؤقتاً</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatWallpaperButton" onclick="openWallpaperModal()">
+                          <span class="dropdown-item-icon">🎨</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">تغيير خلفية المحادثة (بلاس)</span>
+                            <span class="dropdown-item-sub">تخصيص خلفية الدردشة بألوان راقية وجذابة</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatLockButton" onclick="lockChatModal()">
+                          <span class="dropdown-item-icon">🔒</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">قفل المحادثة برمز سري</span>
+                            <span class="dropdown-item-sub">حماية خصوصية الرسائل برمز PIN سري</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatDisappearingButton">
+                          <span class="dropdown-item-icon">⏱️</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">الرسائل ذاتية الاختفاء</span>
+                            <span class="dropdown-item-sub">حذف الرسائل تلقائياً بعد فترة محددة</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatSearchButton">
+                          <span class="dropdown-item-icon">🔍</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">بحث داخل المحادثة</span>
+                            <span class="dropdown-item-sub">العثور على أي رسالة أو نص داخل المحادثة</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="voiceCallButton">
+                          <span class="dropdown-item-icon">📞</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">مكالمة صوتية مباشرة</span>
+                            <span class="dropdown-item-sub">اتصال صوتي مجاني مشفر وعالي الوضوح</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="videoCallButton">
+                          <span class="dropdown-item-icon">🎥</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">مكالمة فيديو عالية الدقة</span>
+                            <span class="dropdown-item-sub">مكالمة مرئية مباشرة وجهاً لوجه</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item text-danger" id="chatBlockOption" onclick="toggleActiveChatBlock()">
+                          <span class="dropdown-item-icon">🚫</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text" id="chatBlockOptionText">حظر هذا المستخدم</span>
+                            <span class="dropdown-item-sub">منع استلام أو إرسال أي رسائل مع هذا الحساب</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item text-warning" id="chatReportOption" onclick="openReportModal()">
+                          <span class="dropdown-item-icon">🚩</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">إبلاغ عن هذا الحساب</span>
+                            <span class="dropdown-item-sub">إرسال تقرير وشكوى لإدارة ومراجعي شاتو</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item text-danger" onclick="clearCurrentChat()">
+                          <span class="dropdown-item-icon">🗑️</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text">مسح محتوى المحادثة</span>
+                            <span class="dropdown-item-sub">حذف كافة رسائل هذه المحادثة نهائياً</span>
+                          </div>
+                        </button>
+                      </div>
                     </div>
+                    <div id="chatMenuBackdrop" class="chat-sheet-backdrop" onclick="toggleChatDropdown(event)" hidden></div>
                   </div>
                 </div>
               </div>
@@ -650,24 +696,69 @@
 
               <!-- قائمة المرفقات المنبثقة -->
               <div class="attach-menu" id="attachMenu" hidden>
-                <button type="button" class="attach-menu-item" id="attachLocationBtn">
-                  <span class="attach-item-icon">📍</span>
-                  <span class="attach-item-text" data-i18n="sendLocation">إرسال موقع</span>
-                </button>
-                <button type="button" class="attach-menu-item" id="attachPollBtn">
-                  <span class="attach-item-icon">📊</span>
-                  <span class="attach-item-text" data-i18n="createPoll">استطلاع رأي</span>
-                </button>
-                <button type="button" class="attach-menu-item" id="attachStickerBtn">
-                  <span class="attach-item-icon">🎭</span>
-                  <span class="attach-item-text" data-i18n="stickers">استيكرات</span>
-                </button>
-                <button type="button" class="attach-menu-item" id="attachDocBtn">
-                  <span class="attach-item-icon">📄</span>
-                  <span class="attach-item-text">مستند أو ملف</span>
-                </button>
+                <div class="chat-sheet-handle-bar"></div>
+                <div class="chat-sheet-head">
+                  <div class="chat-sheet-title">
+                    <span class="chat-sheet-title-icon">📎</span>
+                    <strong>المرفقات والمشاركة</strong>
+                  </div>
+                  <button type="button" class="chat-sheet-close-btn" onclick="toggleAttachMenu(event)" aria-label="إغلاق">✕</button>
+                </div>
+                <div class="attach-items-grid">
+                  <button type="button" class="attach-menu-item attach-item-camera" id="attachCameraBtn">
+                    <div class="attach-item-circle circle-camera">📷</div>
+                    <div class="attach-item-info">
+                      <strong class="attach-item-title">الكاميرا</strong>
+                      <span class="attach-item-desc">التقاط صورة فورية</span>
+                    </div>
+                  </button>
+                  <button type="button" class="attach-menu-item attach-item-gallery" id="attachGalleryBtn">
+                    <div class="attach-item-circle circle-gallery">🖼️</div>
+                    <div class="attach-item-info">
+                      <strong class="attach-item-title">الصور والمعرض</strong>
+                      <span class="attach-item-desc">صور وفيديوهات</span>
+                    </div>
+                  </button>
+                  <button type="button" class="attach-menu-item attach-item-doc" id="attachDocBtn">
+                    <div class="attach-item-circle circle-doc">📄</div>
+                    <div class="attach-item-info">
+                      <strong class="attach-item-title">مستند أو ملف</strong>
+                      <span class="attach-item-desc">PDF وملفات ومستندات</span>
+                    </div>
+                  </button>
+                  <button type="button" class="attach-menu-item attach-item-location" id="attachLocationBtn">
+                    <div class="attach-item-circle circle-location">📍</div>
+                    <div class="attach-item-info">
+                      <strong class="attach-item-title">مشاركة الموقع</strong>
+                      <span class="attach-item-desc">الموقع الجغرافي المباشر</span>
+                    </div>
+                  </button>
+                  <button type="button" class="attach-menu-item attach-item-poll" id="attachPollBtn">
+                    <div class="attach-item-circle circle-poll">📊</div>
+                    <div class="attach-item-info">
+                      <strong class="attach-item-title">استطلاع رأي</strong>
+                      <span class="attach-item-desc">إنشاء تصويت تفاعلي</span>
+                    </div>
+                  </button>
+                  <button type="button" class="attach-menu-item attach-item-sticker" id="attachStickerBtn">
+                    <div class="attach-item-circle circle-sticker">🎭</div>
+                    <div class="attach-item-info">
+                      <strong class="attach-item-title">الملصقات والاستيكرات</strong>
+                      <span class="attach-item-desc">ملصقات متحركة وVIP</span>
+                    </div>
+                  </button>
+                  <button type="button" class="attach-menu-item attach-item-voice" id="attachVoiceBtn">
+                    <div class="attach-item-circle circle-voice">🎙️</div>
+                    <div class="attach-item-info">
+                      <strong class="attach-item-title">تسجيل صوتي</strong>
+                      <span class="attach-item-desc">رسالة صوتية سريعة</span>
+                    </div>
+                  </button>
+                </div>
+                <input type="file" id="cameraFileInput" accept="image/*" capture="environment" style="display: none;" />
                 <input type="file" id="docFileInput" style="display: none;" accept=".pdf,.doc,.docx,.txt,.zip,.rar,.xls,.xlsx" />
               </div>
+              <div id="attachMenuBackdrop" class="chat-sheet-backdrop" onclick="toggleAttachMenu(event)" hidden></div>
 
               <!-- شريط تنبيه الحظر (عند حظر المستخدم) -->
               <div id="blockedChatBanner" class="blocked-chat-banner" hidden>
