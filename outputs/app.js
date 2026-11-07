@@ -320,7 +320,18 @@ const emptyState = {
 const state = loadState();
 ensureDirectory();
 
-const el = (id) => document.getElementById(id);
+const el = (id) => {
+  if (!id) return null;
+  let elem = document.getElementById(id);
+  if (!elem && id.includes("-")) {
+    const camel = id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    elem = document.getElementById(camel);
+  } else if (!elem && /[A-Z]/.test(id)) {
+    const kebab = id.replace(/([A-Z])/g, "-$1").toLowerCase();
+    elem = document.getElementById(kebab);
+  }
+  return elem;
+};
 
 // Elements
 const langToggleBtn = el("langToggleBtn");
@@ -2696,14 +2707,42 @@ function renderNotifications() {
 /* ==========================================================================
    7. أدوات المحادثة: إرسال موقع، استطلاع رأي، استيكرات
    ========================================================================== */
-function toggleAttachMenu() {
-  if (!attachMenu) return;
-  attachMenu.hidden = !attachMenu.hidden;
-  if (!attachMenu.hidden) {
-    emojiTray.hidden = true;
-    stickerTray.hidden = true;
+let _lastAttachMenuToggle = 0;
+function toggleAttachMenu(event) {
+  if (event && typeof event.stopPropagation === "function") event.stopPropagation();
+  const now = Date.now();
+  if (now - _lastAttachMenuToggle < 180) return;
+  _lastAttachMenuToggle = now;
+
+  const aMenu = document.getElementById("attachMenu");
+  const aBackdrop = document.getElementById("attachMenuBackdrop");
+  if (!aMenu) return;
+
+  // Close chat dropdown if open
+  const cMenu = document.getElementById("chat-dropdown-menu");
+  const cBackdrop = document.getElementById("chatMenuBackdrop");
+  if (cMenu && (!cMenu.hasAttribute("hidden") && cMenu.style.display !== "none")) {
+    cMenu.setAttribute("hidden", "true");
+    cMenu.style.display = "none";
+    if (cBackdrop) cBackdrop.setAttribute("hidden", "true");
+  }
+
+  const isHidden = aMenu.hasAttribute("hidden") || aMenu.style.display === "none";
+  if (isHidden) {
+    aMenu.removeAttribute("hidden");
+    aMenu.style.display = "block";
+    if (aBackdrop) aBackdrop.removeAttribute("hidden");
+    const eTray = document.getElementById("emojiTray");
+    const sTray = document.getElementById("stickerTray");
+    if (eTray) eTray.hidden = true;
+    if (sTray) sTray.hidden = true;
+  } else {
+    aMenu.setAttribute("hidden", "true");
+    aMenu.style.display = "none";
+    if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
   }
 }
+window.toggleAttachMenu = toggleAttachMenu;
 
 function sendLocationMessage() {
   if (attachMenu) attachMenu.hidden = true;
@@ -5165,40 +5204,45 @@ emojiTray.querySelectorAll("button").forEach((button) => {
   });
 });
 
-// 7. قائمة المرفقات (موقع / استطلاع رأي / استيكرات)
+// 7. قائمة المرفقات والمشاركة مع كامل الخيارات بالأسماء
 if (attachButton) {
   attachButton.addEventListener("click", (e) => {
     e.stopPropagation();
+    toggleAttachMenu(e);
+  });
+}
+
+// زر الكاميرا الفورية
+const attachCameraBtn = el("attachCameraBtn");
+const cameraFileInput = el("cameraFileInput");
+if (attachCameraBtn && cameraFileInput) {
+  attachCameraBtn.addEventListener("click", () => {
     toggleAttachMenu();
+    cameraFileInput.click();
+  });
+  cameraFileInput.addEventListener("change", () => {
+    if (cameraFileInput.files && cameraFileInput.files[0]) {
+      sendImage(cameraFileInput.files[0]);
+      cameraFileInput.value = "";
+    }
   });
 }
 
-if (attachLocationBtn) {
-  attachLocationBtn.addEventListener("click", () => {
-    if (attachMenu) attachMenu.hidden = true;
-    sendLocationMessage();
+// زر الصور والمعرض
+const attachGalleryBtn = el("attachGalleryBtn");
+if (attachGalleryBtn && imageInput) {
+  attachGalleryBtn.addEventListener("click", () => {
+    toggleAttachMenu();
+    imageInput.click();
   });
 }
 
-if (attachPollBtn) {
-  attachPollBtn.addEventListener("click", () => {
-    if (attachMenu) attachMenu.hidden = true;
-    openPollDialog();
-  });
-}
-
-if (attachStickerBtn) {
-  attachStickerBtn.addEventListener("click", () => {
-    if (attachMenu) attachMenu.hidden = true;
-    toggleStickerTray();
-  });
-}
-
+// زر المستندات والملفات
 const attachDocBtn = el("attachDocBtn");
 const docFileInput = el("docFileInput");
 if (attachDocBtn && docFileInput) {
   attachDocBtn.addEventListener("click", () => {
-    if (attachMenu) attachMenu.hidden = true;
+    toggleAttachMenu();
     docFileInput.click();
   });
   docFileInput.addEventListener("change", () => {
@@ -5206,6 +5250,39 @@ if (attachDocBtn && docFileInput) {
       sendDocument(docFileInput.files[0]);
       docFileInput.value = "";
     }
+  });
+}
+
+// زر مشاركة الموقع الجغرافي
+if (attachLocationBtn) {
+  attachLocationBtn.addEventListener("click", () => {
+    toggleAttachMenu();
+    sendLocationMessage();
+  });
+}
+
+// زر استطلاع رأي
+if (attachPollBtn) {
+  attachPollBtn.addEventListener("click", () => {
+    toggleAttachMenu();
+    openPollDialog();
+  });
+}
+
+// زر الملصقات والاستيكرات
+if (attachStickerBtn) {
+  attachStickerBtn.addEventListener("click", () => {
+    toggleAttachMenu();
+    toggleStickerTray();
+  });
+}
+
+// زر الرسالة الصوتية من قائمة المرفقات
+const attachVoiceBtn = el("attachVoiceBtn");
+if (attachVoiceBtn) {
+  attachVoiceBtn.addEventListener("click", () => {
+    toggleAttachMenu();
+    if (typeof toggleRecording === "function") toggleRecording();
   });
 }
 
@@ -5237,12 +5314,15 @@ if (pollForm) {
   pollForm.addEventListener("submit", submitPoll);
 }
 
-// إغلاق قائمة المرفقات عند النقر بالخارج
+// إغلاق قائمة المرفقات عند النقر بالخارج أو على الخلفية
 document.addEventListener("click", (e) => {
-  if (attachMenu && !attachMenu.hidden) {
-    if (!attachMenu.contains(e.target) && e.target !== attachButton && !attachButton?.contains(e.target)) {
-      attachMenu.hidden = true;
-    }
+  const aMenu = document.getElementById("attachMenu");
+  const aBackdrop = document.getElementById("attachMenuBackdrop");
+  const aBtn = document.getElementById("attachButton");
+  if (!aMenu || aMenu.hasAttribute("hidden") || aMenu.style.display === "none") return;
+
+  if (e.target === aBackdrop || (!aMenu.contains(e.target) && e.target !== aBtn && !aBtn?.contains(e.target))) {
+    toggleAttachMenu();
   }
 });
 
@@ -7160,20 +7240,40 @@ async function startApplication() {
 /* ==========================================================================
    5. إصلاح زر القائمة (الثلاث نقاط ⋮) على الهواتف والأجهزة اللمسية
    ========================================================================== */
+let _lastChatDropdownToggle = 0;
 window.toggleChatDropdown = function(event) {
   if (event) {
-    if (typeof event.preventDefault === "function") event.preventDefault();
     if (typeof event.stopPropagation === "function") event.stopPropagation();
   }
+  const now = Date.now();
+  if (now - _lastChatDropdownToggle < 180) return;
+  _lastChatDropdownToggle = now;
+
   const menu = document.getElementById("chat-dropdown-menu");
+  const backdrop = document.getElementById("chatMenuBackdrop");
   if (!menu) return;
+
+  // Close attach menu if open
+  const aMenu = document.getElementById("attachMenu");
+  const aBackdrop = document.getElementById("attachMenuBackdrop");
+  if (aMenu && (!aMenu.hasAttribute("hidden") && aMenu.style.display !== "none")) {
+    aMenu.setAttribute("hidden", "true");
+    aMenu.style.display = "none";
+    if (aBackdrop) aBackdrop.setAttribute("hidden", "true");
+  }
+
   const isHidden = menu.hasAttribute("hidden") || menu.style.display === "none";
   if (isHidden) {
     menu.removeAttribute("hidden");
     menu.style.display = "block";
+    if (backdrop) backdrop.removeAttribute("hidden");
+    if (typeof updateChatPinUI === "function") updateChatPinUI();
+    if (typeof updateChatBlockUI === "function") updateChatBlockUI();
+    if (typeof updateChatWallpaperUI === "function") updateChatWallpaperUI();
   } else {
     menu.setAttribute("hidden", "true");
     menu.style.display = "none";
+    if (backdrop) backdrop.setAttribute("hidden", "true");
   }
 };
 
@@ -7406,23 +7506,14 @@ window.handleReportSubmit = async function(event) {
   }
 };
 
-// إغلاق قائمة خيارات المحادثة عند النقر في أي مكان آخر
+// إغلاق قائمة خيارات المحادثة عند النقر في أي مكان آخر أو على الخلفية
 document.addEventListener("click", (e) => {
-  if (!e.target.closest(".chat-menu-wrapper")) {
-    const menu = document.getElementById("chat-dropdown-menu");
-    if (menu) {
-      menu.setAttribute("hidden", "true");
-      menu.style.display = "none";
-    }
-  }
-});
-document.addEventListener("touchend", (e) => {
-  if (!e.target.closest(".chat-menu-wrapper")) {
-    const menu = document.getElementById("chat-dropdown-menu");
-    if (menu) {
-      menu.setAttribute("hidden", "true");
-      menu.style.display = "none";
-    }
+  const menu = document.getElementById("chat-dropdown-menu");
+  const backdrop = document.getElementById("chatMenuBackdrop");
+  if (!menu || menu.hasAttribute("hidden") || menu.style.display === "none") return;
+  
+  if (e.target === backdrop || (!e.target.closest(".chat-menu-wrapper") && !e.target.closest("#chat-dropdown-menu"))) {
+    window.toggleChatDropdown();
   }
 });
 
