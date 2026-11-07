@@ -14,7 +14,18 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>شاتو - Chato Messenger</title>
-    <link rel="stylesheet" href="./styles.css?v=4.0" />
+    <link rel="stylesheet" href="./styles.css?v=5.0" />
+  <script>
+      // Force SW cache clear and update
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          for (var reg of regs) {
+            reg.update();
+            if (reg.active) reg.active.postMessage({ type: 'CLEAR_CACHE' });
+          }
+        });
+      }
+    </script>
   </head>
   <body>
     <canvas id="particleCanvas" aria-hidden="true"></canvas>
@@ -637,7 +648,7 @@
                         </button>
                       </div>
                     </div>
-                    <div id="chatMenuBackdrop" class="chat-sheet-backdrop" onclick="toggleChatDropdown(event)" hidden></div>
+                    
                   </div>
                 </div>
               </div>
@@ -758,7 +769,7 @@
                 <input type="file" id="cameraFileInput" accept="image/*" capture="environment" style="display: none;" />
                 <input type="file" id="docFileInput" style="display: none;" accept=".pdf,.doc,.docx,.txt,.zip,.rar,.xls,.xlsx" />
               </div>
-              <div id="attachMenuBackdrop" class="chat-sheet-backdrop" onclick="toggleAttachMenu(event)" hidden></div>
+              
 
               <!-- شريط تنبيه الحظر (عند حظر المستخدم) -->
               <div id="blockedChatBanner" class="blocked-chat-banner" hidden>
@@ -2003,6 +2014,6 @@
 
     <script src="./qrcode.min.js"></script>
     <script src="./jsqr.min.js"></script>
-    <script src="./app.js?v=4.0"></script>
+    <script src="./app.js?v=5.0"></script>
   </body>
 </html>
