@@ -23,7 +23,7 @@
       "status": "active",
       "createdAt": 1793717813987,
       "lastLogin": 1793717813987,
-      "lastActive": 1793795411222,
+      "lastActive": 1794068401751,
       "chatPlusUntil": 1798902282457,
       "isChatPlus": true
     },
@@ -37,7 +37,8 @@
       "status": "active",
       "createdAt": 1793915522983,
       "lastLogin": 1793915522983,
-      "lastActive": 1793978852693
+      "lastActive": 1794068417731,
+      "lastOffline": 1794068419741
     }
   ],
   "friendships": [
@@ -54,6 +55,13 @@
       "to": "2012.8.mstfa@gmail.com",
       "status": "accepted",
       "createdAt": 1793915552852
+    },
+    {
+      "id": "915dbe61-8280-4a6c-ad3e-8ebd88a0637e",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "az7077407@gmail.com",
+      "status": "accepted",
+      "createdAt": 1794068345203
     }
   ],
   "friendRequests": [],
@@ -235,8 +243,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1793966184145
     },
     {
@@ -260,8 +268,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1793966192462
     },
     {
@@ -285,8 +293,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1793966197888
     },
     {
@@ -310,8 +318,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1793966204881
     },
     {
@@ -335,9 +343,59 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
+      "status": "read",
+      "read": true,
+      "createdAt": 1793966207579
+    },
+    {
+      "id": "37f7b9f6-2e62-4244-8e1b-3e55b434fa49",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "az7077407@gmail.com",
+      "type": "text",
+      "text": "a7096c3fec5fa2240a6fb0688f5dbe74acc48dfbb47759",
+      "is_encrypted": true,
+      "encryption_iv": "795a32f199ca22e1e95fb613",
+      "encryption_auth_tag": "d95869d1b30b67269a63a53e64a65e20",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "read",
+      "read": true,
+      "createdAt": 1794068353173
+    },
+    {
+      "id": "b7b68d33-204d-45fd-9f98-30514786e22b",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "az7077407@gmail.com",
+      "to": "202.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "d856f66815ce",
+      "is_encrypted": true,
+      "encryption_iv": "24146fb22f3d9f2bc3418542",
+      "encryption_auth_tag": "612803fb5aef2aae5a06a1a6e81d20f7",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
       "status": "sent",
       "read": false,
-      "createdAt": 1793966207579
+      "createdAt": 1794068405330
     }
   ],
   "aiUsage": [
@@ -389,10 +447,10 @@
       "email": "202.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "fcbc1f6684079db1aafa1a06b0c70c046d3e7dd2ddc47c9e80d722e26206f1a3",
+      "access_token_hash": "6edde63b1e41c8c83cd518cc2eba49f93f836ebd3f81aae0012231c0826fb138",
       "refresh_token_hash": "f02b1e61454dbdba7e80fa8522bb666e1822a40ff56b68ac2ba555627c31ea23",
       "expires_at": 1798901813987,
-      "last_active_at": 1793795373192,
+      "last_active_at": 1794068335804,
       "created_at": 1793717813987,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmJsBW3tRF/Z4LXzwYNDu9lNLWcYSmuruIXIVaHwM5agAGX1v81QFiUrqVogLNONPHEVkwSTQgcmLiUuCCMvKYA=="
     },
@@ -402,10 +460,10 @@
       "email": "az7077407@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "329751cd045bc14c015d888e6164ba58d7ef7deeb74800cad981d5fadcdf7764",
+      "access_token_hash": "6c0882ba9b1de2ed50e4d4e1873f0bcebb26edcb9c669b5e0401c5ab058004bf",
       "refresh_token_hash": "dfecfdf6c870b5e6ddc01f75b77213ea8a5dce3af72b7c0a3d4b1a1891d4a9f5",
       "expires_at": 1799099522986,
-      "last_active_at": 1793966206460,
+      "last_active_at": 1794068369268,
       "created_at": 1793740480343,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg=="
     }
@@ -428,12 +486,12 @@
       "created_at": 1793915530765
     },
     {
-      "id": "19c5369a-6b19-4396-91b0-4736d0c00367",
+      "id": "5f7f289e-ac32-47cc-8d39-3650983a9bca",
       "user_email": "az7077407@gmail.com",
       "endpoint": "https://fcm.googleapis.com/fcm/send/foYnveD1tS4:APA91bHy4uvg7-4ULsQ6eWXvqE7jW5gD97zvdKkbJPZfYTjYsDZXtMnQ8STwGSWk2Hq6441kt4nFdkjEYu98bMLDeJVtAR4YXY4GtEetgM6OP4uT9k4ICcwqEuJPVMF8se_caph4XW4f",
       "p256dh": "BPsSBVF_xC4U5QHVPWxDOUxeELYhzOBUX2j3SB__XzcRn8D_pfH_DR2HyiAdXvSDyzLQR4dYi0N4v7ho--jfgfQ",
       "auth": "R_zt0FHH7qFOzQsbjFrfnA",
-      "created_at": 1793966209774
+      "created_at": 1794068369952
     }
   ],
   "emailVerifications": [],
@@ -455,6 +513,15 @@
       "last_message_at": 1793966207579,
       "last_message_content": "الو",
       "created_at": 1793915558120
+    },
+    {
+      "id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "direct_pair": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1794068405330,
+      "last_message_content": "نعم",
+      "created_at": 1794068353173
     }
   ],
   "chatParticipants": [],
