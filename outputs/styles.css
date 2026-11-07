@@ -6142,19 +6142,8 @@ h3 {
 }
 
 /* ==========================================================================
-   Chat Menus & Bottom Sheets (الإصدار المحسن v4.0 - كمبيوتر وموبايل بدون أي تعتيم أو ضباب)
+   Chat Menus & Desktop Popover (الإصدار النهائي v5.0 - نقي وبدون أي تعتيم أو ضباب)
    ========================================================================== */
-@keyframes sheetSlideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 @keyframes dropdownFadeIn {
   from {
     transform: translateY(-6px) scale(0.98);
@@ -6166,13 +6155,19 @@ h3 {
   }
 }
 
-/* ممنوع تماماً أي تعتيم أو بلور على شاشة الكمبيوتر */
-.chat-sheet-backdrop {
-  display: none !important;
+@keyframes sheetSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ==========================================================================
-   قائمة خيارات المحادثة (الكمبيوتر Desktop)
+   قائمة خيارات المحادثة (على الكمبيوتر Desktop)
    ========================================================================== */
 .chat-dropdown-menu,
 .chat-dropdown {
@@ -6196,14 +6191,12 @@ h3 {
   animation: dropdownFadeIn 0.15s ease-out !important;
 }
 
-/* في العربية (RTL): النقاط الثلاث في أقصى اليسار، لذا القائمة يجب أن تبدأ من اليسار وتتمدد لليمين داخل الشاشة */
 html[dir="rtl"] .chat-dropdown-menu,
 html[dir="rtl"] .chat-dropdown {
   left: 0 !important;
   right: auto !important;
 }
 
-/* في الإنجليزية (LTR): النقاط الثلاث في أقصى اليمين، لذا القائمة يجب أن تبدأ من اليمين وتتمدد لليسار */
 html[dir="ltr"] .chat-dropdown-menu,
 html[dir="ltr"] .chat-dropdown {
   right: 0 !important;
@@ -6217,7 +6210,6 @@ html[dir="ltr"] .chat-dropdown {
   box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6) !important;
 }
 
-/* رأس القائمة على الكمبيوتر */
 .chat-sheet-handle-bar {
   display: none !important;
 }
@@ -6262,7 +6254,6 @@ html[dir="ltr"] .chat-dropdown {
   gap: 2px !important;
 }
 
-/* عناصر خيارات المحادثة */
 .chat-dropdown-item {
   display: flex !important;
   align-items: center !important;
@@ -6342,7 +6333,7 @@ html[dir="ltr"] .chat-dropdown {
 }
 
 /* ==========================================================================
-   قائمة المرفقات والمشاركة (على الكمبيوتر Desktop)
+   قائمة المرفقات والمشاركة (الكمبيوتر Desktop)
    ========================================================================== */
 .attach-menu {
   position: absolute !important;
@@ -6467,14 +6458,6 @@ html[dir="ltr"] .attach-menu {
    الموبايل والهواتف فقط (Mobile Bottom Sheets <= 768px)
    ========================================================================== */
 @media (max-width: 768px) {
-  .chat-sheet-backdrop:not([hidden]) {
-    display: block !important;
-    position: fixed !important;
-    inset: 0 !important;
-    background: rgba(0, 0, 0, 0.45) !important;
-    z-index: 999998 !important;
-  }
-
   .chat-options-dropdown {
     overflow: visible !important;
   }
