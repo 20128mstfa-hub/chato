@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>شاتو - Chato Messenger</title>
-    <link rel="stylesheet" href="./styles.css?v=6.0" />
+    <link rel="stylesheet" href="./styles.css?v=7.1" />
   <script>
       // Force SW cache clear and update
       if ('serviceWorker' in navigator) {
@@ -289,13 +289,7 @@
             <!-- عنصر أيقونة الاستوري بصورة الحساب وعلامة + -->
             <div class="my-story-container" id="myStoryRailBtn" title="حالتي - اضغط للمشاهدة أو إضافة حالة جديدة">
               <div class="story-avatar-ring" id="myStoryAvatarRing">
-                <img 
-                  id="myStoryAvatarImg"
-                  src="./assets/default-avatar.png"
-                  onerror="this.onerror=null; this.src='./assets/default-avatar.png';" 
-                  alt="حالتي" 
-                  class="story-avatar-img" 
-                />
+                <img id="myStoryAvatarImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231e293b'/%3E%3Ccircle cx='32' cy='24' r='14' fill='%2364748b'/%3E%3Cpath d='M14 56c0-10 8-18 18-18s18 8 18 18' fill='%2364748b'/%3E%3C/svg%3E" alt="" class="story-avatar-img" />
               </div>
               <!-- علامة + الصغيرة لإضافة استوري جديد -->
               <button 
@@ -499,7 +493,7 @@
                   <div class="story-bar-item" id="myStoryBarItem" title="حالتي">
                     <div class="story-bar-avatar-wrap">
                       <div class="story-avatar-ring" id="myStoryBarRing">
-                        <img id="myStoryBarImg" src="" alt="حالتي" class="story-avatar-img" />
+                        <img id="myStoryBarImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231e293b'/%3E%3Ccircle cx='32' cy='24' r='14' fill='%2364748b'/%3E%3Cpath d='M14 56c0-10 8-18 18-18s18 8 18 18' fill='%2364748b'/%3E%3C/svg%3E" alt="" class="story-avatar-img" />
                       </div>
                       <button type="button" class="story-add-plus-badge" id="myStoryBarPlusBtn" title="إضافة حالة">+</button>
                     </div>
@@ -571,7 +565,7 @@
                 <button class="delete-friend-button" id="deleteFriendButton" type="button" hidden data-i18n="deleteFriend">حذف الصديق</button>
                 <button class="ai-image-gen-btn" id="generateAiImageBtn" type="button" hidden>🎨 إنشاء صورة</button>
                 <div class="chat-actions">
-                  <div class="chat-menu-wrapper chat-options-dropdown" id="chatOptionsDropdown" style="position: relative; z-index: 9999;">
+                  <div class="chat-menu-wrapper chat-options-dropdown" id="chatOptionsDropdown" style="position: relative; z-index: 999999;">
                     <button 
                       type="button" 
                       class="three-dots-btn head-icon chat-menu-trigger-btn" 
@@ -632,28 +626,28 @@
                             <span class="dropdown-item-sub">حماية خصوصية الرسائل برمز PIN سري</span>
                           </div>
                         </button>
-                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatDisappearingButton">
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatDisappearingButton" onclick="openDisappearingMessagesModal()">
                           <span class="dropdown-item-icon">⏱️</span>
                           <div class="dropdown-item-col">
                             <span class="dropdown-item-text">الرسائل ذاتية الاختفاء</span>
                             <span class="dropdown-item-sub">حذف الرسائل تلقائياً بعد فترة محددة</span>
                           </div>
                         </button>
-                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatSearchButton">
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="chatSearchButton" onclick="openChatSearch()">
                           <span class="dropdown-item-icon">🔍</span>
                           <div class="dropdown-item-col">
                             <span class="dropdown-item-text">بحث داخل المحادثة</span>
                             <span class="dropdown-item-sub">العثور على أي رسالة أو نص داخل المحادثة</span>
                           </div>
                         </button>
-                        <button type="button" class="dropdown-item chat-dropdown-item" id="voiceCallButton">
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="voiceCallButton" onclick="triggerVoiceCall()">
                           <span class="dropdown-item-icon">📞</span>
                           <div class="dropdown-item-col">
                             <span class="dropdown-item-text">مكالمة صوتية مباشرة</span>
                             <span class="dropdown-item-sub">اتصال صوتي مجاني مشفر وعالي الوضوح</span>
                           </div>
                         </button>
-                        <button type="button" class="dropdown-item chat-dropdown-item" id="videoCallButton">
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="videoCallButton" onclick="triggerVideoCall()">
                           <span class="dropdown-item-icon">🎥</span>
                           <div class="dropdown-item-col">
                             <span class="dropdown-item-text">مكالمة فيديو عالية الدقة</span>
@@ -2054,11 +2048,9 @@
 
     <script src="./qrcode.min.js"></script>
     <script src="./jsqr.min.js"></script>
-    <script src="./app.js?v=6.0"></script>
+    <script src="./app.js?v=7.1"></script>
   
     <!-- طبقة شفافة تماماً لإغلاق القوائم باللمس أو النقر على الهاتف والكمبيوتر بدون أي غباش -->
-    <div id="menuDismissOverlay" class="menu-dismiss-overlay" hidden></div>
-
     <!-- حاوية إشعارات واتساب الجانبية والعلوية للهاتف والكمبيوتر -->
     <div id="whatsappNotificationContainer" class="whatsapp-notif-container"></div>
   </body>
