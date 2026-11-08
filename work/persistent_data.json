@@ -11,7 +11,7 @@
       "createdAt": 1793717099198,
       "lastLogin": 1793718189698,
       "lastActive": 1794077162979,
-      "lastOffline": 1794172692229
+      "lastOffline": 1794172906902
     },
     {
       "id": "ca5488e2-8716-4c84-a915-7f592ae134bc",
@@ -982,7 +982,7 @@
       "access_token_hash": "a9946dc8322f8801ab166bb8c6ac27c585cfdfa8f46de1fb9de24d85db88349d",
       "refresh_token_hash": "efd36c17cc28df85cde511cd386bcdf10f91c35327401d989304b4d2f1111a84",
       "expires_at": 1798902189698,
-      "last_active_at": 1794172694122,
+      "last_active_at": 1794172904464,
       "created_at": 1793716793610,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
