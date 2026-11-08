@@ -717,6 +717,10 @@ function avatarContent(node, person) {
     const img = document.createElement("img");
     img.src = person.image;
     img.alt = "";
+    img.onerror = () => {
+      img.remove();
+      node.textContent = person?.name?.[0]?.toUpperCase() || "C";
+    };
     node.appendChild(img);
   } else {
     node.textContent = person?.name?.[0]?.toUpperCase() || "C";
@@ -945,6 +949,18 @@ function getChatLatestTimestamp(chatId) {
 
 function getChats() {
   const list = [];
+
+  // قناة إعلانات وتحديثات شاتو الرسمية (محادثة مقفولة بشعار التطبيق)
+  list.push({
+    id: "chato_announcements",
+    type: "announcements",
+    name: "إعلانات شاتو الرسمية 📢",
+    meta: (state.ads && state.ads.length) ? state.ads[0].title : "أحدث الإعلانات والتحديثات الرسمية",
+    image: "./favicon.png",
+    initial: "ش",
+    readonly: true,
+    isOfficial: true
+  });
 
   // محادثة الذكاء الاصطناعي Chato Assistant
   list.push({
@@ -1232,11 +1248,24 @@ function openChat(id) {
     }
   }
 
-  // 2. إذا كانت رسالة إدارية رسمية خاصة أو مجموعة مقيدة المشرفين فقط: إخفاء صندوق الإرسال
-  const isReadOnly = chat.type === "admin_notice" || chat.readonly;
+  // 2. إذا كانت رسالة إدارية رسمية خاصة أو قناة إعلانات مقفولة أو مجموعة مقيدة المشرفين فقط
+  const isAnnouncements = chat.id === "chato_announcements" || chat.type === "announcements";
+  const isReadOnly = chat.type === "admin_notice" || chat.readonly || isAnnouncements;
   const readOnlyNotice = el("readOnlyNotice");
+  const announcementReadOnlyNotice = el("announcementReadOnlyNotice");
   const groupReadOnlyNotice = el("groupReadOnlyNotice");
   const composer = el("composer");
+  const composerForm = el("composerForm");
+
+  if (isAnnouncements) {
+    if (announcementReadOnlyNotice) announcementReadOnlyNotice.hidden = false;
+    if (composerForm) composerForm.style.display = "none";
+    if (readOnlyNotice) readOnlyNotice.hidden = true;
+    if (groupReadOnlyNotice) groupReadOnlyNotice.hidden = true;
+  } else {
+    if (announcementReadOnlyNotice) announcementReadOnlyNotice.hidden = true;
+    if (composerForm) composerForm.style.display = "flex";
+  }
 
   // التحقق من صلاحية الإرسال في المجموعات (Admins Only)
   let isRestrictedGroupMember = false;
@@ -1306,6 +1335,31 @@ function openChat(id) {
 }
 
 function renderMessages() {
+  // عرض قناة إعلانات وتحديثات شاتو الرسمية
+  if (state.activeChatId === "chato_announcements") {
+    messages.innerHTML = "";
+    const ads = state.ads || [];
+    if (!ads.length) {
+      messages.innerHTML = '<p class="empty-state" style="padding: 30px; text-align: center; color: var(--muted);">لا توجد إعلانات منشورة حالياً في هذه القناة 📢</p>';
+      return;
+    }
+    ads.forEach((ad) => {
+      const card = document.createElement("article");
+      card.className = "announcement-chat-card";
+      card.innerHTML = `
+        <div class="announcement-card-head">
+          <span class="announcement-card-title">📢 ${escapeHtml(ad.title)}</span>
+          <span class="announcement-card-date">${formatStoryTime(ad.createdAt)}</span>
+        </div>
+        <div class="announcement-card-text">${escapeHtml(ad.content)}</div>
+        ${ad.imageUrl ? `<img src="${ad.imageUrl}" class="announcement-card-img" alt="" onerror="this.remove()" />` : ""}
+        ${ad.link ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; color:#0284c7; font-weight:700;">🔗 المزيد من التفاصيل</a>` : ""}
+      `;
+      messages.appendChild(card);
+    });
+    return;
+  }
+
   const query = normalize(messageSearchInput.value);
   const chatMessages = state.conversations[state.activeChatId] || [];
   messages.innerHTML = "";
@@ -2712,23 +2766,26 @@ function toggleAttachMenu(event) {
   const menu = document.getElementById("attachMenu");
   if (!menu) return;
 
-  const cMenu = document.getElementById("chat-dropdown-menu");
-  if (cMenu) {
-    cMenu.setAttribute("hidden", "true");
-    cMenu.style.display = "none";
-  }
-
   const isHidden = menu.hasAttribute("hidden") || menu.style.display === "none";
   if (isHidden) {
+    const cMenu = document.getElementById("chat-dropdown-menu");
+    if (cMenu) {
+      cMenu.setAttribute("hidden", "true");
+      cMenu.style.display = "none";
+    }
     menu.removeAttribute("hidden");
     menu.style.display = "block";
+    const overlay = document.getElementById("menuDismissOverlay");
+    if (overlay) {
+      overlay.removeAttribute("hidden");
+      overlay.style.display = "block";
+    }
     const eTray = document.getElementById("emojiTray");
     const sTray = document.getElementById("stickerTray");
     if (eTray) eTray.hidden = true;
     if (sTray) sTray.hidden = true;
   } else {
-    menu.setAttribute("hidden", "true");
-    menu.style.display = "none";
+    closeAllChatMenus();
   }
 }
 window.toggleAttachMenu = toggleAttachMenu;
@@ -3021,42 +3078,160 @@ async function sendSticker(emoji, name) {
 /* ==========================================================================
    Voice Note Recording
    ========================================================================== */
+let voiceStream = null;
+let voiceRecordTimerInterval = null;
+let voiceRecordSeconds = 0;
+let isVoicePaused = false;
+let voiceCancelled = false;
+
+function formatRecordTimer(secs) {
+  const m = Math.floor(secs / 60).toString().padStart(2, "0");
+  const s = (secs % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+}
+
+function restoreComposerAfterVoice() {
+  const bar = el("voiceRecordingBar");
+  if (bar) bar.hidden = true;
+  if (messageInput) messageInput.style.display = "";
+  if (voiceButton) {
+    voiceButton.style.display = "";
+    voiceButton.classList.remove("is-recording");
+  }
+  const attachBtn = el("attachButton");
+  if (attachBtn) attachBtn.style.display = "";
+  const imgBtn = el("imageAttachButton");
+  if (imgBtn) imgBtn.style.display = "";
+  const emojiBtn = el("emojiButton");
+  if (emojiBtn) emojiBtn.style.display = "";
+  const sendBtn = composerForm?.querySelector(".send-button");
+  if (sendBtn) sendBtn.style.display = "";
+  const timerEl = el("voiceRecordTimer");
+  if (timerEl) timerEl.textContent = "00:00";
+}
+
 function toggleRecording() {
   if (!navigator.mediaDevices?.getUserMedia) {
-    recorderStatus.textContent = t("recordNotSupported");
-    return;
-  }
-  if (mediaRecorder?.state === "recording") {
-    mediaRecorder.stop();
+    showToast("الميكروفون غير مدعوم في متصفحك");
     return;
   }
   navigator.mediaDevices
     .getUserMedia({ audio: true })
     .then((stream) => {
+      voiceStream = stream;
       mediaChunks = [];
+      voiceCancelled = false;
+      isVoicePaused = false;
+      voiceRecordSeconds = 0;
+
       mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.ondataavailable = (event) => mediaChunks.push(event.data);
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) mediaChunks.push(event.data);
+      };
+
       mediaRecorder.onstop = () => {
+        stream.getTracks().forEach((track) => track.stop());
+        clearInterval(voiceRecordTimerInterval);
+        restoreComposerAfterVoice();
+        if (voiceCancelled) return;
+
         const blob = new Blob(mediaChunks, { type: "audio/webm" });
         const reader = new FileReader();
         reader.onload = () => {
+          state.conversations[state.activeChatId] ||= [];
           state.conversations[state.activeChatId].push(ownMessage("voice", { audioUrl: reader.result }));
           saveState();
           renderMessages();
           renderConversations();
-          stream.getTracks().forEach((track) => track.stop());
+          showToast("✅ تم إرسال التسجيل الصوتي بنجاح");
         };
         reader.readAsDataURL(blob);
-        voiceButton.classList.remove("is-recording");
-        recorderStatus.textContent = t("voiceSentSuccess");
       };
+
       mediaRecorder.start();
-      voiceButton.classList.add("is-recording");
-      recorderStatus.textContent = t("recordingVoice");
+
+      // إخفاء مدخلات المحادثة وإظهار شريط التسجيل المتطور
+      const bar = el("voiceRecordingBar");
+      if (bar) bar.hidden = false;
+      if (messageInput) messageInput.style.display = "none";
+      if (voiceButton) {
+        voiceButton.style.display = "none";
+        voiceButton.classList.add("is-recording");
+      }
+      const attachBtn = el("attachButton");
+      if (attachBtn) attachBtn.style.display = "none";
+      const imgBtn = el("imageAttachButton");
+      if (imgBtn) imgBtn.style.display = "none";
+      const emojiBtn = el("emojiButton");
+      if (emojiBtn) emojiBtn.style.display = "none";
+      const sendBtn = composerForm?.querySelector(".send-button");
+      if (sendBtn) sendBtn.style.display = "none";
+
+      const timerEl = el("voiceRecordTimer");
+      const labelEl = el("voiceRecordLabel");
+      const pauseIcon = el("voicePauseIcon");
+      if (timerEl) timerEl.textContent = "00:00";
+      if (labelEl) labelEl.textContent = "جاري التسجيل...";
+      if (pauseIcon) {
+        pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+      }
+
+      clearInterval(voiceRecordTimerInterval);
+      voiceRecordTimerInterval = setInterval(() => {
+        if (!isVoicePaused) {
+          voiceRecordSeconds++;
+          if (timerEl) timerEl.textContent = formatRecordTimer(voiceRecordSeconds);
+        }
+      }, 1000);
+
+      triggerHaptic(20);
     })
     .catch(() => {
-      recorderStatus.textContent = t("micPermissionError");
+      showToast("يرجى السماح بصلاحية الميكروفون لبدء التسجيل");
     });
+}
+
+function cancelVoiceRecording() {
+  voiceCancelled = true;
+  clearInterval(voiceRecordTimerInterval);
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+  } else if (voiceStream) {
+    voiceStream.getTracks().forEach((t) => t.stop());
+    restoreComposerAfterVoice();
+  }
+  mediaChunks = [];
+  showToast("🗑️ تم حذف وإلغاء التسجيل الصوتي");
+}
+
+function togglePauseVoiceRecording() {
+  if (!mediaRecorder) return;
+  const pauseIcon = el("voicePauseIcon");
+  const labelEl = el("voiceRecordLabel");
+
+  if (mediaRecorder.state === "recording") {
+    mediaRecorder.pause();
+    isVoicePaused = true;
+    if (labelEl) labelEl.textContent = "تم الإيقاف مؤقتاً ⏸️";
+    if (pauseIcon) {
+      pauseIcon.innerHTML = '<polygon points="6,4 18,12 6,20" />';
+    }
+  } else if (mediaRecorder.state === "paused") {
+    mediaRecorder.resume();
+    isVoicePaused = false;
+    if (labelEl) labelEl.textContent = "جاري التسجيل... 🎙️";
+    if (pauseIcon) {
+      pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+    }
+  }
+}
+
+function sendVoiceRecording() {
+  voiceCancelled = false;
+  clearInterval(voiceRecordTimerInterval);
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+  }
 }
 
 /* ==========================================================================
@@ -3964,9 +4139,27 @@ function escapeHtml(str) {
 function updateMyStoryAvatar() {
   const user = state.currentUser;
   const defaultAv = "./assets/default-avatar.png";
-  const avSrc = user?.image || defaultAv;
-  if (myStoryAvatarImg) myStoryAvatarImg.src = avSrc;
-  if (myStoryBarImg) myStoryBarImg.src = avSrc;
+  let avSrc = user?.image || defaultAv;
+  if (Array.isArray(state.myStories) && state.myStories.length > 0) {
+    const latest = state.myStories[0];
+    if (latest && latest.media_url && latest.media_type === "image") {
+      avSrc = latest.media_url;
+    }
+  }
+  if (myStoryAvatarImg) {
+    myStoryAvatarImg.src = avSrc;
+    myStoryAvatarImg.onerror = function() {
+      this.onerror = null;
+      this.src = defaultAv;
+    };
+  }
+  if (myStoryBarImg) {
+    myStoryBarImg.src = avSrc;
+    myStoryBarImg.onerror = function() {
+      this.onerror = null;
+      this.src = defaultAv;
+    };
+  }
 }
 
 function formatStoryTime(timestamp) {
@@ -6825,6 +7018,121 @@ if (chatFilterTabs) {
 // ============================================================================
 // 10. نظام التنبيهات السريعة (Toast Notifications)
 // ============================================================================
+
+// ============================================================================
+// نظام إشعارات واتساب المتطور (WhatsApp-Style Notifications & Sound Chime)
+// ============================================================================
+function playWhatsAppChime() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+
+    // النغمة الأولى (صوت وتري ناعم)
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(830, now);
+    gain1.gain.setValueAtTime(0.2, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.16);
+
+    // النغمة الثانية (رنين واتساب المميز)
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.setValueAtTime(1046.5, now + 0.1);
+    gain2.gain.setValueAtTime(0.25, now + 0.1);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.1);
+    osc2.stop(now + 0.35);
+  } catch {}
+}
+
+function showWhatsAppNotification({ title, body, avatar, chatId }) {
+  playWhatsAppChime();
+  if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
+  // إشعار المتصفح الأصلي عند إخفاء التبويب
+  if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+    try {
+      new Notification(title, {
+        body,
+        icon: avatar || "./favicon.png",
+        tag: chatId || "chato-msg"
+      });
+    } catch {}
+  }
+
+  // لافتة واتساب داخل التطبيق (Desktop Toast + Mobile Heads-up)
+  const container = document.getElementById("whatsappNotificationContainer");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = "whatsapp-toast";
+
+  const img = document.createElement("img");
+  img.className = "whatsapp-toast-avatar";
+  img.src = avatar || "./assets/default-avatar.png";
+  img.onerror = () => { img.src = "./assets/default-avatar.png"; };
+
+  const content = document.createElement("div");
+  content.className = "whatsapp-toast-content";
+
+  const header = document.createElement("div");
+  header.className = "whatsapp-toast-header";
+
+  const sender = document.createElement("span");
+  sender.className = "whatsapp-toast-sender";
+  sender.textContent = title;
+
+  const time = document.createElement("span");
+  time.className = "whatsapp-toast-time";
+  time.textContent = "الآن";
+
+  header.append(sender, time);
+
+  const msgBody = document.createElement("div");
+  msgBody.className = "whatsapp-toast-body";
+  msgBody.textContent = body;
+
+  content.append(header, msgBody);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "whatsapp-toast-close";
+  closeBtn.textContent = "×";
+  closeBtn.onclick = (e) => {
+    e.stopPropagation();
+    toast.classList.add("hiding");
+    setTimeout(() => toast.remove(), 250);
+  };
+
+  toast.append(img, content, closeBtn);
+
+  toast.onclick = () => {
+    toast.classList.add("hiding");
+    setTimeout(() => toast.remove(), 250);
+    if (chatId) openChat(chatId);
+  };
+
+  container.prepend(toast);
+
+  // إخفاء تلقائي بعد 5 ثوان
+  setTimeout(() => {
+    if (toast.isConnected) {
+      toast.classList.add("hiding");
+      setTimeout(() => toast.remove(), 250);
+    }
+  }, 5000);
+}
+
 function showToast(message, duration = 3000) {
   let container = document.getElementById("toastContainer");
   if (!container) {
@@ -7068,6 +7376,24 @@ function initRealtimeStream() {
     } catch {}
   });
 
+  realtimeEventSource.addEventListener("new_ad", (e) => {
+    try {
+      const ad = JSON.parse(e.data);
+      state.ads = Array.isArray(state.ads) ? state.ads : [];
+      state.ads.unshift(ad);
+      if (state.activeChatId === "chato_announcements") {
+        renderMessages();
+      }
+      renderConversations();
+      showWhatsAppNotification({
+        title: "📢 إعلانات شاتو الرسمية",
+        body: ad.title + ": " + (ad.content || ""),
+        avatar: "./favicon.png",
+        chatId: "chato_announcements"
+      });
+    } catch {}
+  });
+
   realtimeEventSource.onerror = () => {
     // EventSource handles auto-reconnect
   };
@@ -7096,6 +7422,15 @@ function handleIncomingRealtimeMessage(msg) {
     } else {
       triggerHaptic(25);
       renderConversations();
+      // إطلاق إشعار واتساب الجانبي والعلوي
+      const senderName = msg.senderName || msg.sender || from.split("@")[0];
+      const preview = msg.type === "voice" ? "🎤 رسالة صوتية" : (msg.type === "image" ? "📷 صورة" : (msg.type === "document" ? "📎 مستند" : (msg.text || "رسالة جديدة")));
+      showWhatsAppNotification({
+        title: senderName,
+        body: preview,
+        avatar: msg.senderImage || "./assets/default-avatar.png",
+        chatId: friendChatKey
+      });
     }
   }
 }
@@ -7220,27 +7555,49 @@ async function startApplication() {
    5. إصلاح زر القائمة (الثلاث نقاط ⋮) على الهواتف والأجهزة اللمسية
    ========================================================================== */
 let _lastChatDropdownToggle = 0;
-window.toggleChatDropdown = function(event) {
-  if (event && typeof event.stopPropagation === "function") event.stopPropagation();
-  const menu = document.getElementById("chat-dropdown-menu");
-  if (!menu) return;
-
+function closeAllChatMenus() {
+  const cMenu = document.getElementById("chat-dropdown-menu");
+  if (cMenu) {
+    cMenu.setAttribute("hidden", "true");
+    cMenu.style.display = "none";
+  }
   const aMenu = document.getElementById("attachMenu");
   if (aMenu) {
     aMenu.setAttribute("hidden", "true");
     aMenu.style.display = "none";
   }
+  const overlay = document.getElementById("menuDismissOverlay");
+  if (overlay) {
+    overlay.setAttribute("hidden", "true");
+    overlay.style.display = "none";
+  }
+}
+window.closeAllChatMenus = closeAllChatMenus;
+
+window.toggleChatDropdown = function(event) {
+  if (event && typeof event.stopPropagation === "function") event.stopPropagation();
+  const menu = document.getElementById("chat-dropdown-menu");
+  if (!menu) return;
 
   const isHidden = menu.hasAttribute("hidden") || menu.style.display === "none";
   if (isHidden) {
+    const aMenu = document.getElementById("attachMenu");
+    if (aMenu) {
+      aMenu.setAttribute("hidden", "true");
+      aMenu.style.display = "none";
+    }
     menu.removeAttribute("hidden");
     menu.style.display = "flex";
+    const overlay = document.getElementById("menuDismissOverlay");
+    if (overlay) {
+      overlay.removeAttribute("hidden");
+      overlay.style.display = "block";
+    }
     if (typeof updateChatPinUI === "function") updateChatPinUI();
     if (typeof updateChatBlockUI === "function") updateChatBlockUI();
     if (typeof updateChatWallpaperUI === "function") updateChatWallpaperUI();
   } else {
-    menu.setAttribute("hidden", "true");
-    menu.style.display = "none";
+    closeAllChatMenus();
   }
 };
 
@@ -7492,6 +7849,23 @@ document.addEventListener("click", (e) => {
       aMenu.style.display = "none";
     }
   }
+});
+
+
+// ربط أزرار شريط التسجيل الصوتي الحديث
+document.getElementById("voiceCancelBtn")?.addEventListener("click", cancelVoiceRecording);
+document.getElementById("voicePauseBtn")?.addEventListener("click", togglePauseVoiceRecording);
+document.getElementById("voiceSendBtn")?.addEventListener("click", sendVoiceRecording);
+
+// ربط زر إغلاق القوائم بالطبقة الشفافة وأزرار الإغلاق
+const menuOverlay = document.getElementById("menuDismissOverlay");
+if (menuOverlay) {
+  menuOverlay.addEventListener("click", closeAllChatMenus);
+  menuOverlay.addEventListener("touchstart", closeAllChatMenus, { passive: true });
+}
+document.querySelector(".chat-sheet-close-btn")?.addEventListener("click", closeAllChatMenus);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeAllChatMenus();
 });
 
 startApplication();
