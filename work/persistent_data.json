@@ -820,7 +820,7 @@
       "access_token_hash": "a9946dc8322f8801ab166bb8c6ac27c585cfdfa8f46de1fb9de24d85db88349d",
       "refresh_token_hash": "efd36c17cc28df85cde511cd386bcdf10f91c35327401d989304b4d2f1111a84",
       "expires_at": 1798902189698,
-      "last_active_at": 1794169186033,
+      "last_active_at": 1794169512000,
       "created_at": 1793716793610,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
@@ -960,13 +960,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794169190451,
-      "next_quota_reset_at": 1794255590451,
+      "last_quota_reset_at": 1794169512520,
+      "next_quota_reset_at": 1794255912520,
       "started_at": 1793717119208,
       "expires_at": 1798901119208,
       "auto_renew": true,
       "created_at": 1793717119208,
-      "updated_at": 1794169190451
+      "updated_at": 1794169512520
     },
     {
       "id": "a7881311-5614-43d2-86e1-f144c1c82529",
