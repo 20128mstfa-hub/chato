@@ -950,17 +950,19 @@ function getChatLatestTimestamp(chatId) {
 function getChats() {
   const list = [];
 
-  // قناة إعلانات وتحديثات شاتو الرسمية (محادثة مقفولة بشعار التطبيق)
-  list.push({
-    id: "chato_announcements",
-    type: "announcements",
-    name: "إعلانات شاتو الرسمية 📢",
-    meta: (state.ads && state.ads.length) ? state.ads[0].title : "أحدث الإعلانات والتحديثات الرسمية",
-    image: "./favicon.png",
-    initial: "ش",
-    readonly: true,
-    isOfficial: true
-  });
+  // قناة إعلانات وتحديثات شاتو الرسمية (تظهر فقط عندما ينشر الأدمن إعلاناً)
+  if (Array.isArray(state.ads) && state.ads.length > 0) {
+    list.push({
+      id: "chato_announcements",
+      type: "announcements",
+      name: "إعلانات Chato الرسمية 📢",
+      meta: state.ads[0].title || "أحدث الإعلانات والتحديثات الرسمية",
+      image: "./favicon.png",
+      initial: "ش",
+      readonly: true,
+      isOfficial: true
+    });
+  }
 
   // محادثة الذكاء الاصطناعي Chato Assistant
   list.push({
@@ -1258,12 +1260,25 @@ function openChat(id) {
   const composerForm = el("composerForm");
 
   if (isAnnouncements) {
-    if (announcementReadOnlyNotice) announcementReadOnlyNotice.hidden = false;
+    document.body.classList.add("in-announcements");
+    if (composer) {
+      composer.hidden = true;
+      composer.style.display = "none";
+    }
     if (composerForm) composerForm.style.display = "none";
+    if (announcementReadOnlyNotice) {
+      announcementReadOnlyNotice.hidden = true;
+      announcementReadOnlyNotice.style.display = "none";
+    }
     if (readOnlyNotice) readOnlyNotice.hidden = true;
     if (groupReadOnlyNotice) groupReadOnlyNotice.hidden = true;
   } else {
+    document.body.classList.remove("in-announcements");
     if (announcementReadOnlyNotice) announcementReadOnlyNotice.hidden = true;
+    if (composer) {
+      composer.hidden = false;
+      composer.style.display = "";
+    }
     if (composerForm) composerForm.style.display = "flex";
   }
 
@@ -4792,6 +4807,11 @@ async function loadAds() {
     if (!res.ok) return;
     const data = await res.json();
     const activeAds = data.ads || [];
+    state.ads = activeAds;
+    renderConversations();
+    if (state.activeChatId === "chato_announcements") {
+      renderMessages();
+    }
     const banner = el("announcementBanner");
     if (!banner) return;
     if (activeAds.length > 0 && !sessionStorage.getItem("chato_ad_closed")) {
@@ -5571,6 +5591,7 @@ if (backChatBtn) {
     el("appScreen")?.classList.remove("in-chat-mobile");
     // قفل المحادثات وإلغاء حالة الفتح فور الرجوع للقائمة الرئيسية
     unlockedChats.clear();
+    document.body.classList.remove("in-announcements");
     state.activeChatId = null;
     renderConversations();
   });
