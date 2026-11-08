@@ -946,7 +946,17 @@
       "images": 0
     }
   ],
-  "ads": [],
+  "ads": [
+    {
+      "id": "b058ca29-a6c4-4048-ac6f-e9c47c4b39d6",
+      "title": "تحديث جديد",
+      "content": "تحديث جديد",
+      "imageUrl": "",
+      "link": "",
+      "active": true,
+      "createdAt": 1794172665140
+    }
+  ],
   "supportTickets": [],
   "userDevices": [
     {
