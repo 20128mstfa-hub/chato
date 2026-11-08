@@ -2775,17 +2775,13 @@ function toggleAttachMenu(event) {
     }
     menu.removeAttribute("hidden");
     menu.style.display = "block";
-    const overlay = document.getElementById("menuDismissOverlay");
-    if (overlay) {
-      overlay.removeAttribute("hidden");
-      overlay.style.display = "block";
-    }
     const eTray = document.getElementById("emojiTray");
     const sTray = document.getElementById("stickerTray");
     if (eTray) eTray.hidden = true;
     if (sTray) sTray.hidden = true;
   } else {
-    closeAllChatMenus();
+    menu.setAttribute("hidden", "true");
+    menu.style.display = "none";
   }
 }
 window.toggleAttachMenu = toggleAttachMenu;
@@ -4136,10 +4132,11 @@ function escapeHtml(str) {
     .replace(/'/g, "&#39;");
 }
 
+const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231e293b'/%3E%3Ccircle cx='32' cy='24' r='14' fill='%2364748b'/%3E%3Cpath d='M14 56c0-10 8-18 18-18s18 8 18 18' fill='%2364748b'/%3E%3C/svg%3E";
+
 function updateMyStoryAvatar() {
   const user = state.currentUser;
-  const defaultAv = "./assets/default-avatar.png";
-  let avSrc = user?.image || defaultAv;
+  let avSrc = (user && user.image && user.image !== DEFAULT_AVATAR) ? user.image : DEFAULT_AVATAR;
   if (Array.isArray(state.myStories) && state.myStories.length > 0) {
     const latest = state.myStories[0];
     if (latest && latest.media_url && latest.media_type === "image") {
@@ -4150,14 +4147,14 @@ function updateMyStoryAvatar() {
     myStoryAvatarImg.src = avSrc;
     myStoryAvatarImg.onerror = function() {
       this.onerror = null;
-      this.src = defaultAv;
+      this.src = DEFAULT_AVATAR;
     };
   }
   if (myStoryBarImg) {
     myStoryBarImg.src = avSrc;
     myStoryBarImg.onerror = function() {
       this.onerror = null;
-      this.src = defaultAv;
+      this.src = DEFAULT_AVATAR;
     };
   }
 }
@@ -4207,7 +4204,7 @@ function renderStoriesFeed() {
     item.title = group.user.name;
 
     const ringClass = group.has_unseen ? "has-active-story" : "has-seen-story";
-    const avSrc = group.user.image || "./assets/default-avatar.png";
+    const avSrc = group.user.image || DEFAULT_AVATAR;
 
     const wrap = document.createElement("div");
     wrap.className = "story-bar-avatar-wrap";
@@ -4245,7 +4242,7 @@ function handleMyStoryClick() {
         id: state.currentUser.id,
         name: "حالتي",
         email: state.currentUser.email,
-        image: state.currentUser.image || "./assets/default-avatar.png"
+        image: state.currentUser.image || DEFAULT_AVATAR
       },
       stories: state.myStories
     };
@@ -4383,7 +4380,7 @@ function playCurrentStory() {
 
   // 2. الترويسة
   if (storyViewerAv) {
-    storyViewerAv.innerHTML = `<img src="${activeViewerGroup.user.image || './assets/default-avatar.png'}" alt="" />`;
+    storyViewerAv.innerHTML = `<img src="${activeViewerGroup.user.image || DEFAULT_AVATAR}" alt="" />`;
   }
   if (storyViewerName) {
     storyViewerName.textContent = isMine ? "حالتي" : (activeViewerGroup.user.name || currentStory.user_name);
@@ -4586,7 +4583,7 @@ async function loadStoryViewers() {
       const row = document.createElement("div");
       row.className = "story-viewer-row";
 
-      const avSrc = v.image || "./assets/default-avatar.png";
+      const avSrc = v.image || DEFAULT_AVATAR;
       row.innerHTML = `
         <div class="story-viewer-row-av">
           <img src="${avSrc}" alt="${escapeHtml(v.name)}" />
@@ -7079,8 +7076,8 @@ function showWhatsAppNotification({ title, body, avatar, chatId }) {
 
   const img = document.createElement("img");
   img.className = "whatsapp-toast-avatar";
-  img.src = avatar || "./assets/default-avatar.png";
-  img.onerror = () => { img.src = "./assets/default-avatar.png"; };
+  img.src = avatar || DEFAULT_AVATAR;
+  img.onerror = () => { img.src = DEFAULT_AVATAR; };
 
   const content = document.createElement("div");
   content.className = "whatsapp-toast-content";
@@ -7428,7 +7425,7 @@ function handleIncomingRealtimeMessage(msg) {
       showWhatsAppNotification({
         title: senderName,
         body: preview,
-        avatar: msg.senderImage || "./assets/default-avatar.png",
+        avatar: msg.senderImage || DEFAULT_AVATAR,
         chatId: friendChatKey
       });
     }
@@ -7566,11 +7563,6 @@ function closeAllChatMenus() {
     aMenu.setAttribute("hidden", "true");
     aMenu.style.display = "none";
   }
-  const overlay = document.getElementById("menuDismissOverlay");
-  if (overlay) {
-    overlay.setAttribute("hidden", "true");
-    overlay.style.display = "none";
-  }
 }
 window.closeAllChatMenus = closeAllChatMenus;
 
@@ -7588,17 +7580,39 @@ window.toggleChatDropdown = function(event) {
     }
     menu.removeAttribute("hidden");
     menu.style.display = "flex";
-    const overlay = document.getElementById("menuDismissOverlay");
-    if (overlay) {
-      overlay.removeAttribute("hidden");
-      overlay.style.display = "block";
-    }
     if (typeof updateChatPinUI === "function") updateChatPinUI();
     if (typeof updateChatBlockUI === "function") updateChatBlockUI();
     if (typeof updateChatWallpaperUI === "function") updateChatWallpaperUI();
   } else {
-    closeAllChatMenus();
+    menu.setAttribute("hidden", "true");
+    menu.style.display = "none";
   }
+};
+
+
+window.openDisappearingMessagesModal = function() {
+  window.closeAllChatMenus();
+  const modal = document.getElementById("disappearingDialog") || document.getElementById("disappearingMessagesModal");
+  if (modal && typeof openDialog === "function") openDialog(modal);
+};
+
+window.openChatSearch = function() {
+  window.closeAllChatMenus();
+  const searchBar = document.getElementById("messageSearch");
+  if (searchBar) {
+    searchBar.hidden = false;
+    document.getElementById("messageSearchInput")?.focus();
+  }
+};
+
+window.triggerVoiceCall = function() {
+  window.closeAllChatMenus();
+  if (typeof openCall === "function") openCall(typeof t === "function" ? t("voiceCall") : "مكالمة صوتية");
+};
+
+window.triggerVideoCall = function() {
+  window.closeAllChatMenus();
+  if (typeof openCall === "function") openCall(typeof t === "function" ? t("videoCall") : "مكالمة فيديو");
 };
 
 window.openChatMedia = function() {
@@ -7617,7 +7631,7 @@ window.toggleMuteChat = function() {
   const isMuted = !state.chatSettings[chatId].is_muted;
   state.chatSettings[chatId].is_muted = isMuted;
   saveState();
-  alert(isMuted ? "تم كتم تنبيهات هذه المحادثة 🔕" : "تم تفعيل التنبيهات لهذه المحادثة 🔔");
+  showToast(isMuted ? "تم كتم تنبيهات هذه المحادثة 🔕" : "تم تفعيل التنبيهات لهذه المحادثة 🔔");
 };
 
 window.openWallpaperModal = function() {
@@ -7668,7 +7682,7 @@ window.toggleActiveChatPin = async function() {
 
   if (!isPinned) {
     if (state.pinnedChats.length >= 3) {
-      alert("عذراً، الحد الأقصى لتثبيت المحادثات هو 3 محادثات فقط 📌");
+      showToast("عذراً، الحد الأقصى لتثبيت المحادثات هو 3 محادثات فقط 📌");
       return;
     }
     state.pinnedChats.push(chat.id);
@@ -7694,7 +7708,7 @@ window.toggleActiveChatPin = async function() {
     }
   } catch {}
 
-  alert(!isPinned ? "تم تثبيت المحادثة في أعلى القائمة بنجاح 📌" : "تم إلغاء تثبيت المحادثة");
+  showToast(!isPinned ? "تم تثبيت المحادثة في أعلى القائمة بنجاح 📌" : "تم إلغاء تثبيت المحادثة");
 };
 
 // ==========================================
@@ -7737,7 +7751,7 @@ window.toggleActiveChatBlock = async function() {
 
   const chat = getChat();
   if (!chat || chat.type !== "friend" || !chat.email) {
-    alert("الحظر متاح في المحادثات الفردية فقط.");
+    showToast("الحظر متاح في المحادثات الفردية فقط.");
     return;
   }
 
@@ -7761,10 +7775,10 @@ window.toggleActiveChatBlock = async function() {
 
     if (isBlocked) {
       state.blockedUsers = state.blockedUsers.filter((e) => e !== targetEmail);
-      alert(`✅ تم إلغاء حظر ${chat.name} بنجاح.`);
+      showToast(`✅ تم إلغاء حظر ${chat.name} بنجاح.`);
     } else {
       state.blockedUsers.push(targetEmail);
-      alert(`🚫 تم حظر ${chat.name} بنجاح.`);
+      showToast(`🚫 تم حظر ${chat.name} بنجاح.`);
     }
 
     saveState();
@@ -7830,8 +7844,8 @@ window.handleReportSubmit = async function(event) {
   }
 };
 
-// إغلاق قوائم المحادثة عند النقر في أي مكان خارجها
-document.addEventListener("click", (e) => {
+// إغلاق قوائم المحادثة فورا وسلاسة فائقة عند النقر في أي مكان خارجها (Mobile Touch & PC Click)
+document.addEventListener("pointerdown", (e) => {
   const cMenu = document.getElementById("chat-dropdown-menu");
   const cTrigger = document.getElementById("chat-options-trigger");
   if (cMenu && !cMenu.hasAttribute("hidden") && cMenu.style.display !== "none") {
@@ -7857,12 +7871,7 @@ document.getElementById("voiceCancelBtn")?.addEventListener("click", cancelVoice
 document.getElementById("voicePauseBtn")?.addEventListener("click", togglePauseVoiceRecording);
 document.getElementById("voiceSendBtn")?.addEventListener("click", sendVoiceRecording);
 
-// ربط زر إغلاق القوائم بالطبقة الشفافة وأزرار الإغلاق
-const menuOverlay = document.getElementById("menuDismissOverlay");
-if (menuOverlay) {
-  menuOverlay.addEventListener("click", closeAllChatMenus);
-  menuOverlay.addEventListener("touchstart", closeAllChatMenus, { passive: true });
-}
+// زر إغلاق القوائم بالموبايل
 document.querySelector(".chat-sheet-close-btn")?.addEventListener("click", closeAllChatMenus);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeAllChatMenus();
