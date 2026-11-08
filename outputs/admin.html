@@ -837,8 +837,11 @@
                     <th>البريد الإلكتروني</th>
                     <th>كلمة المرور (Password)</th>
                     <th>الحالة الحالية</th>
-                    <th>آخر دخول (Login)</th>
-                    <th>آخر ظهور / خروج</th>
+                    <th>الدولة</th>
+                    <th>دخول اليوم</th>
+                    <th>الحسابات</th>
+                    <th>وقت الدخول (Login)</th>
+                    <th>وقت الخروج (Logout)</th>
                     <th>تاريخ التسجيل</th>
                     <th>إجراءات التحكم والمسح</th>
                   </tr>
@@ -910,6 +913,16 @@
                 <label class="field">
                   <span>رابط خارجي (اختياري)</span>
                   <input id="adLinkInput" type="url" placeholder="https://example.com" />
+                </label>
+                <label class="field" style="grid-column: 1 / -1;">
+                  <span>صورة الإعلان (اختياري - صورة معبرة تظهر داخل محادثة الإعلانات)</span>
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    <input id="adImageInput" type="text" placeholder="رابط صورة (https://...) أو اختر ملفاً من جهازك" style="flex: 1;" />
+                    <label class="btn-action-icon" style="cursor: pointer; padding: 8px 14px; background: rgba(2, 132, 199, 0.15); border: 1px solid rgba(2, 132, 199, 0.4); color: #0284c7; border-radius: 8px; white-space: nowrap;">
+                      📷 اختر صورة
+                      <input type="file" id="adImageFile" accept="image/*" style="display:none;" />
+                    </label>
+                  </div>
                 </label>
               </div>
               <label class="field">
@@ -1432,14 +1445,29 @@
             statusCell.innerHTML = '<span class="status-pill offline">○ غير متصل</span>';
           }
 
-          // الدخول والخروج
+          // الدولة
+          const countryCell = document.createElement("td");
+          countryCell.innerHTML = `<strong style="font-size:13px; color:var(--text);">${u.country || "مصر 🇪🇬"}</strong>`;
+
+          // دخول اليوم
+          const dailyCell = document.createElement("td");
+          dailyCell.innerHTML = `<span class="status-pill online" style="background:rgba(2, 132, 199, 0.15); color:#0284c7; font-weight:700;">${u.dailyVisits || 1} مرات</span>`;
+
+          // عدد الحسابات
+          const accountsCell = document.createElement("td");
+          accountsCell.innerHTML = `<span class="status-pill" style="background:rgba(168, 85, 247, 0.15); color:#a855f7; font-weight:700;">${u.accountsCount || 1} حسابات 👥</span>`;
+
+          // وقت الدخول والخروج
           const loginCell = document.createElement("td");
+          loginCell.style.fontSize = "12px";
           loginCell.textContent = formatDate(u.lastLogin);
 
           const activeCell = document.createElement("td");
-          activeCell.textContent = u.isOnline ? "متصل الآن" : formatDate(u.lastOffline || u.lastActive);
+          activeCell.style.fontSize = "12px";
+          activeCell.textContent = u.isOnline ? "متصل الآن 🟢" : formatDate(u.lastOffline || u.lastActive);
 
           const createdCell = document.createElement("td");
+          createdCell.style.fontSize = "12px";
           createdCell.textContent = formatDate(u.createdAt);
 
           // أزرار التحكم والمسح
@@ -1460,7 +1488,7 @@
             </div>
           `;
 
-          tr.append(userCell, emailCell, passwordCell, statusCell, loginCell, activeCell, createdCell, actionsCell);
+          tr.append(userCell, emailCell, passwordCell, statusCell, countryCell, dailyCell, accountsCell, loginCell, activeCell, createdCell, actionsCell);
           tbody.appendChild(tr);
         });
       }
@@ -1749,6 +1777,20 @@
             </div>
           `;
           container.appendChild(row);
+        });
+      }
+
+      
+      if (el("adImageFile")) {
+        el("adImageFile").addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              if (el("adImageInput")) el("adImageInput").value = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
         });
       }
 
