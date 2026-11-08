@@ -6983,3 +6983,26 @@ html[dir="rtl"] .whatsapp-notif-container {
   cursor: pointer !important;
   touch-action: manipulation !important;
 }
+
+
+/* ==========================================================================
+   Chato Announcements: محادثة الإعلانات مقفولة نهائياً بدون أي إدخال أو صور أو رسائل
+   ========================================================================== */
+body.in-announcements #composer,
+body.in-announcements .composer,
+body.in-announcements #composerForm,
+body.in-announcements .composer-tools,
+body.in-announcements #announcementReadOnlyNotice,
+body.in-announcements .announcement-readonly-notice,
+body.in-announcements #readOnlyNotice {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
