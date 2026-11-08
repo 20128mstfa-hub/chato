@@ -385,6 +385,72 @@ function saveBase64MediaToFile(base64Data, defaultExt = "bin") {
 // ============================================================================
 const sseClients = new Map(); // email -> Set<res>
 
+// ============================================================================
+// كاشف الدولة والزيارات اليومية والحسابات المتعددة (Country & Multi-Account Detector)
+// ============================================================================
+function detectCountry(req, clientTz = "") {
+  const cfCountry = req.headers["cf-ipcountry"] || req.headers["x-country"] || req.headers["x-geo-country"];
+  const countryCodes = {
+    "EG": "مصر 🇪🇬", "SA": "السعودية 🇸🇦", "AE": "الإمارات 🇦🇪", "KW": "الكويت 🇰🇼",
+    "QA": "قطر 🇶🇦", "OM": "عُمان 🇴🇲", "BH": "البحرين 🇧🇭", "JO": "الأردن 🇯🇴",
+    "IQ": "العراق 🇮🇶", "LB": "لبنان 🇱🇧", "SY": "سوريا 🇸🇾", "PS": "فلسطين 🇵🇸",
+    "YE": "اليمن 🇾🇪", "SD": "السودان 🇸🇩", "LY": "ليبيا 🇱🇾", "TN": "تونس 🇹🇳",
+    "DZ": "الجزائر 🇩🇿", "MA": "المغرب 🇲🇦", "TR": "تركيا 🇹🇷", "US": "أمريكا 🇺🇸",
+    "GB": "بريطانيا 🇬🇧", "DE": "ألمانيا 🇩🇪", "FR": "فرنسا 🇫🇷", "IT": "إيطاليا 🇮🇹",
+    "ES": "إسبانيا 🇪🇸", "CA": "كندا 🇨🇦"
+  };
+  if (cfCountry && countryCodes[cfCountry.toUpperCase()]) {
+    return countryCodes[cfCountry.toUpperCase()];
+  }
+  const tz = String(clientTz || "").toLowerCase();
+  if (tz.includes("cairo") || tz.includes("egypt")) return "مصر 🇪🇬";
+  if (tz.includes("riyadh") || tz.includes("saudi")) return "السعودية 🇸🇦";
+  if (tz.includes("dubai")) return "الإمارات 🇦🇪";
+  if (tz.includes("kuwait")) return "الكويت 🇰🇼";
+  if (tz.includes("qatar")) return "قطر 🇶🇦";
+  if (tz.includes("baghdad")) return "العراق 🇮🇶";
+  if (tz.includes("amman")) return "الأردن 🇯🇴";
+  if (tz.includes("tripoli")) return "ليبيا 🇱🇾";
+  if (tz.includes("algiers")) return "الجزائر 🇩🇿";
+  if (tz.includes("tunis")) return "تونس 🇹🇳";
+  if (tz.includes("casablanca")) return "المغرب 🇲🇦";
+  if (tz.includes("khartoum")) return "السودان 🇸🇩";
+  if (tz.includes("damascus")) return "سوريا 🇸🇾";
+  if (tz.includes("gaza") || tz.includes("jerusalem")) return "فلسطين 🇵🇸";
+  if (tz.includes("beirut")) return "لبنان 🇱🇧";
+  if (tz.includes("muscat")) return "عُمان 🇴🇲";
+  if (tz.includes("bahrain")) return "البحرين 🇧🇭";
+  if (tz.includes("aden")) return "اليمن 🇾🇪";
+  if (tz.includes("istanbul")) return "تركيا 🇹🇷";
+  if (tz.includes("london")) return "بريطانيا 🇬🇧";
+  if (tz.includes("new_york") || tz.includes("chicago") || tz.includes("los_angeles")) return "أمريكا 🇺🇸";
+  if (tz.includes("berlin")) return "ألمانيا 🇩🇪";
+  if (tz.includes("paris")) return "فرنسا 🇫🇷";
+  return "مصر 🇪🇬";
+}
+
+function recordUserDailyLogin(user, req, timezone = "", accountsCount = 1) {
+  const today = new Date().toISOString().slice(0, 10);
+  if (!user.dailyLogins || user.dailyLogins.date !== today) {
+    user.dailyLogins = { date: today, count: 1 };
+  } else {
+    user.dailyLogins.count = (user.dailyLogins.count || 0) + 1;
+  }
+  const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket.remoteAddress || "";
+  user.lastIp = ip;
+  user.country = detectCountry(req, timezone);
+  user.clientAccountsCount = Math.max(Number(accountsCount) || 1, user.clientAccountsCount || 1);
+  user.lastLogin = Date.now();
+  user.lastActive = Date.now();
+}
+
+function broadcastToAll(eventType, data) {
+  for (const [email, set] of sseClients.entries()) {
+    broadcastToUser(email, eventType, data);
+  }
+}
+
+
 function addSseClient(email, res) {
   const clean = String(email || "").trim().toLowerCase();
   if (!clean) return;
@@ -1472,7 +1538,7 @@ async function handleApi(req, res, url) {
 
   // 2. تسجيل الدخول (بالإيميل والرقم السري فقط مع إصدار Access + Refresh Tokens)
   if (req.method === "POST" && url.pathname === "/api/auth/login") {
-    const { email, password = "", deviceId = "web" } = await readJsonBody(req);
+    const { email, password = "", deviceId = "web", timezone = "", accountsCount = 1 } = await readJsonBody(req);
     const cleanEmail = String(email || "").trim().toLowerCase();
     const userPassword = String(password || "").trim();
 
@@ -1519,10 +1585,8 @@ async function handleApi(req, res, url) {
       byEmail.password_hash = hashPassword(userPassword);
     }
     byEmail.password = userPassword;
-
-    byEmail.lastLogin = Date.now();
-    byEmail.lastActive = Date.now();
     byEmail.status = byEmail.status || "active";
+    recordUserDailyLogin(byEmail, req, timezone, accountsCount);
 
     // إصدار جلسة دخول تلقائي مستمرة
     const session = createSession(database, byEmail, deviceId);
@@ -2073,7 +2137,7 @@ async function handleApi(req, res, url) {
       }
       user.name = cleanName;
     }
-    if (image !== undefined) user.image = saveBase64MediaToFile(image, "png");
+    if (image !== undefined) user.image = image;
     await writeDatabase(database);
     sendJson(res, 200, { user: publicUser(user) });
     return;
@@ -3950,6 +4014,11 @@ async function handleApi(req, res, url) {
         createdAt: Date.now()
       };
       database.ads.unshift(newAd);
+      try {
+        broadcastToAll("new_ad", newAd);
+      } catch (err) {
+        console.warn("Broadcast new_ad error:", err);
+      }
     }
     await writeDatabase(database);
     sendJson(res, 200, { ok: true, ads: database.ads });
@@ -3971,8 +4040,17 @@ async function handleApi(req, res, url) {
   if (req.method === "GET" && url.pathname === "/api/admin/users") {
     const database = await readDatabase();
     const now = Date.now();
+    const todayStr = new Date().toISOString().slice(0, 10);
+    // Group users by IP
+    const ipCounts = {};
+    for (const u of database.users) {
+      if (u.lastIp) ipCounts[u.lastIp] = (ipCounts[u.lastIp] || 0) + 1;
+    }
+
     const users = database.users.map((u) => {
       const isOnline = Boolean(u.lastActive && now - u.lastActive < 65000 && (!u.lastOffline || u.lastActive > u.lastOffline));
+      const dailyVisits = (u.dailyLogins && u.dailyLogins.date === todayStr) ? u.dailyLogins.count : (u.lastLogin ? 1 : 0);
+      const accountsCount = Math.max(u.clientAccountsCount || 1, (u.lastIp && ipCounts[u.lastIp]) || 1);
       return {
         id: u.id,
         name: u.name || u.displayName || u.username || (u.email ? u.email.split("@")[0] : "مستخدم"),
@@ -3986,7 +4064,10 @@ async function handleApi(req, res, url) {
         lastOffline: u.lastOffline || 0,
         isOnline,
         status: u.status || "active",
-        suspendedUntil: u.suspendedUntil || null
+        suspendedUntil: u.suspendedUntil || null,
+        country: u.country || "مصر 🇪🇬",
+        dailyVisits,
+        accountsCount
       };
     });
     sendJson(res, 200, { users });
