@@ -464,8 +464,8 @@
       "sticker": null,
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1794068633528
     },
     {
