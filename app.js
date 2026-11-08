@@ -7552,6 +7552,27 @@ async function startApplication() {
    5. إصلاح زر القائمة (الثلاث نقاط ⋮) على الهواتف والأجهزة اللمسية
    ========================================================================== */
 let _lastChatDropdownToggle = 0;
+
+function updateDropdownItemsVisibility() {
+  const chat = typeof getChat === "function" ? getChat() : null;
+  const isFriend = Boolean(chat && chat.type === "friend");
+  const isSpecial = Boolean(chat && (chat.id === "chato_announcements" || chat.type === "admin_notice" || chat.type === "ai"));
+
+  const setItemVisibility = (id, show) => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = !show;
+  };
+
+  setItemVisibility("voiceCallButton", isFriend);
+  setItemVisibility("videoCallButton", isFriend);
+  setItemVisibility("chatBlockOption", isFriend);
+  setItemVisibility("chatReportOption", isFriend);
+  setItemVisibility("chatDisappearingButton", !isSpecial);
+  setItemVisibility("chatLockButton", !isSpecial);
+  setItemVisibility("chatWallpaperButton", !isSpecial);
+}
+window.updateDropdownItemsVisibility = updateDropdownItemsVisibility;
+
 function closeAllChatMenus() {
   const cMenu = document.getElementById("chat-dropdown-menu");
   if (cMenu) {
@@ -7580,6 +7601,7 @@ window.toggleChatDropdown = function(event) {
     }
     menu.removeAttribute("hidden");
     menu.style.display = "flex";
+    if (typeof updateDropdownItemsVisibility === "function") updateDropdownItemsVisibility();
     if (typeof updateChatPinUI === "function") updateChatPinUI();
     if (typeof updateChatBlockUI === "function") updateChatBlockUI();
     if (typeof updateChatWallpaperUI === "function") updateChatWallpaperUI();
@@ -7876,5 +7898,10 @@ document.querySelector(".chat-sheet-close-btn")?.addEventListener("click", close
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeAllChatMenus();
 });
+
+
+// إغلاق القوائم عند التمرير داخل المحادثة
+document.getElementById("messages")?.addEventListener("scroll", closeAllChatMenus, { passive: true });
+document.getElementById("chat-area")?.addEventListener("scroll", closeAllChatMenus, { passive: true });
 
 startApplication();
