@@ -525,13 +525,6 @@ h3 {
   box-shadow: var(--shadow);
   box-sizing: border-box;
 }
-  padding: 16px 18px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(18px);
-  box-shadow: var(--shadow);
-}
 
 .topbar h2 {
   margin: 0;
@@ -605,10 +598,13 @@ h3 {
   min-height: 0;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(18px);
+  background: var(--surface, #ffffff);
   box-shadow: var(--shadow);
   box-sizing: border-box;
+}
+
+[data-theme="dark"] .chat-panel {
+  background: #0f172a;
 }
 
 .conversation-list {
@@ -6577,14 +6573,7 @@ html[dir="ltr"] .attach-menu {
    ========================================================================== */
 
 /* 1. طبقة شفافة لالتقاط النقرات وإغلاق القوائم باللمس أو النقر */
-.menu-dismiss-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  background: transparent !important;
-  z-index: 999990 !important;
-  cursor: default !important;
-  -webkit-tap-highlight-color: transparent !important;
-}
+
 
 /* زر إغلاق القائمة في الموبايل */
 @media (max-width: 768px) {
@@ -6958,4 +6947,25 @@ html[dir="rtl"] .whatsapp-notif-container {
   margin-top: 10px !important;
   cursor: pointer !important;
   display: block !important;
+}
+
+
+/* ==========================================================================
+   Chato v7.0 - إصلاح القوائم بنقاء وسرعة فائقة وبدون أي تهنيج نهائياً
+   ========================================================================== */
+.chat-dropdown-menu,
+.chat-dropdown,
+.attach-menu {
+  pointer-events: auto !important;
+  z-index: 9999999 !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: manipulation !important;
+}
+
+.chat-dropdown-item,
+.attach-menu-item {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
 }
