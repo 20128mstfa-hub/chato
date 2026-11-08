@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>شاتو - Chato Messenger</title>
-    <link rel="stylesheet" href="./styles.css?v=5.0" />
+    <link rel="stylesheet" href="./styles.css?v=6.0" />
   <script>
       // Force SW cache clear and update
       if ('serviceWorker' in navigator) {
@@ -186,6 +186,40 @@
                 <span>الدخول بالباركود (QR Code)</span>
               </button>
             </form>
+              <!-- شريط التسجيل الصوتي المتطور (Voice Recording Bar) -->
+              <div class="voice-recording-bar" id="voiceRecordingBar" hidden>
+                <button type="button" class="voice-bar-btn voice-delete-btn" id="voiceCancelBtn" title="حذف وإلغاء التسجيل">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    <line x1="10" y1="11" x2="10" y2="17" />
+                    <line x1="14" y1="11" x2="14" y2="17" />
+                  </svg>
+                  <span>حذف</span>
+                </button>
+                
+                <div class="voice-record-live-info">
+                  <span class="voice-record-pulse-dot"></span>
+                  <span class="voice-record-timer" id="voiceRecordTimer">00:00</span>
+                  <span class="voice-record-label" id="voiceRecordLabel">جاري التسجيل...</span>
+                </div>
+
+                <div class="voice-bar-actions">
+                  <button type="button" class="voice-bar-btn voice-pause-btn" id="voicePauseBtn" title="إيقاف مؤقت / استئناف">
+                    <svg id="voicePauseIcon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                      <rect x="6" y="4" width="4" height="16" rx="1"/>
+                      <rect x="14" y="4" width="4" height="16" rx="1"/>
+                    </svg>
+                  </button>
+                  
+                  <button type="button" class="voice-bar-btn voice-send-btn" id="voiceSendBtn" title="إرسال التسجيل الصوتي">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                      <path d="m22 2-7 20-4-9-9-4 20-7Z" />
+                      <path d="M22 2 11 13" />
+                    </svg>
+                    <span>إرسال</span>
+                  </button>
+                </div>
+              </div>
 
             <!-- 2. شاشة إنشاء حساب جديد -->
             <form id="signUpForm" autocomplete="on" novalidate hidden>
@@ -257,7 +291,8 @@
               <div class="story-avatar-ring" id="myStoryAvatarRing">
                 <img 
                   id="myStoryAvatarImg"
-                  src="" 
+                  src="./assets/default-avatar.png"
+                  onerror="this.onerror=null; this.src='./assets/default-avatar.png';" 
                   alt="حالتي" 
                   class="story-avatar-img" 
                 />
@@ -850,6 +885,11 @@
                 </div>
               </div>
               <!-- إشعار منع الإرسال لغير المشرفين في المجموعات المقيدة -->
+              
+              <!-- إشعار القناة الرسمية للإعلانات والتحديثات (للقراءة فقط) -->
+              <div id="announcementReadOnlyNotice" class="announcement-readonly-notice" hidden>
+                <span>📢 هذه القناة مخصصة لإعلانات وتحديثات Chato الرسمية (للقراءة فقط) 🔒</span>
+              </div>
               <div id="groupReadOnlyNotice" class="group-readonly-notice" hidden>
                 <span>🔒 إرسال الرسائل في هذه المجموعة مقتصر على المشرفين فقط</span>
               </div>
@@ -2014,6 +2054,12 @@
 
     <script src="./qrcode.min.js"></script>
     <script src="./jsqr.min.js"></script>
-    <script src="./app.js?v=5.0"></script>
+    <script src="./app.js?v=6.0"></script>
+  
+    <!-- طبقة شفافة تماماً لإغلاق القوائم باللمس أو النقر على الهاتف والكمبيوتر بدون أي غباش -->
+    <div id="menuDismissOverlay" class="menu-dismiss-overlay" hidden></div>
+
+    <!-- حاوية إشعارات واتساب الجانبية والعلوية للهاتف والكمبيوتر -->
+    <div id="whatsappNotificationContainer" class="whatsapp-notif-container"></div>
   </body>
 </html>
