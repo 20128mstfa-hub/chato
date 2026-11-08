@@ -11,7 +11,7 @@
       "createdAt": 1793717099198,
       "lastLogin": 1793718189698,
       "lastActive": 1794077162979,
-      "lastOffline": 1794171288563
+      "lastOffline": 1794171550435
     },
     {
       "id": "ca5488e2-8716-4c84-a915-7f592ae134bc",
@@ -53,18 +53,6 @@
       "createdAt": 1794068581183,
       "lastLogin": 1794068581183,
       "lastActive": 1794068790377
-    },
-    {
-      "id": "929b04e5-df4e-498d-92f2-1e9d8e74049d",
-      "name": "Mustaa Amr",
-      "email": "2012.8.mstf@gmail.com",
-      "password_hash": "scrypt:a552181e10859218a21a6a20c13fc51a:0aaf3b4986fe77e99debef68fd299e8fe10f0cf42d60ab53a138f2456dcb3a4fa6410396d3475e78c9a57aa2ed63fd17516f986efad8cb148736177a9a80bef6",
-      "password": "C5kAfKhK7bz2M42",
-      "image": "",
-      "status": "active",
-      "createdAt": 1794171356413,
-      "lastLogin": 1794171356413,
-      "lastActive": 1794171356413
     }
   ],
   "friendships": [
@@ -887,12 +875,6 @@
       "day": "2026-11-08",
       "words": 0,
       "images": 0
-    },
-    {
-      "email": "2012.8.mstf@gmail.com",
-      "day": "2026-11-08",
-      "words": 0,
-      "images": 0
     }
   ],
   "ads": [],
@@ -920,7 +902,7 @@
       "access_token_hash": "a9946dc8322f8801ab166bb8c6ac27c585cfdfa8f46de1fb9de24d85db88349d",
       "refresh_token_hash": "efd36c17cc28df85cde511cd386bcdf10f91c35327401d989304b4d2f1111a84",
       "expires_at": 1798902189698,
-      "last_active_at": 1794171289948,
+      "last_active_at": 1794171552132,
       "created_at": 1793716793610,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
@@ -962,19 +944,6 @@
       "last_active_at": 1794168677408,
       "created_at": 1794068581183,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQ9kynxvvtvNG5f/KN3aOu5andD0ARFcbIks4pdPnSafSH8htG5q1EKHBqv5XiKYGCAMlTWc3SgUe2PMSiOo/rA=="
-    },
-    {
-      "id": "9d69c782-1d1b-4a83-9a79-9f3c0fbd8f3a",
-      "user_id": "929b04e5-df4e-498d-92f2-1e9d8e74049d",
-      "email": "2012.8.mstf@gmail.com",
-      "device_id": "web",
-      "device_type": "web",
-      "access_token_hash": "22581d17c29a075306e799bd96057a772719ce9cb67886620ebdf35dea86e18b",
-      "refresh_token_hash": "58bd4a059fd069b520f3a6538fd0c11ba7e5c4ba4a34f820ab9be820cef992a1",
-      "expires_at": 1799355356413,
-      "last_active_at": 1794171356501,
-      "created_at": 1794171356413,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMkqF44B/IJjxiVKg2k/UzG3LZ9Fs+cFVcMeu+0vSJE+kvZXrgAeHY0kQ1wOoIf6X1pjk7P9kfUqM7sJaawKLtw=="
     }
   ],
   "pushSubscriptions": [
@@ -1146,26 +1115,6 @@
       "expires_at": 1799253178425,
       "auto_renew": true,
       "updated_at": 1794069178425
-    },
-    {
-      "id": "cc7e48f9-c7b1-4e3f-a121-35446a5c11d6",
-      "user_id": "929b04e5-df4e-498d-92f2-1e9d8e74049d",
-      "email": "2012.8.mstf@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794171356531,
-      "next_quota_reset_at": 1794257756531,
-      "started_at": 1794171356531,
-      "expires_at": 1799355356531,
-      "auto_renew": true,
-      "created_at": 1794171356531,
-      "updated_at": 1794171356531
     }
   ],
   "userStories": [],
