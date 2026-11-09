@@ -1421,6 +1421,26 @@
       "auto_renew": true,
       "created_at": 1794257710687,
       "updated_at": 1794257710687
+    },
+    {
+      "id": "6edea6c9-8e21-4b18-b52a-abcb0294fbc3",
+      "user_id": "6a7ee885-de10-4583-8d79-ae53341ab296",
+      "email": "2012.8.msta@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1794257857308,
+      "next_quota_reset_at": 1794344257308,
+      "started_at": 1794257857308,
+      "expires_at": 1799441857308,
+      "auto_renew": true,
+      "created_at": 1794257857308,
+      "updated_at": 1794257857308
     }
   ],
   "userStories": [],
