@@ -1483,6 +1483,14 @@ async function handleApi(req, res, url) {
     const rawNames = Array.isArray(groupData.members) ? groupData.members : [];
     const memberNames = [...new Set([adminEmail.split("@")[0], ...rawNames.map(n => String(n).trim()).filter(Boolean)])];
 
+    // إذا تم اختيار العضو باسمه فقط، نضيف بريده الإلكتروني المسجل تلقائياً لضمان ظهوره لديه
+    for (const name of memberNames) {
+      const matched = database.users.find(u => u.name && u.name.trim().toLowerCase() === name.toLowerCase());
+      if (matched && matched.email && !memberEmails.includes(matched.email.toLowerCase())) {
+        memberEmails.push(matched.email.toLowerCase());
+      }
+    }
+
     const newGroup = {
       id: groupId,
       name: groupName,
@@ -1539,17 +1547,71 @@ async function handleApi(req, res, url) {
     return;
   }
 
-  // جلب جميع مجموعات المستخدم
+  // جلب جميع مجموعات المستخدم (التي أنشأها أو تم ضمه إليها)
   if (req.method === "GET" && url.pathname === "/api/groups") {
     const userEmail = String(url.searchParams.get("user") || url.searchParams.get("email") || "").trim().toLowerCase();
     const database = await readDatabase();
     database.groups = Array.isArray(database.groups) ? database.groups : [];
+    database.users = Array.isArray(database.users) ? database.users : [];
 
-    const userGroups = database.groups.filter((g) => 
-      Array.isArray(g.member_emails) && g.member_emails.some((e) => e.toLowerCase() === userEmail)
-    );
+    // مطابقة اسم المستخدم المسجل للتحقق من العضوية بالاسم أيضاً
+    const userObj = database.users.find(u => u.email.toLowerCase() === userEmail);
+    const userName = userObj ? userObj.name.trim().toLowerCase() : "";
+
+    const userGroups = database.groups.filter((g) => {
+      const adminMatches = String(g.admin || "").trim().toLowerCase() === userEmail;
+      const emailMatches = Array.isArray(g.member_emails) && g.member_emails.some((e) => String(e).trim().toLowerCase() === userEmail);
+      const nameMatches = Boolean(userName && Array.isArray(g.members) && g.members.some((m) => String(m).trim().toLowerCase() === userName));
+      return adminMatches || emailMatches || nameMatches;
+    });
 
     sendJson(res, 200, { ok: true, groups: userGroups });
+    return;
+  }
+
+  // حذف المجموعة للمشرف (Delete Group)
+  if (req.method === "DELETE" && url.pathname === "/api/groups") {
+    const rawId = String(url.searchParams.get("id") || "").trim();
+    const groupId = rawId.replace(/^group:/, "");
+    const requesterEmail = String(url.searchParams.get("user") || url.searchParams.get("email") || "").trim().toLowerCase();
+
+    const database = await readDatabase();
+    database.groups = Array.isArray(database.groups) ? database.groups : [];
+    database.messages = Array.isArray(database.messages) ? database.messages : [];
+
+    const groupIdx = database.groups.findIndex((g) => g.id === groupId);
+    if (groupIdx === -1) {
+      sendJson(res, 404, { error: "المجموعة غير موجودة" });
+      return;
+    }
+
+    const group = database.groups[groupIdx];
+    const groupAdmin = String(group.admin || "").trim().toLowerCase();
+    const groupAdmins = Array.isArray(group.admins) ? group.admins.map(a => String(a).trim().toLowerCase()) : [groupAdmin];
+    const isAuthorized = groupAdmin === requesterEmail || groupAdmins.includes(requesterEmail) || requesterEmail === ADMIN_MASTER_PIN.toLowerCase();
+
+    if (!isAuthorized) {
+      sendJson(res, 403, { error: "حذف المجموعة متاح فقط لمشرف المجموعة 🔒" });
+      return;
+    }
+
+    // إزالة المجموعة من قاعدة البيانات
+    database.groups.splice(groupIdx, 1);
+
+    // تنظيف رسائل ومحادثات المجموعة
+    database.messages = database.messages.filter(
+      (m) => m.chat_id !== `group:${groupId}` && m.to !== `group:${groupId}`
+    );
+
+    await writeDatabase(database);
+
+    // إشعار فوري لجميع أعضاء المجموعة بالحذف عبر SSE
+    const allMembers = Array.isArray(group.member_emails) ? group.member_emails : [];
+    for (const member of allMembers) {
+      broadcastToUser(member, "group_deleted", { groupId, groupName: group.name });
+    }
+
+    sendJson(res, 200, { ok: true, message: "تم حذف المجموعة بنجاح" });
     return;
   }
 
