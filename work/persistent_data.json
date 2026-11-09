@@ -1136,6 +1136,55 @@
       "status": "sent",
       "read": false,
       "createdAt": 1794257975385
+    },
+    {
+      "id": "ef165c8a-ce3a-4ba5-b1f1-9568f5a7ad2f",
+      "chat_id": "group:2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "from": "system",
+      "fromName": "نظام Chato",
+      "to": "group:2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "type": "system",
+      "text": "قام Mustafa Amr بإضافة testbrother إلى المجموعة 👥",
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794259326705
+    },
+    {
+      "id": "2b5b1f02-88a8-457f-aa45-3242c29d1584",
+      "chat_id": "group:2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "group:2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "type": "text",
+      "text": "97ca61cd9e7718f033fc172dc180fbabe94f810fc1a0845ed730bef8a7396e90bdff04a4559536d95cadef72bdfbb8706a50c2c2caa366934b10455732d40c7592e195d0e4",
+      "is_encrypted": true,
+      "encryption_iv": "d2f24c200576eb1701f076fe",
+      "encryption_auth_tag": "005c8113499131a8f8563b515c276218",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794259327299
+    },
+    {
+      "id": "a8938b26-6bb7-4486-a375-2670e8025fa7",
+      "chat_id": "group:2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "from": "system",
+      "fromName": "نظام Chato",
+      "to": "group:2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "type": "system",
+      "text": "قام المشرف Mustafa Amr بإزالة testbrother من المجموعة 🚫",
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794259328143
     }
   ],
   "aiUsage": [
@@ -1413,6 +1462,14 @@
       "last_message_at": 1794257975385,
       "last_message_content": ".",
       "created_at": 1794257958982
+    },
+    {
+      "id": "group:2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "type": "group",
+      "who_can_send": "everyone",
+      "last_message_at": 1794259327297,
+      "last_message_content": "تجربة إرسال رسالة في المجموعة بنجاح ✅",
+      "created_at": 1794259327297
     }
   ],
   "chatParticipants": [],
@@ -1450,7 +1507,7 @@
         "az7077407@gmail.com"
       ],
       "createdAt": 1794257906996,
-      "updatedAt": 1794257907297
+      "updatedAt": 1794259328143
     },
     {
       "id": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
