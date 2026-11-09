@@ -965,30 +965,6 @@
       "createdAt": 1794172410251
     },
     {
-      "id": "65bd825d-3abb-4fbe-81a0-4214eb68e89d",
-      "chat_id": "group:c70cabba-aba1-4d50-b473-17db40f6ee68",
-      "from": "2012.8.mstfa@gmail.com",
-      "fromName": "Mustafa Amr",
-      "to": "group:c70cabba-aba1-4d50-b473-17db40f6ee68",
-      "type": "system",
-      "text": "قام Mustafa Amr بإنشاء المجموعة وإضافة الأعضاء 👥",
-      "status": "sent",
-      "read": true,
-      "createdAt": 1794255531618
-    },
-    {
-      "id": "0bb79439-bcd3-4503-b09e-0fa0b643a7ca",
-      "chat_id": "group:c70cabba-aba1-4d50-b473-17db40f6ee68",
-      "from": "2012.8.mstfa@gmail.com",
-      "fromName": "Mustafa Amr",
-      "to": "group:c70cabba-aba1-4d50-b473-17db40f6ee68",
-      "type": "system",
-      "text": "قام Mustafa Amr بإنشاء المجموعة وإضافة الأعضاء 👥",
-      "status": "sent",
-      "read": true,
-      "createdAt": 1794256716224
-    },
-    {
       "id": "c985a5a4-92fb-4e50-a670-40b3db5df343",
       "chat_id": "group:d7c7d72a-b268-4777-80a8-e72f6ba65c45",
       "from": "2012.8.mstfa@gmail.com",
@@ -1445,29 +1421,6 @@
       ],
       "createdAt": 1794257731106,
       "updatedAt": 1794257731380
-    },
-    {
-      "id": "c70cabba-aba1-4d50-b473-17db40f6ee68",
-      "name": "اسرتنا",
-      "image": "",
-      "admin": "2012.8.mstfa@gmail.com",
-      "admins": [
-        "2012.8.mstfa@gmail.com"
-      ],
-      "who_can_send": "everyone",
-      "members": [
-        "2012.8.mstfa",
-        "Mustafa Amr",
-        "Ali Mohamed",
-        "Mohamed Mustafa"
-      ],
-      "member_emails": [
-        "2012.8.mstfa@gmail.com",
-        "az7077407@gmail.com",
-        "mo.mstfa.85@gmail.com"
-      ],
-      "createdAt": 1794256716223,
-      "updatedAt": 1794256716223
     }
   ],
   "userSubscriptions": [
