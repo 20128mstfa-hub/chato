@@ -920,68 +920,6 @@
       "createdAt": 1794255244055
     },
     {
-      "id": "0b569b9b-fb18-42c0-9499-993cd655224b",
-      "chat_id": "group:5323b161-997a-4050-be68-9a3a2522b459",
-      "from": "2012.8.mstfa@gmail.com",
-      "fromName": "Mustafa Amr",
-      "to": "group:5323b161-997a-4050-be68-9a3a2522b459",
-      "type": "system",
-      "text": "قام Mustafa Amr بإنشاء المجموعة وإضافة الأعضاء 👥",
-      "status": "sent",
-      "read": true,
-      "createdAt": 1794255385278
-    },
-    {
-      "id": "81b96133-4ef5-4bb9-87ca-0d6209d850b3",
-      "chat_id": "group:5323b161-997a-4050-be68-9a3a2522b459",
-      "from": "2012.8.mstfa@gmail.com",
-      "to": "group:5323b161-997a-4050-be68-9a3a2522b459",
-      "type": "text",
-      "text": "e9284750f1177ff4d5fc59538cd1bb802a473e2987eeaaf4736af5d836112f1348532dd5d70ee9c5dfc4443c57f4fcfc047d",
-      "is_encrypted": true,
-      "encryption_iv": "c985c403c849fb10b59542f0",
-      "encryption_auth_tag": "9e6adab4deb978334c92522dc91d28e9",
-      "sender_public_key": null,
-      "expires_at": null,
-      "expiresAt": null,
-      "imageUrl": "",
-      "fileName": "",
-      "audioUrl": "",
-      "location": null,
-      "poll": null,
-      "sticker": null,
-      "document": null,
-      "reply_to": null,
-      "status": "sent",
-      "read": false,
-      "createdAt": 1794255400519
-    },
-    {
-      "id": "028c9613-e67d-40a8-a76c-7374c2653659",
-      "chat_id": "group:5323b161-997a-4050-be68-9a3a2522b459",
-      "from": "mo.mstfa.85@gmail.com",
-      "to": "group:5323b161-997a-4050-be68-9a3a2522b459",
-      "type": "text",
-      "text": "87793b156df673b447293aaa4cfaa24f7aeecbb1617e8cf8dbb17e9de48fd926115e6ff23235cc39c00cc6990e7653c5257e69e1cc6b1b3f63d1cf2e7238cffa9709d84f95f7f1acfa8822fa1c7afcf5efb9084ff8a5",
-      "is_encrypted": true,
-      "encryption_iv": "eceb27b77c5837a272bd7ed8",
-      "encryption_auth_tag": "91cf17c9e359cc470df282083dea5f9a",
-      "sender_public_key": null,
-      "expires_at": null,
-      "expiresAt": null,
-      "imageUrl": "",
-      "fileName": "",
-      "audioUrl": "",
-      "location": null,
-      "poll": null,
-      "sticker": null,
-      "document": null,
-      "reply_to": null,
-      "status": "sent",
-      "read": false,
-      "createdAt": 1794255400890
-    },
-    {
       "id": "65bd825d-3abb-4fbe-81a0-4214eb68e89d",
       "chat_id": "group:c70cabba-aba1-4d50-b473-17db40f6ee68",
       "from": "2012.8.mstfa@gmail.com",
@@ -1243,27 +1181,6 @@
       ],
       "createdAt": 1794255531328,
       "updatedAt": 1794255531618
-    },
-    {
-      "id": "5323b161-997a-4050-be68-9a3a2522b459",
-      "name": "جروب الإخوة تجربة",
-      "image": "",
-      "admin": "2012.8.mstfa@gmail.com",
-      "admins": [
-        "2012.8.mstfa@gmail.com"
-      ],
-      "who_can_send": "everyone",
-      "members": [
-        "2012.8.mstfa",
-        "مصطفى",
-        "محمد أخويا"
-      ],
-      "member_emails": [
-        "2012.8.mstfa@gmail.com",
-        "mo.mstfa.85@gmail.com"
-      ],
-      "createdAt": 1794255385278,
-      "updatedAt": 1794255385278
     },
     {
       "id": "2f7414b6-d453-4aa0-afe2-b23f78620850",
