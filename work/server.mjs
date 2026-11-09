@@ -496,6 +496,7 @@ async function readDatabase() {
       chats: Array.isArray(data.chats) ? data.chats : [],
       chatParticipants: Array.isArray(data.chatParticipants) ? data.chatParticipants : [],
       chatSettings: Array.isArray(data.chatSettings) ? data.chatSettings : [],
+      groups: Array.isArray(data.groups) ? data.groups : [],
       userSubscriptions: Array.isArray(data.userSubscriptions) ? data.userSubscriptions : [],
       userStories: Array.isArray(data.userStories) ? data.userStories : [],
       storyViews: Array.isArray(data.storyViews) ? data.storyViews : [],
@@ -505,7 +506,7 @@ async function readDatabase() {
       animatedStickers: Array.isArray(data.animatedStickers) && data.animatedStickers.length ? data.animatedStickers : defaultAnimatedStickers
     };
   } catch {
-    return { users: [], friendships: [], friendRequests: [], messages: [], aiUsage: [], ads: [], supportTickets: [], userDevices: [], pushSubscriptions: [], emailVerifications: [], chats: [], chatParticipants: [], chatSettings: [], userSubscriptions: [], userStories: [], storyViews: [], pinnedMessages: [], exclusiveEmojis: defaultExclusiveEmojis, stickerPacks: defaultStickerPacks, animatedStickers: defaultAnimatedStickers };
+    return { users: [], friendships: [], friendRequests: [], messages: [], aiUsage: [], ads: [], supportTickets: [], userDevices: [], pushSubscriptions: [], emailVerifications: [], chats: [], chatParticipants: [], chatSettings: [], groups: [], userSubscriptions: [], userStories: [], storyViews: [], pinnedMessages: [], exclusiveEmojis: defaultExclusiveEmojis, stickerPacks: defaultStickerPacks, animatedStickers: defaultAnimatedStickers };
   }
 }
 
