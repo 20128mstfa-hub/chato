@@ -950,8 +950,12 @@ function getChatLatestTimestamp(chatId) {
 function getChats() {
   const list = [];
 
-  // قناة إعلانات وتحديثات شاتو الرسمية (تظهر فقط عندما ينشر الأدمن إعلاناً)
-  if (Array.isArray(state.ads) && state.ads.length > 0) {
+  // قناة إعلانات وتحديثات شاتو الرسمية (تظهر فقط عندما ينشر الأدمن إعلاناً، وتختفي إذا حذفها المستخدم حتى يأتي إعلان جديد)
+  const deletedAdsUntil = Number(localStorage.getItem("chato_announcements_deleted_until") || 0);
+  const latestAdTime = (Array.isArray(state.ads) && state.ads.length > 0) ? Number(state.ads[0].createdAt || 0) : 0;
+  const hasActiveAds = Boolean(state.ads && state.ads.length > 0 && latestAdTime > deletedAdsUntil);
+
+  if (hasActiveAds) {
     list.push({
       id: "chato_announcements",
       type: "announcements",
@@ -1367,7 +1371,7 @@ function renderMessages() {
           <span class="announcement-card-date">${formatStoryTime(ad.createdAt)}</span>
         </div>
         <div class="announcement-card-text">${escapeHtml(ad.content)}</div>
-        ${ad.imageUrl ? `<img src="${ad.imageUrl}" class="announcement-card-img" alt="" onerror="this.remove()" />` : ""}
+        ${ad.imageUrl ? `<div class="announcement-card-media"><img src="${ad.imageUrl}" class="announcement-card-img" alt="صورة الإعلان" onclick="openMediaLightbox('${ad.imageUrl}')" /></div>` : ""}
         ${ad.link ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; color:#0284c7; font-weight:700;">🔗 المزيد من التفاصيل</a>` : ""}
       `;
       messages.appendChild(card);
@@ -7398,6 +7402,7 @@ function initRealtimeStream() {
     try {
       const ad = JSON.parse(e.data);
       state.ads = Array.isArray(state.ads) ? state.ads : [];
+      localStorage.removeItem("chato_announcements_deleted_until");
       state.ads.unshift(ad);
       if (state.activeChatId === "chato_announcements") {
         renderMessages();
@@ -7692,14 +7697,27 @@ window.lockChatModal = function() {
 };
 
 window.clearCurrentChat = function() {
-  window.toggleChatDropdown();
+  window.closeAllChatMenus();
   const chatId = state.activeChatId;
   if (!chatId) return;
+
+  if (chatId === "chato_announcements") {
+    if (confirm("هل تريد حذف محادثة الإعلانات؟ ستختفي من قائمتك وستظهر مجدداً فور نشر إعلان جديد من الإدارة.")) {
+      localStorage.setItem("chato_announcements_deleted_until", String(Date.now()));
+      document.body.classList.remove("in-announcements");
+      state.activeChatId = null;
+      renderConversations();
+      showToast("تم حذف محادثة الإعلانات بنجاح");
+    }
+    return;
+  }
+
   if (confirm("هل أنت متأكد من رغبتك في مسح جميع رسائل هذه المحادثة نهائياً؟")) {
     state.conversations[chatId] = [];
     saveState();
     renderMessages();
     renderConversations();
+    showToast("تم مسح محتوى المحادثة");
   }
 };
 
