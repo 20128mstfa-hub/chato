@@ -1296,6 +1296,26 @@
       "expires_at": 1799253178425,
       "auto_renew": true,
       "updated_at": 1794069178425
+    },
+    {
+      "id": "19421cc9-38ae-4bc5-838f-6101d325889e",
+      "user_id": "3d0115ba-785d-40c9-b2de-4371a3e2e6c2",
+      "email": "2012.8.stfa@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1794257710687,
+      "next_quota_reset_at": 1794344110687,
+      "started_at": 1794257710687,
+      "expires_at": 1799441710687,
+      "auto_renew": true,
+      "created_at": 1794257710687,
+      "updated_at": 1794257710687
     }
   ],
   "userStories": [],
