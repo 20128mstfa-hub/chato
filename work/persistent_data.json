@@ -906,37 +906,6 @@
       "status": "sent",
       "read": false,
       "createdAt": 1794172410251
-    },
-    {
-      "id": "9e500c84-49b0-4236-9b34-0b79f71c4371",
-      "chat_id": "2012.8.mstfa@gmail.com<->202.8.mstfa@gmail.com",
-      "from": "2012.8.mstfa@gmail.com",
-      "to": "202.8.mstfa@gmail.com",
-      "type": "sticker",
-      "text": "",
-      "is_encrypted": false,
-      "encryption_iv": null,
-      "encryption_auth_tag": null,
-      "sender_public_key": null,
-      "expires_at": 1794246949458,
-      "expiresAt": 1794246949458,
-      "imageUrl": "",
-      "fileName": "",
-      "audioUrl": "",
-      "location": null,
-      "poll": null,
-      "sticker": {
-        "url": "/stickers/laugh_cry.svg",
-        "sticker_url": "/stickers/laugh_cry.svg",
-        "emoji": "😂",
-        "id": "stk_laugh"
-      },
-      "sticker_url": "/stickers/laugh_cry.svg",
-      "document": null,
-      "reply_to": null,
-      "status": "read",
-      "read": true,
-      "createdAt": 1794243349461
     }
   ],
   "aiUsage": [
