@@ -981,12 +981,12 @@
     {
       "id": "b058ca29-a6c4-4048-ac6f-e9c47c4b39d6",
       "title": "تحديث جديد",
-      "content": "تحديث جديد",
-      "imageUrl": "",
+      "content": "تحديث جديد ومميز لتطبيق Chato الرسمي",
+      "imageUrl": "https://chato-qs9z.onrender.com/logo.png",
       "link": "",
       "active": true,
       "createdAt": 1794172665140,
-      "updatedAt": 1794172712366
+      "updatedAt": 1794244480277
     }
   ],
   "supportTickets": [],
