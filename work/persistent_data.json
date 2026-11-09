@@ -90,6 +90,12 @@
       "createdAt": 1794257830002,
       "lastLogin": 1794257830002,
       "lastActive": 1794257830002
+    },
+    {
+      "id": "6e4e7d96-e424-46bd-8bf4-ccf512d313c9",
+      "name": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
+      "email": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
+      "createdAt": 1794257850974
     }
   ],
   "friendships": [
@@ -127,6 +133,13 @@
       "to": "mo.mstfa.85@gmail.com",
       "status": "accepted",
       "createdAt": 1794169661775
+    },
+    {
+      "id": "f7178e16-d99b-4d64-8d8d-731ecd31a3bf",
+      "from": "2012.8.msta@gmail.com",
+      "to": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
+      "status": "accepted",
+      "createdAt": 1794257850975
     }
   ],
   "friendRequests": [],
@@ -966,6 +979,31 @@
       "status": "sent",
       "read": true,
       "createdAt": 1794257731380
+    },
+    {
+      "id": "172ef1e4-0a33-4282-a03c-da58a0f28056",
+      "chat_id": "2012.8.msta@gmail.com<->d7c7d72a-b268-4777-80a8-e72f6ba65c45",
+      "from": "2012.8.msta@gmail.com",
+      "to": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
+      "type": "text",
+      "text": "474067ba7e30",
+      "is_encrypted": true,
+      "encryption_iv": "c3ebd334d4312c9864372216",
+      "encryption_auth_tag": "2d78dd5bc9b5078a443f1758f10db7c3",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794257850975
     }
   ],
   "aiUsage": [
@@ -1207,6 +1245,15 @@
       "last_message_at": 1794255400890,
       "last_message_content": "حبيبي يا مصطفى، أنا معاك في الجروب أهو وعسل! ❤️",
       "created_at": 1794255400518
+    },
+    {
+      "id": "2012.8.msta@gmail.com<->d7c7d72a-b268-4777-80a8-e72f6ba65c45",
+      "direct_pair": "2012.8.msta@gmail.com<->d7c7d72a-b268-4777-80a8-e72f6ba65c45",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1794257850975,
+      "last_message_content": "هلا",
+      "created_at": 1794257850975
     }
   ],
   "chatParticipants": [],
