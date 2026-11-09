@@ -918,6 +918,18 @@
       "status": "sent",
       "read": true,
       "createdAt": 1794255244055
+    },
+    {
+      "id": "0b569b9b-fb18-42c0-9499-993cd655224b",
+      "chat_id": "group:5323b161-997a-4050-be68-9a3a2522b459",
+      "from": "2012.8.mstfa@gmail.com",
+      "fromName": "Mustafa Amr",
+      "to": "group:5323b161-997a-4050-be68-9a3a2522b459",
+      "type": "system",
+      "text": "قام Mustafa Amr بإنشاء المجموعة وإضافة الأعضاء 👥",
+      "status": "sent",
+      "read": true,
+      "createdAt": 1794255385278
     }
   ],
   "aiUsage": [
@@ -1135,6 +1147,27 @@
     }
   ],
   "groups": [
+    {
+      "id": "5323b161-997a-4050-be68-9a3a2522b459",
+      "name": "جروب الإخوة تجربة",
+      "image": "",
+      "admin": "2012.8.mstfa@gmail.com",
+      "admins": [
+        "2012.8.mstfa@gmail.com"
+      ],
+      "who_can_send": "everyone",
+      "members": [
+        "2012.8.mstfa",
+        "مصطفى",
+        "محمد أخويا"
+      ],
+      "member_emails": [
+        "2012.8.mstfa@gmail.com",
+        "mo.mstfa.85@gmail.com"
+      ],
+      "createdAt": 1794255385278,
+      "updatedAt": 1794255385278
+    },
     {
       "id": "2f7414b6-d453-4aa0-afe2-b23f78620850",
       "name": "جروب الإخوة تجربة",
