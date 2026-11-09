@@ -1118,6 +1118,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1794257958983
+    },
+    {
+      "id": "11eccf32-fc9c-4ad9-8373-dd09ae694269",
+      "chat_id": "2012.8.mstfa@gmail.com<->2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "type": "text",
+      "text": "a1",
+      "is_encrypted": true,
+      "encryption_iv": "91f81f8079e6b2bdcb155529",
+      "encryption_auth_tag": "35591eadc0d0a28c55828a38b5f5275b",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794257975385
     }
   ],
   "aiUsage": [
@@ -1392,8 +1417,8 @@
       "direct_pair": "2012.8.mstfa@gmail.com<->2325e596-a7a0-4161-b9df-e408d3f24fdb",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1794257958982,
-      "last_message_content": "هلا",
+      "last_message_at": 1794257975385,
+      "last_message_content": ".",
       "created_at": 1794257958982
     }
   ],
