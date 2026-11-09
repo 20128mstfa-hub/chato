@@ -923,6 +923,9 @@
                       <input type="file" id="adImageFile" accept="image/*" style="display:none;" />
                     </label>
                   </div>
+                  <div id="adImagePreviewBox" style="margin-top: 8px; display: none;">
+                    <img id="adImagePreview" style="max-height: 140px; border-radius: 8px; border: 1px solid #e2e8f0; display: block;" alt="معاينة صورة الإعلان" />
+                  </div>
                 </label>
               </div>
               <label class="field">
@@ -1788,8 +1791,30 @@
             const reader = new FileReader();
             reader.onload = (ev) => {
               if (el("adImageInput")) el("adImageInput").value = ev.target.result;
+              const prevBox = el("adImagePreviewBox");
+              const prevImg = el("adImagePreview");
+              if (prevBox && prevImg) {
+                prevImg.src = ev.target.result;
+                prevBox.style.display = "block";
+              }
             };
             reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      if (el("adImageInput")) {
+        el("adImageInput").addEventListener("input", (e) => {
+          const val = e.target.value.trim();
+          const prevBox = el("adImagePreviewBox");
+          const prevImg = el("adImagePreview");
+          if (prevBox && prevImg) {
+            if (val) {
+              prevImg.src = val;
+              prevBox.style.display = "block";
+            } else {
+              prevBox.style.display = "none";
+            }
           }
         });
       }
@@ -1798,16 +1823,18 @@
         e.preventDefault();
         const title = el("adTitleInput").value.trim();
         const content = el("adContentInput").value.trim();
-        const link = el("adLinkInput").value.trim();
+        const imageUrl = el("adImageInput")?.value?.trim() || "";
+        const link = el("adLinkInput")?.value?.trim() || "";
 
         try {
           const res = await adminFetch("/api/admin/ads", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title, content, link, active: true })
+            body: JSON.stringify({ title, content, imageUrl, link, active: true })
           });
           if (res.ok) {
             el("createAdForm").reset();
+            if (el("adImagePreviewBox")) el("adImagePreviewBox").style.display = "none";
             alert("تم نشر الإعلان بنجاح في شاتو!");
             loadDashboardData();
           }
