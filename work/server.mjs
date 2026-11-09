@@ -1461,6 +1461,97 @@ async function handleApi(req, res, url) {
   }
 
   // 0.1 تبادل إشارات المكالمات الصوتية والمرئية الحية (WebRTC Call Signaling)
+    // ==========================================
+  // Groups Management (نظام إدارة المجموعات الحقيقية والتزامن اللحظي)
+  // ==========================================
+  if (req.method === "POST" && url.pathname === "/api/groups") {
+    const groupData = await readJsonBody(req);
+    const database = await readDatabase();
+    database.groups = Array.isArray(database.groups) ? database.groups : [];
+    database.messages = Array.isArray(database.messages) ? database.messages : [];
+    database.users = Array.isArray(database.users) ? database.users : [];
+
+    const groupId = String(groupData.id || crypto.randomUUID());
+    const groupName = String(groupData.name || "مجموعة جديدة").trim();
+    const adminEmail = String(groupData.admin || "").trim().toLowerCase();
+    
+    // Normalize member emails to lowercase
+    const rawEmails = Array.isArray(groupData.member_emails) ? groupData.member_emails : [];
+    const memberEmails = [...new Set([adminEmail, ...rawEmails.map(e => String(e).trim().toLowerCase()).filter(Boolean)])];
+
+    const rawNames = Array.isArray(groupData.members) ? groupData.members : [];
+    const memberNames = [...new Set([adminEmail.split("@")[0], ...rawNames.map(n => String(n).trim()).filter(Boolean)])];
+
+    const newGroup = {
+      id: groupId,
+      name: groupName,
+      image: groupData.image || "",
+      admin: adminEmail,
+      admins: Array.isArray(groupData.admins) ? groupData.admins.map(e => String(e).trim().toLowerCase()) : [adminEmail],
+      who_can_send: groupData.who_can_send || "everyone",
+      members: memberNames,
+      member_emails: memberEmails,
+      createdAt: Number(groupData.createdAt || Date.now()),
+      updatedAt: Date.now()
+    };
+
+    const existingIdx = database.groups.findIndex((g) => g.id === groupId);
+    if (existingIdx !== -1) {
+      database.groups[existingIdx] = { ...database.groups[existingIdx], ...newGroup };
+    } else {
+      database.groups.unshift(newGroup);
+    }
+
+    // إضافة رسالة افتتاحية رسمية للمجموعة
+    const adminUser = database.users.find(u => u.email.toLowerCase() === adminEmail);
+    const adminDisplayName = adminUser?.name || adminEmail.split("@")[0];
+    const initialMsg = {
+      id: crypto.randomUUID(),
+      chat_id: `group:${groupId}`,
+      from: adminEmail,
+      fromName: adminDisplayName,
+      to: `group:${groupId}`,
+      type: "system",
+      text: `قام ${adminDisplayName} بإنشاء المجموعة وإضافة الأعضاء 👥`,
+      status: "sent",
+      read: true,
+      createdAt: Date.now()
+    };
+    database.messages.push(initialMsg);
+
+    await writeDatabase(database);
+
+    // البث اللحظي لجميع الأعضاء عبر SSE وإشعار Web Push
+    for (const mEmail of memberEmails) {
+      broadcastToUser(mEmail, "group_created", { group: newGroup, message: initialMsg });
+      if (mEmail !== adminEmail) {
+        sendPushToUser(mEmail, {
+          title: `مجموعة جديدة: ${groupName} 👥`,
+          body: `قام ${adminDisplayName} بإضافتك إلى مجموعة ${groupName}`,
+          icon: newGroup.image || "/logo.png",
+          data: { url: `/?chat=group:${groupId}`, chatId: `group:${groupId}` }
+        }, database).catch(() => {});
+      }
+    }
+
+    sendJson(res, 200, { ok: true, group: newGroup, message: initialMsg });
+    return;
+  }
+
+  // جلب جميع مجموعات المستخدم
+  if (req.method === "GET" && url.pathname === "/api/groups") {
+    const userEmail = String(url.searchParams.get("user") || url.searchParams.get("email") || "").trim().toLowerCase();
+    const database = await readDatabase();
+    database.groups = Array.isArray(database.groups) ? database.groups : [];
+
+    const userGroups = database.groups.filter((g) => 
+      Array.isArray(g.member_emails) && g.member_emails.some((e) => e.toLowerCase() === userEmail)
+    );
+
+    sendJson(res, 200, { ok: true, groups: userGroups });
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/calls/signal") {
     const { from, to, type, sdp, candidate } = await readJsonBody(req);
     const cleanFrom = String(from || "").trim().toLowerCase();
@@ -1611,7 +1702,7 @@ async function handleApi(req, res, url) {
     const userConfirm = String(confirmPassword || "").trim();
     const cleanCode = String(code || "").trim();
 
-    if (!cleanName || /[0-9٠-٩]/.test(cleanName)) {
+    if (!cleanName) {
       sendJson(res, 400, { error: "اكتب اسماً صحيحاً بدون أرقام" });
       return;
     }
@@ -3870,8 +3961,30 @@ async function handleApi(req, res, url) {
       }
     });
 
-    // إذا تم تحديد الصديق: جلب محادثة الصديق المحددة
+    // إذا تم تحديد الصديق أو المجموعة:
     if (friend) {
+      if (friend.startsWith("group:")) {
+        const groupId = friend.replace(/^group:/, "");
+        const pins = (database.pinnedMessages || []).filter((p) => p.chat_id === friend || p.chat_id === groupId);
+        const messages = (database.messages || [])
+          .filter((message) => {
+            const exp = Number(message.expires_at || message.expiresAt || 0);
+            if (exp && now > exp) return false;
+            const to = String(message.to || "").toLowerCase();
+            const chatId = String(message.chat_id || "");
+            return chatId === friend || to === friend || chatId === `group:${groupId}` || to === `group:${groupId}`;
+          })
+          .map(prepareDecryptedMessage)
+          .sort((a, b) => a.createdAt - b.createdAt);
+        sendJson(res, 200, {
+          messages,
+          chatSettings: chatSettingsMap,
+          chatTimers: chatTimersMap,
+          chatAiActive: chatAiMap,
+          pinnedMessages: pins
+        });
+        return;
+      }
       const directChatId = [user, friend].sort().join("<->");
       const pins = (database.pinnedMessages || []).filter((p) => p.chat_id === directChatId || p.chat_id === `friend:${friend}` || p.chat_id === `friend:${user}`);
       const messages = (database.messages || [])
@@ -3900,7 +4013,13 @@ async function handleApi(req, res, url) {
       return;
     }
 
-    // صندوق الوارد الكامل للمستخدم (All Inbox Messages)
+    // صندوق الوارد الكامل للمستخدم (All Inbox Messages) بما في ذلك رسائل المجموعات المشترك بها
+    database.groups = Array.isArray(database.groups) ? database.groups : [];
+    const userGroups = database.groups.filter((g) => 
+      Array.isArray(g.member_emails) && g.member_emails.some((e) => String(e).toLowerCase() === user)
+    );
+    const userGroupChatIds = userGroups.map(g => `group:${g.id}`);
+
     const messages = (database.messages || [])
       .filter((message) => {
         const exp = Number(message.expires_at || message.expiresAt || 0);
@@ -3909,6 +4028,7 @@ async function handleApi(req, res, url) {
         const to = String(message.to || "").toLowerCase();
         const chatId = String(message.chat_id || "");
         if (chatId && chatId.split("<->").includes(user)) return true;
+        if (userGroupChatIds.includes(chatId) || userGroupChatIds.includes(to)) return true;
         return from === user || to === user;
       })
       .map(prepareDecryptedMessage)
@@ -3933,6 +4053,7 @@ async function handleApi(req, res, url) {
     }
     sendJson(res, 200, {
       messages,
+      groups: userGroups,
       contacts: contactsMap,
       chatSettings: chatSettingsMap,
       chatTimers: chatTimersMap,
