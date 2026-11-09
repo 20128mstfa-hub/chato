@@ -900,11 +900,12 @@ async function sendSharedMessage(friendEmail, message) {
 }
 
 async function loadSharedMessages(friendEmail) {
-  if (!state.currentUser) return;
+  if (!state.currentUser || !friendEmail) return;
+  const isGroup = friendEmail.startsWith("group:");
+  const chatId = isGroup ? friendEmail : `friend:${friendEmail}`;
   const response = await fetch(`/api/messages?user=${encodeURIComponent(state.currentUser.email)}&friend=${encodeURIComponent(friendEmail)}`);
   if (!response.ok) return;
   const data = await response.json();
-  const chatId = `friend:${friendEmail}`;
   if (data.chatSettings) {
     state.chatSettings = { ...state.chatSettings, ...data.chatSettings };
   }
@@ -918,11 +919,16 @@ async function loadSharedMessages(friendEmail) {
     state.pinnedMessages = state.pinnedMessages || {};
     state.pinnedMessages[chatId] = data.pinnedMessages;
   }
-  state.conversations[chatId] = (data.messages || []).map((message) => ({
-    ...message,
-    from: message.from === state.currentUser.email ? "me" : (message.from === "chatgpt" ? "chatgpt" : "other"),
-    status: message.from === state.currentUser.email ? "read" : undefined
-  }));
+  const myEmail = (state.currentUser.email || "").toLowerCase();
+  state.conversations[chatId] = (data.messages || []).map((message) => {
+    const isMe = String(message.from || "").toLowerCase() === myEmail;
+    return {
+      ...message,
+      from: isMe ? "me" : (message.from === "chatgpt" ? "chatgpt" : "other"),
+      senderName: isMe ? (state.currentUser.name || "أنت") : (message.fromName || message.senderName || message.sender || String(message.from).split("@")[0]),
+      status: isMe ? "read" : undefined
+    };
+  });
   saveState();
   if (state.activeChatId === chatId) {
     if (chatMeta) {
@@ -1363,6 +1369,10 @@ function openChat(id) {
   renderMessages();
 
   if (chat.type === "friend") loadSharedMessages(chat.email);
+  if (chat.type === "group" || String(chat.id).startsWith("group:")) {
+    const gKey = String(chat.id).startsWith("group:") ? chat.id : `group:${chat.groupId || chat.id}`;
+    loadSharedMessages(gKey);
+  }
   if (chat.type === "support") loadSupportMessages();
   setTimeout(() => {
     if (messages) messages.scrollTop = messages.scrollHeight;
@@ -1373,21 +1383,32 @@ function renderMessages() {
   // عرض قناة إعلانات وتحديثات شاتو الرسمية
   if (state.activeChatId === "chato_announcements") {
     messages.innerHTML = "";
+    // إضافة شريط القناة الرسمي الحصري داخل شات الإعلانات فقط
+    const topBanner = document.createElement("div");
+    topBanner.className = "announcement-chat-top-notice";
+    topBanner.innerHTML = "<span>📢 هذه القناة مخصصة لإعلانات وتحديثات Chato الرسمية (للقراءة فقط) 🔒</span>";
+    messages.appendChild(topBanner);
+
     const ads = state.ads || [];
     if (!ads.length) {
-      messages.innerHTML = '<p class="empty-state" style="padding: 30px; text-align: center; color: var(--muted);">لا توجد إعلانات منشورة حالياً في هذه القناة 📢</p>';
+      const emptyP = document.createElement("p");
+      emptyP.className = "empty-state";
+      emptyP.style.cssText = "padding: 30px; text-align: center; color: var(--muted);";
+      emptyP.textContent = "لا توجد إعلانات منشورة حالياً في هذه القناة 📢";
+      messages.appendChild(emptyP);
       return;
     }
     ads.forEach((ad) => {
       const card = document.createElement("article");
       card.className = "announcement-chat-card";
+      const adImg = ad.imageUrl || ad.image || ad.img || "";
       card.innerHTML = `
         <div class="announcement-card-head">
           <span class="announcement-card-title">📢 ${escapeHtml(ad.title)}</span>
           <span class="announcement-card-date">${formatStoryTime(ad.createdAt)}</span>
         </div>
         <div class="announcement-card-text">${escapeHtml(ad.content)}</div>
-        ${ad.imageUrl ? `<div class="announcement-card-media"><img src="${ad.imageUrl}" class="announcement-card-img" alt="صورة الإعلان" onclick="openMediaLightbox('${ad.imageUrl}')" /></div>` : ""}
+        ${adImg ? `<div class="announcement-card-media"><img src="${adImg}" class="announcement-card-img" alt="صورة الإعلان" onclick="openMediaLightbox('${adImg}')" onerror="this.parentElement.style.display='none'" /></div>` : ""}
         ${ad.link ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; color:#0284c7; font-weight:700;">🔗 المزيد من التفاصيل</a>` : ""}
       `;
       messages.appendChild(card);
@@ -5824,13 +5845,23 @@ async function syncUserInbox() {
       hasChanges = true;
     }
 
-    // تجميع الرسائل بحسب الطرف الآخر
+    // تجميع الرسائل بحسب الطرف الآخر أو المجموعة
     const grouped = {};
     for (const m of messages) {
       const from = String(m.from || "").toLowerCase();
       const to = String(m.to || "").toLowerCase();
+      const cid = String(m.chat_id || "");
       if (from === "support@chato.system" || to === "support@chato.system") continue;
       if (from === "admin@chato.system" || to === "admin@chato.system") continue;
+
+      // رسائل المجموعات
+      if (to.startsWith("group:") || cid.startsWith("group:")) {
+        const groupKey = to.startsWith("group:") ? to : cid;
+        grouped[groupKey] = grouped[groupKey] || [];
+        grouped[groupKey].push(m);
+        continue;
+      }
+
       let other = null;
       if (from === "chatgpt") {
         if (m.chat_id) {
@@ -5845,7 +5876,46 @@ async function syncUserInbox() {
       grouped[other].push(m);
     }
 
-    for (const [otherEmail, msgs] of Object.entries(grouped)) {
+    for (const [targetKey, msgs] of Object.entries(grouped)) {
+      if (targetKey.startsWith("group:")) {
+        const chatId = targetKey;
+        const formatted = msgs.map((m) => {
+          const isMe = String(m.from).toLowerCase() === myEmail;
+          const senderInfo = contacts[String(m.from).toLowerCase()] || { name: m.fromName || m.senderName || m.sender || String(m.from).split("@")[0] };
+          return {
+            id: m.id,
+            from: isMe ? "me" : (String(m.from).toLowerCase() === "chatgpt" ? "chatgpt" : "other"),
+            senderName: isMe ? (state.currentUser?.name || "أنت") : (senderInfo.name || m.fromName || m.senderName || m.sender || m.from),
+            senderImage: senderInfo.image || m.senderImage || "",
+            type: m.type || "text",
+            text: m.text || "",
+            imageUrl: m.imageUrl || "",
+            fileName: m.fileName || "",
+            audioUrl: m.audioUrl || "",
+            audioDuration: m.audioDuration,
+            location: m.location || null,
+            poll: m.poll || null,
+            sticker: m.sticker || null,
+            reply_to: m.reply_to || null,
+            reactions: m.reactions || {},
+            status: m.read ? "read" : (m.status || "sent"),
+            read: Boolean(m.read),
+            createdAt: Number(m.createdAt || m.created_at || (m.timestamp ? new Date(m.timestamp).getTime() : Date.now())) || Date.now()
+          };
+        });
+
+        const currentMsgs = state.conversations[chatId] || [];
+        if (currentMsgs.length !== formatted.length || (formatted.length > 0 && currentMsgs.at(-1)?.id !== formatted.at(-1)?.id)) {
+          state.conversations[chatId] = formatted;
+          hasChanges = true;
+          if (state.activeChatId === chatId) {
+            renderMessages();
+          }
+        }
+        continue;
+      }
+
+      const otherEmail = targetKey;
       const chatId = `friend:${otherEmail}`;
       const contactInfo = contacts[otherEmail] || { name: otherEmail.split("@")[0], email: otherEmail, image: "" };
 
@@ -7569,7 +7639,63 @@ function handleIncomingRealtimeMessage(msg) {
   const myEmail = (state.currentUser?.email || "").toLowerCase();
   const from = String(msg.from || "").toLowerCase();
   const to = String(msg.to || "").toLowerCase();
+  const cid = String(msg.chat_id || "");
 
+  // رسائل المجموعات اللحظية
+  const isGroupMsg = to.startsWith("group:") || cid.startsWith("group:");
+  if (isGroupMsg) {
+    const groupChatKey = to.startsWith("group:") ? to : cid;
+    state.conversations = state.conversations || {};
+    state.conversations[groupChatKey] = state.conversations[groupChatKey] || [];
+    const exists = state.conversations[groupChatKey].some((m) => m.id === msg.id);
+    if (!exists) {
+      const isMe = from === myEmail;
+      const formatted = {
+        id: msg.id,
+        from: isMe ? "me" : (from === "chatgpt" ? "chatgpt" : "other"),
+        senderName: isMe ? (state.currentUser?.name || "أنت") : (msg.fromName || msg.senderName || msg.sender || from.split("@")[0]),
+        senderImage: msg.senderImage || "",
+        type: msg.type || "text",
+        text: msg.text || "",
+        imageUrl: msg.imageUrl || "",
+        fileName: msg.fileName || "",
+        audioUrl: msg.audioUrl || "",
+        audioDuration: msg.audioDuration,
+        videoUrl: msg.videoUrl || "",
+        sticker: msg.sticker || null,
+        location: msg.location || null,
+        contactCard: msg.contactCard || null,
+        poll: msg.poll || null,
+        reply_to: msg.reply_to || null,
+        reactions: msg.reactions || {},
+        status: isMe ? "read" : undefined,
+        createdAt: Number(msg.createdAt || msg.created_at || (msg.timestamp ? new Date(msg.timestamp).getTime() : Date.now())) || Date.now()
+      };
+      state.conversations[groupChatKey].push(formatted);
+      saveState();
+
+      if (state.activeChatId === groupChatKey) {
+        renderMessages();
+        triggerHaptic(12);
+        const msgsEl = el("messages");
+        if (msgsEl) msgsEl.scrollTop = msgsEl.scrollHeight;
+      } else {
+        triggerHaptic(25);
+        renderConversations();
+        const groupObj = (state.groups || []).find((g) => `group:${g.id}` === groupChatKey);
+        const groupTitle = groupObj ? groupObj.name : "المجموعة";
+        showWhatsAppNotification({
+          title: `${groupTitle}: ${formatted.senderName}`,
+          body: formatted.type === "voice" ? "🎤 رسالة صوتية" : (formatted.type === "image" ? "📷 صورة" : (formatted.text || "رسالة جديدة")),
+          avatar: formatted.senderImage || groupObj?.image || DEFAULT_AVATAR,
+          chatId: groupChatKey
+        });
+      }
+    }
+    return;
+  }
+
+  // رسائل الأصدقاء العادية (1-to-1)
   const partnerEmail = from === myEmail ? to : from;
   const friendChatKey = `friend:${partnerEmail}`;
 
@@ -7584,10 +7710,11 @@ function handleIncomingRealtimeMessage(msg) {
     if (state.activeChatId === friendChatKey) {
       renderMessages();
       triggerHaptic(12);
+      const msgsEl = el("messages");
+      if (msgsEl) msgsEl.scrollTop = msgsEl.scrollHeight;
     } else {
       triggerHaptic(25);
       renderConversations();
-      // إطلاق إشعار واتساب الجانبي والعلوي
       const senderName = msg.senderName || msg.sender || from.split("@")[0];
       const preview = msg.type === "voice" ? "🎤 رسالة صوتية" : (msg.type === "image" ? "📷 صورة" : (msg.type === "document" ? "📎 مستند" : (msg.text || "رسالة جديدة")));
       showWhatsAppNotification({
@@ -7743,21 +7870,40 @@ async function startApplication() {
    ========================================================================== */
 let _lastChatDropdownToggle = 0;
 
+function isSameUserEmail(e1, e2) {
+  if (!e1 || !e2) return false;
+  const s1 = String(e1).trim().toLowerCase();
+  const s2 = String(e2).trim().toLowerCase();
+  if (s1 === s2) return true;
+  if (s1.endsWith("@gmail.com") && s2.endsWith("@gmail.com")) {
+    const u1 = s1.split("@")[0].replace(/\./g, "");
+    const u2 = s2.split("@")[0].replace(/\./g, "");
+    return u1 === u2;
+  }
+  return false;
+}
+window.isSameUserEmail = isSameUserEmail;
+
+function isGroupAdmin(group) {
+  if (!group || !state.currentUser) return false;
+  const myEmail = state.currentUser.email;
+  if (isSameUserEmail(group.admin, myEmail)) return true;
+  if (Array.isArray(group.admins) && group.admins.some((a) => isSameUserEmail(a, myEmail))) return true;
+  return false;
+}
+window.isGroupAdmin = isGroupAdmin;
+
 function updateDropdownItemsVisibility() {
   const chat = typeof getChat === "function" ? getChat() : null;
   const isFriend = Boolean(chat && chat.type === "friend");
   const isGroup = Boolean(chat && (chat.type === "group" || String(chat.id || "").startsWith("group:")));
   const isSpecial = Boolean(chat && (chat.id === "chato_announcements" || chat.type === "admin_notice" || chat.type === "ai"));
 
-  const myEmail = (state.currentUser?.email || "").toLowerCase();
-  const isGroupAdmin = isGroup && (
-    String(chat.admin || "").toLowerCase() === myEmail ||
-    (Array.isArray(chat.admins) && chat.admins.some(a => String(a).toLowerCase() === myEmail))
-  );
+  const isAdmin = isGroup && isGroupAdmin(chat);
 
   const setItemVisibility = (id, show) => {
-    const el = document.getElementById(id);
-    if (el) el.hidden = !show;
+    const elem = document.getElementById(id);
+    if (elem) elem.hidden = !show;
   };
 
   setItemVisibility("voiceCallButton", isFriend);
@@ -7767,7 +7913,8 @@ function updateDropdownItemsVisibility() {
   setItemVisibility("chatDisappearingButton", !isSpecial);
   setItemVisibility("chatLockButton", !isSpecial);
   setItemVisibility("chatWallpaperButton", !isSpecial);
-  setItemVisibility("deleteGroupOption", isGroupAdmin);
+  setItemVisibility("groupInfoOption", isGroup);
+  setItemVisibility("deleteGroupOption", isAdmin);
 }
 window.updateDropdownItemsVisibility = updateDropdownItemsVisibility;
 
@@ -7823,24 +7970,280 @@ window.toggleChatDropdown = function(event) {
   }
 };
 
+// 7. إدارة معلومات وأعضاء المجموعة
+function openGroupMembersModal() {
+  window.closeAllChatMenus();
+  const chat = typeof getChat === "function" ? getChat() : null;
+  if (!chat || (chat.type !== "group" && !String(chat.id || "").startsWith("group:"))) return;
+  const groupId = String(chat.id).replace(/^group:/, "");
+
+  const group = (state.groups || []).find((g) => g.id === groupId) || {
+    id: groupId,
+    name: chat.name,
+    image: chat.image,
+    admin: chat.admin,
+    admins: chat.admins || [chat.admin],
+    members: chat.members || [],
+    member_emails: chat.member_emails || []
+  };
+
+  const modal = el("groupMembersModal");
+  if (!modal) return;
+
+  const isAdmin = isGroupAdmin(group);
+
+  // تحديث بيانات رأس النافذة
+  if (el("groupModalTitle")) el("groupModalTitle").textContent = group.name;
+  const memberCount = (group.member_emails && group.member_emails.length) || (group.members && group.members.length) || 1;
+  if (el("groupModalSubtitle")) el("groupModalSubtitle").textContent = `${memberCount} أعضاء`;
+
+  const modalAvatar = el("groupModalAvatar");
+  if (modalAvatar) {
+    if (group.image) {
+      modalAvatar.innerHTML = `<img src="${group.image}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" />`;
+    } else {
+      modalAvatar.textContent = (group.name || "م")[0];
+    }
+  }
+
+  // إظهار قسم إضافة عضو للمشرف فقط
+  const addSec = el("groupAddMemberSection");
+  if (addSec) addSec.hidden = !isAdmin;
+
+  // إظهار زر الحذف للمشرف وزر المغادرة لغير المشرف
+  const deleteBtn = el("groupModalDeleteBtn");
+  if (deleteBtn) deleteBtn.hidden = !isAdmin;
+
+  const leaveBtn = el("groupModalLeaveBtn");
+  if (leaveBtn) leaveBtn.hidden = isAdmin;
+
+  // تعبئة قائمة الأعضاء
+  renderGroupMembersList(group, isAdmin);
+
+  if (typeof openDialog === "function") openDialog(modal);
+  else modal.showModal();
+}
+window.openGroupMembersModal = openGroupMembersModal;
+
+function closeGroupMembersModal() {
+  const modal = el("groupMembersModal");
+  if (!modal) return;
+  if (typeof closeDialog === "function") closeDialog(modal);
+  else modal.close();
+}
+window.closeGroupMembersModal = closeGroupMembersModal;
+
+function renderGroupMembersList(group, isAdmin) {
+  const container = el("groupMembersList");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const emails = Array.isArray(group.member_emails) ? group.member_emails : [];
+  const names = Array.isArray(group.members) ? group.members : [];
+  const count = Math.max(emails.length, names.length);
+
+  if (count === 0) {
+    container.innerHTML = '<p style="color:var(--muted); font-size:13px; text-align:center; padding:10px;">لا يوجد أعضاء في المجموعة</p>';
+    return;
+  }
+
+  for (let i = 0; i < count; i++) {
+    const email = emails[i] || "";
+    const name = names[i] || (email ? email.split("@")[0] : "عضو");
+    const isMemberAdmin = isSameUserEmail(group.admin, email) ||
+      (Array.isArray(group.admins) && group.admins.some((a) => isSameUserEmail(a, email)));
+    const isMe = isSameUserEmail(state.currentUser?.email, email);
+
+    const contact = (state.contacts && state.contacts[email.toLowerCase()]) ||
+                    (state.friends || []).find((f) => isSameUserEmail(f.email, email)) || {};
+    const imgUrl = contact.image || "";
+
+    const item = document.createElement("div");
+    item.className = "group-member-item";
+
+    const leftCol = document.createElement("div");
+    leftCol.style.cssText = "display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;";
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.style.cssText = "width: 38px; height: 38px; font-size: 15px; flex-shrink: 0;";
+    if (imgUrl) {
+      avatar.innerHTML = `<img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" />`;
+    } else {
+      avatar.textContent = (name || "ع")[0];
+    }
+
+    const info = document.createElement("div");
+    info.style.cssText = "min-width: 0; flex: 1;";
+    info.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <strong style="font-size: 13.5px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(name)}${isMe ? " (أنت)" : ""}</strong>
+        ${isMemberAdmin ? '<span style="font-size: 10.5px; background: #fef08a; color: #854d0e; padding: 2px 6px; border-radius: 6px; font-weight: 700;">مشرف 👑</span>' : '<span style="font-size: 10px; background: rgba(0,0,0,0.06); color: var(--muted); padding: 2px 6px; border-radius: 6px;">عضو</span>'}
+      </div>
+      ${email ? `<span style="font-size: 11.5px; color: var(--muted); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email)}</span>` : ""}
+    `;
+
+    leftCol.appendChild(avatar);
+    leftCol.appendChild(info);
+    item.appendChild(leftCol);
+
+    // زر إزالة العضو للمشرف
+    if (isAdmin && !isMemberAdmin && !isMe) {
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "btn-remove-member";
+      removeBtn.title = "إزالة هذا العضو من المجموعة";
+      removeBtn.style.cssText = "background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 8px; padding: 5px 10px; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; margin-inline-start: 8px;";
+      removeBtn.innerHTML = "إزالة ❌";
+      removeBtn.onclick = (e) => {
+        e.stopPropagation();
+        removeGroupMember(group.id, email || name, name);
+      };
+      item.appendChild(removeBtn);
+    }
+
+    container.appendChild(item);
+  }
+}
+
+async function submitAddGroupMember() {
+  const input = el("newGroupMemberInput");
+  const memberQuery = input ? input.value.trim() : "";
+  if (!memberQuery) {
+    alert("يرجى كتابة البريد الإلكتروني أو اسم العضو لإضافته");
+    return;
+  }
+  const chat = typeof getChat === "function" ? getChat() : null;
+  if (!chat) return;
+  const groupId = String(chat.id).replace(/^group:/, "");
+  const requester = state.currentUser?.email || "";
+
+  const btn = el("addGroupMemberBtn");
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch("/api/groups/members", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ groupId, member: memberQuery, requester })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(data.error || "تعذر إضافة العضو");
+      return;
+    }
+
+    input.value = "";
+    const gIdx = (state.groups || []).findIndex((g) => g.id === groupId);
+    if (gIdx !== -1) {
+      state.groups[gIdx] = data.group;
+    } else {
+      state.groups = state.groups || [];
+      state.groups.push(data.group);
+    }
+
+    renderGroupMembersList(data.group, true);
+    if (el("groupModalSubtitle")) el("groupModalSubtitle").textContent = `${data.group.members.length} أعضاء`;
+
+    if (data.message) {
+      state.conversations[chat.id] = state.conversations[chat.id] || [];
+      state.conversations[chat.id].push(data.message);
+      renderMessages();
+    }
+    saveState();
+    renderConversations();
+    alert(`تمت إضافة ${data.member.name} إلى المجموعة بنجاح ✅`);
+  } catch (err) {
+    alert("حدث خطأ أثناء إضافة العضو، يرجى المحاولة لاحقاً");
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.submitAddGroupMember = submitAddGroupMember;
+
+async function removeGroupMember(groupId, memberEmail, memberName) {
+  const confirmMsg = `هل أنت متأكد من إزالة "${memberName}" من المجموعة؟`;
+  if (!confirm(confirmMsg)) return;
+
+  const requester = state.currentUser?.email || "";
+  try {
+    const res = await fetch(`/api/groups/members?id=${encodeURIComponent(groupId)}&member=${encodeURIComponent(memberEmail)}&user=${encodeURIComponent(requester)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(data.error || "تعذر إزالة العضو");
+      return;
+    }
+
+    const gIdx = (state.groups || []).findIndex((g) => g.id === groupId);
+    if (gIdx !== -1) {
+      state.groups[gIdx] = data.group;
+    }
+    renderGroupMembersList(data.group, true);
+    if (el("groupModalSubtitle")) el("groupModalSubtitle").textContent = `${data.group.members.length} أعضاء`;
+
+    loadSharedMessages(`group:${groupId}`);
+    saveState();
+    renderConversations();
+    alert(`تمت إزالة ${memberName} من المجموعة ✅`);
+  } catch (err) {
+    alert("حدث خطأ أثناء إزالة العضو");
+  }
+}
+window.removeGroupMember = removeGroupMember;
+
+async function leaveActiveGroup() {
+  const chat = typeof getChat === "function" ? getChat() : null;
+  if (!chat) return;
+  const groupId = String(chat.id).replace(/^group:/, "");
+  const myEmail = state.currentUser?.email || "";
+
+  if (!confirm(`هل أنت متأكد من رغبتك في مغادرة مجموعة "${chat.name}"؟`)) return;
+
+  try {
+    const res = await fetch(`/api/groups/members?id=${encodeURIComponent(groupId)}&member=${encodeURIComponent(myEmail)}&user=${encodeURIComponent(myEmail)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(data.error || "تعذر مغادرة المجموعة");
+      return;
+    }
+
+    closeGroupMembersModal();
+    state.groups = (state.groups || []).filter((g) => g.id !== groupId);
+    delete state.conversations[chat.id];
+    delete state.conversations[`group:${groupId}`];
+    state.activeChatId = null;
+    el("contentGrid")?.classList.remove("in-chat");
+    el("appScreen")?.classList.remove("in-chat-mobile");
+    saveState();
+    renderConversations();
+    alert("لقد غادرت المجموعة بنجاح 👋");
+  } catch (err) {
+    alert("حدث خطأ أثناء مغادرة المجموعة");
+  }
+}
+window.leaveActiveGroup = leaveActiveGroup;
+
 async function deleteActiveGroup() {
-  const chat = getChat();
+  const chat = typeof getChat === "function" ? getChat() : null;
   if (!chat || (chat.type !== "group" && !String(chat.id || "").startsWith("group:"))) {
     alert("هذا الخيار مخصص للمجموعات فقط.");
     return;
   }
   const myEmail = (state.currentUser?.email || "").toLowerCase();
-  const isGroupAdmin = String(chat.admin || "").toLowerCase() === myEmail ||
-                       (Array.isArray(chat.admins) && chat.admins.some(a => String(a).toLowerCase() === myEmail));
+  const isAdmin = isGroupAdmin(chat);
 
-  if (!isGroupAdmin) {
+  if (!isAdmin) {
     alert("حذف المجموعة متاح فقط لمشرف ومؤسس المجموعة 🔒");
     return;
   }
 
   const confirmMsg = currentLang === "ar"
-    ? `هل أنت متأكد من رغبتك في حذف مجموعة "${chat.name}" نهائياً؟\nسيتم إزالة المجموعة وجميع محتوياتها ورسائلها لدى جميع الأعضاء فوراً.`
-    : `Are you sure you want to permanently delete "${chat.name}"?`;
+    ? `هل أنت متأكد من رغبتك في حذف مجموعة "${chat.name}" نهائياً لجميع الأعضاء؟\nسيتم إزالة المجموعة وجميع محتوياتها ورسائلها لدى الجميع فوراً.`
+    : `Are you sure you want to permanently delete "${chat.name}" for all members?`;
 
   if (!confirm(confirmMsg)) return;
 
@@ -7855,14 +8258,17 @@ async function deleteActiveGroup() {
       return;
     }
 
+    closeGroupMembersModal();
+    window.closeAllChatMenus();
+
     // إزالة المجموعة محلياً
-    state.groups = (state.groups || []).filter(g => g.id !== groupId);
+    state.groups = (state.groups || []).filter((g) => g.id !== groupId);
     delete state.conversations[chat.id];
+    delete state.conversations[`group:${groupId}`];
     state.activeChatId = null;
     el("contentGrid")?.classList.remove("in-chat");
     el("appScreen")?.classList.remove("in-chat-mobile");
 
-    window.closeAllChatMenus();
     saveState();
     renderConversations();
     alert("تم حذف المجموعة بنجاح ✅");
@@ -8184,3 +8590,15 @@ document.getElementById("messages")?.addEventListener("scroll", closeAllChatMenu
 document.getElementById("chat-area")?.addEventListener("scroll", closeAllChatMenus, { passive: true });
 
 startApplication();
+
+// النقر على رأس المحادثة لفتح معلومات المجموعة عند المحادثات الجماعية
+const _chatHeadEl = document.getElementById("chatHead");
+if (_chatHeadEl) {
+  _chatHeadEl.addEventListener("click", (e) => {
+    if (e.target.closest("#chat-options-trigger") || e.target.closest("#backChatBtn") || e.target.closest(".chat-actions") || e.target.closest(".delete-friend-button") || e.target.closest(".ai-image-gen-btn")) return;
+    const curChat = typeof getChat === "function" ? getChat() : null;
+    if (curChat && (curChat.type === "group" || String(curChat.id || "").startsWith("group:"))) {
+      openGroupMembersModal();
+    }
+  });
+}
