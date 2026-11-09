@@ -1615,6 +1615,213 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  // إضافة عضو إلى المجموعة (Add Member to Group)
+  if (req.method === "POST" && url.pathname === "/api/groups/members") {
+    const { groupId: rawGroupId, member, requester } = await readJsonBody(req);
+    const groupId = String(rawGroupId || "").replace(/^group:/, "").trim();
+    const requesterEmail = String(requester || "").trim().toLowerCase();
+    const targetQuery = String(member || "").trim();
+
+    if (!groupId || !targetQuery) {
+      sendJson(res, 400, { error: "يرجى تحديد المجموعة واسم أو بريد العضو المراد إضافته" });
+      return;
+    }
+
+    const database = await readDatabase();
+    database.groups = Array.isArray(database.groups) ? database.groups : [];
+    database.users = Array.isArray(database.users) ? database.users : [];
+    database.messages = Array.isArray(database.messages) ? database.messages : [];
+
+    const group = database.groups.find((g) => g.id === groupId);
+    if (!group) {
+      sendJson(res, 404, { error: "المجموعة غير موجودة" });
+      return;
+    }
+
+    const normalizeEmail = (e) => {
+      const s = String(e || "").trim().toLowerCase();
+      if (s.endsWith("@gmail.com")) return s.split("@")[0].replace(/\./g, "") + "@gmail.com";
+      return s;
+    };
+
+    const adminEmail = String(group.admin || "").trim().toLowerCase();
+    const adminAdmins = Array.isArray(group.admins) ? group.admins.map((a) => String(a).trim().toLowerCase()) : [adminEmail];
+    const isAuthorized =
+      normalizeEmail(adminEmail) === normalizeEmail(requesterEmail) ||
+      adminAdmins.some((a) => normalizeEmail(a) === normalizeEmail(requesterEmail)) ||
+      requesterEmail === ADMIN_MASTER_PIN.toLowerCase();
+
+    if (!isAuthorized) {
+      sendJson(res, 403, { error: "إضافة الأعضاء متاحة فقط لمشرف المجموعة 🔒" });
+      return;
+    }
+
+    // البحث عن المستخدم في قاعدة البيانات
+    const targetUser = database.users.find((u) => {
+      if (normalizeEmail(u.email) === normalizeEmail(targetQuery)) return true;
+      if (u.name && u.name.trim().toLowerCase() === targetQuery.toLowerCase()) return true;
+      if (u.phone && u.phone.trim() === targetQuery) return true;
+      return false;
+    });
+
+    let targetEmail = "";
+    let targetName = "";
+
+    if (targetUser) {
+      targetEmail = targetUser.email.toLowerCase();
+      targetName = targetUser.name || targetEmail.split("@")[0];
+    } else if (targetQuery.includes("@")) {
+      targetEmail = targetQuery.toLowerCase();
+      targetName = targetQuery.split("@")[0];
+    } else {
+      sendJson(res, 404, { error: "لم يتم العثور على مستخدم بهذا الاسم أو البريد في Chato" });
+      return;
+    }
+
+    group.member_emails = Array.isArray(group.member_emails) ? group.member_emails : [];
+    group.members = Array.isArray(group.members) ? group.members : [];
+
+    if (group.member_emails.some((e) => normalizeEmail(e) === normalizeEmail(targetEmail))) {
+      sendJson(res, 400, { error: `المستخدم (${targetName}) موجود بالفعل في هذه المجموعة` });
+      return;
+    }
+
+    group.member_emails.push(targetEmail);
+    group.members.push(targetName);
+    group.updatedAt = Date.now();
+
+    const requesterUser = database.users.find((u) => normalizeEmail(u.email) === normalizeEmail(requesterEmail));
+    const requesterName = requesterUser?.name || requesterEmail.split("@")[0];
+
+    const systemMsg = {
+      id: crypto.randomUUID(),
+      chat_id: `group:${groupId}`,
+      from: "system",
+      fromName: "نظام Chato",
+      to: `group:${groupId}`,
+      type: "system",
+      text: `قام ${requesterName} بإضافة ${targetName} إلى المجموعة 👥`,
+      status: "sent",
+      read: true,
+      createdAt: Date.now()
+    };
+    database.messages.push(systemMsg);
+
+    await writeDatabase(database);
+
+    // البث لجميع الأعضاء عبر SSE
+    for (const mEmail of group.member_emails) {
+      broadcastToUser(mEmail, "group_member_added", {
+        groupId,
+        group,
+        member: { email: targetEmail, name: targetName },
+        message: systemMsg
+      });
+      broadcastToUser(mEmail, "new_message", systemMsg);
+    }
+
+    sendJson(res, 200, { ok: true, group, member: { email: targetEmail, name: targetName }, message: systemMsg });
+    return;
+  }
+
+  // إزالة عضو من المجموعة للمشرف أو مغادرة العضو بنفسه (Remove/Leave Group Member)
+  if (req.method === "DELETE" && url.pathname === "/api/groups/members") {
+    const rawGroupId = String(url.searchParams.get("id") || "").trim();
+    const groupId = rawGroupId.replace(/^group:/, "");
+    const targetMember = String(url.searchParams.get("member") || "").trim().toLowerCase();
+    const requesterEmail = String(url.searchParams.get("user") || url.searchParams.get("email") || "").trim().toLowerCase();
+
+    if (!groupId || !targetMember) {
+      sendJson(res, 400, { error: "معرف المجموعة والعضو مطلوبان" });
+      return;
+    }
+
+    const database = await readDatabase();
+    database.groups = Array.isArray(database.groups) ? database.groups : [];
+    database.users = Array.isArray(database.users) ? database.users : [];
+    database.messages = Array.isArray(database.messages) ? database.messages : [];
+
+    const group = database.groups.find((g) => g.id === groupId);
+    if (!group) {
+      sendJson(res, 404, { error: "المجموعة غير موجودة" });
+      return;
+    }
+
+    const normalizeEmail = (e) => {
+      const s = String(e || "").trim().toLowerCase();
+      if (s.endsWith("@gmail.com")) return s.split("@")[0].replace(/\./g, "") + "@gmail.com";
+      return s;
+    };
+
+    const adminEmail = String(group.admin || "").trim().toLowerCase();
+    const adminAdmins = Array.isArray(group.admins) ? group.admins.map((a) => String(a).trim().toLowerCase()) : [adminEmail];
+
+    const isRequesterAdmin =
+      normalizeEmail(adminEmail) === normalizeEmail(requesterEmail) ||
+      adminAdmins.some((a) => normalizeEmail(a) === normalizeEmail(requesterEmail)) ||
+      requesterEmail === ADMIN_MASTER_PIN.toLowerCase();
+
+    const isSelfLeaving = normalizeEmail(targetMember) === normalizeEmail(requesterEmail);
+
+    if (!isRequesterAdmin && !isSelfLeaving) {
+      sendJson(res, 403, { error: "إزالة الأعضاء مقتصرة على مشرف المجموعة 🔒" });
+      return;
+    }
+
+    if (isRequesterAdmin && !isSelfLeaving && normalizeEmail(targetMember) === normalizeEmail(adminEmail)) {
+      sendJson(res, 400, { error: "لا يمكن إزالة مؤسس ومشرف المجموعة. إذا أردت إنهاء المجموعة، اختر 'حذف المجموعة'." });
+      return;
+    }
+
+    group.member_emails = Array.isArray(group.member_emails) ? group.member_emails : [];
+    group.members = Array.isArray(group.members) ? group.members : [];
+
+    const targetUser = database.users.find((u) => normalizeEmail(u.email) === normalizeEmail(targetMember) || (u.name && u.name.trim().toLowerCase() === targetMember));
+    const targetName = targetUser?.name || targetMember.split("@")[0];
+
+    const oldEmails = [...group.member_emails];
+    group.member_emails = group.member_emails.filter((e) => normalizeEmail(e) !== normalizeEmail(targetMember));
+    group.members = group.members.filter((n) => n.trim().toLowerCase() !== targetName.toLowerCase() && n.trim().toLowerCase() !== targetMember);
+    group.updatedAt = Date.now();
+
+    const requesterUser = database.users.find((u) => normalizeEmail(u.email) === normalizeEmail(requesterEmail));
+    const requesterName = requesterUser?.name || requesterEmail.split("@")[0];
+
+    const actionText = isSelfLeaving
+      ? `غادر ${targetName} المجموعة 👋`
+      : `قام المشرف ${requesterName} بإزالة ${targetName} من المجموعة 🚫`;
+
+    const systemMsg = {
+      id: crypto.randomUUID(),
+      chat_id: `group:${groupId}`,
+      from: "system",
+      fromName: "نظام Chato",
+      to: `group:${groupId}`,
+      type: "system",
+      text: actionText,
+      status: "sent",
+      read: true,
+      createdAt: Date.now()
+    };
+    database.messages.push(systemMsg);
+
+    await writeDatabase(database);
+
+    for (const mEmail of oldEmails) {
+      broadcastToUser(mEmail, "group_member_removed", {
+        groupId,
+        group,
+        removedEmail: targetMember,
+        isSelfLeaving,
+        message: systemMsg
+      });
+      broadcastToUser(mEmail, "new_message", systemMsg);
+    }
+
+    sendJson(res, 200, { ok: true, message: actionText, group });
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/calls/signal") {
     const { from, to, type, sdp, candidate } = await readJsonBody(req);
     const cleanFrom = String(from || "").trim().toLowerCase();
