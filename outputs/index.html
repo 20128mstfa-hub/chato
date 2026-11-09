@@ -589,6 +589,8 @@
                         <circle cx="12" cy="19" r="2" fill="currentColor"/>
                       </svg>
                     </button>
+                    <!-- خلفية إغلاق القائمة عند النقر خارجها -->
+                    <div id="chatDropdownBackdrop" class="chat-dropdown-backdrop" hidden onclick="closeAllChatMenus()"></div>
                     <!-- القائمة المنسدلة -->
                     <div id="chat-dropdown-menu" class="chat-dropdown chat-dropdown-menu" hidden>
                       <div class="chat-sheet-handle-bar"></div>
@@ -682,6 +684,13 @@
                           <div class="dropdown-item-col">
                             <span class="dropdown-item-text">مسح محتوى المحادثة</span>
                             <span class="dropdown-item-sub">حذف كافة رسائل هذه المحادثة نهائياً</span>
+                          </div>
+                        </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item text-danger" id="deleteGroupOption" onclick="deleteActiveGroup()" hidden>
+                          <span class="dropdown-item-icon">🗑️</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text" style="color: #ef4444 !important; font-weight: 700;">حذف المجموعة نهائياً</span>
+                            <span class="dropdown-item-sub">إزالة المجموعة وجميع أعضائها ورسائلها للجميع</span>
                           </div>
                         </button>
                       </div>
