@@ -1029,12 +1029,13 @@ function getChats() {
 
   // المجموعات
   (state.groups || []).forEach((group) => {
+    const count = Array.isArray(group.members) ? group.members.length : (Array.isArray(group.member_emails) ? group.member_emails.length : 1);
     list.push({
       id: `group:${group.id}`,
       type: "group",
       ...group,
-      meta: currentLang === "ar" ? `${group.members.length} أعضاء` : `${group.members.length} members`,
-      initial: "ج"
+      meta: currentLang === "ar" ? `${count} أعضاء` : `${count} members`,
+      initial: (group.name && group.name[0]) ? group.name[0] : "👥"
     });
   });
 
@@ -4185,7 +4186,7 @@ async function saveProfile() {
       body: JSON.stringify({
         email: state.currentUser.email,
         name,
-        image: profileImageData
+        image: profileImageData || state.currentUser.image || ""
       })
     });
   } catch {
@@ -4193,7 +4194,9 @@ async function saveProfile() {
   }
 
   state.currentUser.name = name;
-  state.currentUser.image = profileImageData;
+  if (profileImageData) {
+    state.currentUser.image = profileImageData;
+  }
   if (newPass) state.currentUser.password = newPass;
 
   // مزامنة التغييرات في الحسابات المسجلة
@@ -7506,6 +7509,56 @@ function initRealtimeStream() {
     } catch {}
   });
 
+  realtimeEventSource.addEventListener("group_created", (e) => {
+    try {
+      const data = JSON.parse(e.data);
+      if (data && data.group) {
+        state.groups = Array.isArray(state.groups) ? state.groups : [];
+        const exists = state.groups.find(g => g.id === data.group.id);
+        if (!exists) {
+          state.groups.unshift(data.group);
+        } else {
+          const idx = state.groups.findIndex(g => g.id === data.group.id);
+          state.groups[idx] = { ...state.groups[idx], ...data.group };
+        }
+        if (data.message) {
+          const cId = `group:${data.group.id}`;
+          state.conversations[cId] = state.conversations[cId] || [];
+          if (!state.conversations[cId].some(m => m.id === data.message.id)) {
+            state.conversations[cId].push(data.message);
+          }
+        }
+        saveState();
+        renderConversations();
+        showWhatsAppNotification({
+          title: `مجموعة جديدة: ${data.group.name} 👥`,
+          body: data.message ? data.message.text : "تمت إضافتك إلى مجموعة جديدة",
+          avatar: data.group.image || "./favicon.png",
+          chatId: `group:${data.group.id}`
+        });
+      }
+    } catch {}
+  });
+
+  realtimeEventSource.addEventListener("group_deleted", (e) => {
+    try {
+      const data = JSON.parse(e.data);
+      if (data && data.groupId) {
+        const fullChatId = `group:${data.groupId}`;
+        state.groups = (state.groups || []).filter(g => g.id !== data.groupId);
+        delete state.conversations[fullChatId];
+        if (state.activeChatId === fullChatId) {
+          state.activeChatId = null;
+          el("contentGrid")?.classList.remove("in-chat");
+          el("appScreen")?.classList.remove("in-chat-mobile");
+          alert(`تم حذف المجموعة "${data.groupName || ""}" بواسطة المشرف.`);
+        }
+        saveState();
+        renderConversations();
+      }
+    } catch {}
+  });
+
   realtimeEventSource.onerror = () => {
     // EventSource handles auto-reconnect
   };
@@ -7613,25 +7666,14 @@ applyLanguage(currentLang);
 async function fetchUserGroups() {
   if (!state.currentUser?.email) return;
   try {
-    const res = await fetch(`/api/groups?user=${encodeURIComponent(state.currentUser.email)}`);
+    const userEmail = state.currentUser.email.toLowerCase().trim();
+    const res = await fetch(`/api/groups?user=${encodeURIComponent(userEmail)}`);
     if (!res.ok) return;
     const data = await res.json();
     if (data.ok && Array.isArray(data.groups)) {
-      state.groups = Array.isArray(state.groups) ? state.groups : [];
-      let changed = false;
-      for (const g of data.groups) {
-        const idx = state.groups.findIndex(x => x.id === g.id);
-        if (idx !== -1) {
-          state.groups[idx] = { ...state.groups[idx], ...g };
-        } else {
-          state.groups.unshift(g);
-          changed = true;
-        }
-      }
-      if (changed) {
-        saveState();
-        renderConversations();
-      }
+      state.groups = data.groups;
+      saveState();
+      renderConversations();
     }
   } catch {}
 }
@@ -7704,7 +7746,14 @@ let _lastChatDropdownToggle = 0;
 function updateDropdownItemsVisibility() {
   const chat = typeof getChat === "function" ? getChat() : null;
   const isFriend = Boolean(chat && chat.type === "friend");
+  const isGroup = Boolean(chat && (chat.type === "group" || String(chat.id || "").startsWith("group:")));
   const isSpecial = Boolean(chat && (chat.id === "chato_announcements" || chat.type === "admin_notice" || chat.type === "ai"));
+
+  const myEmail = (state.currentUser?.email || "").toLowerCase();
+  const isGroupAdmin = isGroup && (
+    String(chat.admin || "").toLowerCase() === myEmail ||
+    (Array.isArray(chat.admins) && chat.admins.some(a => String(a).toLowerCase() === myEmail))
+  );
 
   const setItemVisibility = (id, show) => {
     const el = document.getElementById(id);
@@ -7714,10 +7763,11 @@ function updateDropdownItemsVisibility() {
   setItemVisibility("voiceCallButton", isFriend);
   setItemVisibility("videoCallButton", isFriend);
   setItemVisibility("chatBlockOption", isFriend);
-  setItemVisibility("chatReportOption", isFriend);
+  setItemVisibility("chatReportOption", isFriend || isGroup);
   setItemVisibility("chatDisappearingButton", !isSpecial);
   setItemVisibility("chatLockButton", !isSpecial);
   setItemVisibility("chatWallpaperButton", !isSpecial);
+  setItemVisibility("deleteGroupOption", isGroupAdmin);
 }
 window.updateDropdownItemsVisibility = updateDropdownItemsVisibility;
 
@@ -7732,12 +7782,18 @@ function closeAllChatMenus() {
     aMenu.setAttribute("hidden", "true");
     aMenu.style.display = "none";
   }
+  const backdrop = document.getElementById("chatDropdownBackdrop");
+  if (backdrop) {
+    backdrop.setAttribute("hidden", "true");
+    backdrop.style.display = "none";
+  }
 }
 window.closeAllChatMenus = closeAllChatMenus;
 
 window.toggleChatDropdown = function(event) {
   if (event && typeof event.stopPropagation === "function") event.stopPropagation();
   const menu = document.getElementById("chat-dropdown-menu");
+  const backdrop = document.getElementById("chatDropdownBackdrop");
   if (!menu) return;
 
   const isHidden = menu.hasAttribute("hidden") || menu.style.display === "none";
@@ -7749,6 +7805,10 @@ window.toggleChatDropdown = function(event) {
     }
     menu.removeAttribute("hidden");
     menu.style.display = "flex";
+    if (backdrop) {
+      backdrop.removeAttribute("hidden");
+      backdrop.style.display = "block";
+    }
     if (typeof updateDropdownItemsVisibility === "function") updateDropdownItemsVisibility();
     if (typeof updateChatPinUI === "function") updateChatPinUI();
     if (typeof updateChatBlockUI === "function") updateChatBlockUI();
@@ -7756,8 +7816,61 @@ window.toggleChatDropdown = function(event) {
   } else {
     menu.setAttribute("hidden", "true");
     menu.style.display = "none";
+    if (backdrop) {
+      backdrop.setAttribute("hidden", "true");
+      backdrop.style.display = "none";
+    }
   }
 };
+
+async function deleteActiveGroup() {
+  const chat = getChat();
+  if (!chat || (chat.type !== "group" && !String(chat.id || "").startsWith("group:"))) {
+    alert("هذا الخيار مخصص للمجموعات فقط.");
+    return;
+  }
+  const myEmail = (state.currentUser?.email || "").toLowerCase();
+  const isGroupAdmin = String(chat.admin || "").toLowerCase() === myEmail ||
+                       (Array.isArray(chat.admins) && chat.admins.some(a => String(a).toLowerCase() === myEmail));
+
+  if (!isGroupAdmin) {
+    alert("حذف المجموعة متاح فقط لمشرف ومؤسس المجموعة 🔒");
+    return;
+  }
+
+  const confirmMsg = currentLang === "ar"
+    ? `هل أنت متأكد من رغبتك في حذف مجموعة "${chat.name}" نهائياً؟\nسيتم إزالة المجموعة وجميع محتوياتها ورسائلها لدى جميع الأعضاء فوراً.`
+    : `Are you sure you want to permanently delete "${chat.name}"?`;
+
+  if (!confirm(confirmMsg)) return;
+
+  const groupId = String(chat.id).replace(/^group:/, "");
+  try {
+    const res = await fetch(`/api/groups?id=${encodeURIComponent(groupId)}&user=${encodeURIComponent(myEmail)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      alert(data.error || "تعذر حذف المجموعة، يرجى المحاولة لاحقاً");
+      return;
+    }
+
+    // إزالة المجموعة محلياً
+    state.groups = (state.groups || []).filter(g => g.id !== groupId);
+    delete state.conversations[chat.id];
+    state.activeChatId = null;
+    el("contentGrid")?.classList.remove("in-chat");
+    el("appScreen")?.classList.remove("in-chat-mobile");
+
+    window.closeAllChatMenus();
+    saveState();
+    renderConversations();
+    alert("تم حذف المجموعة بنجاح ✅");
+  } catch (err) {
+    alert("حدث خطأ أثناء الاتصال بالخادم لحذف المجموعة.");
+  }
+}
+window.deleteActiveGroup = deleteActiveGroup;
 
 
 window.openDisappearingMessagesModal = function() {
@@ -8031,10 +8144,15 @@ window.handleReportSubmit = async function(event) {
 document.addEventListener("pointerdown", (e) => {
   const cMenu = document.getElementById("chat-dropdown-menu");
   const cTrigger = document.getElementById("chat-options-trigger");
+  const backdrop = document.getElementById("chatDropdownBackdrop");
   if (cMenu && !cMenu.hasAttribute("hidden") && cMenu.style.display !== "none") {
     if (!cMenu.contains(e.target) && e.target !== cTrigger && !cTrigger?.contains(e.target)) {
       cMenu.setAttribute("hidden", "true");
       cMenu.style.display = "none";
+      if (backdrop) {
+        backdrop.setAttribute("hidden", "true");
+        backdrop.style.display = "none";
+      }
     }
   }
 
