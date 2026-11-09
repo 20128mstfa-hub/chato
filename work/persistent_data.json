@@ -965,18 +965,6 @@
       "createdAt": 1794172410251
     },
     {
-      "id": "c985a5a4-92fb-4e50-a670-40b3db5df343",
-      "chat_id": "group:d7c7d72a-b268-4777-80a8-e72f6ba65c45",
-      "from": "2012.8.mstfa@gmail.com",
-      "fromName": "Mustafa Amr",
-      "to": "group:d7c7d72a-b268-4777-80a8-e72f6ba65c45",
-      "type": "system",
-      "text": "قام Mustafa Amr بإنشاء المجموعة وإضافة الأعضاء 👥",
-      "status": "sent",
-      "read": true,
-      "createdAt": 1794257731380
-    },
-    {
       "id": "172ef1e4-0a33-4282-a03c-da58a0f28056",
       "chat_id": "2012.8.msta@gmail.com<->d7c7d72a-b268-4777-80a8-e72f6ba65c45",
       "from": "2012.8.msta@gmail.com",
@@ -1400,29 +1388,7 @@
       "updatedAt": 1794069205125
     }
   ],
-  "groups": [
-    {
-      "id": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
-      "name": "اسرتنا",
-      "image": "",
-      "admin": "2012.8.mstfa@gmail.com",
-      "admins": [
-        "2012.8.mstfa@gmail.com"
-      ],
-      "who_can_send": "everyone",
-      "members": [
-        "2012.8.mstfa",
-        "Mustafa Amr",
-        "Ali Mohamed"
-      ],
-      "member_emails": [
-        "2012.8.mstfa@gmail.com",
-        "az7077407@gmail.com"
-      ],
-      "createdAt": 1794257731106,
-      "updatedAt": 1794257731380
-    }
-  ],
+  "groups": [],
   "userSubscriptions": [
     {
       "id": "f4754ba2-1378-4922-82c6-36ca9fd859cf",
