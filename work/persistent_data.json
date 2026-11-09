@@ -102,6 +102,12 @@
       "name": "2325e596-a7a0-4161-b9df-e408d3f24fdb",
       "email": "2325e596-a7a0-4161-b9df-e408d3f24fdb",
       "createdAt": 1794257928298
+    },
+    {
+      "id": "bfc08558-7f01-4654-8e05-653469dbe50b",
+      "name": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "email": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "createdAt": 1794260089620
     }
   ],
   "friendships": [
@@ -160,6 +166,13 @@
       "to": "2325e596-a7a0-4161-b9df-e408d3f24fdb",
       "status": "accepted",
       "createdAt": 1794257958982
+    },
+    {
+      "id": "1314e9ca-9a9f-4e7e-bca8-bb8b00011c9d",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "status": "accepted",
+      "createdAt": 1794260089620
     }
   ],
   "friendRequests": [],
@@ -1100,6 +1113,31 @@
       "status": "sent",
       "read": true,
       "createdAt": 1794260081755
+    },
+    {
+      "id": "869e9298-706e-4292-b91f-6e754170af22",
+      "chat_id": "2012.8.mstfa@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "type": "text",
+      "text": "05",
+      "is_encrypted": true,
+      "encryption_iv": "6d735b6c734349259ddd326d",
+      "encryption_auth_tag": "b81d241a9a2f293ff0de385cf9d1d8c5",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794260089621
     }
   ],
   "aiUsage": [
@@ -1385,6 +1423,15 @@
       "last_message_at": 1794259327297,
       "last_message_content": "تجربة إرسال رسالة في المجموعة بنجاح ✅",
       "created_at": 1794259327297
+    },
+    {
+      "id": "2012.8.mstfa@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "direct_pair": "2012.8.mstfa@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1794260089620,
+      "last_message_content": ".",
+      "created_at": 1794260089620
     }
   ],
   "chatParticipants": [],
