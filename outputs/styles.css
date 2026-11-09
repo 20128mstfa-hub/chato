@@ -7236,8 +7236,9 @@ body.in-announcements #announcementReadOnlyNotice {
   cursor: pointer !important;
 }
 
+
 /* ==========================================================================
-   DEFINITIVE OVERRIDES: DROPDOWN MENUS & ANNOUNCEMENT BANNER FIX (v7.6)
+   CHATO DEFINITIVE V7.7: FIX DROPDOWN MENUS, ANNOUNCEMENTS BANNER, AVATARS
    ========================================================================== */
 
 /* 1. إشعار إعلانات Chato - مخفي 100% في جميع المحادثات العادية */
@@ -7252,6 +7253,7 @@ body.in-announcements #announcementReadOnlyNotice {
   padding: 0 !important;
   border: none !important;
   overflow: hidden !important;
+  pointer-events: none !important;
 }
 
 body.in-announcements .announcement-readonly-notice,
@@ -7259,6 +7261,8 @@ body.in-announcements #announcementReadOnlyNotice {
   display: flex !important;
   visibility: visible !important;
   height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
   width: 90% !important;
   max-width: 600px !important;
   margin: 14px auto !important;
@@ -7274,6 +7278,7 @@ body.in-announcements #announcementReadOnlyNotice {
   justify-content: center !important;
   gap: 8px !important;
   box-sizing: border-box !important;
+  pointer-events: auto !important;
 }
 
 [data-theme="dark"] body.in-announcements .announcement-readonly-notice,
@@ -7283,7 +7288,7 @@ body.in-announcements #announcementReadOnlyNotice {
   color: #38bdf8 !important;
 }
 
-/* 2. إخفاء القائمة المنسدلة عند وجود hidden أو display: none */
+/* إخفاء القائمة المنسدلة عند وجود hidden أو display: none */
 .chat-dropdown[hidden],
 .chat-dropdown-menu[hidden],
 #chat-dropdown-menu[hidden],
@@ -7296,8 +7301,13 @@ body.in-announcements #announcementReadOnlyNotice {
   pointer-events: none !important;
 }
 
-/* 3. قائمة خيارات المحادثة على الكمبيوتر (Desktop) - تفتح لليمين بعرض كامل 250px */
+/* 2. قائمة خيارات المحادثة على الكمبيوتر (Desktop >= 769px) - واضحة وأنيقة بعرض 260px كامل */
 @media (min-width: 769px) {
+  .chat-options-dropdown {
+    position: relative !important;
+    overflow: visible !important;
+  }
+
   .chat-dropdown-menu:not([hidden]),
   .chat-dropdown:not([hidden]),
   #chat-dropdown-menu:not([hidden]) {
@@ -7311,8 +7321,8 @@ body.in-announcements #announcementReadOnlyNotice {
     right: auto !important;
     inset-inline-start: unset !important;
     inset-inline-end: unset !important;
-    width: 250px !important;
-    min-width: 250px !important;
+    width: 260px !important;
+    min-width: 260px !important;
     max-width: 270px !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
@@ -7359,6 +7369,10 @@ body.in-announcements #announcementReadOnlyNotice {
     background: rgba(15, 118, 110, 0.09) !important;
   }
 
+  [data-theme="dark"] .chat-dropdown-item:hover {
+    background: rgba(45, 212, 191, 0.15) !important;
+  }
+
   .chat-dropdown-item .dropdown-item-icon {
     font-size: 18px !important;
     width: 24px !important;
@@ -7401,6 +7415,10 @@ body.in-announcements #announcementReadOnlyNotice {
     line-height: 1.3 !important;
   }
 
+  [data-theme="dark"] .dropdown-item-sub {
+    color: #94a3b8 !important;
+  }
+
   .chat-sheet-head,
   .chat-sheet-handle-bar,
   .chat-sheet-close-btn {
@@ -7408,7 +7426,7 @@ body.in-announcements #announcementReadOnlyNotice {
   }
 }
 
-/* 4. قائمة خيارات المحادثة على التليفون (Mobile Bottom Sheet) - خلفية مصمتة نقية */
+/* 3. قائمة خيارات المحادثة على التليفون (Mobile Bottom Sheet <= 768px) */
 @media (max-width: 768px) {
   .chat-dropdown-menu:not([hidden]),
   .chat-dropdown:not([hidden]),
