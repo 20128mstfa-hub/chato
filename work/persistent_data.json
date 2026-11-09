@@ -934,8 +934,8 @@
       "sticker_url": "/stickers/laugh_cry.svg",
       "document": null,
       "reply_to": null,
-      "status": "sent",
-      "read": false,
+      "status": "read",
+      "read": true,
       "createdAt": 1794243349461
     }
   ],
