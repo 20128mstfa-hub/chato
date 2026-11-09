@@ -160,6 +160,13 @@
       "to": "2325e596-a7a0-4161-b9df-e408d3f24fdb",
       "status": "accepted",
       "createdAt": 1794257928298
+    },
+    {
+      "id": "79bb091d-eace-4b60-be06-1bf4fd06b981",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "status": "accepted",
+      "createdAt": 1794257958982
     }
   ],
   "friendRequests": [],
@@ -1086,6 +1093,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1794257928298
+    },
+    {
+      "id": "76a7a456-4d85-43c4-baed-2f8e4073435f",
+      "chat_id": "2012.8.mstfa@gmail.com<->2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "type": "text",
+      "text": "04c98bcf04fd",
+      "is_encrypted": true,
+      "encryption_iv": "361ba6babba2a7ee8c1be6de",
+      "encryption_auth_tag": "e652bef450af39ea6fb8482d20b4dd1e",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794257958983
     }
   ],
   "aiUsage": [
@@ -1354,6 +1386,15 @@
       "last_message_at": 1794257928298,
       "last_message_content": "هلا",
       "created_at": 1794257928298
+    },
+    {
+      "id": "2012.8.mstfa@gmail.com<->2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "direct_pair": "2012.8.mstfa@gmail.com<->2325e596-a7a0-4161-b9df-e408d3f24fdb",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1794257958982,
+      "last_message_content": "هلا",
+      "created_at": 1794257958982
     }
   ],
   "chatParticipants": [],
