@@ -314,12 +314,12 @@
                 hidden 
               />
             </div>
-            <button class="rail-button" id="createGroupButton" type="button" aria-label="إنشاء مجموعة" data-title="إنشاء مجموعة" data-i18n-title="createGroup">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            <button class="rail-button" id="createGroupButton" type="button" aria-label="إنشاء مجموعة جديدة" data-title="إنشاء مجموعة" data-i18n-title="createGroup">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <line x1="20" y1="8" x2="20" y2="14" />
+                <line x1="23" y1="11" x2="17" y2="11" />
               </svg>
             </button>
             <button class="rail-button" id="supportButton" type="button" aria-label="دعم فني" data-title="دعم فني" data-i18n-title="support">
@@ -686,6 +686,13 @@
                             <span class="dropdown-item-sub">حذف كافة رسائل هذه المحادثة نهائياً</span>
                           </div>
                         </button>
+                        <button type="button" class="dropdown-item chat-dropdown-item" id="groupInfoOption" onclick="openGroupMembersModal()" hidden>
+                          <span class="dropdown-item-icon">👥</span>
+                          <div class="dropdown-item-col">
+                            <span class="dropdown-item-text" style="color: #0f766e !important; font-weight: 700;">معلومات وأعضاء المجموعة</span>
+                            <span class="dropdown-item-sub">عرض الأعضاء، إضافة أو إزالة شخص، وإدارة المشرفين</span>
+                          </div>
+                        </button>
                         <button type="button" class="dropdown-item chat-dropdown-item text-danger" id="deleteGroupOption" onclick="deleteActiveGroup()" hidden>
                           <span class="dropdown-item-icon">🗑️</span>
                           <div class="dropdown-item-col">
@@ -897,11 +904,6 @@
                 </div>
               </div>
               <!-- إشعار منع الإرسال لغير المشرفين في المجموعات المقيدة -->
-              
-              <!-- إشعار القناة الرسمية للإعلانات والتحديثات (للقراءة فقط) -->
-              <div id="announcementReadOnlyNotice" class="announcement-readonly-notice" hidden>
-                <span>📢 هذه القناة مخصصة لإعلانات وتحديثات Chato الرسمية (للقراءة فقط) 🔒</span>
-              </div>
               <div id="groupReadOnlyNotice" class="group-readonly-notice" hidden>
                 <span>🔒 إرسال الرسائل في هذه المجموعة مقتصر على المشرفين فقط</span>
               </div>
@@ -967,6 +969,51 @@
         <p class="error-line" id="groupError" role="alert"></p>
         <button class="primary-action" type="submit" data-i18n="createBtn">إنشاء المجموعة</button>
       </form>
+    </dialog>
+
+    <!-- نافذة معلومات وإدارة أعضاء المجموعة (Group Info & Members) -->
+    <dialog class="modal" id="groupMembersModal">
+      <div class="modal-card group-members-card" style="max-width: 440px; width: 92%;">
+        <div class="modal-head" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <div class="avatar" id="groupModalAvatar" style="width: 44px; height: 44px; font-size: 18px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--teal-soft); display: flex; align-items: center; justify-content: center; font-weight: 800;">👥</div>
+            <div style="min-width: 0;">
+              <h3 id="groupModalTitle" style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">معلومات المجموعة</h3>
+              <p id="groupModalSubtitle" style="margin: 2px 0 0; font-size: 12px; color: var(--muted);">0 أعضاء</p>
+            </div>
+          </div>
+          <button class="close-button" type="button" onclick="closeGroupMembersModal()" aria-label="إغلاق">×</button>
+        </div>
+
+        <!-- قسم إضافة عضو جديد (يظهر للمشرف فقط) -->
+        <div class="group-add-member-section" id="groupAddMemberSection" style="padding: 12px; background: rgba(15, 118, 110, 0.08); border-radius: 12px; margin: 12px 0; border: 1px dashed rgba(15, 118, 110, 0.35);">
+          <label style="display: block; font-size: 13px; font-weight: 700; color: #0f766e; margin-bottom: 8px;">➕ إضافة عضو جديد إلى المجموعة:</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="newGroupMemberInput" placeholder="أدخل البريد أو اسم العضو المسجل..." style="flex: 1; min-width: 0; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;" />
+            <button type="button" class="btn btn-primary" id="addGroupMemberBtn" onclick="submitAddGroupMember()" style="padding: 9px 16px; font-size: 13px; font-weight: 700; white-space: nowrap; background: #0f766e; color: #fff; border: none; border-radius: 8px; cursor: pointer;">إضافة ➕</button>
+          </div>
+        </div>
+
+        <!-- قائمة أعضاء المجموعة -->
+        <div class="group-members-list-container" style="max-height: 270px; overflow-y: auto; margin-top: 10px; padding-right: 2px;">
+          <h4 style="font-size: 13.5px; font-weight: 700; margin: 0 0 10px; color: var(--text);">أعضاء المجموعة</h4>
+          <div id="groupMembersList" class="group-members-list" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- يتم تعبئة الأعضاء ديناميكياً برمجياً -->
+          </div>
+        </div>
+
+        <!-- إجراءات المجموعة: حذف المجموعة أو مغادرتها -->
+        <div class="modal-actions" style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px;">
+          <button type="button" id="groupModalDeleteBtn" onclick="deleteActiveGroup()" style="width: 100%; padding: 11px; background: #ef4444; color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 13.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" hidden>
+            <span>🗑️</span>
+            <span>حذف المجموعة نهائياً لجميع الأعضاء</span>
+          </button>
+          <button type="button" id="groupModalLeaveBtn" onclick="leaveActiveGroup()" style="width: 100%; padding: 11px; background: rgba(0,0,0,0.06); border: 1px solid var(--border); border-radius: 10px; font-weight: 600; font-size: 13.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" hidden>
+            <span>🚪</span>
+            <span>مغادرة المجموعة</span>
+          </button>
+        </div>
+      </div>
     </dialog>
 
     <!-- نافذة إنشاء استطلاع رأي (Poll) -->
