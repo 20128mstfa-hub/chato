@@ -713,6 +713,21 @@ function avatarContent(node, person) {
     node.classList.add("ai-avatar-circle");
     return;
   }
+  if (person?.type === "group" || String(person?.id || "").startsWith("group:")) {
+    if (person?.image) {
+      const img = document.createElement("img");
+      img.src = person.image;
+      img.alt = "";
+      img.onerror = () => {
+        img.remove();
+        node.innerHTML = `<span style="font-size: 20px;">👥</span>`;
+      };
+      node.appendChild(img);
+    } else {
+      node.innerHTML = `<span style="font-size: 20px;">👥</span>`;
+    }
+    return;
+  }
   if (person?.image) {
     const img = document.createElement("img");
     img.src = person.image;
@@ -2691,43 +2706,80 @@ function renderGroupFriendsPicker() {
 
 function addGroup() {
   const name = clean(groupName.value);
-  if (!name || hasDigit(name)) {
-    groupError.textContent = t("validNameRequired");
+  if (!name) {
+    groupError.textContent = "يرجى إدخال اسم المجموعة";
     return;
   }
   const checkedBoxes = Array.from(document.querySelectorAll("input[name='groupFriend']:checked"));
-  if (!checkedBoxes.length) {
-    groupError.textContent = t("selectFriendsForGroup") || "يرجى اختيار صديق واحد على الأقل للمجموعة";
-    return;
-  }
   const members = checkedBoxes.map((chk) => chk.value);
   const memberEmails = checkedBoxes.map((chk) => chk.dataset.email).filter(Boolean);
-  const sendPermRadio = document.querySelector("input[name='groupSendPermission']:checked");
+
+  // دعم إضافة عضو بالبريد مباشرة
+  const directInp = el("directGroupMemberEmail");
+  if (directInp && directInp.value.trim()) {
+    const rawDirect = directInp.value.trim().toLowerCase();
+    memberEmails.push(rawDirect);
+    members.push(rawDirect.split("@")[0]);
+  }
+
+  if (!memberEmails.length) {
+    groupError.textContent = "يرجى اختيار صديق أو كتابة بريد عضو واحد على الأقل للمجموعة";
+    return;
+  }
+
+  const sendPermRadio = document.querySelector("input[name='who_can_send']:checked") || document.querySelector("input[name='groupSendPermission']:checked");
   const whoCanSend = sendPermRadio ? sendPermRadio.value : "everyone";
 
+  const groupId = newId();
+  const allMembers = [...new Set([state.currentUser.name, ...members])];
+  const allEmails = [...new Set([state.currentUser.email.toLowerCase(), ...memberEmails.map(e => e.toLowerCase())])];
+
   const group = {
-    id: newId(),
+    id: groupId,
     name,
     image: groupImageData,
-    admin: state.currentUser.email,
-    admins: [state.currentUser.email],
+    admin: state.currentUser.email.toLowerCase(),
+    admins: [state.currentUser.email.toLowerCase()],
     who_can_send: whoCanSend,
-    members: [...new Set([state.currentUser.name, ...members])],
-    member_emails: [...new Set([state.currentUser.email, ...memberEmails])]
+    members: allMembers,
+    member_emails: allEmails,
+    createdAt: Date.now()
   };
+
+  // حفظ محلياً فوراً
+  state.groups = Array.isArray(state.groups) ? state.groups : [];
   state.groups.unshift(group);
-  state.conversations[`group:${group.id}`] = [
-    otherMessage(currentLang === "ar" 
-      ? `تم إنشاء مجموعة ${name}.\nصلاحية إرسال الرسائل: ${whoCanSend === "admins_only" ? "المشرف فقط 🔒" : "الجميع 👥"}` 
-      : `Group ${name} created.\nSending permission: ${whoCanSend === "admins_only" ? "Admins only 🔒" : "Everyone 👥"}`)
-  ];
+  const initialMsg = {
+    id: newId(),
+    chat_id: `group:${groupId}`,
+    from: state.currentUser.email,
+    fromName: state.currentUser.name,
+    to: `group:${groupId}`,
+    type: "system",
+    text: currentLang === "ar" 
+      ? `قام ${state.currentUser.name} بإنشاء المجموعة وإضافة الأعضاء 👥\nصلاحية إرسال الرسائل: ${whoCanSend === "admins_only" ? "المشرف فقط 🔒" : "الجميع 👥"}`
+      : `${state.currentUser.name} created the group and added members 👥`,
+    status: "sent",
+    read: true,
+    createdAt: Date.now()
+  };
+  state.conversations[`group:${groupId}`] = [initialMsg];
   saveState();
+
+  // إرسال للخادم لمزامنة المجموعة مع جميع الأعضاء في الوقت الفعلي
+  fetch("/api/groups", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(group)
+  }).catch(() => {});
+
   el("groupForm").reset();
+  if (directInp) directInp.value = "";
   groupImageData = "";
   groupImagePreview.textContent = "+";
   closeDialog(groupDialog);
   renderConversations();
-  openChat(`group:${group.id}`);
+  openChat(`group:${groupId}`);
 }
 
 /* ==========================================================================
@@ -3651,7 +3703,7 @@ async function handleSignUp(event) {
   const password = String(regPasswordInput?.value || "").trim();
   const confirmPassword = String(regConfirmPasswordInput?.value || "").trim();
 
-  if (!name || hasDigit(name)) {
+  if (!name) {
     registerError.textContent = t("validNameRequired");
     regNameInput?.focus();
     return;
@@ -4185,7 +4237,7 @@ function escapeHtml(str) {
     .replace(/'/g, "&#39;");
 }
 
-const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231e293b'/%3E%3Ccircle cx='32' cy='24' r='14' fill='%2364748b'/%3E%3Cpath d='M14 56c0-10 8-18 18-18s18 8 18 18' fill='%2364748b'/%3E%3C/svg%3E";
+const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%231e293b'/%3E%3Ccircle cx='32' cy='24' r='12' fill='%2364748b'/%3E%3Cpath d='M16 54c0-9 7-16 16-16s16 7 16 16' fill='%2364748b'/%3E%3C/svg%3E";
 
 function updateMyStoryAvatar() {
   const user = state.currentUser;
@@ -4197,6 +4249,7 @@ function updateMyStoryAvatar() {
     }
   }
   if (myStoryAvatarImg) {
+    myStoryAvatarImg.alt = "";
     myStoryAvatarImg.src = avSrc;
     myStoryAvatarImg.onerror = function() {
       this.onerror = null;
@@ -4204,6 +4257,7 @@ function updateMyStoryAvatar() {
     };
   }
   if (myStoryBarImg) {
+    myStoryBarImg.alt = "";
     myStoryBarImg.src = avSrc;
     myStoryBarImg.onerror = function() {
       this.onerror = null;
@@ -4267,7 +4321,8 @@ function renderStoriesFeed() {
 
     const img = document.createElement("img");
     img.src = avSrc;
-    img.alt = group.user.name;
+    img.alt = "";
+    img.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
     img.className = "story-avatar-img";
 
     ring.appendChild(img);
@@ -7551,6 +7606,37 @@ function triggerHaptic(duration = 15) {
 // بدء التطبيق مع الجلسة المستمرة (Persistent Session & Auto-Login)
 applyLanguage(currentLang);
 
+
+// ==========================================
+// مزامنة المجموعات من الخادم في الوقت الفعلي
+// ==========================================
+async function fetchUserGroups() {
+  if (!state.currentUser?.email) return;
+  try {
+    const res = await fetch(`/api/groups?user=${encodeURIComponent(state.currentUser.email)}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.ok && Array.isArray(data.groups)) {
+      state.groups = Array.isArray(state.groups) ? state.groups : [];
+      let changed = false;
+      for (const g of data.groups) {
+        const idx = state.groups.findIndex(x => x.id === g.id);
+        if (idx !== -1) {
+          state.groups[idx] = { ...state.groups[idx], ...g };
+        } else {
+          state.groups.unshift(g);
+          changed = true;
+        }
+      }
+      if (changed) {
+        saveState();
+        renderConversations();
+      }
+    }
+  } catch {}
+}
+window.fetchUserGroups = fetchUserGroups;
+
 async function startApplication() {
   if (state.currentUser) {
     initE2EEKeys();
@@ -7565,6 +7651,7 @@ async function startApplication() {
     loadAds();
     sendHeartbeat("active");
     loadAdminNotices();
+    fetchUserGroups();
     syncUserInbox();
     setInterval(() => {
       syncUserInbox();
@@ -7575,6 +7662,7 @@ async function startApplication() {
       loadAdminNotices();
       loadAds();
       fetchStories();
+      fetchUserGroups();
       sendHeartbeat("active");
     }, 2000);
 
