@@ -7006,3 +7006,237 @@ body.in-announcements #readOnlyNotice {
   overflow: hidden !important;
   pointer-events: none !important;
 }
+
+
+/* ==========================================================================
+   Chato v7.4: إصلاح القوائم وإعلانات شاتو بالكامل (Desktop & Mobile)
+   ========================================================================== */
+
+/* 1. قائمة المحادثة على الكمبيوتر (Desktop >= 769px) - محاذاة يسار بدون انقصاص وبدون شريط سكرول */
+@media (min-width: 769px) {
+  .chat-dropdown-menu,
+  .chat-dropdown {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    bottom: auto !important;
+    inset-inline-start: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 230px !important;
+    min-width: 230px !important;
+    max-width: 250px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    padding: 6px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    scrollbar-width: none !important;
+    z-index: 9999999 !important;
+    animation: dropdownFadeIn 0.12s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-menu,
+  [data-theme="dark"] .chat-dropdown {
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .chat-dropdown-menu::-webkit-scrollbar,
+  .chat-sheet-items-list::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+  }
+
+  .chat-sheet-head,
+  .chat-sheet-handle-bar,
+  .chat-sheet-close-btn,
+  .dropdown-item-sub {
+    display: none !important;
+  }
+
+  .chat-dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    padding: 8px 12px !important;
+    min-height: 38px !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 9px !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    text-align: right !important;
+    direction: rtl !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    transition: background 0.12s ease, color 0.12s ease !important;
+  }
+
+  .chat-dropdown-item:hover {
+    background: rgba(15, 118, 110, 0.09) !important;
+    color: #0f766e !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item {
+    color: #f1f5f9 !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item:hover {
+    background: rgba(45, 212, 191, 0.15) !important;
+    color: #2dd4bf !important;
+  }
+
+  .dropdown-item-col {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    text-align: right !important;
+  }
+
+  .dropdown-item-text {
+    display: block !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: inherit !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}
+
+/* 2. قائمة المحادثة على الهواتف (Mobile <= 768px) - خلفية بيضاء معتمة 100% ومنع أي تداخل نهائياً */
+@media (max-width: 768px) {
+  .chat-dropdown-menu,
+  .chat-dropdown {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    z-index: 9999999 !important;
+    box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.45) !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 12px 16px 32px !important;
+    border: none !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-menu,
+  [data-theme="dark"] .chat-dropdown {
+    background: #0f172a !important;
+    background-color: #0f172a !important;
+    border-top-color: #334155 !important;
+  }
+
+  .chat-sheet-handle-bar {
+    display: block !important;
+    width: 44px !important;
+    height: 4px !important;
+    background: #cbd5e1 !important;
+    border-radius: 4px !important;
+    margin: 0 auto 12px !important;
+  }
+
+  .chat-sheet-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 10px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+  }
+
+  .chat-sheet-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+  }
+
+  .chat-sheet-close-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: #f1f5f9 !important;
+    border: none !important;
+    color: #64748b !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+  }
+
+  .chat-dropdown-item {
+    padding: 12px 14px !important;
+    min-height: 48px !important;
+  }
+
+  .dropdown-item-text {
+    font-size: 14px !important;
+  }
+
+  .dropdown-item-sub {
+    font-size: 11.5px !important;
+  }
+}
+
+/* 3. شريط إعلانات وتحديثات Chato الرسمية (يظهر فقط حصرياً داخل شات الإعلانات) */
+body.in-announcements .announcement-readonly-notice,
+body.in-announcements #announcementReadOnlyNotice {
+  display: flex !important;
+  width: 90% !important;
+  max-width: 600px !important;
+  margin: 16px auto !important;
+  padding: 12px 18px !important;
+  background: rgba(2, 132, 199, 0.08) !important;
+  border: 1px dashed rgba(2, 132, 199, 0.35) !important;
+  border-radius: 14px !important;
+  color: #0284c7 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-sizing: border-box !important;
+}
+
+/* 4. تصميم صور وبطاقات الإعلانات الاحترافية */
+.announcement-card-media {
+  margin-top: 10px !important;
+  width: 100% !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.announcement-card-img {
+  width: 100% !important;
+  max-height: 380px !important;
+  object-fit: cover !important;
+  border-radius: 12px !important;
+  display: block !important;
+  cursor: pointer !important;
+}
