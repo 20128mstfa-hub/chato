@@ -6878,22 +6878,17 @@ html[dir="rtl"] .whatsapp-notif-container {
 }
 
 /* 4. القناة الرسمية للإعلانات (Official Announcements Chat) */
-.announcement-readonly-notice {
-  width: 100% !important;
-  padding: 12px 16px !important;
-  background: rgba(2, 132, 199, 0.1) !important;
-  border: 1px dashed rgba(2, 132, 199, 0.4) !important;
-  border-radius: 14px !important;
-  color: #0284c7 !important;
-  font-size: 13.5px !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  box-sizing: border-box !important;
-  animation: fadeIn 0.2s ease-out !important;
+.announcement-readonly-notice,
+#announcementReadOnlyNotice {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
 }
 
 [data-theme="dark"] .announcement-readonly-notice {
@@ -7239,4 +7234,265 @@ body.in-announcements #announcementReadOnlyNotice {
   border-radius: 12px !important;
   display: block !important;
   cursor: pointer !important;
+}
+
+/* ==========================================================================
+   DEFINITIVE OVERRIDES: DROPDOWN MENUS & ANNOUNCEMENT BANNER FIX (v7.6)
+   ========================================================================== */
+
+/* 1. إشعار إعلانات Chato - مخفي 100% في جميع المحادثات العادية */
+.announcement-readonly-notice,
+#announcementReadOnlyNotice {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+body.in-announcements .announcement-readonly-notice,
+body.in-announcements #announcementReadOnlyNotice {
+  display: flex !important;
+  visibility: visible !important;
+  height: auto !important;
+  width: 90% !important;
+  max-width: 600px !important;
+  margin: 14px auto !important;
+  padding: 12px 18px !important;
+  background: rgba(2, 132, 199, 0.12) !important;
+  border: 1px dashed rgba(2, 132, 199, 0.45) !important;
+  border-radius: 14px !important;
+  color: #0284c7 !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-sizing: border-box !important;
+}
+
+[data-theme="dark"] body.in-announcements .announcement-readonly-notice,
+[data-theme="dark"] body.in-announcements #announcementReadOnlyNotice {
+  background: rgba(14, 165, 233, 0.15) !important;
+  border-color: rgba(14, 165, 233, 0.45) !important;
+  color: #38bdf8 !important;
+}
+
+/* 2. إخفاء القائمة المنسدلة عند وجود hidden أو display: none */
+.chat-dropdown[hidden],
+.chat-dropdown-menu[hidden],
+#chat-dropdown-menu[hidden],
+.chat-dropdown[style*="display: none"],
+.chat-dropdown-menu[style*="display: none"],
+#chat-dropdown-menu[style*="display: none"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 3. قائمة خيارات المحادثة على الكمبيوتر (Desktop) - تفتح لليمين بعرض كامل 250px */
+@media (min-width: 769px) {
+  .chat-dropdown-menu:not([hidden]),
+  .chat-dropdown:not([hidden]),
+  #chat-dropdown-menu:not([hidden]) {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    bottom: auto !important;
+    left: 0 !important;
+    right: auto !important;
+    inset-inline-start: unset !important;
+    inset-inline-end: unset !important;
+    width: 250px !important;
+    min-width: 250px !important;
+    max-width: 270px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    padding: 6px !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    scrollbar-width: none !important;
+    z-index: 99999999 !important;
+    animation: dropdownFadeIn 0.12s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-menu:not([hidden]),
+  [data-theme="dark"] .chat-dropdown:not([hidden]),
+  [data-theme="dark"] #chat-dropdown-menu:not([hidden]) {
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .chat-dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    padding: 9px 12px !important;
+    min-height: 40px !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 9px !important;
+    text-align: right !important;
+    direction: rtl !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    transition: background 0.12s ease !important;
+  }
+
+  .chat-dropdown-item:hover {
+    background: rgba(15, 118, 110, 0.09) !important;
+  }
+
+  .chat-dropdown-item .dropdown-item-icon {
+    font-size: 18px !important;
+    width: 24px !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dropdown-item-col {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    text-align: right !important;
+  }
+
+  .dropdown-item-text {
+    display: block !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  [data-theme="dark"] .dropdown-item-text {
+    color: #f8fafc !important;
+  }
+
+  .dropdown-item-sub {
+    display: block !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    color: #64748b !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.3 !important;
+  }
+
+  .chat-sheet-head,
+  .chat-sheet-handle-bar,
+  .chat-sheet-close-btn {
+    display: none !important;
+  }
+}
+
+/* 4. قائمة خيارات المحادثة على التليفون (Mobile Bottom Sheet) - خلفية مصمتة نقية */
+@media (max-width: 768px) {
+  .chat-dropdown-menu:not([hidden]),
+  .chat-dropdown:not([hidden]),
+  #chat-dropdown-menu:not([hidden]) {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-bottom: none !important;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.28) !important;
+    padding: 12px 16px 28px !important;
+    z-index: 99999999 !important;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+    flex-direction: column !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-menu:not([hidden]),
+  [data-theme="dark"] .chat-dropdown:not([hidden]),
+  [data-theme="dark"] #chat-dropdown-menu:not([hidden]) {
+    background: #0f172a !important;
+    background-color: #0f172a !important;
+    border-top-color: #334155 !important;
+  }
+
+  .chat-sheet-head {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 8px 0 14px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    margin-bottom: 8px !important;
+  }
+
+  [data-theme="dark"] .chat-sheet-head {
+    border-bottom-color: #334155 !important;
+  }
+
+  .chat-sheet-close-btn {
+    display: flex !important;
+    width: 32px !important;
+    height: 32px !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+  }
+
+  .chat-dropdown-item {
+    padding: 12px 14px !important;
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .dropdown-item-text {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+  }
+
+  [data-theme="dark"] .dropdown-item-text {
+    color: #f8fafc !important;
+  }
+
+  .dropdown-item-sub {
+    font-size: 11.5px !important;
+    color: #64748b !important;
+  }
 }
