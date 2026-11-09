@@ -2,12 +2,12 @@
    Chato Messenger - Service Worker (Offline Cache & Native Push Notifications)
    ========================================================================== */
 
-const CACHE_NAME = 'chato-app-v21';
+const CACHE_NAME = 'chato-app-v22';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/styles.css?v=7.7',
-  '/app.js',
+  '/styles.css?v=7.8',
+  '/app.js?v=7.8',
   '/manifest.json',
   '/logo.png',
   '/icon-192.png',
