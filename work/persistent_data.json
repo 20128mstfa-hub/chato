@@ -173,6 +173,13 @@
       "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
       "status": "accepted",
       "createdAt": 1794260089620
+    },
+    {
+      "id": "72f50c11-70b7-4220-9c2f-74c60a208c4e",
+      "from": "az7077407@gmail.com",
+      "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "status": "accepted",
+      "createdAt": 1794260140187
     }
   ],
   "friendRequests": [],
@@ -1138,6 +1145,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1794260089621
+    },
+    {
+      "id": "c42752db-ab94-40df-b624-680ea9f5df7e",
+      "chat_id": "az7077407@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "from": "az7077407@gmail.com",
+      "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "type": "text",
+      "text": "6b4f9b",
+      "is_encrypted": true,
+      "encryption_iv": "943d280721da92eb511e28bf",
+      "encryption_auth_tag": "069eba9a214e9a5036e41b0e25fb7e11",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794260140275
     }
   ],
   "aiUsage": [
@@ -1432,6 +1464,15 @@
       "last_message_at": 1794260089620,
       "last_message_content": ".",
       "created_at": 1794260089620
+    },
+    {
+      "id": "az7077407@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "direct_pair": "az7077407@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1794260140187,
+      "last_message_content": "ifh",
+      "created_at": 1794260140187
     }
   ],
   "chatParticipants": [],
