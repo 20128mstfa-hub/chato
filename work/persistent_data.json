@@ -1198,13 +1198,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794169520481,
-      "next_quota_reset_at": 1794255920481,
+      "last_quota_reset_at": 1794257621308,
+      "next_quota_reset_at": 1794344021308,
       "started_at": 1793717119208,
       "expires_at": 1798901119208,
       "auto_renew": true,
       "created_at": 1793717119208,
-      "updated_at": 1794169520481
+      "updated_at": 1794257621308
     },
     {
       "id": "a7881311-5614-43d2-86e1-f144c1c82529",
