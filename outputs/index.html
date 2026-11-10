@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>شاتو - Chato Messenger</title>
-    <link rel="stylesheet" href="./styles.css?v=7.7" />
+    <link rel="stylesheet" href="./styles.css?v=8.0" />
   <script>
       // Force SW cache clear and update
       if ('serviceWorker' in navigator) {
@@ -28,7 +28,7 @@
       if ('caches' in window) {
         caches.keys().then(function(names) {
           names.forEach(function(name) {
-            if (name !== 'chato-app-v18') caches.delete(name);
+            if (name !== 'chato-app-v23') caches.delete(name);
           });
         });
       }
@@ -2117,7 +2117,7 @@
 
     <script src="./qrcode.min.js"></script>
     <script src="./jsqr.min.js"></script>
-    <script src="./app.js?v=7.7"></script>
+    <script src="./app.js?v=8.0"></script>
   
     <!-- طبقة شفافة تماماً لإغلاق القوائم باللمس أو النقر على الهاتف والكمبيوتر بدون أي غباش -->
     <!-- حاوية إشعارات واتساب الجانبية والعلوية للهاتف والكمبيوتر -->
