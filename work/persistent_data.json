@@ -38,7 +38,7 @@
       "createdAt": 1793915522983,
       "lastLogin": 1793915522983,
       "lastActive": 1794086514590,
-      "lastOffline": 1794326568115,
+      "lastOffline": 1794326600885,
       "chatPlusUntil": 1799253178425,
       "isChatPlus": true
     },
@@ -1347,13 +1347,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794326577986,
-      "next_quota_reset_at": 1794412977986,
+      "last_quota_reset_at": 1794069174830,
+      "next_quota_reset_at": 1794155574830,
       "started_at": 1794069174830,
       "expires_at": 1799253174830,
       "auto_renew": true,
       "created_at": 1794069174830,
-      "updated_at": 1794326577986
+      "updated_at": 1794069174830
     },
     {
       "id": "48ae06b4-980f-4447-90d9-684225b40a72",
