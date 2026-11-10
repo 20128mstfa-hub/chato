@@ -166,6 +166,13 @@
       "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
       "status": "accepted",
       "createdAt": 1794260140187
+    },
+    {
+      "id": "5fc55419-f75a-42b6-8e7a-9eafd5f744e8",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "status": "accepted",
+      "createdAt": 1794317731046
     }
   ],
   "friendRequests": [],
@@ -1156,6 +1163,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1794260140275
+    },
+    {
+      "id": "a5948cda-4ed6-4880-b3d1-3bd0b7a11c31",
+      "chat_id": "2012.8.mstfa@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "d5ba8519-116d-4ff1-a6b8-587048f629bd",
+      "type": "text",
+      "text": "94",
+      "is_encrypted": true,
+      "encryption_iv": "dbd5f964ee716d8ca0f53d84",
+      "encryption_auth_tag": "d9ed64b24721dae52ce637d6f60a989b",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794317731047
     }
   ],
   "aiUsage": [
@@ -1447,7 +1479,7 @@
       "direct_pair": "2012.8.mstfa@gmail.com<->d5ba8519-116d-4ff1-a6b8-587048f629bd",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1794260089620,
+      "last_message_at": 1794317731046,
       "last_message_content": ".",
       "created_at": 1794260089620
     },
