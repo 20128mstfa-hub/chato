@@ -163,6 +163,8 @@ const types = {
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   ".zip": "application/zip",
   ".rar": "application/x-rar-compressed",
+  ".apk": "application/vnd.android.package-archive",
+  ".exe": "application/vnd.microsoft.portable-executable",
   ".txt": "text/plain; charset=utf-8"
 };
 
