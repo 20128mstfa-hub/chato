@@ -930,6 +930,31 @@
       "status": "sent",
       "read": true,
       "createdAt": 1794260081755
+    },
+    {
+      "id": "520296bf-611c-48a1-8ac0-6d5a9036b5d7",
+      "chat_id": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "202.8.mstfa@gmail.com",
+      "to": "az7077407@gmail.com",
+      "type": "text",
+      "text": "b69bce41f7d3",
+      "is_encrypted": true,
+      "encryption_iv": "7029c01f80610d4670573187",
+      "encryption_auth_tag": "f8f8a5528d540f465b2282319fcc065f",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1794331980948
     }
   ],
   "aiUsage": [
@@ -1154,8 +1179,8 @@
       "direct_pair": "202.8.mstfa@gmail.com<->az7077407@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1794084086190,
-      "last_message_content": "من انا",
+      "last_message_at": 1794331980943,
+      "last_message_content": "على",
       "created_at": 1794068353173,
       "is_ai_active": true
     },
