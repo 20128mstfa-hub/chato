@@ -80,18 +80,6 @@
       "lastActive": 1794257663197
     },
     {
-      "id": "6a7ee885-de10-4583-8d79-ae53341ab296",
-      "name": "nh",
-      "email": "2012.8.msta@gmail.com",
-      "password_hash": "scrypt:2aeee1fdcf816bd1b7a39889dace542f:1e507686c54f3b7e7de6e097823e5b33fed66d925fab6060989cffcea4785a09dfc1c5065e570848a95ce1ecc6feac3f8aace6be227f5f1bc0fa05b1422213d4",
-      "password": "Xen34yH2tBkTnzp",
-      "image": "",
-      "status": "active",
-      "createdAt": 1794257830002,
-      "lastLogin": 1794257830002,
-      "lastActive": 1794257830002
-    },
-    {
       "id": "6e4e7d96-e424-46bd-8bf4-ccf512d313c9",
       "name": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
       "email": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
@@ -145,13 +133,6 @@
       "to": "mo.mstfa.85@gmail.com",
       "status": "accepted",
       "createdAt": 1794169661775
-    },
-    {
-      "id": "f7178e16-d99b-4d64-8d8d-731ecd31a3bf",
-      "from": "2012.8.msta@gmail.com",
-      "to": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
-      "status": "accepted",
-      "createdAt": 1794257850975
     },
     {
       "id": "6204be22-f4da-44a5-9788-8bbd715a8a77",
@@ -971,31 +952,6 @@
       "createdAt": 1794172410251
     },
     {
-      "id": "172ef1e4-0a33-4282-a03c-da58a0f28056",
-      "chat_id": "2012.8.msta@gmail.com<->d7c7d72a-b268-4777-80a8-e72f6ba65c45",
-      "from": "2012.8.msta@gmail.com",
-      "to": "d7c7d72a-b268-4777-80a8-e72f6ba65c45",
-      "type": "text",
-      "text": "474067ba7e30",
-      "is_encrypted": true,
-      "encryption_iv": "c3ebd334d4312c9864372216",
-      "encryption_auth_tag": "2d78dd5bc9b5078a443f1758f10db7c3",
-      "sender_public_key": null,
-      "expires_at": null,
-      "expiresAt": null,
-      "imageUrl": "",
-      "fileName": "",
-      "audioUrl": "",
-      "location": null,
-      "poll": null,
-      "sticker": null,
-      "document": null,
-      "reply_to": null,
-      "status": "sent",
-      "read": false,
-      "createdAt": 1794257850975
-    },
-    {
       "id": "9f66e4a9-ec5f-4b32-839c-1da0b56eb241",
       "chat_id": "2012.8.mstfa@gmail.com<->d7c7d72a-b268-4777-80a8-e72f6ba65c45",
       "from": "2012.8.mstfa@gmail.com",
@@ -1632,26 +1588,6 @@
       "auto_renew": true,
       "created_at": 1794257710687,
       "updated_at": 1794257710687
-    },
-    {
-      "id": "6edea6c9-8e21-4b18-b52a-abcb0294fbc3",
-      "user_id": "6a7ee885-de10-4583-8d79-ae53341ab296",
-      "email": "2012.8.msta@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794257857308,
-      "next_quota_reset_at": 1794344257308,
-      "started_at": 1794257857308,
-      "expires_at": 1799441857308,
-      "auto_renew": true,
-      "created_at": 1794257857308,
-      "updated_at": 1794257857308
     }
   ],
   "userStories": [],
