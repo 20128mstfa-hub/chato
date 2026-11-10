@@ -974,6 +974,12 @@
       "day": "2026-11-09",
       "words": 0,
       "images": 0
+    },
+    {
+      "email": "az7077407@gmail.com",
+      "day": "2026-11-10",
+      "words": 0,
+      "images": 0
     }
   ],
   "ads": [
@@ -1341,13 +1347,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794069174830,
-      "next_quota_reset_at": 1794155574830,
+      "last_quota_reset_at": 1794326577986,
+      "next_quota_reset_at": 1794412977986,
       "started_at": 1794069174830,
       "expires_at": 1799253174830,
       "auto_renew": true,
       "created_at": 1794069174830,
-      "updated_at": 1794069174830
+      "updated_at": 1794326577986
     },
     {
       "id": "48ae06b4-980f-4447-90d9-684225b40a72",
