@@ -25,20 +25,12 @@
   "friendRequests": [],
   "messages": [
     {
-      "id": "594a48b5-5e9b-40b5-8d67-1f4342c88416",
-      "from": "guest_mv8j_3230@visitor.chato",
+      "id": "76b8c215-ae18-4e72-9fca-e7d3c53b6d02",
+      "from": "jjj@guest.chato",
       "to": "support@chato.system",
       "type": "text",
-      "text": "[طلب دعم جديد]: السلام عليكم، محتاج مساعدة في تسجيل الدخول للضرورة",
-      "createdAt": 1794695958661
-    },
-    {
-      "id": "de46cd5b-c24d-45d0-9991-5920c00162a9",
-      "from": "support@chato.system",
-      "to": "guest_mv8j_3230@visitor.chato",
-      "type": "text",
-      "text": "أهلاً بك! تم استلام رسالتك، تفضل نحن معك وجاهزون لحل أي مشكلة.",
-      "createdAt": 1794695961806
+      "text": "[طلب دعم جديد]: [استفسار من الواجهة]: ppppppppppppppp",
+      "createdAt": 1794695965066
     }
   ],
   "aiUsage": [
@@ -58,13 +50,13 @@
   "ads": [],
   "supportTickets": [
     {
-      "id": "70eeae3b-9ce3-49eb-a049-1384ddcc5ce5",
-      "email": "guest_mv8j_3230@visitor.chato",
-      "name": "زائر #3230",
-      "issue": "السلام عليكم، محتاج مساعدة في تسجيل الدخول للضرورة",
+      "id": "01008b35-47e7-4aa8-af71-5e038400dce8",
+      "email": "jjj@guest.chato",
+      "name": "jjj",
+      "issue": "[استفسار من الواجهة]: ppppppppppppppp",
       "status": "open",
-      "createdAt": 1794695958661,
-      "updatedAt": 1794695961806
+      "createdAt": 1794695965066,
+      "updatedAt": 1794695965066
     }
   ],
   "userDevices": [
