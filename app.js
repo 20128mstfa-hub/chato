@@ -4742,6 +4742,10 @@ function showApp() {
   saveState();
   loginScreen.hidden = true;
   appScreen.hidden = false;
+  // إيقاف تشغيل حركة النقاط الزرقاء مؤقتاً لتوفير المعالج والبطارية أثناء استخدام المحادثة
+  if (window._particleEngine && typeof window._particleEngine.stop === "function") {
+    window._particleEngine.stop();
+  }
   userTitle.textContent = state.currentUser.name;
   renderConversations();
   if (window.innerWidth > 820) {
@@ -4771,11 +4775,26 @@ function showLogin(resetFields = false) {
   renderStoriesFeed();
   switchAuthTab("signin");
 
-  // تفعيل واجهة الترحيب للموبايل (Image 1) إذا لم نكن في وضع إضافة حساب
-  if (window.innerWidth <= 768 && !window.isAddAccountMode) {
-    document.body.classList.add("intro-active");
+  const welcomeLandingScreen = el("welcomeLandingScreen");
+  const loginLayout = el("loginLayout");
+  const addAccountTopBar = el("addAccountTopBar");
+
+  if (window.isAddAccountMode) {
+    if (welcomeLandingScreen) welcomeLandingScreen.hidden = true;
+    if (loginLayout) loginLayout.hidden = false;
+    if (addAccountTopBar) addAccountTopBar.hidden = false;
   } else {
-    document.body.classList.remove("intro-active");
+    if (welcomeLandingScreen) welcomeLandingScreen.hidden = false;
+    if (loginLayout) loginLayout.hidden = true;
+    if (addAccountTopBar) addAccountTopBar.hidden = true;
+    if (typeof renderWelcomeSavedAccounts === "function") {
+      renderWelcomeSavedAccounts();
+    }
+  }
+
+  // تشغيل حركة النقاط الزرقاء المتحركة في الخلفية
+  if (window._particleEngine && typeof window._particleEngine.start === "function") {
+    window._particleEngine.start();
   }
   if (resetFields) {
     if (loginEmailInput) loginEmailInput.value = "";
@@ -5237,75 +5256,527 @@ if (backFromAiDetailBtn) {
 }
 
 // ========================================================
-// واجهة ترحيب الموبايل تيليجرام ستايل (Image 1 Onboarding)
+// محرك النقاط الزرقاء المتحركة في الخلفية (Blue Particle Canvas)
 // ========================================================
-const mobileIntroScreen = el("mobileIntroScreen");
-const introContinueBtn = el("introContinueBtn");
-const backToIntroBtn = el("backToIntroBtn");
-const introDarkToggleBtn = el("introDarkToggleBtn");
-const introHeadline = el("introHeadline");
-const introSubtext = el("introSubtext");
-const introPaginationDots = el("introPaginationDots");
+function initParticleCanvas() {
+  const canvas = document.getElementById("particleCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
 
-const introSlides = [
-  { title: "تخزين سحابي", desc: "شاتو يتيح لك الوصول لرسائلك من أجهزة متعددة بأمان وسرعة فائقة." },
-  { title: "أمان وتشفير فائق", desc: "رسائلك ومكالماتك مشفرة ومحمية برمز PIN والرسائل ذاتية التدمير." },
-  { title: "ذكاء اصطناعي ذكي", desc: "مساعد ChatGPT متطور لتوليد الصور والنصوص والترجمة الفورية والإجابة السريعة." },
-  { title: "حالات واستوري 24 ساعة", desc: "شارك صورك وفيديوهاتك ولحظاتك اليومية كحالة تختفي تلقائياً بعد 24 ساعة." },
-  { title: "مكالمات صوت وفيديو", desc: "تواصل بجودة عالية وصوت نقي مع أصدقائك بدون قيود أو انقطاع." },
-  { title: "سريع وخفيف تماماً", desc: "تطبيق مراسلة فوري خفيف وسلس يحافظ على بطارية جهازك واستهلاك البيانات." }
-];
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+  let animId = null;
+  let isRunning = false;
 
-let currentIntroSlideIndex = 5;
+  const count = window.innerWidth <= 768 ? 35 : 65;
+  const particles = [];
+  const blueHues = [
+    { r: 2, g: 132, b: 199 },   // #0284c7
+    { r: 14, g: 165, b: 233 },  // #0ea5e9
+    { r: 56, g: 189, b: 248 },  // #38bdf8
+    { r: 96, g: 165, b: 250 },  // #60a5fa
+    { r: 125, g: 211, b: 252 }  // #7dd3fc
+  ];
 
-function setIntroSlide(index) {
-  if (index < 0 || index >= introSlides.length) return;
-  currentIntroSlideIndex = index;
-  const slide = introSlides[index];
-  if (introHeadline) introHeadline.textContent = slide.title;
-  if (introSubtext) introSubtext.textContent = slide.desc;
-  if (introPaginationDots) {
-    const dots = introPaginationDots.querySelectorAll(".intro-dot");
-    dots.forEach((d, i) => {
-      d.classList.toggle("active", i === index);
+  for (let i = 0; i < count; i++) {
+    const color = blueHues[Math.floor(Math.random() * blueHues.length)];
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.7,
+      vy: (Math.random() - 0.5) * 0.7,
+      radius: Math.random() * 2.4 + 1.2,
+      baseRadius: Math.random() * 2.4 + 1.2,
+      color,
+      alpha: Math.random() * 0.45 + 0.35,
+      pulseSpeed: Math.random() * 0.025 + 0.015,
+      pulseVal: Math.random() * Math.PI
     });
   }
-}
 
-if (introPaginationDots) {
-  const dots = introPaginationDots.querySelectorAll(".intro-dot");
-  dots.forEach((dot, i) => {
-    dot.addEventListener("click", () => setIntroSlide(i));
-  });
-}
+  function render() {
+    if (!isRunning) return;
+    ctx.clearRect(0, 0, width, height);
 
-setInterval(() => {
-  if (document.body.classList.contains("intro-active")) {
-    const nextIdx = (currentIntroSlideIndex + 1) % introSlides.length;
-    setIntroSlide(nextIdx);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.pulseVal += p.pulseSpeed;
+      p.radius = p.baseRadius + Math.sin(p.pulseVal) * 0.75;
+
+      if (p.x < -10) p.x = width + 10;
+      else if (p.x > width + 10) p.x = -10;
+      if (p.y < -10) p.y = height + 10;
+      else if (p.y > height + 10) p.y = -10;
+
+      // رسم النقطة الزرقاء مع توهج نيون أزرق
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.5, p.radius), 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${p.alpha})`;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, 0.85)`;
+      ctx.fill();
+
+      // خطوط الربط الفنية الهادئة بين النقاط القريبة
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 105) {
+          const lineAlpha = (1 - dist / 105) * 0.22;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(14, 165, 233, ${lineAlpha})`;
+          ctx.lineWidth = 0.85;
+          ctx.shadowBlur = 0;
+          ctx.stroke();
+        }
+      }
+    }
+
+    animId = requestAnimationFrame(render);
   }
-}, 3500);
 
-if (introContinueBtn) {
-  introContinueBtn.addEventListener("click", () => {
-    document.body.classList.remove("intro-active");
+  function start() {
+    if (isRunning) return;
+    isRunning = true;
+    render();
+  }
+
+  function stop() {
+    isRunning = false;
+    if (animId) {
+      cancelAnimationFrame(animId);
+      animId = null;
+    }
+  }
+
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
   });
+
+  window._particleEngine = { start, stop };
+  start();
+}
+
+// تهيئة تشغيل النقاط الزرقاء فوراً
+initParticleCanvas();
+
+// ========================================================
+// واجهة الترحيب الحديثة الموحدة (Welcome Landing Portal v8.1)
+// ========================================================
+const welcomeLandingScreen = el("welcomeLandingScreen");
+const welcomeThemeToggleBtn = el("welcomeThemeToggleBtn");
+const welcomeLangBtn = el("welcomeLangBtn");
+const welcomeLangBadge = el("welcomeLangBadge");
+const welcomeQrBtn = el("welcomeQrBtn");
+const welcomeDownloadBtn = el("welcomeDownloadBtn");
+const btnWelcomeSignUp = el("btnWelcomeSignUp");
+const btnWelcomeSignIn = el("btnWelcomeSignIn");
+const btnWelcomeSupport = el("btnWelcomeSupport");
+const btnWelcomeDownload = el("btnWelcomeDownload");
+const btnWelcomeQr = el("btnWelcomeQr");
+const btnBackToPortal = el("btnBackToPortal");
+const backToIntroBtn = el("backToIntroBtn");
+
+// 1. زر تبديل الوضع الليلي والنهاري (Image 2 Circular Moon Icon)
+function updateThemeToggleIcons(theme) {
+  const isDark = theme === "dark";
+  if (welcomeThemeToggleBtn) {
+    welcomeThemeToggleBtn.title = isDark ? "التحويل إلى الشاشة البيضاء (الوضع النهاري)" : "التحويل إلى الشاشة السوداء (الوضع الليلي)";
+    welcomeThemeToggleBtn.innerHTML = isDark
+      ? `<span class="theme-moon-icon-ring" title="التحويل للوضع النهاري">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </span>`
+      : `<span class="theme-moon-icon-ring" title="التحويل للوضع الليلي">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </span>`;
+  }
+}
+
+function toggleAppTheme() {
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", newTheme);
+  try {
+    localStorage.setItem("chato_theme", newTheme);
+  } catch {}
+  updateThemeToggleIcons(newTheme);
+}
+
+if (welcomeThemeToggleBtn) {
+  welcomeThemeToggleBtn.addEventListener("click", toggleAppTheme);
+}
+
+// 2. زر تبديل اللغة في الشريط العلوي
+if (welcomeLangBtn) {
+  welcomeLangBtn.addEventListener("click", () => {
+    toggleLanguage();
+    if (welcomeLangBadge) {
+      welcomeLangBadge.textContent = state.lang === "ar" ? "ع" : "EN";
+    }
+  });
+}
+
+// 3. زر الدخول بالباركود في الشريط العلوي
+if (welcomeQrBtn) {
+  welcomeQrBtn.addEventListener("click", () => {
+    startQrCameraScanner();
+  });
+}
+
+// 4. زر تنزيل التطبيق في الشريط العلوي
+if (welcomeDownloadBtn) {
+  welcomeDownloadBtn.addEventListener("click", () => {
+    if (window.deferredAppInstallPrompt) {
+      window.deferredAppInstallPrompt.prompt();
+      window.deferredAppInstallPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === "accepted") {
+          window.deferredAppInstallPrompt = null;
+        }
+      });
+    } else {
+      openDialog(el("appDownloadDialog"));
+    }
+  });
+}
+
+// 5. التنقل بين الواجهة الترحيبية ونماذج التسجيل
+function showWelcomeView() {
+  if (welcomeLandingScreen) welcomeLandingScreen.hidden = false;
+  if (loginLayout) loginLayout.hidden = true;
+  if (addAccountTopBar) addAccountTopBar.hidden = true;
+  renderWelcomeSavedAccounts();
+  if (window._particleEngine && typeof window._particleEngine.start === "function") {
+    window._particleEngine.start();
+  }
+}
+
+function showAuthForm(tabName = "signin") {
+  if (welcomeLandingScreen) welcomeLandingScreen.hidden = true;
+  if (loginLayout) loginLayout.hidden = false;
+  switchAuthTab(tabName);
+}
+
+if (btnWelcomeSignUp) {
+  btnWelcomeSignUp.addEventListener("click", () => showAuthForm("signup"));
+}
+
+if (btnWelcomeSignIn) {
+  btnWelcomeSignIn.addEventListener("click", () => showAuthForm("signin"));
+}
+
+if (btnWelcomeSupport) {
+  btnWelcomeSupport.addEventListener("click", () => {
+    openDialog(el("welcomeSupportDialog"));
+  });
+}
+
+if (btnWelcomeDownload) {
+  btnWelcomeDownload.addEventListener("click", () => {
+    if (window.deferredAppInstallPrompt) {
+      window.deferredAppInstallPrompt.prompt();
+      window.deferredAppInstallPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === "accepted") {
+          window.deferredAppInstallPrompt = null;
+        }
+      });
+    } else {
+      openDialog(el("appDownloadDialog"));
+    }
+  });
+}
+
+if (btnWelcomeQr) {
+  btnWelcomeQr.addEventListener("click", () => {
+    startQrCameraScanner();
+  });
+}
+
+if (btnBackToPortal) {
+  btnBackToPortal.addEventListener("click", showWelcomeView);
 }
 
 if (backToIntroBtn) {
-  backToIntroBtn.addEventListener("click", () => {
-    document.body.classList.add("intro-active");
+  backToIntroBtn.addEventListener("click", showWelcomeView);
+}
+
+// نافذة تنزيل التطبيق
+const appDownloadDialog = el("appDownloadDialog");
+const closeAppDownloadDialogBtn = el("closeAppDownloadDialogBtn");
+const pwaTriggerInstallBtn = el("pwaTriggerInstallBtn");
+
+if (closeAppDownloadDialogBtn) {
+  closeAppDownloadDialogBtn.addEventListener("click", () => closeDialog(appDownloadDialog));
+}
+
+if (pwaTriggerInstallBtn) {
+  pwaTriggerInstallBtn.addEventListener("click", () => {
+    if (window.deferredAppInstallPrompt) {
+      window.deferredAppInstallPrompt.prompt();
+      window.deferredAppInstallPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === "accepted") {
+          window.deferredAppInstallPrompt = null;
+        }
+        closeDialog(appDownloadDialog);
+      });
+    } else {
+      alert("لتثبيت التطبيق على جهازك: اضغط على قائمة المتصفح (⋮) ثم اختر 'تثبيت التطبيق' أو 'إضافة للشاشة الرئيسية' 📲");
+    }
   });
 }
 
-if (introDarkToggleBtn) {
-  introDarkToggleBtn.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
+// نافذة الدعم الفني
+const welcomeSupportDialog = el("welcomeSupportDialog");
+const closeWelcomeSupportBtn = el("closeWelcomeSupportBtn");
+const openSupportTicketDirectBtn = el("openSupportTicketDirectBtn");
+const visitorSupportForm = el("visitorSupportForm");
+
+if (closeWelcomeSupportBtn) {
+  closeWelcomeSupportBtn.addEventListener("click", () => closeDialog(welcomeSupportDialog));
+}
+
+if (visitorSupportForm) {
+  visitorSupportForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = el("visitorSupportNameInput")?.value.trim() || "";
+    const issue = el("visitorSupportIssueInput")?.value.trim() || "";
+    const errEl = el("visitorSupportError");
+    const succEl = el("visitorSupportSuccess");
+    const btn = el("visitorSupportSubmitBtn");
+    if (!issue) return;
+    if (errEl) errEl.textContent = "";
+    if (succEl) succEl.hidden = true;
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "جاري الإرسال...";
+    }
     try {
-      localStorage.setItem("chato_theme", newTheme);
-    } catch {}
+      const email = name.includes("@") ? name : `${name || "visitor"}@guest.chato`;
+      const res = await fetch("/api/support/ticket", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name: name || "زائر", issue: `[استفسار من الواجهة]: ${issue}` })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.error || "فشل إرسال رسالة الدعم");
+      }
+      if (succEl) succEl.hidden = false;
+      visitorSupportForm.reset();
+      setTimeout(() => {
+        closeDialog(welcomeSupportDialog);
+        if (succEl) succEl.hidden = true;
+      }, 2500);
+    } catch (err) {
+      if (errEl) errEl.textContent = err.message || "تعذر الإرسال، يرجى المحاولة لاحقاً";
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "إرسال رسالة الدعم 🚀";
+      }
+    }
+  });
+}
+
+if (openSupportTicketDirectBtn) {
+  openSupportTicketDirectBtn.addEventListener("click", () => {
+    closeDialog(welcomeSupportDialog);
+    if (supportRequestDialog) {
+      if (supportNameInput) supportNameInput.value = state.currentUser?.name || "";
+      if (supportIssueInput) supportIssueInput.value = "";
+      if (supportRequestError) supportRequestError.textContent = "";
+      openDialog(supportRequestDialog);
+    }
+  });
+}
+
+// نافذة الدخول السريع بالرقم السري للحسابات المحفوظة
+const quickAccountLoginDialog = el("quickAccountLoginDialog");
+const closeQuickLoginDialogBtn = el("closeQuickLoginDialogBtn");
+const quickLoginForm = el("quickLoginForm");
+const quickLoginPasswordInput = el("quickLoginPasswordInput");
+const quickLoginError = el("quickLoginError");
+const submitQuickLoginBtn = el("submitQuickLoginBtn");
+
+if (closeQuickLoginDialogBtn) {
+  closeQuickLoginDialogBtn.addEventListener("click", () => closeDialog(quickAccountLoginDialog));
+}
+
+if (quickLoginForm) {
+  quickLoginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!window.selectedQuickAccount) return;
+    const email = window.selectedQuickAccount.email;
+    const password = quickLoginPasswordInput?.value.trim();
+    if (!password) {
+      if (quickLoginError) quickLoginError.textContent = "الرجاء كتابة الرقم السري";
+      return;
+    }
+    if (quickLoginError) quickLoginError.textContent = "";
+    if (submitQuickLoginBtn) {
+      submitQuickLoginBtn.disabled = true;
+      submitQuickLoginBtn.textContent = "جاري الدخول...";
+    }
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, deviceId: "web" })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        if (quickLoginError) quickLoginError.textContent = data.error || "الرقم السري غير صحيح";
+        if (submitQuickLoginBtn) {
+          submitQuickLoginBtn.disabled = false;
+          submitQuickLoginBtn.textContent = "دخول الحساب";
+        }
+        return;
+      }
+
+      state.currentUser = data.user;
+      state.accessToken = data.accessToken || null;
+      state.refreshToken = data.refreshToken || null;
+      state.currentUser.lastPassword = password;
+      syncCurrentAccountToSaved();
+      saveState();
+
+      closeDialog(quickAccountLoginDialog);
+      showApp();
+      syncUserInbox();
+    } catch (err) {
+      if (quickLoginError) quickLoginError.textContent = "فشل الاتصال بالخادم، تأكد من اتصال الإنترنت";
+    } finally {
+      if (submitQuickLoginBtn) {
+        submitQuickLoginBtn.disabled = false;
+        submitQuickLoginBtn.textContent = "دخول الحساب";
+      }
+    }
+  });
+}
+
+// 5. دالة عرض وتحديث قائمة "حساباتك" (Your Saved Accounts)
+function renderWelcomeSavedAccounts() {
+  const container = el("welcomeAccountsList");
+  const countBadge = el("savedAccountsCountBadge");
+  if (!container) return;
+
+  const accounts = Array.isArray(state.savedAccounts) ? state.savedAccounts : [];
+  if (countBadge) countBadge.textContent = accounts.length;
+
+  if (accounts.length === 0) {
+    container.innerHTML = `
+      <div class="no-saved-accounts-placeholder">
+        <span style="font-size: 20px;">🔒</span>
+        <span>لا توجد حسابات مسجلة على هذا الجهاز بعد. عند تسجيل دخولك أو إنشاء حساب جديد سيتم حفظه هنا لتتمكن من الدخول بالرقم السري فقط.</span>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = "";
+  accounts.forEach((acc) => {
+    const item = document.createElement("div");
+    item.className = "welcome-account-item";
+    item.title = `اضغط للدخول إلى حساب ${acc.name || acc.email} بالرقم السري فقط`;
+
+    // الصورة الرمزية
+    const av = document.createElement("div");
+    av.className = "welcome-account-avatar";
+    if (acc.image) {
+      const img = document.createElement("img");
+      img.src = acc.image;
+      img.alt = acc.name || "";
+      av.appendChild(img);
+    } else {
+      av.textContent = (acc.name || acc.email || "U").charAt(0).toUpperCase();
+    }
+
+    // معلومات الحساب
+    const info = document.createElement("div");
+    info.className = "welcome-account-info";
+    const nameEl = document.createElement("strong");
+    nameEl.className = "welcome-account-name";
+    nameEl.textContent = acc.name || acc.email;
+    const emailEl = document.createElement("span");
+    emailEl.className = "welcome-account-email";
+    emailEl.textContent = acc.email;
+    info.append(nameEl, emailEl);
+
+    // زر الدخول المباشر
+    const quickBtn = document.createElement("button");
+    quickBtn.type = "button";
+    quickBtn.className = "welcome-account-quick-btn";
+    quickBtn.innerHTML = "دخول 🔑";
+
+    // زر الحذف من الجهاز
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "btn-delete-saved-account";
+    delBtn.title = "إزالة هذا الحساب من هذا الجهاز";
+    delBtn.textContent = "✕";
+
+    delBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (confirm(`هل أنت متأكد من إزالة حساب (${acc.name || acc.email}) من هذا الجهاز؟`)) {
+        state.savedAccounts = state.savedAccounts.filter((a) => a.email.toLowerCase() !== acc.email.toLowerCase());
+        saveState();
+        renderWelcomeSavedAccounts();
+      }
+    });
+
+    const openQuickLogin = () => {
+      window.selectedQuickAccount = acc;
+      const avTarget = el("quickLoginAvatar");
+      const nameTarget = el("quickLoginUserName");
+      const emailTarget = el("quickLoginUserEmail");
+      const passInput = el("quickLoginPasswordInput");
+      const errorLine = el("quickLoginError");
+
+      if (avTarget) {
+        avTarget.innerHTML = "";
+        if (acc.image) {
+          const img = document.createElement("img");
+          img.src = acc.image;
+          avTarget.appendChild(img);
+        } else {
+          avTarget.textContent = (acc.name || acc.email || "U").charAt(0).toUpperCase();
+        }
+      }
+      if (nameTarget) nameTarget.textContent = acc.name || acc.email;
+      if (emailTarget) emailTarget.textContent = acc.email;
+      if (passInput) passInput.value = "";
+      if (errorLine) errorLine.textContent = "";
+
+      openDialog(quickAccountLoginDialog);
+      setTimeout(() => passInput?.focus(), 150);
+    };
+
+    item.addEventListener("click", openQuickLogin);
+    quickBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openQuickLogin();
+    });
+
+    item.append(av, info, quickBtn, delBtn);
+    container.appendChild(item);
   });
 }
 
