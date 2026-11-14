@@ -85,6 +85,13 @@
                 <span class="action-btn-icon">🌐</span>
                 <span id="welcomeLangBadge">ع</span>
               </button>
+
+              <!-- 3. أيقونة الدعم الفني في الشريط (تظهر عند فتح المحادثة أو إغلاقها) -->
+              <button type="button" class="welcome-top-action-btn welcome-support-pill-btn" id="welcomeSupportBarBtn" hidden aria-label="محادثة الدعم الفني المباشر" title="محادثة الدعم الفني">
+                <span class="support-pill-icon">💬</span>
+                <span class="support-pill-badge" id="supportBarBadge" hidden>1</span>
+                <span class="support-pill-text">الدعم الفني</span>
+              </button>
             </div>
           </header>
 
@@ -201,11 +208,16 @@
           </div>
 
           <div class="login-card">
-            <!-- زر العودة للشاشة الرئيسية للترحيب -->
+            <!-- زر العودة للشاشة الرئيسية وزر الدعم الفني -->
             <div class="auth-back-to-portal-wrap" id="authBackToPortalWrap">
               <button type="button" class="btn-back-to-portal" id="btnBackToPortal">
                 <span>←</span>
                 <span>العودة للرئيسية</span>
+              </button>
+              <button type="button" class="btn-back-to-portal btn-login-support" id="btnLoginSupport">
+                <span class="support-pill-icon">💬</span>
+                <span>الدعم الفني</span>
+                <span class="support-pill-badge" id="loginSupportBadge" hidden>1</span>
               </button>
             </div>
 
@@ -2215,6 +2227,57 @@
             ✅ تم إرسال رسالتك للدعم الفني بنجاح! سيتم المتابعة معك فوراً.
           </div>
           <button type="submit" class="primary-action" id="visitorSupportSubmitBtn" style="width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 15px;">إرسال رسالة الدعم 🚀</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- نافذة محادثة الدعم الفني التفاعلية على شكل دردشة حية (Visitor Support Live Chat) -->
+    <dialog class="app-dialog visitor-support-chat-dialog" id="visitorSupportChatDialog" aria-labelledby="visitorSupportChatTitle">
+      <div class="dialog-content visitor-support-chat-card">
+        <!-- ترويسة محادثة الدعم -->
+        <div class="visitor-chat-header">
+          <div class="visitor-chat-agent-info">
+            <div class="agent-avatar-wrap">
+              <span class="agent-avatar-icon">🎧</span>
+              <span class="agent-online-dot" title="متصل الآن"></span>
+            </div>
+            <div class="agent-text-wrap">
+              <strong id="visitorSupportChatTitle">فريق دعم Chato المباشر</strong>
+              <small class="agent-status-label" id="agentStatusLabel">متصل الآن • جاهزون لمساعدتك</small>
+            </div>
+          </div>
+          <div class="visitor-chat-header-actions">
+            <button type="button" class="visitor-chat-action-btn" id="minimizeVisitorChatBtn" title="تصغير إلى الشريط" aria-label="تصغير إلى الشريط">🗕</button>
+            <button type="button" class="visitor-chat-action-btn" id="closeVisitorChatBtn" title="إغلاق المحادثة" aria-label="إغلاق">✕</button>
+          </div>
+        </div>
+
+        <!-- منطقة الرسائل التفاعلية -->
+        <div class="visitor-chat-body" id="visitorChatBody">
+          <div class="visitor-chat-messages" id="visitorChatMessages">
+            <div class="visitor-msg visitor-msg-support">
+              <div class="visitor-msg-bubble">
+                👋 أهلاً بك في دعم شاتو المباشر! اكتب استفسارك وسيقوم فريق الدعم بالرد عليك ومساعدتك فوراً.
+              </div>
+              <time class="visitor-msg-time">الآن</time>
+            </div>
+          </div>
+        </div>
+
+        <!-- تنبيه إغلاق التذكرة من الإدارة -->
+        <div class="visitor-ticket-closed-banner" id="visitorTicketClosedBanner" hidden>
+          🔒 تم إغلاق جلسة الدعم الفني من قبل الإدارة. اكتب رسالة جديدة أدناه لإعادة الفتح.
+        </div>
+
+        <!-- شريط كتابة وإرسال الرسائل -->
+        <form class="visitor-chat-input-bar" id="visitorChatInputForm">
+          <input type="text" id="visitorChatTextInput" placeholder="اكتب استفسارك للدعم الفني..." autocomplete="off" required />
+          <button type="submit" class="visitor-chat-send-btn" id="visitorChatSendBtn" title="إرسال">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2" fill="currentColor"></polygon>
+            </svg>
+          </button>
         </form>
       </div>
     </dialog>
