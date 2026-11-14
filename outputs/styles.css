@@ -6620,7 +6620,7 @@ html[dir="ltr"] .attach-menu {
 }
 
 /* 2. شريط التسجيل الصوتي الحديث (WhatsApp Style Voice Recorder) */
-.voice-recording-bar {
+.voice-recording-bar:not([hidden]) {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -6633,6 +6633,10 @@ html[dir="ltr"] .attach-menu {
   gap: 12px !important;
   animation: fadeIn 0.18s ease-out !important;
   box-sizing: border-box !important;
+}
+
+.voice-recording-bar[hidden] {
+  display: none !important;
 }
 
 [data-theme="dark"] .voice-recording-bar {
@@ -8470,4 +8474,198 @@ body:has(#welcomeLandingScreen:not([hidden])) #langToggleBtn {
   background: #f8fafc;
   border-color: #cbd5e1;
   color: #0f172a;
+}
+
+/* ==========================================================================
+   تحسينات شاملة للهواتف المحمولة والتطبيقات (Mobile & PWA Perfection)
+   ========================================================================== */
+
+/* منع الإزاحة العرضية والسحب الأفقي على الهواتف */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* تنسيق النوافذ المنبثقة لمنع التمدد على الموبايل */
+dialog.app-dialog,
+dialog {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: auto !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+@media (max-width: 640px) {
+  .shell {
+    padding: 6px 8px !important;
+  }
+
+  .login-screen {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 8px 0 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .login-layout {
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* إخفاء مقدمة الدخول القديمة على الموبايل لمنع الإزاحة والتكرار */
+  .login-intro {
+    display: none !important;
+  }
+
+  /* بطاقة تسجيل الدخول وإنشاء الحساب على الموبايل */
+  .login-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 18px 14px !important;
+    border-radius: 18px !important;
+    margin: 0 auto !important;
+  }
+
+  .auth-tabs {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    gap: 6px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .auth-tab-btn {
+    font-size: 13.5px !important;
+    padding: 9px 6px !important;
+  }
+
+  .login-card-head {
+    margin-bottom: 16px !important;
+    text-align: center !important;
+  }
+
+  .login-card-head h2 {
+    font-size: 22px !important;
+  }
+
+  .login-card-head p {
+    font-size: 13.5px !important;
+  }
+
+  /* أزرار ونوافذ الحوار على الموبايل */
+  .quick-login-card,
+  .welcome-support-card,
+  .download-modal-card,
+  .group-members-card {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    margin: 0 auto !important;
+    padding: 20px 14px !important;
+    border-radius: 18px !important;
+    max-height: 86vh !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .download-card-item,
+  .support-contact-chip {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .download-card-icon {
+    font-size: 24px !important;
+  }
+
+  .download-card-info strong {
+    font-size: 13.5px !important;
+  }
+
+  .download-card-info small {
+    font-size: 11.5px !important;
+  }
+
+  .download-action-pill {
+    padding: 5px 9px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .download-modal-card h2,
+  .welcome-support-card h2 {
+    font-size: 19px !important;
+  }
+
+  .download-modal-card,
+  .welcome-support-card,
+  .quick-login-card,
+  .group-members-card {
+    padding: 18px 12px !important;
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  .welcome-landing-screen {
+    padding: 8px 12px 28px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .welcome-glow-title {
+    font-size: 44px !important;
+  }
+
+  .welcome-tagline {
+    font-size: 14px !important;
+  }
+
+  .btn-img-hero-full {
+    height: 48px !important;
+    font-size: 15.5px !important;
+    gap: 8px !important;
+  }
+
+  .btn-img-grid-teal,
+  .btn-img-grid-outline,
+  .btn-img-grid-dark {
+    height: 46px !important;
+    font-size: 13.5px !important;
+    gap: 6px !important;
+    padding: 0 4px !important;
+  }
+
+  .btn-img-grid-teal svg,
+  .btn-img-grid-outline svg,
+  .btn-img-grid-dark svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .welcome-buttons-row {
+    gap: 8px !important;
+  }
+
+  .welcome-saved-accounts-card {
+    padding: 14px 12px !important;
+    border-radius: 16px !important;
+  }
 }
