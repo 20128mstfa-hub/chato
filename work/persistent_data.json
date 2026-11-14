@@ -9,6 +9,12 @@
       "day": "2026-11-14",
       "words": 0,
       "images": 3
+    },
+    {
+      "email": "2012.8.mstfa@gmail.com",
+      "day": "2026-11-14",
+      "words": 0,
+      "images": 0
     }
   ],
   "ads": [],
@@ -28,9 +34,9 @@
       "email": "2012.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/qCtOP/H4rJu4ibHL3OMpzrejmAmekhWeMw5MlvUdJkLbckSvyrvAH4m0k9u2LHQ3GlG9Cd6czukkAjlyZGgsA==",
       "created_at": 1794675686870,
-      "last_active_at": 1794675686870
+      "last_active_at": 1794679527845
     }
   ],
   "pushSubscriptions": [],
