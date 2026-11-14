@@ -9,6 +9,12 @@
       "day": "2026-11-14",
       "words": 0,
       "images": 3
+    },
+    {
+      "email": "2012.8.mstf@gmail.com",
+      "day": "2026-11-14",
+      "words": 0,
+      "images": 0
     }
   ],
   "ads": [],
@@ -22,6 +28,15 @@
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg==",
       "created_at": 1794671884090,
       "last_active_at": 1794671884090
+    },
+    {
+      "id": "8a91f79c-5346-4208-8f7d-d902e7cdfed8",
+      "email": "2012.8.mstf@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMkqF44B/IJjxiVKg2k/UzG3LZ9Fs+cFVcMeu+0vSJE+kvZXrgAeHY0kQ1wOoIf6X1pjk7P9kfUqM7sJaawKLtw==",
+      "created_at": 1794675607727,
+      "last_active_at": 1794675607727
     }
   ],
   "pushSubscriptions": [],
@@ -50,6 +65,26 @@
       "auto_renew": true,
       "created_at": 1794672033302,
       "updated_at": 1794672033302
+    },
+    {
+      "id": "4cddeaa7-8fe0-48d1-991e-6d4a078f1034",
+      "user_id": "2012.8.mstf@gmail.com",
+      "email": "2012.8.mstf@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1794675612375,
+      "next_quota_reset_at": 1794762012375,
+      "started_at": 1794675612375,
+      "expires_at": 1799859612375,
+      "auto_renew": true,
+      "created_at": 1794675612375,
+      "updated_at": 1794675612375
     }
   ],
   "userStories": [],
