@@ -13,35 +13,24 @@
   ],
   "ads": [],
   "supportTickets": [],
-  "userDevices": [],
+  "userDevices": [
+    {
+      "id": "81155107-2b90-4e4a-89b5-9ccd14c2f871",
+      "email": "az7077407@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg==",
+      "created_at": 1794671884090,
+      "last_active_at": 1794671884090
+    }
+  ],
   "pushSubscriptions": [],
   "emailVerifications": [],
   "chats": [],
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
-  "userSubscriptions": [
-    {
-      "id": "a105b3c9-54af-4884-a034-6579fefd3f2f",
-      "user_id": "az7077407@gmail.com",
-      "email": "az7077407@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794671873621,
-      "next_quota_reset_at": 1794758273621,
-      "started_at": 1794671873621,
-      "expires_at": 1799855873621,
-      "auto_renew": true,
-      "created_at": 1794671873621,
-      "updated_at": 1794671873621
-    }
-  ],
+  "userSubscriptions": [],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
