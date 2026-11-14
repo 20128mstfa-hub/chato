@@ -22,88 +22,7 @@
   ],
   "friendships": [],
   "friendRequests": [],
-  "messages": [
-    {
-      "id": "577c4df9-2ecc-4b64-9835-1809fd69dad2",
-      "from": "guest_pgul_2262@visitor.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "[طلب دعم جديد]: مش عارف اعمل حساب",
-      "createdAt": 1794696184386
-    },
-    {
-      "id": "82065d53-350d-44a9-8814-b5994d7cea35",
-      "from": "support@chato.system",
-      "to": "guest_pgul_2262@visitor.chato",
-      "type": "text",
-      "text": "تم استلام رسالتك سيتم حل مشكلتك قريبا",
-      "createdAt": 1794696203301
-    },
-    {
-      "id": "0de15b4a-8779-4cc8-88a1-3dc1b1d2247f",
-      "from": "guest_pgul_2262@visitor.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "تمام",
-      "createdAt": 1794696211780
-    },
-    {
-      "id": "8b5c6eee-9a5c-430f-880c-1651e8bf4062",
-      "from": "support@chato.system",
-      "to": "guest_pgul_2262@visitor.chato",
-      "type": "text",
-      "text": "يرج توضيح مشكلتك بشكل اوضح",
-      "createdAt": 1794696226262
-    },
-    {
-      "id": "ebee1d6d-fade-43e9-9568-48a5dee7a104",
-      "from": "guest_pgul_2262@visitor.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "مش عارف اعمل حساب بيقول الاميل معمول قبل كدا",
-      "createdAt": 1794696258663
-    },
-    {
-      "id": "1f680a15-35d4-4be0-91b8-4a8f45f3e04b",
-      "from": "support@chato.system",
-      "to": "guest_pgul_2262@visitor.chato",
-      "type": "text",
-      "text": "انتظر قليلا لكى نحل المشكله ....",
-      "createdAt": 1794696269998
-    },
-    {
-      "id": "8c1ecaa7-e682-461b-a240-c6efdc60239c",
-      "from": "guest_pgul_2262@visitor.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "تامم",
-      "createdAt": 1794696277842
-    },
-    {
-      "id": "250f73e8-41d6-4a28-8b2c-af964c7cbdc3",
-      "from": "guest_pgul_2262@visitor.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "تمام",
-      "createdAt": 1794696279526
-    },
-    {
-      "id": "9e96e6bb-ef26-4873-a40b-5d6c627e7208",
-      "from": "support@chato.system",
-      "to": "guest_pgul_2262@visitor.chato",
-      "type": "text",
-      "text": "عزيز المستخدم تم حل مشكلتك",
-      "createdAt": 1794696308011
-    },
-    {
-      "id": "59cf7154-8e43-4709-8cd2-1a5b45f478e3",
-      "from": "guest_pgul_2262@visitor.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "شكرا",
-      "createdAt": 1794696312818
-    }
-  ],
+  "messages": [],
   "aiUsage": [
     {
       "email": "az7077407@gmail.com",
@@ -113,18 +32,7 @@
     }
   ],
   "ads": [],
-  "supportTickets": [
-    {
-      "id": "0ba4ff42-a670-44d3-929f-df600513d415",
-      "email": "guest_pgul_2262@visitor.chato",
-      "name": "زائر #2262",
-      "issue": "مش عارف اعمل حساب",
-      "status": "closed",
-      "createdAt": 1794696184386,
-      "updatedAt": 1794696312818,
-      "closedAt": 1794696360743
-    }
-  ],
+  "supportTickets": [],
   "userDevices": [
     {
       "id": "81155107-2b90-4e4a-89b5-9ccd14c2f871",
