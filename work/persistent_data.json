@@ -31,6 +31,14 @@
       "type": "text",
       "text": "[طلب دعم جديد]: [استفسار من الواجهة]: ازاى افتح حساب جديد",
       "createdAt": 1794695239983
+    },
+    {
+      "id": "e44e1eff-f881-40a0-a3b0-dae1830211c9",
+      "from": "support@chato.system",
+      "to": "مصفطى@guest.chato",
+      "type": "text",
+      "text": "تم استلام الرساله سيتم الرد قريبا .....",
+      "createdAt": 1794695279278
     }
   ],
   "aiUsage": [
@@ -56,7 +64,7 @@
       "issue": "[استفسار من الواجهة]: ازاى افتح حساب جديد",
       "status": "open",
       "createdAt": 1794695239983,
-      "updatedAt": 1794695239983
+      "updatedAt": 1794695279278
     }
   ],
   "userDevices": [
