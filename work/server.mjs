@@ -172,6 +172,7 @@ function safePath(url) {
   const parsed = new URL(url, "http://localhost");
   let requested = parsed.pathname === "/" ? "/index.html" : parsed.pathname;
   if (requested === "/admin") requested = "/admin.html";
+  if (requested === "/apk" || requested === "/app" || requested === "/download" || requested === "/chato") requested = "/chato.apk";
   const resolved = path.resolve(root, `.${decodeURIComponent(requested)}`);
   return resolved.startsWith(root) ? resolved : path.join(root, "index.html");
 }
@@ -5073,10 +5074,15 @@ function createServer() {
       }
       const filePath = safePath(req.url || "/");
       const body = await fs.readFile(filePath);
-      res.writeHead(200, {
+      const headers = {
         "Content-Type": types[path.extname(filePath)] || "application/octet-stream",
         "Cache-Control": "no-store",
-      });
+      };
+      if (filePath.endsWith("chato.apk") || filePath.endsWith("chato-windows.zip")) {
+        const downloadName = filePath.endsWith("chato.apk") ? "Chato.apk" : "Chato-Windows.zip";
+        headers["Content-Disposition"] = `attachment; filename="${downloadName}"`;
+      }
+      res.writeHead(200, headers);
       res.end(body);
     } catch (err) {
       console.error("HTTP error:", err);
