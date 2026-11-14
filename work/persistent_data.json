@@ -25,22 +25,6 @@
   "friendRequests": [],
   "messages": [
     {
-      "id": "a8eb9b54-596f-4f92-8d85-a822117beb77",
-      "from": "مصطفى@guest.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "[طلب دعم جديد]: [استفسار من الواجهة]: مش عارف اعمل حساب جديد",
-      "createdAt": 1794696063450
-    },
-    {
-      "id": "0adeb745-e89d-416f-924e-7d073a4447f9",
-      "from": "support@chato.system",
-      "to": "مصطفى@guest.chato",
-      "type": "text",
-      "text": ".",
-      "createdAt": 1794696070938
-    },
-    {
       "id": "9ff589ca-7e43-4efc-90ba-e80055fb2407",
       "from": "guest_pgul_2262@visitor.chato",
       "to": "support@chato.system",
@@ -73,15 +57,6 @@
       "status": "open",
       "createdAt": 1794696093316,
       "updatedAt": 1794696093316
-    },
-    {
-      "id": "4bc935cb-4550-4fb2-abf2-756c31e484ab",
-      "email": "مصطفى@guest.chato",
-      "name": "مصطفى",
-      "issue": "[استفسار من الواجهة]: مش عارف اعمل حساب جديد",
-      "status": "open",
-      "createdAt": 1794696063450,
-      "updatedAt": 1794696070938
     }
   ],
   "userDevices": [
