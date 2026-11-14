@@ -40,13 +40,29 @@ html, body {
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-  color: var(--ink);
+  color: #f8fafc;
   background:
-    radial-gradient(circle at 12% 18%, rgba(19, 183, 164, 0.16), transparent 34%),
-    radial-gradient(circle at 84% 10%, rgba(255, 183, 3, 0.16), transparent 28%),
-    radial-gradient(circle at 70% 88%, rgba(238, 90, 120, 0.14), transparent 30%),
-    #edf4f2;
+    radial-gradient(circle at 18% 22%, rgba(2, 132, 199, 0.14), transparent 45%),
+    radial-gradient(circle at 82% 15%, rgba(14, 165, 233, 0.1), transparent 40%),
+    #080e14;
   overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 18% 22%, rgba(2, 132, 199, 0.14), transparent 45%),
+    radial-gradient(circle at 82% 15%, rgba(14, 165, 233, 0.1), transparent 40%),
+    #080e14 !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="light"] body {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(2, 132, 199, 0.08), transparent 34%),
+    radial-gradient(circle at 84% 10%, rgba(14, 165, 233, 0.08), transparent 28%),
+    #f8fafc !important;
+  color: #0f172a !important;
 }
 
 button,
@@ -4470,11 +4486,8 @@ h3 {
     color: #f1f5f9;
   }
 
-  body.intro-active #loginLayout {
-    display: none !important;
-  }
-
-  body:not(.intro-active) #mobileIntroScreen {
+  #loginLayout[hidden],
+  #welcomeLandingScreen[hidden] {
     display: none !important;
   }
 
@@ -7602,4 +7615,859 @@ body.in-announcements #announcementReadOnlyNotice {
 .btn-remove-member:hover {
   background: #ef4444 !important;
   color: #ffffff !important;
+}
+
+/* ==========================================================================
+   واجهة الترحيب وتسجيل الدخول الحديثة والمبهرة (Chato Welcome Portal v8.1)
+   ========================================================================== */
+
+#loginLayout[hidden],
+#welcomeLandingScreen[hidden] {
+  display: none !important;
+}
+
+/* إخفاء زر اللغة القديم العائم لمنع التداخل */
+body:has(#welcomeLandingScreen:not([hidden])) .lang-toggle-badge,
+body:has(#welcomeLandingScreen:not([hidden])) #langToggleBtn {
+  display: none !important;
+}
+
+/* 1. الحاوية العامة للشاشة الترحيبية */
+.welcome-landing-screen {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px 20px 36px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  animation: welcomeFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes welcomeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 2. الشريط العلوي الذكي (Top Header Bar) */
+.welcome-top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0 18px;
+}
+
+.welcome-top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.72);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+[data-theme="light"] .welcome-top-actions {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* زر الوضع الليلي كما في الصورة 2 تماماً (Image 2 - Circular Moon Outline) */
+.welcome-theme-toggle-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1e293b;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.welcome-theme-toggle-btn:hover {
+  transform: scale(1.08);
+  border-color: #38bdf8;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.55);
+}
+
+.theme-moon-icon-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+[data-theme="light"] .welcome-theme-toggle-btn {
+  background: #0f172a;
+  border-color: #0284c7;
+  color: #38bdf8;
+}
+
+/* أزرار الإجراءات العلوية */
+.welcome-top-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .welcome-top-action-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #1e293b;
+}
+
+.welcome-top-action-btn:hover {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+/* 3. المحتوى الترحيبي والشعار المضيء (Hero Content) */
+.welcome-hero-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.welcome-brand-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.welcome-brand-badge {
+  width: 80px;
+  height: 80px;
+  border-radius: 24px;
+  padding: 4px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.4));
+  border: 1.5px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 10px 30px rgba(2, 132, 199, 0.35);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.welcome-brand-badge:hover {
+  transform: scale(1.06) rotate(2deg);
+}
+
+.welcome-brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+}
+
+/* كلمة شاتو بتنور (Glowing Neon Pulse Animation) */
+.welcome-glow-title {
+  font-size: 54px;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  text-shadow:
+    0 0 10px #0284c7,
+    0 0 22px #38bdf8,
+    0 0 35px #0284c7,
+    0 0 55px rgba(56, 189, 248, 0.8);
+  animation: chatoNeonPulse 2.6s ease-in-out infinite alternate;
+  user-select: none;
+}
+
+@keyframes chatoNeonPulse {
+  0% {
+    text-shadow:
+      0 0 8px #0284c7,
+      0 0 18px #38bdf8,
+      0 0 32px #0284c7,
+      0 0 45px rgba(14, 165, 233, 0.65);
+    filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.4));
+  }
+  100% {
+    text-shadow:
+      0 0 14px #38bdf8,
+      0 0 28px #7dd3fc,
+      0 0 48px #0284c7,
+      0 0 75px rgba(56, 189, 248, 0.95),
+      0 0 100px rgba(14, 165, 233, 0.8);
+    filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.85));
+  }
+}
+
+[data-theme="light"] .welcome-glow-title {
+  color: #0369a1;
+  text-shadow:
+    0 0 10px #7dd3fc,
+    0 0 20px #38bdf8,
+    0 0 35px #0284c7;
+}
+
+.welcome-tagline {
+  margin: 8px 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: 0.2px;
+}
+
+[data-theme="light"] .welcome-tagline {
+  color: #475569;
+}
+
+.welcome-wave-line {
+  color: #0ea5e9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 6px rgba(14, 165, 233, 0.5));
+}
+
+/* 4. حزمة الأزرار الرئيسية المطابقة تماماً لتصميم الصورة 1 (1-2-2 Grid System) */
+.welcome-actions-stack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* الصف 1: الزر الكبير العريض مثل 'ولي أمر' في الصورة 1 تماماً */
+.btn-img-hero-full {
+  width: 100%;
+  height: 52px;
+  border-radius: 10px;
+  border: none;
+  background: #116d76;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(17, 109, 118, 0.4);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.btn-img-hero-full:hover {
+  background: #147f8a;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(17, 109, 118, 0.55);
+}
+
+.btn-img-hero-full:active {
+  transform: translateY(0) scale(0.985);
+}
+
+/* صف الزرين المتجاورين مثل الصورة 1 */
+.welcome-buttons-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* زر بلون التركواز مثل 'حصة مجانية' في الصورة 1 */
+.btn-img-grid-teal {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  border: none;
+  background: #116d76;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(17, 109, 118, 0.35);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.btn-img-grid-teal:hover {
+  background: #147f8a;
+  transform: translateY(-1.5px);
+  box-shadow: 0 5px 16px rgba(17, 109, 118, 0.5);
+}
+
+.btn-img-grid-teal:active {
+  transform: translateY(0) scale(0.985);
+}
+
+/* زر بإطار شبه شفاف مثل 'عايز اشترك' في الصورة 1 */
+.btn-img-grid-outline {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(86, 126, 187, 0.55);
+  background: rgba(43, 76, 126, 0.22);
+  color: #8bb6e2;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  backdrop-filter: blur(6px);
+}
+
+[data-theme="light"] .btn-img-grid-outline {
+  background: rgba(43, 76, 126, 0.08);
+  border-color: #3b82f6;
+  color: #2563eb;
+}
+
+.btn-img-grid-outline:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #60a5fa;
+  color: #ffffff;
+  transform: translateY(-1.5px);
+}
+
+.btn-img-grid-outline:active {
+  transform: translateY(0) scale(0.985);
+}
+
+/* الأزرار الداكنة في الصف الثالث مثل 'شرح المنصة' و 'إنشاء جدول دراسي' في الصورة 1 */
+.btn-img-grid-dark {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1c2434;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+[data-theme="light"] .btn-img-grid-dark {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.btn-img-grid-dark:hover {
+  background: #273349;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1.5px);
+}
+
+.btn-img-grid-dark:active {
+  transform: translateY(0) scale(0.985);
+}
+
+.btn-welcome-support:hover {
+  background: rgba(51, 65, 85, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* 5. قسم حساباتك (Your Saved Accounts) */
+.welcome-saved-accounts-card {
+  width: 100%;
+  margin-top: 10px;
+  padding: 16px 18px;
+  background: rgba(15, 23, 42, 0.68);
+  border: 1.5px solid rgba(56, 189, 248, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .welcome-saved-accounts-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(2, 132, 199, 0.25);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08);
+}
+
+.saved-accounts-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.saved-accounts-heading-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saved-accounts-heading-title h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+[data-theme="light"] .saved-accounts-heading-title h3 {
+  color: #0f172a;
+}
+
+.saved-accounts-badge {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.saved-accounts-desc {
+  margin: 0 0 12px 0;
+  font-size: 12.5px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+[data-theme="light"] .saved-accounts-desc {
+  color: #64748b;
+}
+
+.welcome-accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.welcome-account-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+[data-theme="light"] .welcome-account-item {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.welcome-account-item:hover {
+  background: rgba(14, 165, 233, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  transform: translateX(-2px);
+}
+
+.welcome-account-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #0284c7;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.welcome-account-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.welcome-account-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-account-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme="light"] .welcome-account-name {
+  color: #0f172a;
+}
+
+.welcome-account-email {
+  font-size: 12px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.welcome-account-quick-btn {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: none;
+  background: #0284c7;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.welcome-account-quick-btn:hover {
+  background: #0369a1;
+  transform: scale(1.05);
+}
+
+.btn-delete-saved-account {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+
+.btn-delete-saved-account:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.no-saved-accounts-placeholder {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* شريط الرجوع إلى الشاشة الرئيسية عند فتح فورم تسجيل الدخول أو الحساب */
+.auth-back-to-portal-wrap {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.btn-back-to-portal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #38bdf8;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+[data-theme="light"] .btn-back-to-portal {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #0284c7;
+}
+
+.btn-back-to-portal:hover {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: #38bdf8;
+  transform: translateX(3px);
+}
+
+/* نوافذ الدعم الفني وتنزيل التطبيق وكلمة المرور السريعة */
+.quick-login-card,
+.welcome-support-card,
+.download-modal-card {
+  max-width: 440px;
+  width: 92vw;
+  padding: 24px;
+  border-radius: 24px;
+  background: #0f172a;
+  border: 1.5px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .quick-login-card,
+[data-theme="light"] .welcome-support-card,
+[data-theme="light"] .download-modal-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.quick-login-user-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.quick-login-avatar-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #0284c7;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: bold;
+  overflow: hidden;
+  border: 3px solid #38bdf8;
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
+  margin-bottom: 10px;
+}
+
+.quick-login-avatar-ring img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quick-login-username {
+  font-size: 19px;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+[data-theme="light"] .quick-login-username {
+  color: #0f172a;
+}
+
+.quick-login-useremail {
+  font-size: 13.5px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.download-modal-header,
+.welcome-support-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.download-modal-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  margin-bottom: 8px;
+}
+
+.version-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.download-options-grid,
+.welcome-support-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.download-card-item,
+.support-contact-chip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: right;
+}
+
+[data-theme="light"] .download-card-item,
+[data-theme="light"] .support-contact-chip {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.download-card-item:hover,
+.support-contact-chip:hover {
+  background: rgba(14, 165, 233, 0.15);
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+.download-card-icon,
+.chip-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.download-card-info,
+.chip-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.download-card-info strong,
+.chip-text strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.download-card-info small,
+.chip-text small {
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+.download-action-pill {
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: #0284c7;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* نمط استمارة الدعم الفني المباشر */
+.visitor-support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: right;
+  margin-top: 6px;
+}
+
+.visitor-support-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.visitor-support-form .field span {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+[data-theme="light"] .visitor-support-form .field span {
+  color: #475569;
+}
+
+.visitor-support-form input[type="text"],
+.visitor-support-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.visitor-support-form input[type="text"]:focus,
+.visitor-support-form textarea:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+[data-theme="light"] .visitor-support-form input[type="text"],
+[data-theme="light"] .visitor-support-form textarea {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
