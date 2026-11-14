@@ -9,8 +9,15 @@
       "image": "",
       "status": "active",
       "createdAt": 1794696328562,
-      "lastLogin": 1794696328562,
-      "lastActive": 1794696328562
+      "lastLogin": 1794696357763,
+      "lastActive": 1794696357763,
+      "dailyLogins": {
+        "date": "2026-11-14",
+        "count": 1
+      },
+      "lastIp": "51.39.231.78",
+      "country": "السعودية 🇸🇦",
+      "clientAccountsCount": 1
     }
   ],
   "friendships": [],
@@ -112,9 +119,10 @@
       "email": "guest_pgul_2262@visitor.chato",
       "name": "زائر #2262",
       "issue": "مش عارف اعمل حساب",
-      "status": "open",
+      "status": "closed",
       "createdAt": 1794696184386,
-      "updatedAt": 1794696312818
+      "updatedAt": 1794696312818,
+      "closedAt": 1794696360743
     }
   ],
   "userDevices": [
@@ -133,12 +141,11 @@
       "email": "2012.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "14b4984d506f50ef93e2a24c071955c0f2d8e41c60b721c35c6b1acf1d2ff5fa",
-      "refresh_token_hash": "8a632046714d140c1f9245dc2486f06c4f2989167bedf6fdbae8b062a3ad1eb2",
-      "expires_at": 1799880328563,
-      "last_active_at": 1794696328937,
-      "created_at": 1794675686870,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
+      "access_token_hash": "9e1e82ddb4c427772ef28836498191b7a3e86316bddab9363fc56a54934ef21d",
+      "refresh_token_hash": "51a18b51fdbc77818d4ac354363d223f173382a71a2a4df38d580346a8a46c36",
+      "expires_at": 1799880357763,
+      "last_active_at": 1794696357763,
+      "created_at": 1794675686870
     },
     {
       "id": "42dbe1bf-81f0-47af-b353-5daa3b401dad",
