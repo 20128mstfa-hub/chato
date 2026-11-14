@@ -8,7 +8,7 @@
       "email": "az7077407@gmail.com",
       "day": "2026-11-14",
       "words": 0,
-      "images": 2
+      "images": 3
     }
   ],
   "ads": [],
@@ -32,7 +32,7 @@
   "groups": [],
   "userSubscriptions": [
     {
-      "id": "e93ba57e-69f3-4371-a2b7-38c859429aa3",
+      "id": "e20a7a5b-7d53-44e6-b8e9-97f52e755653",
       "user_id": "az7077407@gmail.com",
       "email": "az7077407@gmail.com",
       "plan_code": "free",
@@ -41,15 +41,15 @@
       "daily_words_limit": 90,
       "daily_words_used": 0,
       "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 2,
+      "daily_ai_images_used": 3,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794672027185,
-      "next_quota_reset_at": 1794758427185,
-      "started_at": 1794672027185,
-      "expires_at": 1799856027185,
+      "last_quota_reset_at": 1794672033302,
+      "next_quota_reset_at": 1794758433302,
+      "started_at": 1794672033302,
+      "expires_at": 1799856033302,
       "auto_renew": true,
-      "created_at": 1794672027185,
-      "updated_at": 1794672027185
+      "created_at": 1794672033302,
+      "updated_at": 1794672033302
     }
   ],
   "userStories": [],
