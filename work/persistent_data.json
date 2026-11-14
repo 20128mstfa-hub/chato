@@ -19,42 +19,6 @@
       "lastIp": "51.39.231.78",
       "country": "السعودية 🇸🇦",
       "clientAccountsCount": 1
-    },
-    {
-      "id": "fabd1a37-ec33-4110-8bcf-b5ff4e62a9ca",
-      "name": "دعاء",
-      "email": "2012.8.mtfa@gmail.com",
-      "password_hash": "scrypt:e27ab3efd7ad3fa6a5899415d7e08f63:052a8338e76e2b39036724b00ef12ba2e9b9f0c12a68662e331774b99df63d9f446160adce48494f64133167685ded8d9a8588656dd576b2e16cec1fbecf5958",
-      "password": "Mm01021414214",
-      "image": "",
-      "status": "active",
-      "createdAt": 1794695016877,
-      "lastLogin": 1794695016877,
-      "lastActive": 1794695016877
-    },
-    {
-      "id": "96d5223a-9623-4308-b497-f64a09f6373d",
-      "name": "دعا",
-      "email": "201.8.mtfa@gmail.com",
-      "password_hash": "scrypt:d3d002767ad2828f4439fbe177da4829:0eef0c25e373e211728c6cddb1a113088b72ec7fd0ac11ab8684e5ba0aa2029c538e310e23b51b979aac3ed0d783e9d7b01d3138e11243a6c7b8c5f21159b6ed",
-      "password": "Mm01021414214",
-      "image": "",
-      "status": "active",
-      "createdAt": 1794695036573,
-      "lastLogin": 1794695036573,
-      "lastActive": 1794695036573
-    },
-    {
-      "id": "398fd54f-2316-4a33-b3c5-54be5226e1e5",
-      "name": "دعاء على",
-      "email": "2012.8.m@gmail.com",
-      "password_hash": "scrypt:75f0a5e4b9051c29742f0e2951c632a9:b2b9b21ae21eb4c373fe53743cf0eee7c6bc20bc211c91cc6d95d9e23861543cb5013a9a766524a9f89f82960c6ac0dbbef53d72c9da6e6195982e0d6fb06ce6",
-      "password": "Mm01021414214",
-      "image": "",
-      "status": "active",
-      "createdAt": 1794695077173,
-      "lastLogin": 1794695077173,
-      "lastActive": 1794695077173
     }
   ],
   "friendships": [],
