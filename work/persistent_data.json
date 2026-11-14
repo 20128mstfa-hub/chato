@@ -119,7 +119,7 @@
       "updated_at": 1794675612375
     },
     {
-      "id": "d9257b28-3a5f-4a32-ab88-3386e73c2a32",
+      "id": "5b076393-2ed3-4921-a05c-651f0cf6cb28",
       "user_id": "12fa217b-00d0-4189-8a6c-740bd76a5480",
       "email": "2012.8.mstfa@gmail.com",
       "plan_code": "free",
@@ -130,13 +130,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794675638504,
-      "next_quota_reset_at": 1794762038504,
-      "started_at": 1794675638504,
-      "expires_at": 1799859638504,
+      "last_quota_reset_at": 1794675659092,
+      "next_quota_reset_at": 1794762059092,
+      "started_at": 1794675659092,
+      "expires_at": 1799859659092,
       "auto_renew": true,
-      "created_at": 1794675638504,
-      "updated_at": 1794675638504
+      "created_at": 1794675659092,
+      "updated_at": 1794675659092
     }
   ],
   "userStories": [],
