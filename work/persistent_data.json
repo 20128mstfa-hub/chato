@@ -1,26 +1,5 @@
 {
-  "users": [
-    {
-      "id": "f40d8021-fd1f-4ae8-959f-2b6c93f9975b",
-      "name": "Mustafa Amr",
-      "email": "2012.8.mstfa@gmail.com",
-      "password_hash": "scrypt:f21391ca2c6847b0f07f2b330ec7d399:d4e2aca5848c206542bf0ee80de5d6c868028565475936ee975f25ebf45b922e3a37b1c52f619705f6f7e0cbd4a2be72cb82fa74baf89f76b7b56679717c7190",
-      "password": "M01021414214m",
-      "image": "",
-      "status": "active",
-      "createdAt": 1794684061369,
-      "lastLogin": 1794691907621,
-      "lastActive": 1794691907621,
-      "lastOffline": 1794684088141,
-      "dailyLogins": {
-        "date": "2026-11-14",
-        "count": 2
-      },
-      "lastIp": "51.39.231.78",
-      "country": "السعودية 🇸🇦",
-      "clientAccountsCount": 1
-    }
-  ],
+  "users": [],
   "friendships": [],
   "friendRequests": [],
   "messages": [
@@ -95,12 +74,6 @@
       "day": "2026-11-14",
       "words": 0,
       "images": 3
-    },
-    {
-      "email": "2012.8.mstfa@gmail.com",
-      "day": "2026-11-14",
-      "words": 0,
-      "images": 0
     }
   ],
   "ads": [],
@@ -192,28 +165,7 @@
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
-  "userSubscriptions": [
-    {
-      "id": "df004b86-5c94-47f4-ac10-4a90832ec5c1",
-      "user_id": "2012.8.mstfa@gmail.com",
-      "email": "2012.8.mstfa@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794675690038,
-      "next_quota_reset_at": 1794762090038,
-      "started_at": 1794675690038,
-      "expires_at": 1799859690038,
-      "auto_renew": true,
-      "created_at": 1794675690038,
-      "updated_at": 1794675690038
-    }
-  ],
+  "userSubscriptions": [],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
