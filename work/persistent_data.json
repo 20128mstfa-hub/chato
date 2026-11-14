@@ -1,5 +1,18 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "c0c572aa-cde3-4e0f-9d6d-33e621429940",
+      "name": "Mustafa Amr",
+      "email": "2012.8.mstfa@gmail.com",
+      "password_hash": "scrypt:837d597398973c64e35916a8d51300e8:fd4a5e1d7a6bcb3f04b996b869d797c8b751f59849985357dfe74acad387843d6be22690c87f679da9b307ab7776f3f9502c0b90ca8092d2f38233d937929a5d",
+      "password": "M0102141214m",
+      "image": "",
+      "status": "active",
+      "createdAt": 1794696328562,
+      "lastLogin": 1794696328562,
+      "lastActive": 1794696328562
+    }
+  ],
   "friendships": [],
   "friendRequests": [],
   "messages": [
@@ -116,15 +129,16 @@
     },
     {
       "id": "e66377d3-ac30-444b-85f8-c657bcb5e0b8",
-      "user_id": "f40d8021-fd1f-4ae8-959f-2b6c93f9975b",
+      "user_id": "c0c572aa-cde3-4e0f-9d6d-33e621429940",
       "email": "2012.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "a3ebb74c6f2e5a5b648f2b0a503284d47dab8993ca37b337a1568c1337e5e642",
-      "refresh_token_hash": "77aa8044c39ab28fdd5e1002875f026a560a32aec26e85ab73e922e5cd44bc68",
-      "expires_at": 1799875907625,
-      "last_active_at": 1794691907625,
-      "created_at": 1794675686870
+      "access_token_hash": "14b4984d506f50ef93e2a24c071955c0f2d8e41c60b721c35c6b1acf1d2ff5fa",
+      "refresh_token_hash": "8a632046714d140c1f9245dc2486f06c4f2989167bedf6fdbae8b062a3ad1eb2",
+      "expires_at": 1799880328563,
+      "last_active_at": 1794696328937,
+      "created_at": 1794675686870,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
     {
       "id": "42dbe1bf-81f0-47af-b353-5daa3b401dad",
