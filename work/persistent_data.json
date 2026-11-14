@@ -23,16 +23,7 @@
   ],
   "friendships": [],
   "friendRequests": [],
-  "messages": [
-    {
-      "id": "9ff589ca-7e43-4efc-90ba-e80055fb2407",
-      "from": "guest_pgul_2262@visitor.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "[طلب دعم جديد]: السلام عليكم",
-      "createdAt": 1794696093316
-    }
-  ],
+  "messages": [],
   "aiUsage": [
     {
       "email": "az7077407@gmail.com",
@@ -48,17 +39,7 @@
     }
   ],
   "ads": [],
-  "supportTickets": [
-    {
-      "id": "5f65094a-3351-45ce-9391-35be937ff87a",
-      "email": "guest_pgul_2262@visitor.chato",
-      "name": "زائر #2262",
-      "issue": "السلام عليكم",
-      "status": "open",
-      "createdAt": 1794696093316,
-      "updatedAt": 1794696093316
-    }
-  ],
+  "supportTickets": [],
   "userDevices": [
     {
       "id": "81155107-2b90-4e4a-89b5-9ccd14c2f871",
