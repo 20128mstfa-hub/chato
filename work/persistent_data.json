@@ -66,6 +66,22 @@
       "type": "text",
       "text": "تمام",
       "createdAt": 1794696279526
+    },
+    {
+      "id": "9e96e6bb-ef26-4873-a40b-5d6c627e7208",
+      "from": "support@chato.system",
+      "to": "guest_pgul_2262@visitor.chato",
+      "type": "text",
+      "text": "عزيز المستخدم تم حل مشكلتك",
+      "createdAt": 1794696308011
+    },
+    {
+      "id": "59cf7154-8e43-4709-8cd2-1a5b45f478e3",
+      "from": "guest_pgul_2262@visitor.chato",
+      "to": "support@chato.system",
+      "type": "text",
+      "text": "شكرا",
+      "createdAt": 1794696312818
     }
   ],
   "aiUsage": [
@@ -85,7 +101,7 @@
       "issue": "مش عارف اعمل حساب",
       "status": "open",
       "createdAt": 1794696184386,
-      "updatedAt": 1794696279526
+      "updatedAt": 1794696312818
     }
   ],
   "userDevices": [
