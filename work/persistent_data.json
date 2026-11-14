@@ -55,6 +55,14 @@
       "type": "text",
       "text": "يرج توضيح مشكلتك بشكل اوضح",
       "createdAt": 1794696226262
+    },
+    {
+      "id": "ebee1d6d-fade-43e9-9568-48a5dee7a104",
+      "from": "guest_pgul_2262@visitor.chato",
+      "to": "support@chato.system",
+      "type": "text",
+      "text": "مش عارف اعمل حساب بيقول الاميل معمول قبل كدا",
+      "createdAt": 1794696258663
     }
   ],
   "aiUsage": [
@@ -80,7 +88,7 @@
       "issue": "مش عارف اعمل حساب",
       "status": "open",
       "createdAt": 1794696184386,
-      "updatedAt": 1794696226262
+      "updatedAt": 1794696258663
     }
   ],
   "userDevices": [
