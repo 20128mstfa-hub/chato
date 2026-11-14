@@ -32,7 +32,7 @@
   "groups": [],
   "userSubscriptions": [
     {
-      "id": "70312276-cceb-4e20-8b93-36367b33b78d",
+      "id": "1f69838a-beee-41b8-9506-b163ff9ec350",
       "user_id": "az7077407@gmail.com",
       "email": "az7077407@gmail.com",
       "plan_code": "free",
@@ -43,13 +43,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 2,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1794671980985,
-      "next_quota_reset_at": 1794758380985,
-      "started_at": 1794671980985,
-      "expires_at": 1799855980985,
+      "last_quota_reset_at": 1794672008906,
+      "next_quota_reset_at": 1794758408906,
+      "started_at": 1794672008906,
+      "expires_at": 1799856008906,
       "auto_renew": true,
-      "created_at": 1794671980985,
-      "updated_at": 1794671980985
+      "created_at": 1794672008906,
+      "updated_at": 1794672008906
     }
   ],
   "userStories": [],
