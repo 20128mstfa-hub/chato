@@ -39,6 +39,14 @@
       "type": "text",
       "text": "تم استلام رسالتك سيتم حل مشكلتك قريبا",
       "createdAt": 1794696203301
+    },
+    {
+      "id": "0de15b4a-8779-4cc8-88a1-3dc1b1d2247f",
+      "from": "guest_pgul_2262@visitor.chato",
+      "to": "support@chato.system",
+      "type": "text",
+      "text": "تمام",
+      "createdAt": 1794696211780
     }
   ],
   "aiUsage": [
@@ -64,7 +72,7 @@
       "issue": "مش عارف اعمل حساب",
       "status": "open",
       "createdAt": 1794696184386,
-      "updatedAt": 1794696203301
+      "updatedAt": 1794696211780
     }
   ],
   "userDevices": [
