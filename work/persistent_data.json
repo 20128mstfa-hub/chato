@@ -31,6 +31,14 @@
       "type": "text",
       "text": "[طلب دعم جديد]: [استفسار من الواجهة]: مش عارف اعمل حساب جديد",
       "createdAt": 1794696063450
+    },
+    {
+      "id": "0adeb745-e89d-416f-924e-7d073a4447f9",
+      "from": "support@chato.system",
+      "to": "مصطفى@guest.chato",
+      "type": "text",
+      "text": ".",
+      "createdAt": 1794696070938
     }
   ],
   "aiUsage": [
@@ -56,7 +64,7 @@
       "issue": "[استفسار من الواجهة]: مش عارف اعمل حساب جديد",
       "status": "open",
       "createdAt": 1794696063450,
-      "updatedAt": 1794696063450
+      "updatedAt": 1794696070938
     }
   ],
   "userDevices": [
