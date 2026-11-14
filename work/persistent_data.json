@@ -23,16 +23,7 @@
   ],
   "friendships": [],
   "friendRequests": [],
-  "messages": [
-    {
-      "id": "53ace186-d971-4710-ba8a-399e21923a6f",
-      "from": "jjj@guest.chato",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "[طلب دعم جديد]: [استفسار من الواجهة]: ;;;",
-      "createdAt": 1794695933327
-    }
-  ],
+  "messages": [],
   "aiUsage": [
     {
       "email": "az7077407@gmail.com",
@@ -48,17 +39,7 @@
     }
   ],
   "ads": [],
-  "supportTickets": [
-    {
-      "id": "84e5fa08-8541-4408-8d5f-10c0baa407bc",
-      "email": "jjj@guest.chato",
-      "name": "jjj",
-      "issue": "[استفسار من الواجهة]: ;;;",
-      "status": "open",
-      "createdAt": 1794695933327,
-      "updatedAt": 1794695933327
-    }
-  ],
+  "supportTickets": [],
   "userDevices": [
     {
       "id": "81155107-2b90-4e4a-89b5-9ccd14c2f871",
