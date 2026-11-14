@@ -8,7 +8,7 @@
       "email": "az7077407@gmail.com",
       "day": "2026-11-14",
       "words": 0,
-      "images": 0
+      "images": 1
     }
   ],
   "ads": [],
@@ -30,7 +30,28 @@
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
-  "userSubscriptions": [],
+  "userSubscriptions": [
+    {
+      "id": "81b5e14a-c317-4318-ae6d-0c42061664ad",
+      "user_id": "az7077407@gmail.com",
+      "email": "az7077407@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 1,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1794671931682,
+      "next_quota_reset_at": 1794758331682,
+      "started_at": 1794671931682,
+      "expires_at": 1799855931682,
+      "auto_renew": true,
+      "created_at": 1794671931682,
+      "updated_at": 1794671931682
+    }
+  ],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
