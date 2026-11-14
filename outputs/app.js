@@ -9073,3 +9073,306 @@ if (_chatHeadEl) {
     }
   });
 }
+
+
+// ==========================================================================
+// === VISITOR SUPPORT LIVE CHAT CONTROLLER (محادثة الدعم الفني في واجهة الدخول) ===
+// ==========================================================================
+
+let visitorSupportPollTimer = null;
+let visitorSupportBackgroundTimer = null;
+let lastKnownVisitorMsgCount = 0;
+let visitorSupportChatIsOpen = false;
+
+function getVisitorSupportIdentity() {
+  if (state.currentUser?.email) {
+    return {
+      email: state.currentUser.email,
+      name: state.currentUser.name || state.currentUser.email
+    };
+  }
+  let email = localStorage.getItem("chato_visitor_email");
+  let name = localStorage.getItem("chato_visitor_name");
+  if (!email) {
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    const suffix = Date.now().toString(36).slice(-4);
+    email = "guest_" + suffix + "_" + rand + "@visitor.chato";
+    name = "زائر #" + rand;
+    localStorage.setItem("chato_visitor_email", email);
+    localStorage.setItem("chato_visitor_name", name);
+  }
+  return { email, name };
+}
+
+function updateVisitorSupportBadges(count) {
+  const badge1 = el("supportBarBadge");
+  const badge2 = el("loginSupportBadge");
+  const barBtn = el("welcomeSupportBarBtn");
+
+  if (count > 0) {
+    if (badge1) {
+      badge1.hidden = false;
+      badge1.textContent = String(count);
+    }
+    if (badge2) {
+      badge2.hidden = false;
+      badge2.textContent = String(count);
+    }
+    if (barBtn) {
+      barBtn.classList.add("has-unread");
+      barBtn.hidden = false;
+    }
+  } else {
+    if (badge1) badge1.hidden = true;
+    if (badge2) badge2.hidden = true;
+    if (barBtn) barBtn.classList.remove("has-unread");
+  }
+}
+
+async function openVisitorSupportChat() {
+  visitorSupportChatIsOpen = true;
+  updateVisitorSupportBadges(0);
+
+  const barBtn = el("welcomeSupportBarBtn");
+  if (barBtn) barBtn.hidden = true;
+
+  const dialog = el("visitorSupportChatDialog");
+  if (dialog) openDialog(dialog);
+
+  await loadVisitorSupportMessages();
+
+  const textInput = el("visitorChatTextInput");
+  if (textInput) setTimeout(() => textInput.focus(), 120);
+
+  if (visitorSupportPollTimer) clearInterval(visitorSupportPollTimer);
+  visitorSupportPollTimer = setInterval(loadVisitorSupportMessages, 2500);
+}
+
+function closeVisitorSupportChat() {
+  visitorSupportChatIsOpen = false;
+  if (visitorSupportPollTimer) {
+    clearInterval(visitorSupportPollTimer);
+    visitorSupportPollTimer = null;
+  }
+
+  const dialog = el("visitorSupportChatDialog");
+  if (dialog) closeDialog(dialog);
+
+  // إظهار أيقونة الدعم الفني في الشريط فوراً عند إغلاق النافذة
+  const barBtn = el("welcomeSupportBarBtn");
+  if (barBtn) {
+    barBtn.hidden = false;
+  }
+
+  startVisitorSupportBackgroundWatcher();
+}
+
+async function loadVisitorSupportMessages() {
+  const { email } = getVisitorSupportIdentity();
+  try {
+    const res = await fetch("/api/support/messages?email=" + encodeURIComponent(email));
+    if (!res.ok) return;
+    const data = await res.json();
+    const messages = Array.isArray(data.messages) ? data.messages : [];
+    lastKnownVisitorMsgCount = messages.length;
+
+    renderVisitorChatMessages(messages, data.ticket);
+  } catch (err) {
+    console.warn("Failed to load visitor support messages", err);
+  }
+}
+
+function renderVisitorChatMessages(messages, ticket) {
+  const container = el("visitorChatMessages");
+  const body = el("visitorChatBody");
+  const closedBanner = el("visitorTicketClosedBanner");
+  const { email } = getVisitorSupportIdentity();
+
+  if (!container) return;
+
+  if (ticket && ticket.status === "closed") {
+    if (closedBanner) closedBanner.hidden = false;
+  } else {
+    if (closedBanner) closedBanner.hidden = true;
+  }
+
+  if (messages.length === 0) {
+    container.innerHTML = `
+      <div class="visitor-msg visitor-msg-support">
+        <div class="visitor-msg-bubble">
+          👋 أهلاً بك في دعم شاتو المباشر! اكتب استفسارك أو مشكلتك وسيقوم فريق الدعم بالرد عليك ومساعدتك فوراً.
+        </div>
+        <time class="visitor-msg-time">الآن</time>
+      </div>
+    `;
+    return;
+  }
+
+  let html = `
+    <div class="visitor-msg visitor-msg-support">
+      <div class="visitor-msg-bubble">
+        👋 أهلاً بك في دعم شاتو المباشر! تفضل، فريق الدعم متصل لمساعدتك.
+      </div>
+      <time class="visitor-msg-time">الآن</time>
+    </div>
+  `;
+
+  messages.forEach((msg) => {
+    const isUser = msg.from.toLowerCase() === email.toLowerCase();
+    const timeStr = msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
+    const cleanText = typeof escapeHtml === "function" ? escapeHtml(msg.text || "") : (msg.text || "");
+
+    html += `
+      <div class="visitor-msg ${isUser ? 'visitor-msg-user' : 'visitor-msg-support'}">
+        <div class="visitor-msg-bubble">${cleanText}</div>
+        <time class="visitor-msg-time">${timeStr}</time>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+  if (body) {
+    body.scrollTop = body.scrollHeight;
+  }
+}
+
+function startVisitorSupportBackgroundWatcher() {
+  if (visitorSupportBackgroundTimer) return;
+  visitorSupportBackgroundTimer = setInterval(async () => {
+    if (visitorSupportChatIsOpen) return;
+    const { email } = getVisitorSupportIdentity();
+    try {
+      const res = await fetch("/api/support/messages?email=" + encodeURIComponent(email));
+      if (!res.ok) return;
+      const data = await res.json();
+      const messages = Array.isArray(data.messages) ? data.messages : [];
+      if (messages.length > lastKnownVisitorMsgCount) {
+        const supportMsgs = messages.filter(m => m.from === "support@chato.system");
+        const diff = messages.length - lastKnownVisitorMsgCount;
+        if (diff > 0 && supportMsgs.length > 0) {
+          updateVisitorSupportBadges(diff);
+        }
+      }
+    } catch {}
+  }, 4500);
+}
+
+// Check initial status on startup: if user already had messages, show top bar icon
+(async function initVisitorSupportOnStartup() {
+  const savedEmail = localStorage.getItem("chato_visitor_email");
+  if (!savedEmail) return;
+  try {
+    const res = await fetch("/api/support/messages?email=" + encodeURIComponent(savedEmail));
+    if (!res.ok) return;
+    const data = await res.json();
+    const messages = Array.isArray(data.messages) ? data.messages : [];
+    if (messages.length > 0) {
+      lastKnownVisitorMsgCount = messages.length;
+      const barBtn = el("welcomeSupportBarBtn");
+      if (barBtn) barBtn.hidden = false;
+      startVisitorSupportBackgroundWatcher();
+    }
+  } catch {}
+})();
+
+// ربط جميع أزرار الدعم الفني بالواجهة التفاعلية
+const btnWelcomeSupportEl = el("btnWelcomeSupport");
+const btnLoginSupportEl = el("btnLoginSupport");
+const welcomeSupportBarBtnEl = el("welcomeSupportBarBtn");
+const closeVisitorChatBtnEl = el("closeVisitorChatBtn");
+const minimizeVisitorChatBtnEl = el("minimizeVisitorChatBtn");
+const visitorSupportChatDialogEl = el("visitorSupportChatDialog");
+const visitorChatInputFormEl = el("visitorChatInputForm");
+
+if (btnWelcomeSupportEl) {
+  // Override any previous click listener to open live chat dialog
+  btnWelcomeSupportEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openVisitorSupportChat();
+  }, true);
+}
+
+if (btnLoginSupportEl) {
+  btnLoginSupportEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openVisitorSupportChat();
+  });
+}
+
+if (welcomeSupportBarBtnEl) {
+  welcomeSupportBarBtnEl.addEventListener("click", () => {
+    openVisitorSupportChat();
+  });
+}
+
+if (closeVisitorChatBtnEl) {
+  closeVisitorChatBtnEl.addEventListener("click", () => {
+    closeVisitorSupportChat();
+  });
+}
+
+if (minimizeVisitorChatBtnEl) {
+  minimizeVisitorChatBtnEl.addEventListener("click", () => {
+    closeVisitorSupportChat();
+  });
+}
+
+if (visitorSupportChatDialogEl) {
+  visitorSupportChatDialogEl.addEventListener("cancel", () => {
+    closeVisitorSupportChat();
+  });
+}
+
+if (visitorChatInputFormEl) {
+  visitorChatInputFormEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const input = el("visitorChatTextInput");
+    const sendBtn = el("visitorChatSendBtn");
+    const container = el("visitorChatMessages");
+    const body = el("visitorChatBody");
+    const text = input?.value.trim() || "";
+    if (!text) return;
+
+    input.value = "";
+    if (sendBtn) sendBtn.disabled = true;
+
+    const { email, name } = getVisitorSupportIdentity();
+
+    // Optimistic message append
+    if (container) {
+      const tempDiv = document.createElement("div");
+      tempDiv.className = "visitor-msg visitor-msg-user";
+      const clean = typeof escapeHtml === "function" ? escapeHtml(text) : text;
+      tempDiv.innerHTML = `<div class="visitor-msg-bubble">${clean}</div><time class="visitor-msg-time">الآن</time>`;
+      container.appendChild(tempDiv);
+      if (body) body.scrollTop = body.scrollHeight;
+    }
+
+    try {
+      // Check if ticket exists or is closed
+      const checkRes = await fetch("/api/support/messages?email=" + encodeURIComponent(email));
+      const checkData = await checkRes.json().catch(() => ({}));
+      
+      if (!checkData.ticket || checkData.ticket.status === "closed" || checkData.ticketDeleted) {
+        await fetch("/api/support/ticket", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, name, issue: text })
+        });
+      } else {
+        await fetch("/api/support/message", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ from: email, to: "support@chato.system", text })
+        });
+      }
+      await loadVisitorSupportMessages();
+    } catch (err) {
+      console.error("Failed to send visitor support message", err);
+    } finally {
+      if (sendBtn) sendBtn.disabled = false;
+      if (input) input.focus();
+    }
+  });
+}
+
