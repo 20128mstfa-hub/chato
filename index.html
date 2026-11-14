@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content" />
@@ -14,8 +14,15 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>شاتو - Chato Messenger</title>
-    <link rel="stylesheet" href="./styles.css?v=8.0" />
-  <script>
+    <link rel="stylesheet" href="./styles.css?v=8.1" />
+    <script>
+      // Apply theme immediately on startup to prevent flashing
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem("chato_theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch(e) {}
+      })();
       // Force SW cache clear and update
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(regs) {
@@ -28,7 +35,7 @@
       if ('caches' in window) {
         caches.keys().then(function(names) {
           names.forEach(function(name) {
-            if (name !== 'chato-app-v23') caches.delete(name);
+            if (name !== 'chato-app-v24') caches.delete(name);
           });
         });
       }
@@ -59,77 +66,123 @@
 
     <main class="shell" id="shell">
       <section class="login-screen" id="loginScreen" aria-labelledby="loginTitle">
-        <!-- واجهة ترحيب الموبايل تيليجرام ستايل (Image 1) - مخصصة للهواتف فقط -->
-        <div class="mobile-intro-screen" id="mobileIntroScreen">
-          <!-- زر تبديل الوضع الليلي أعلى اليمين كما في الصورة 1 -->
-          <div class="mobile-intro-top-bar">
-            <button type="button" class="intro-dark-toggle-btn" id="introDarkToggleBtn" aria-label="تبديل الوضع الليلي" title="الوضع الليلي">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-              </svg>
-            </button>
-          </div>
+        <!-- واجهة الترحيب الحديثة الموحدة (Welcome Landing Portal v8.1) -->
+        <div class="welcome-landing-screen" id="welcomeLandingScreen">
+          <!-- الشريط العلوي الذكي (Top Header Bar) -->
+          <header class="welcome-top-bar" id="welcomeTopBar">
+            <div class="welcome-top-actions">
+              <!-- 1. زر الوضع الليلي/النهاري (Image 2 Style) -->
+              <button type="button" class="welcome-theme-toggle-btn" id="welcomeThemeToggleBtn" aria-label="تبديل الوضع الليلي والنهاري" title="تبديل المظهر">
+                <span class="theme-moon-icon-ring">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                  </svg>
+                </span>
+              </button>
 
-          <!-- محتوى الشريحة الترحيبية في المنتصف -->
-          <div class="mobile-intro-body">
-            <!-- شكل السحابة الزرقاء بالأيقونات كما في الصورة 1 بالكامل -->
-            <div class="intro-cloud-illustration">
-              <svg viewBox="0 0 220 160" width="190" height="142" class="cloud-svg-graphic">
-                <defs>
-                  <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#2ea5f5" />
-                    <stop offset="100%" stop-color="#1e88e5" />
-                  </linearGradient>
-                </defs>
-                <path fill="url(#cloudGrad)" d="M165 140 H55 C24.6 140 0 115.4 0 85 C0 56.6 21.5 33.2 49.3 30.5 C59.6 12.3 79.3 0 102 0 C131.3 0 155.8 20.3 162.2 47.6 C164.8 47.2 167.4 47 170 47 C197.6 47 220 69.4 220 97 C220 120.8 203.4 140 180 140 Z" />
-                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(88, 50)">
-                  <path d="M19 19H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l2-3h4l2 3h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2z" />
-                  <circle cx="12" cy="13" r="3.5" />
-                </g>
-                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(112, 85)">
-                  <circle cx="11" cy="11" r="9" />
-                  <circle cx="8" cy="9" r="1.2" fill="#fff" />
-                  <circle cx="14" cy="9" r="1.2" fill="#fff" />
-                  <path d="M7 13.5 Q11 17 15 13.5" stroke-linecap="round" />
-                </g>
-                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(118, 25)">
-                  <path d="M18 10c0 4.4-3.6 8-8 8-1.5 0-2.8-.4-4-1.1L2 18l1.3-3.8C2.5 13 2 11.5 2 10 2 5.6 5.6 2 10 2s8 3.6 8 8z" />
-                </g>
-                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(75, 90)">
-                  <rect x="2" y="4" width="13" height="11" rx="2" />
-                  <polygon points="15 8 20 5 20 14 15 11" fill="#fff" />
-                </g>
-                <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.85" transform="translate(142, 90)">
-                  <path d="M13 3l4 4L7 17H3v-4L13 3z" />
-                </g>
-              </svg>
+              <!-- 2. زر تغيير اللغة -->
+              <button type="button" class="welcome-top-action-btn welcome-lang-btn" id="welcomeLangBtn" aria-label="تغيير اللغة" title="تغيير اللغة">
+                <span class="action-btn-icon">🌐</span>
+                <span id="welcomeLangBadge">ع</span>
+              </button>
+            </div>
+          </header>
+
+          <!-- المحتوى الترحيبي في المنتصف (Hero Portal) -->
+          <div class="welcome-hero-content">
+            <!-- الشعار واسم شاتو مع إضاءة نيون مبهرة (Glowing Neon) -->
+            <div class="welcome-brand-header">
+              <div class="welcome-brand-badge">
+                <img src="/logo.png" alt="Chato" class="welcome-brand-logo" />
+              </div>
+              <h1 class="welcome-glow-title" id="welcomeGlowTitle">شاتو</h1>
+              <p class="welcome-tagline">في التواصل والمراسلة الفورية الآمنة</p>
+              <div class="welcome-wave-line" aria-hidden="true">
+                <svg viewBox="0 0 140 14" width="140" height="14" fill="none" stroke="currentColor">
+                  <path d="M2 7 Q 35 1, 70 7 T 138 7" stroke-width="3.5" stroke-linecap="round"/>
+                </svg>
+              </div>
             </div>
 
-            <div class="intro-text-wrapper">
-              <h1 class="intro-headline" id="introHeadline">تخزين سحابي</h1>
-              <p class="intro-subtext" id="introSubtext">شاتو يتيح لك الوصول لرسائلك من أجهزة متعددة بأمان وسرعة فائقة.</p>
+            <!-- أزرار الإجراءات الرئيسية المطابقة لتصميم الصورة 1 بالكامل (نظام 1-2-2) -->
+            <div class="welcome-actions-stack">
+              <!-- الصف 1: الزر الكبير العريض مثل 'ولي أمر' في الصورة 1 -->
+              <button type="button" class="btn-img-hero-full" id="btnWelcomeSignUp">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <line x1="20" y1="8" x2="20" y2="14"></line>
+                  <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                <span>إنشاء حساب</span>
+              </button>
 
-              <!-- نقاط التنقل بين الشرائح (6 نقاط كما في الصورة 1) -->
-              <div class="intro-pagination-dots" id="introPaginationDots">
-                <span class="intro-dot" data-index="0"></span>
-                <span class="intro-dot" data-index="1"></span>
-                <span class="intro-dot" data-index="2"></span>
-                <span class="intro-dot" data-index="3"></span>
-                <span class="intro-dot" data-index="4"></span>
-                <span class="intro-dot active" data-index="5"></span>
+              <!-- الصف 2: زران متجاوران مثل 'عايز اشترك' و 'حصة مجانية' في الصورة 1 -->
+              <div class="welcome-buttons-row">
+                <!-- زر تسجيل دخول (بلون التركواز مثل حصة مجانية) -->
+                <button type="button" class="btn-img-grid-teal" id="btnWelcomeSignIn">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
+                  </svg>
+                  <span>تسجيل دخول</span>
+                </button>
+
+                <!-- زر دعم فني (بإطار ناعم مثل عايز اشترك) -->
+                <button type="button" class="btn-img-grid-outline" id="btnWelcomeSupport">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 14v-2a8 8 0 0 1 16 0v2"></path>
+                    <path d="M18 19c2.2 0 3-1.2 3-3v-2c0-1.1-.9-2-2-2h-1v7Z"></path>
+                    <path d="M6 19H5c-1.1 0-2-.9-2-2v-3c0-1.1.9-2 2-2h1v7Z"></path>
+                    <path d="M12 21h2c1.7 0 3-1.3 3-3"></path>
+                  </svg>
+                  <span>دعم فني</span>
+                </button>
+              </div>
+
+              <!-- الصف 3: زران داكنان متجاوران مثل 'شرح المنصة' و 'إنشاء جدول دراسي' في الصورة 1 -->
+              <div class="welcome-buttons-row">
+                <!-- زر تنزيل التطبيق -->
+                <button type="button" class="btn-img-grid-dark" id="btnWelcomeDownload">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span>تنزيل التطبيق</span>
+                </button>
+
+                <!-- زر الدخول بالباركود -->
+                <button type="button" class="btn-img-grid-dark" id="btnWelcomeQr">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                  </svg>
+                  <span>الدخول بالباركود</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 5. قسم حساباتك (Your Saved Accounts) -->
+            <div class="welcome-saved-accounts-card" id="welcomeSavedAccountsSection">
+              <div class="saved-accounts-heading">
+                <div class="saved-accounts-heading-title">
+                  <span class="accounts-icon">👥</span>
+                  <h3>حساباتك</h3>
+                </div>
+                <span class="saved-accounts-badge" id="savedAccountsCountBadge">0</span>
+              </div>
+              <p class="saved-accounts-desc">اضغط على أي حساب للدخول المباشر بكتابة الرقم السري فقط</p>
+              <div class="welcome-accounts-list" id="welcomeAccountsList">
+                <!-- يتم تعبئة الحسابات المحفوظة ديناميكياً هنا -->
               </div>
             </div>
           </div>
-
-          <!-- زر البدء والمتابعة للدخول/إنشاء الحساب -->
-          <div class="mobile-intro-bottom">
-            <button type="button" class="intro-primary-action-btn" id="introContinueBtn">
-              بدء المراسلة
-            </button>
-          </div>
         </div>
 
-        <div class="login-layout" id="loginLayout">
+        <div class="login-layout" id="loginLayout" hidden>
           <div class="login-intro">
             <div class="brand-mark" aria-hidden="true">
               <img src="/logo.png" alt="Chato Logo" class="brand-logo-img" style="width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 10px 28px rgba(2, 132, 199, 0.38); object-fit: contain;" />
@@ -148,11 +201,11 @@
           </div>
 
           <div class="login-card">
-            <!-- زر العودة للشاشة الترحيبية على الموبايل -->
-            <div class="mobile-intro-back-wrap" id="mobileIntroBackWrap">
-              <button type="button" class="back-to-intro-link" id="backToIntroBtn">
+            <!-- زر العودة للشاشة الرئيسية للترحيب -->
+            <div class="auth-back-to-portal-wrap" id="authBackToPortalWrap">
+              <button type="button" class="btn-back-to-portal" id="btnBackToPortal">
                 <span>←</span>
-                <span>العودة لشاشة الترحيب</span>
+                <span>العودة للرئيسية</span>
               </button>
             </div>
 
@@ -2115,9 +2168,99 @@
       </form>
     </dialog>
 
+    <!-- نافذة منبثقة للدخول السريع بكلمة المرور للحساب المحفوظ -->
+    <dialog class="app-dialog quick-account-login-dialog" id="quickAccountLoginDialog" aria-labelledby="quickLoginHeading">
+      <div class="dialog-content quick-login-card">
+        <button type="button" class="dialog-close-btn" id="closeQuickLoginDialogBtn" aria-label="إغلاق">✕</button>
+        <div class="quick-login-user-header">
+          <div class="quick-login-avatar-ring" id="quickLoginAvatar"></div>
+          <h2 id="quickLoginHeading">تسجيل الدخول السريع</h2>
+          <strong id="quickLoginUserName" class="quick-login-username">...</strong>
+          <span id="quickLoginUserEmail" class="quick-login-useremail">...</span>
+        </div>
+        <form id="quickLoginForm" autocomplete="on">
+          <label class="field">
+            <span>الرقم السري</span>
+            <div class="password-wrapper">
+              <input type="password" id="quickLoginPasswordInput" autocomplete="current-password" placeholder="أدخل الرقم السري فقط" required />
+              <button type="button" class="password-toggle-btn" data-target="quickLoginPasswordInput" aria-label="إظهار / إخفاء">👁</button>
+            </div>
+          </label>
+          <p class="error-line" id="quickLoginError" role="alert"></p>
+          <button type="submit" class="primary-action" id="submitQuickLoginBtn">دخول الحساب</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- نافذة الدعم الفني المباشر داخل التطبيق (بدون إيميل أو تيليجرام) -->
+    <dialog class="app-dialog welcome-support-dialog" id="welcomeSupportDialog" aria-labelledby="welcomeSupportHeading">
+      <div class="dialog-content welcome-support-card">
+        <button type="button" class="dialog-close-btn" id="closeWelcomeSupportBtn" aria-label="إغلاق">✕</button>
+        <div class="welcome-support-header">
+          <div class="download-modal-logo" style="font-size: 38px; display: flex; align-items: center; justify-content: center; background: rgba(56, 189, 248, 0.15); border-radius: 50%; width: 70px; height: 70px; margin: 0 auto 10px; border: 1.5px solid rgba(56, 189, 248, 0.4);">🎧</div>
+          <h2 id="welcomeSupportHeading">الدعم الفني المباشر</h2>
+          <p style="font-size: 13.5px; color: #94a3b8; margin-top: 4px; opacity: 0.9;">فريق دعم شاتو جاهز لمساعدتك في أي وقت، اكتب رسالتك وسيتم الرد عليك فوراً.</p>
+        </div>
+        <form id="visitorSupportForm" class="visitor-support-form" autocomplete="on">
+          <label class="field">
+            <span>الاسم أو البريد للتواصل</span>
+            <input type="text" id="visitorSupportNameInput" placeholder="اكتب اسمك أو إيميلك..." required />
+          </label>
+          <label class="field">
+            <span>المشكلة أو الاستفسار</span>
+            <textarea id="visitorSupportIssueInput" rows="4" placeholder="اشرح مشكلتك بالتفصيل وسيصلك الحل فوراً..." required style="padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: inherit; width: 100%; box-sizing: border-box; resize: vertical; font-family: inherit; font-size: 13.5px;"></textarea>
+          </label>
+          <p class="error-line" id="visitorSupportError" role="alert"></p>
+          <div id="visitorSupportSuccess" class="support-success-msg" hidden style="color: #10b981; font-weight: 700; font-size: 13.5px; text-align: center; padding: 10px; background: rgba(16, 185, 129, 0.15); border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 8px;">
+            ✅ تم إرسال رسالتك للدعم الفني بنجاح! سيتم المتابعة معك فوراً.
+          </div>
+          <button type="submit" class="primary-action" id="visitorSupportSubmitBtn" style="width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 15px;">إرسال رسالة الدعم 🚀</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- نافذة تنزيل وتحميل تطبيق شاتو للأجهزة -->
+    <dialog class="app-dialog app-download-dialog" id="appDownloadDialog" aria-labelledby="downloadModalHeading">
+      <div class="dialog-content download-modal-card">
+        <button type="button" class="dialog-close-btn" id="closeAppDownloadDialogBtn" aria-label="إغلاق">✕</button>
+        <div class="download-modal-header">
+          <img src="/logo.png" alt="Chato" class="download-modal-logo" />
+          <h2 id="downloadModalHeading">تحميل تطبيق شاتو (Chato)</h2>
+          <p style="font-size: 13.5px; color: var(--muted, #94a3b8); margin: 6px 0;">اختر نسختك واستمتع بتجربة مراسلة فائقة السرعة والأمان</p>
+          <span class="version-tag">الإصدار الرسمي v8.0</span>
+        </div>
+        <div class="download-options-grid">
+          <a href="/chato.apk" download="chato.apk" class="download-card-item">
+            <span class="download-card-icon">🤖</span>
+            <div class="download-card-info">
+              <strong>تطبيق أندرويد (APK المباشر)</strong>
+              <small>تثبيت فوري على جميع هواتف أندرويد</small>
+            </div>
+            <span class="download-action-pill">تحميل APK</span>
+          </a>
+          <a href="/chato-windows.zip" download="chato-windows.zip" class="download-card-item">
+            <span class="download-card-icon">💻</span>
+            <div class="download-card-info">
+              <strong>برنامج ويندوز للكمبيوتر</strong>
+              <small>تطبيق سطح المكتب السريع والخفيف</small>
+            </div>
+            <span class="download-action-pill">تحميل ZIP</span>
+          </a>
+          <button type="button" class="download-card-item" id="pwaTriggerInstallBtn">
+            <span class="download-card-icon">📲</span>
+            <div class="download-card-info">
+              <strong>تثبيت التطبيق على جهازك (PWA)</strong>
+              <small>يعمل بدون متجر ويستهلك مساحة ضئيلة</small>
+            </div>
+            <span class="download-action-pill">تثبيت الآن</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
     <script src="./qrcode.min.js"></script>
     <script src="./jsqr.min.js"></script>
-    <script src="./app.js?v=8.0"></script>
+    <script src="./app.js?v=8.1"></script>
   
     <!-- طبقة شفافة تماماً لإغلاق القوائم باللمس أو النقر على الهاتف والكمبيوتر بدون أي غباش -->
     <!-- حاوية إشعارات واتساب الجانبية والعلوية للهاتف والكمبيوتر -->
