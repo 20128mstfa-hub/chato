@@ -23,7 +23,16 @@
   ],
   "friendships": [],
   "friendRequests": [],
-  "messages": [],
+  "messages": [
+    {
+      "id": "577c4df9-2ecc-4b64-9835-1809fd69dad2",
+      "from": "guest_pgul_2262@visitor.chato",
+      "to": "support@chato.system",
+      "type": "text",
+      "text": "[طلب دعم جديد]: مش عارف اعمل حساب",
+      "createdAt": 1794696184386
+    }
+  ],
   "aiUsage": [
     {
       "email": "az7077407@gmail.com",
@@ -39,7 +48,17 @@
     }
   ],
   "ads": [],
-  "supportTickets": [],
+  "supportTickets": [
+    {
+      "id": "0ba4ff42-a670-44d3-929f-df600513d415",
+      "email": "guest_pgul_2262@visitor.chato",
+      "name": "زائر #2262",
+      "issue": "مش عارف اعمل حساب",
+      "status": "open",
+      "createdAt": 1794696184386,
+      "updatedAt": 1794696184386
+    }
+  ],
   "userDevices": [
     {
       "id": "81155107-2b90-4e4a-89b5-9ccd14c2f871",
