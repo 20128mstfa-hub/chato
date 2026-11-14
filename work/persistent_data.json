@@ -1,26 +1,5 @@
 {
-  "users": [
-    {
-      "id": "eb220b6e-8a97-48d5-9b71-228687dd9ea8",
-      "name": "Mustafa Amr",
-      "email": "2012.8.mstfa@gmail.com",
-      "password_hash": "scrypt:93c58b2a9e37cc77ba84310605acb7e2:ad2d9a3902c8dfa13cc791d9a9b00cc2cee0929f925ffc7457b4c01dbcc42e712cf19e1d8d597733d81e0365696658c252513dccd94a6865c0baca4e892a5a94",
-      "password": "BuCRhY2K93ezgku",
-      "image": "",
-      "status": "active",
-      "createdAt": 1794679752638,
-      "lastLogin": 1794679792118,
-      "lastActive": 1794679792118,
-      "lastOffline": 1794679756027,
-      "dailyLogins": {
-        "date": "2026-11-14",
-        "count": 1
-      },
-      "lastIp": "127.0.0.1",
-      "country": "مصر 🇪🇬",
-      "clientAccountsCount": 1
-    }
-  ],
+  "users": [],
   "friendships": [],
   "friendRequests": [],
   "messages": [],
@@ -30,12 +9,6 @@
       "day": "2026-11-14",
       "words": 0,
       "images": 3
-    },
-    {
-      "email": "2012.8.mstfa@gmail.com",
-      "day": "2026-11-14",
-      "words": 0,
-      "images": 0
     }
   ],
   "ads": [],
@@ -52,15 +25,21 @@
     },
     {
       "id": "e66377d3-ac30-444b-85f8-c657bcb5e0b8",
-      "user_id": "eb220b6e-8a97-48d5-9b71-228687dd9ea8",
       "email": "2012.8.mstfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "0338137e5b8d3ac8e5a96bf3f201dda3e6f31c48bace490160edcc2074add79e",
-      "refresh_token_hash": "c6d6c7924c7522ffc941542e1f964282bc1ed01ebd815899691dc7015deced86",
-      "expires_at": 1799863792118,
-      "last_active_at": 1794679792118,
-      "created_at": 1794675686870
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
+      "created_at": 1794675686870,
+      "last_active_at": 1794675686870
+    },
+    {
+      "id": "42dbe1bf-81f0-47af-b353-5daa3b401dad",
+      "email": "202.8.mstfa@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmJsBW3tRF/Z4LXzwYNDu9lNLWcYSmuruIXIVaHwM5agAGX1v81QFiUrqVogLNONPHEVkwSTQgcmLiUuCCMvKYA==",
+      "created_at": 1794683350072,
+      "last_active_at": 1794683350072
     }
   ],
   "pushSubscriptions": [],
