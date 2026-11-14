@@ -31,6 +31,14 @@
       "type": "text",
       "text": "[طلب دعم جديد]: مش عارف اعمل حساب",
       "createdAt": 1794696184386
+    },
+    {
+      "id": "82065d53-350d-44a9-8814-b5994d7cea35",
+      "from": "support@chato.system",
+      "to": "guest_pgul_2262@visitor.chato",
+      "type": "text",
+      "text": "تم استلام رسالتك سيتم حل مشكلتك قريبا",
+      "createdAt": 1794696203301
     }
   ],
   "aiUsage": [
@@ -56,7 +64,7 @@
       "issue": "مش عارف اعمل حساب",
       "status": "open",
       "createdAt": 1794696184386,
-      "updatedAt": 1794696184386
+      "updatedAt": 1794696203301
     }
   ],
   "userDevices": [
