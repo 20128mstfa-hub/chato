@@ -162,8 +162,9 @@
       "access_token_hash": "a3e76c50dd7b6e63ef60a44a414781ba1ed0483689be5e8b930c128688e1fc87",
       "refresh_token_hash": "ba1064e51b934b24257a1a7983287ea7a0de5252a3c5878757da42a9652bdce2",
       "expires_at": 1799938607461,
-      "last_active_at": 1794754607461,
-      "created_at": 1794754510665
+      "last_active_at": 1794754647438,
+      "created_at": 1794754510665,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
     },
     {
       "id": "52256d21-5253-4878-8a6f-9ec1396da000",
