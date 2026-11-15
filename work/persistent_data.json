@@ -28,8 +28,15 @@
       "image": "",
       "status": "active",
       "createdAt": 1794754510663,
-      "lastLogin": 1794754510664,
-      "lastActive": 1794754510664
+      "lastLogin": 1794754586859,
+      "lastActive": 1794754586859,
+      "dailyLogins": {
+        "date": "2026-11-15",
+        "count": 1
+      },
+      "lastIp": "51.39.231.213",
+      "country": "السعودية 🇸🇦",
+      "clientAccountsCount": 1
     },
     {
       "id": "c23ea3ba-bbea-4f37-9783-7a741873d5ab",
@@ -152,12 +159,11 @@
       "email": "2012.8.mstfa@gmail.co",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "0752976505f43840194fa0b6b95bed18bac4e8b81c72ad0e3b1d49d65416b4c3",
-      "refresh_token_hash": "da167550c07737b0b1fc32ba07b64333a7b584c8dcafa0da1a07213246913d67",
-      "expires_at": 1799938510665,
-      "last_active_at": 1794754511503,
-      "created_at": 1794754510665,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
+      "access_token_hash": "43e3163c16e400dc009e0210314d882a476e47c8ee28bd5f875b1e7757b1f0fc",
+      "refresh_token_hash": "1ba06009c46f2f029e60b7cdfbc62ca58fe9c54aaf135770d4171ceb41df9b67",
+      "expires_at": 1799938586859,
+      "last_active_at": 1794754586859,
+      "created_at": 1794754510665
     },
     {
       "id": "52256d21-5253-4878-8a6f-9ec1396da000",
