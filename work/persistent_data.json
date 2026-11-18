@@ -67,7 +67,8 @@
       "id": "e8dd2a5d-f7d0-409c-afdd-a13295446006",
       "name": "2012.8.mtfa",
       "email": "2012.8.mtfa@gmail.com",
-      "createdAt": 1795031508444
+      "createdAt": 1795031508444,
+      "lastOffline": 1795031540607
     }
   ],
   "friendships": [
@@ -193,9 +194,9 @@
       "access_token_hash": "7cd97ac62dc1164fcb24d48be9b93b6cb50def3991dd75142fbce7a2a2d3b240",
       "refresh_token_hash": "92857c71cb5c55dffddcafaadf8e458c9487549f0c98698687ae42754cd54cc4",
       "expires_at": 1799879016877,
-      "last_active_at": 1794695017292,
+      "last_active_at": 1795031540743,
       "created_at": 1794695016877,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/qCtOP/H4rJu4ibHL3OMpzrejmAmekhWeMw5MlvUdJkLbckSvyrvAH4m0k9u2LHQ3GlG9Cd6czukkAjlyZGgsA=="
     },
     {
       "id": "57ee77a2-add4-4d02-8549-9246c4c28ce4",
