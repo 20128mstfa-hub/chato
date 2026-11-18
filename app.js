@@ -3354,14 +3354,169 @@ function sendVoiceRecording() {
 }
 
 /* ==========================================================================
-   Calls & Dialogs
+   Real Calling System & Google Meet Stage Engine (المكالمات الحقيقية وواجهة جوجل ميت)
    ========================================================================== */
-let localAudioStream = null;
-let peerConnection = null;
-let activeCallPartner = null;
-let isAudioMuted = false;
 
-const rtcConfiguration = {
+// 1. مولد نغمات ورنين الهاتف عبر Web Audio API (بدون ملفات خارجية)
+class CallAudioSynthesizer {
+  constructor() {
+    this.ctx = null;
+    this.ringInterval = null;
+    this.dialInterval = null;
+  }
+
+  init() {
+    if (!this.ctx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) this.ctx = new AudioCtx();
+    }
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume().catch(() => {});
+    }
+  }
+
+  // نغمة رنين المكالمة الواردة (Marimba Chime مثل الهواتف الحديثة)
+  startIncomingRing() {
+    this.stopAll();
+    this.init();
+    if (!this.ctx) return;
+
+    const playChime = () => {
+      if (!this.ctx) return;
+      const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.value = freq;
+          const now = this.ctx.currentTime + idx * 0.12;
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.exponentialRampToValueAtTime(0.28, now + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        } catch {}
+      });
+    };
+
+    playChime();
+    this.ringInterval = setInterval(playChime, 2200);
+  }
+
+  // نغمة الاتصال الصادر والرنين (Dial Tone)
+  startOutgoingDialTone() {
+    this.stopAll();
+    this.init();
+    if (!this.ctx) return;
+
+    const playBeep = () => {
+      if (!this.ctx) return;
+      [440, 480].forEach((freq) => {
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.value = freq;
+          const now = this.ctx.currentTime;
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.1, now + 0.04);
+          gain.gain.setValueAtTime(0.1, now + 1.2);
+          gain.gain.linearRampToValueAtTime(0.001, now + 1.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 1.26);
+        } catch {}
+      });
+    };
+
+    playBeep();
+    this.dialInterval = setInterval(playBeep, 4000);
+  }
+
+  // نغمة مشغول عند رفض المكالمة (Busy Tone)
+  playBusyTone() {
+    this.stopAll();
+    this.init();
+    if (!this.ctx) return;
+
+    for (let i = 0; i < 3; i++) {
+      try {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = 425;
+        const now = this.ctx.currentTime + i * 0.35;
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.18, now + 0.02);
+        gain.gain.setValueAtTime(0.18, now + 0.18);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.2);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+      } catch {}
+    }
+  }
+
+  // نغمة رفع اليد
+  playHandRaiseChime() {
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(880, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1760, this.ctx.currentTime + 0.18);
+      gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.42);
+    } catch {}
+  }
+
+  stopAll() {
+    if (this.ringInterval) {
+      clearInterval(this.ringInterval);
+      this.ringInterval = null;
+    }
+    if (this.dialInterval) {
+      clearInterval(this.dialInterval);
+      this.dialInterval = null;
+    }
+  }
+}
+
+const callAudio = new CallAudioSynthesizer();
+
+// 2. حالة وبيانات المكالمة الحالية
+let activeCallState = {
+  partnerEmail: null,
+  partnerName: null,
+  partnerAvatar: null,
+  isVideo: true,
+  isCaller: false,
+  callTimerInterval: null,
+  callSeconds: 0,
+  isMicMuted: false,
+  isCamOff: false,
+  isHandRaised: false,
+  isScreenSharing: false,
+  currentCameraFacing: "user"
+};
+
+let realLocalStream = null;
+let realScreenStream = null;
+let realPeerConnection = null;
+let pendingIncomingOffer = null;
+
+const rtcConfig = {
   iceServers: [
     { urls: "stun:stun.l.google.com:19302" },
     { urls: "stun:stun1.l.google.com:19302" },
@@ -3369,6 +3524,7 @@ const rtcConfiguration = {
   ]
 };
 
+// إرسال إشارات WebRTC والمكالمات للسيرفر
 async function sendCallSignal(toEmail, payload) {
   if (!toEmail || !state.currentUser?.email) return;
   try {
@@ -3382,180 +3538,750 @@ async function sendCallSignal(toEmail, payload) {
       })
     });
   } catch (err) {
-    console.warn("Signal send error:", err);
+    console.warn("Call signal error:", err);
   }
 }
 
-async function startAudioCall(targetEmail, targetName) {
+// 3. بدء مكالمة صادرة حقيقية (Start Outgoing Call)
+async function startRealCall(targetEmail, targetName, isVideo = true) {
   const myEmail = state.currentUser?.email;
   if (!myEmail || !targetEmail) return;
 
-  activeCallPartner = targetEmail;
-  if (callAvatar) callAvatar.textContent = (targetName || targetEmail)[0].toUpperCase();
-  if (callTitle) callTitle.textContent = `مكالمة صوتية - ${targetName || targetEmail.split("@")[0]}`;
-  if (callStatus) callStatus.textContent = "جاري الاتصال والرنين... 📡";
-  const ansBtn = el("answerCallButton");
-  if (ansBtn) ansBtn.style.display = "none";
-  openDialog(callDialog);
+  if (activeCallState.partnerEmail) {
+    showToast("أنت بالفعل في مكالمة حالية!");
+    return;
+  }
+
+  activeCallState.partnerEmail = targetEmail;
+  activeCallState.partnerName = targetName || targetEmail.split("@")[0];
+  activeCallState.isVideo = isVideo;
+  activeCallState.isCaller = true;
+  activeCallState.callSeconds = 0;
+  activeCallState.isMicMuted = false;
+  activeCallState.isCamOff = false;
+  activeCallState.isHandRaised = false;
+  activeCallState.isScreenSharing = false;
+
+  // تجهيز واجهة الاتصال الصادر
+  const outDlg = el("outgoingCallDialog");
+  const avatarEl = el("outgoingCalleeAvatar");
+  const nameEl = el("outgoingCalleeName");
+  const statusEl = el("outgoingCallStatus");
+  const badgeEl = el("outgoingCallTypeBadge");
+
+  if (avatarEl) avatarEl.textContent = (activeCallState.partnerName || "؟")[0].toUpperCase();
+  if (nameEl) nameEl.textContent = activeCallState.partnerName;
+  if (badgeEl) badgeEl.textContent = isVideo ? "🎥 مكالمة فيديو" : "📞 مكالمة صوتية";
+  if (statusEl) statusEl.textContent = "جاري الاتصال والرنين... 📡";
+
+  openDialog(outDlg);
+  callAudio.startOutgoingDialTone();
   triggerHaptic(30);
 
   try {
-    localAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    peerConnection = new RTCPeerConnection(rtcConfiguration);
+    // الحصول على الوسائط (كاميرا ومايك)
+    try {
+      realLocalStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: isVideo ? { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: "user" } : false
+      });
+    } catch (mediaErr) {
+      console.warn("Camera failed, falling back to audio only:", mediaErr);
+      realLocalStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      activeCallState.isVideo = false;
+    }
 
-    localAudioStream.getTracks().forEach((track) => peerConnection.addTrack(track, localAudioStream));
+    // ربط الفيديو المحلي
+    const localVid = el("meetLocalVideo");
+    if (localVid && realLocalStream) {
+      localVid.srcObject = realLocalStream;
+    }
 
-    peerConnection.ontrack = (event) => {
-      const remoteAudio = el("remoteAudio");
-      if (remoteAudio && event.streams[0]) {
-        remoteAudio.srcObject = event.streams[0];
+    // إنشاء اتصال WebRTC
+    realPeerConnection = new RTCPeerConnection(rtcConfig);
+
+    realLocalStream.getTracks().forEach((track) => {
+      realPeerConnection.addTrack(track, realLocalStream);
+    });
+
+    realPeerConnection.ontrack = (event) => {
+      const remoteVid = el("meetRemoteVideo");
+      const remoteAud = el("meetRemoteAudio");
+      if (remoteVid && event.streams[0]) {
+        remoteVid.srcObject = event.streams[0];
+      }
+      if (remoteAud && event.streams[0]) {
+        remoteAud.srcObject = event.streams[0];
       }
     };
 
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        sendCallSignal(activeCallPartner, { type: "candidate", candidate: event.candidate });
+    realPeerConnection.onicecandidate = (event) => {
+      if (event.candidate && activeCallState.partnerEmail) {
+        sendCallSignal(activeCallState.partnerEmail, {
+          type: "candidate",
+          candidate: event.candidate
+        });
       }
     };
 
-    peerConnection.onconnectionstatechange = () => {
-      if (peerConnection?.connectionState === "connected") {
-        if (callStatus) callStatus.textContent = "متصل الآن 🟢";
-        triggerHaptic(20);
-      } else if (peerConnection?.connectionState === "disconnected" || peerConnection?.connectionState === "failed") {
-        if (callStatus) callStatus.textContent = "انقطع الاتصال ⚠️";
-        setTimeout(() => endAudioCall(false), 1500);
+    realPeerConnection.onconnectionstatechange = () => {
+      const state = realPeerConnection?.connectionState;
+      console.log("WebRTC Connection State:", state);
+      if (state === "connected") {
+        onCallConnected();
+      } else if (state === "disconnected" || state === "failed") {
+        showToast("انقطع الاتصال بالمكالمة ⚠️");
+        endRealCall(false);
       }
     };
 
-    const offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer);
+    const offer = await realPeerConnection.createOffer();
+    await realPeerConnection.setLocalDescription(offer);
 
-    await sendCallSignal(activeCallPartner, {
+    // إرسال طلب المكالمة للطرف الآخر
+    await sendCallSignal(activeCallState.partnerEmail, {
       type: "offer",
-      sdp: offer,
-      callerName: state.currentUser?.name || myEmail.split("@")[0]
+      callType: isVideo ? "video" : "audio",
+      callerName: state.currentUser?.name || myEmail.split("@")[0],
+      callerAvatar: state.currentUser?.avatar || "",
+      sdp: offer
     });
   } catch (err) {
-    if (callStatus) callStatus.textContent = "تعذر الوصول للميكروفون ⚠️";
-    console.error("Microphone error:", err);
+    console.error("Start call error:", err);
+    callAudio.stopAll();
+    closeDialog(outDlg);
+    showToast("تعذر بدء المكالمة، يرجى السماح بالميكروفون والكاميرا ⚠️");
+    endRealCall(false);
   }
 }
 
+// 4. معالجة الإشارات الواردة (Incoming Call Signals)
 async function handleIncomingCallSignal(data) {
-  const { from, type, sdp, candidate, callerName } = data;
+  const { from, type, sdp, candidate, callerName, callerAvatar, callType, reason, emoji, raised, muted, videoOff, active: shareActive, sharerName } = data;
 
+  // أ. مكالمة جديدة واردة ترن عند المستخدم (Ringing)
   if (type === "offer") {
-    activeCallPartner = from;
-    if (callAvatar) callAvatar.textContent = (callerName || from)[0].toUpperCase();
-    if (callTitle) callTitle.textContent = `مكالمة واردة من ${callerName || from.split("@")[0]}`;
-    if (callStatus) callStatus.textContent = "يرن الآن... 📞";
-    const ansBtn = el("answerCallButton");
-    if (ansBtn) ansBtn.style.display = "flex";
-    openDialog(callDialog);
+    // إذا كان مشغولاً في مكالمة أخرى
+    if (activeCallState.partnerEmail) {
+      sendCallSignal(from, { type: "reject", reason: "busy" });
+      return;
+    }
+
+    pendingIncomingOffer = data;
+    activeCallState.partnerEmail = from;
+    activeCallState.partnerName = callerName || from.split("@")[0];
+    activeCallState.partnerAvatar = callerAvatar || "";
+    activeCallState.isVideo = callType === "video";
+    activeCallState.isCaller = false;
+
+    // إظهار نافذة الرنين
+    const inDlg = el("incomingCallDialog");
+    const avatarEl = el("incomingCallerAvatar");
+    const nameEl = el("incomingCallerName");
+    const badgeEl = el("incomingCallTypeBadge");
+
+    if (avatarEl) avatarEl.textContent = (activeCallState.partnerName || "؟")[0].toUpperCase();
+    if (nameEl) nameEl.textContent = activeCallState.partnerName;
+    if (badgeEl) badgeEl.textContent = activeCallState.isVideo ? "🎥 مكالمة فيديو واردة" : "📞 مكالمة صوتية واردة";
+
+    openDialog(inDlg);
+    callAudio.startIncomingRing();
     triggerHaptic(40);
 
-    peerConnection = new RTCPeerConnection(rtcConfiguration);
+    // إبلاغ المتصل أن الهاتف يرن لديه الآن
+    sendCallSignal(from, { type: "ringing" });
+  }
 
-    peerConnection.ontrack = (event) => {
-      const remoteAudio = el("remoteAudio");
-      if (remoteAudio && event.streams[0]) {
-        remoteAudio.srcObject = event.streams[0];
-      }
-    };
+  // ب. الطرف الآخر رن عنده الهاتف
+  else if (type === "ringing") {
+    const statusEl = el("outgoingCallStatus");
+    if (statusEl) statusEl.textContent = "يرن الآن لدى الطرف الآخر... 📲";
+  }
 
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        sendCallSignal(activeCallPartner, { type: "candidate", candidate: event.candidate });
-      }
-    };
+  // ج. الطرف الآخر قبل المكالمة وأرسل Answer
+  else if (type === "answer" && realPeerConnection) {
+    callAudio.stopAll();
+    closeDialog(el("outgoingCallDialog"));
+    await realPeerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
+    onCallConnected();
+  }
 
-    peerConnection.onconnectionstatechange = () => {
-      if (peerConnection?.connectionState === "connected") {
-        if (callStatus) callStatus.textContent = "متصل الآن 🟢";
-        triggerHaptic(20);
-      } else if (peerConnection?.connectionState === "disconnected" || peerConnection?.connectionState === "failed") {
-        if (callStatus) callStatus.textContent = "انتهت المكالمة";
-        setTimeout(() => endAudioCall(false), 1200);
-      }
-    };
+  // د. الطرف الآخر رفض المكالمة (Reject)
+  else if (type === "reject") {
+    callAudio.stopAll();
+    const statusEl = el("outgoingCallStatus");
+    if (statusEl) {
+      statusEl.textContent = reason === "busy" ? "الطرف الآخر في مكالمة أخرى حالياً ⏳" : "تم رفض المكالمة من قِبل الطرف الآخر ❌";
+    }
+    callAudio.playBusyTone();
+    triggerHaptic(30);
+    setTimeout(() => {
+      closeDialog(el("outgoingCallDialog"));
+      endRealCall(false);
+    }, 2400);
+  }
 
-    await peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
-  } else if (type === "answer" && peerConnection) {
-    await peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
-    if (callStatus) callStatus.textContent = "متصل الآن 🟢";
-    triggerHaptic(20);
-  } else if (type === "candidate" && peerConnection) {
+  // هـ. تبادل مرشحي ICE
+  else if (type === "candidate" && realPeerConnection) {
     try {
-      await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+      await realPeerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     } catch (e) {
       console.warn("ICE error:", e);
     }
-  } else if (type === "hangup") {
-    endAudioCall(false);
+  }
+
+  // و. إنهاء المكالمة من الطرف الآخر
+  else if (type === "hangup") {
+    showToast("انتهت المكالمة من قِبل " + (activeCallState.partnerName || "الطرف الآخر"));
+    endRealCall(false);
+  }
+
+  // ز. تفاعلات في الغرفة (Reactions, Hand Raise, Mic, Cam)
+  else if (type === "reaction" && emoji) {
+    spawnFloatingReaction(emoji);
+  } else if (type === "raise_hand") {
+    const remoteHand = el("meetRemoteHandBadge");
+    if (remoteHand) remoteHand.hidden = !raised;
+    if (raised) {
+      callAudio.playHandRaiseChime();
+      showToast("✋ قام " + (activeCallState.partnerName || "المشارك") + " برفع يده");
+    }
+  } else if (type === "mic_status") {
+    const remoteMic = el("meetRemoteMicBadge");
+    if (remoteMic) {
+      remoteMic.textContent = muted ? "🔇" : "🎙️";
+      remoteMic.className = "tile-mic-status " + (muted ? "mic-muted" : "mic-active");
+    }
+  } else if (type === "cam_status") {
+    const avatarCard = el("meetRemoteAvatarCard");
+    if (avatarCard) avatarCard.hidden = !videoOff;
+  } else if (type === "screen_share_status") {
+    handleRemoteScreenShare(shareActive, sharerName);
   }
 }
 
-async function answerIncomingCall() {
-  if (!peerConnection || !activeCallPartner) return;
-  const ansBtn = el("answerCallButton");
-  if (ansBtn) ansBtn.style.display = "none";
-  if (callStatus) callStatus.textContent = "جاري فتح خط الاتصال...";
-  triggerHaptic(20);
+// 5. قبول المكالمة الواردة (Accept Call)
+async function acceptIncomingCall() {
+  callAudio.stopAll();
+  closeDialog(el("incomingCallDialog"));
+
+  if (!pendingIncomingOffer) return;
+  const { from, sdp, callType } = pendingIncomingOffer;
+  const isVideo = callType === "video";
 
   try {
-    localAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    localAudioStream.getTracks().forEach((track) => peerConnection.addTrack(track, localAudioStream));
+    try {
+      realLocalStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: isVideo ? { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: "user" } : false
+      });
+    } catch (e) {
+      realLocalStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      activeCallState.isVideo = false;
+    }
 
-    const answer = await peerConnection.createAnswer();
-    await peerConnection.setLocalDescription(answer);
+    const localVid = el("meetLocalVideo");
+    if (localVid && realLocalStream) {
+      localVid.srcObject = realLocalStream;
+    }
 
-    await sendCallSignal(activeCallPartner, { type: "answer", sdp: answer });
-    if (callStatus) callStatus.textContent = "متصل الآن 🟢";
+    realPeerConnection = new RTCPeerConnection(rtcConfig);
+
+    realLocalStream.getTracks().forEach((track) => {
+      realPeerConnection.addTrack(track, realLocalStream);
+    });
+
+    realPeerConnection.ontrack = (event) => {
+      const remoteVid = el("meetRemoteVideo");
+      const remoteAud = el("meetRemoteAudio");
+      if (remoteVid && event.streams[0]) {
+        remoteVid.srcObject = event.streams[0];
+      }
+      if (remoteAud && event.streams[0]) {
+        remoteAud.srcObject = event.streams[0];
+      }
+    };
+
+    realPeerConnection.onicecandidate = (event) => {
+      if (event.candidate && activeCallState.partnerEmail) {
+        sendCallSignal(activeCallState.partnerEmail, {
+          type: "candidate",
+          candidate: event.candidate
+        });
+      }
+    };
+
+    realPeerConnection.onconnectionstatechange = () => {
+      if (realPeerConnection?.connectionState === "connected") {
+        onCallConnected();
+      } else if (realPeerConnection?.connectionState === "disconnected") {
+        endRealCall(false);
+      }
+    };
+
+    await realPeerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
+    const answer = await realPeerConnection.createAnswer();
+    await realPeerConnection.setLocalDescription(answer);
+
+    await sendCallSignal(from, { type: "answer", sdp: answer });
+    onCallConnected();
   } catch (err) {
-    if (callStatus) callStatus.textContent = "فشل الرد (تحقق من الميكروفون)";
-    console.error("Answer call error:", err);
+    console.error("Accept call error:", err);
+    showToast("تعذر الرد، يرجى التأكد من صلاحيات الكاميرا والمايك");
+    endRealCall(true);
+  } finally {
+    pendingIncomingOffer = null;
   }
 }
 
-function endAudioCall(notifyPartner = true) {
-  if (notifyPartner && activeCallPartner) {
-    sendCallSignal(activeCallPartner, { type: "hangup" });
+// 6. رفض المكالمة الواردة (Reject Call)
+function rejectIncomingCall() {
+  callAudio.stopAll();
+  closeDialog(el("incomingCallDialog"));
+
+  if (activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, {
+      type: "reject",
+      reason: "declined"
+    });
   }
 
-  if (localAudioStream) {
-    localAudioStream.getTracks().forEach((t) => t.stop());
-    localAudioStream = null;
+  activeCallState.partnerEmail = null;
+  pendingIncomingOffer = null;
+  triggerHaptic(20);
+}
+
+// 7. إلغاء الاتصال الصادر (Cancel Outgoing Call)
+function cancelOutgoingCall() {
+  callAudio.stopAll();
+  closeDialog(el("outgoingCallDialog"));
+
+  if (activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, { type: "hangup" });
   }
-  if (peerConnection) {
-    peerConnection.close();
-    peerConnection = null;
+
+  endRealCall(false);
+}
+
+// 8. عند نجاح الاتصال وفتح واجهة Google Meet (Call Connected)
+function onCallConnected() {
+  callAudio.stopAll();
+  closeDialog(el("outgoingCallDialog"));
+  closeDialog(el("incomingCallDialog"));
+
+  const meetOverlay = el("meetCallOverlay");
+  if (meetOverlay) meetOverlay.hidden = false;
+
+  // ضبط أسماء المشاركين والرموز
+  const remoteTag = el("meetRemoteNameTag");
+  const remoteAvatarCircle = el("meetRemoteAvatarCircle");
+  const remoteAvatarName = el("meetRemoteAvatarName");
+  const localAvatarCircle = el("meetLocalAvatarCircle");
+
+  const pName = activeCallState.partnerName || "الصديق";
+  if (remoteTag) remoteTag.textContent = pName;
+  if (remoteAvatarCircle) remoteAvatarCircle.textContent = pName[0].toUpperCase();
+  if (remoteAvatarName) remoteAvatarName.textContent = pName;
+  if (localAvatarCircle && state.currentUser?.name) {
+    localAvatarCircle.textContent = state.currentUser.name[0].toUpperCase();
   }
-  activeCallPartner = null;
-  const remoteAudio = el("remoteAudio");
-  if (remoteAudio) remoteAudio.srcObject = null;
-  closeDialog(callDialog);
+
+  // كود الغرفة العشوائي مثل pqi-qefd-gon
+  const roomCodeEl = el("meetRoomCode");
+  if (roomCodeEl && !roomCodeEl.textContent.includes("-")) {
+    const randPart = () => Math.random().toString(36).substring(2, 6);
+    roomCodeEl.textContent = randPart() + "-" + randPart() + "-" + randPart();
+  }
+
+  // إخفاء/إظهار كروت الأفاتار البديلة حسب نوع المكالمة
+  const remoteAvatarCard = el("meetRemoteAvatarCard");
+  const localAvatarCard = el("meetLocalAvatarCard");
+  if (!activeCallState.isVideo) {
+    if (remoteAvatarCard) remoteAvatarCard.hidden = false;
+    if (localAvatarCard) localAvatarCard.hidden = false;
+  } else {
+    if (remoteAvatarCard) remoteAvatarCard.hidden = true;
+    if (localAvatarCard) localAvatarCard.hidden = false; // ستظهر إذا أوقف الكاميرا
+  }
+
+  // تشغيل عداد وقت المكالمة
+  if (activeCallState.callTimerInterval) clearInterval(activeCallState.callTimerInterval);
+  activeCallState.callSeconds = 0;
+  const timerEl = el("meetCallTimer");
+  if (timerEl) timerEl.textContent = "00:00";
+
+  activeCallState.callTimerInterval = setInterval(() => {
+    activeCallState.callSeconds++;
+    const m = String(Math.floor(activeCallState.callSeconds / 60)).padStart(2, "0");
+    const s = String(activeCallState.callSeconds % 60).padStart(2, "0");
+    if (timerEl) timerEl.textContent = m + ":" + s;
+  }, 1000);
+
+  triggerHaptic(25);
+}
+
+// 9. إنهاء المكالمة بالكامل وإغلاق الغرفة (End Call)
+function endRealCall(notifyPartner = true) {
+  callAudio.stopAll();
+
+  if (notifyPartner && activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, { type: "hangup" });
+  }
+
+  if (activeCallState.callTimerInterval) {
+    clearInterval(activeCallState.callTimerInterval);
+    activeCallState.callTimerInterval = null;
+  }
+
+  if (realScreenStream) {
+    realScreenStream.getTracks().forEach((t) => t.stop());
+    realScreenStream = null;
+  }
+
+  if (realLocalStream) {
+    realLocalStream.getTracks().forEach((t) => t.stop());
+    realLocalStream = null;
+  }
+
+  if (realPeerConnection) {
+    realPeerConnection.close();
+    realPeerConnection = null;
+  }
+
+  // إغلاق الواجهات
+  closeDialog(el("incomingCallDialog"));
+  closeDialog(el("outgoingCallDialog"));
+  const meetOverlay = el("meetCallOverlay");
+  if (meetOverlay) meetOverlay.hidden = true;
+
+  const presStage = el("meetPresentationStage");
+  if (presStage) presStage.hidden = true;
+
+  const remoteVid = el("meetRemoteVideo");
+  const localVid = el("meetLocalVideo");
+  const remoteAud = el("meetRemoteAudio");
+  if (remoteVid) remoteVid.srcObject = null;
+  if (localVid) localVid.srcObject = null;
+  if (remoteAud) remoteAud.srcObject = null;
+
+  activeCallState.partnerEmail = null;
+  activeCallState.isScreenSharing = false;
+  activeCallState.isHandRaised = false;
+  pendingIncomingOffer = null;
+
   triggerHaptic(15);
 }
 
-function toggleMuteCall() {
-  if (!localAudioStream) return;
-  isAudioMuted = !isAudioMuted;
-  localAudioStream.getAudioTracks().forEach((t) => (t.enabled = !isAudioMuted));
-  const muteBtn = el("muteCallButton");
-  if (muteBtn) {
-    muteBtn.textContent = isAudioMuted ? "🔇" : "⌁";
-    muteBtn.title = isAudioMuted ? "إلغاء كتم الصوت" : "كتم الصوت";
+// 10. كتم وتشغيل الميكروفون (Toggle Mic)
+function toggleMeetMic() {
+  if (!realLocalStream) return;
+  activeCallState.isMicMuted = !activeCallState.isMicMuted;
+  realLocalStream.getAudioTracks().forEach((t) => {
+    t.enabled = !activeCallState.isMicMuted;
+  });
+
+  const btn = el("meetToggleMicBtn");
+  const localBadge = el("meetLocalMicBadge");
+
+  if (btn) {
+    btn.classList.toggle("btn-active-danger", activeCallState.isMicMuted);
+    btn.innerHTML = activeCallState.isMicMuted
+      ? '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>'
+      : '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>';
   }
-  showToast(isAudioMuted ? "تم كتم الميكروفون 🔇" : "تم تشغيل الميكروفون 🎙️");
+
+  if (localBadge) {
+    localBadge.textContent = activeCallState.isMicMuted ? "🔇" : "🎙️";
+    localBadge.className = "tile-mic-status " + (activeCallState.isMicMuted ? "mic-muted" : "mic-active");
+  }
+
+  if (activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, {
+      type: "mic_status",
+      muted: activeCallState.isMicMuted
+    });
+  }
+
+  showToast(activeCallState.isMicMuted ? "تم كتم الميكروفون 🔇" : "تم تشغيل الميكروفون 🎙️");
 }
 
+// 11. إيقاف وتشغيل الكاميرا (Toggle Cam)
+function toggleMeetCam() {
+  if (!realLocalStream) return;
+  activeCallState.isCamOff = !activeCallState.isCamOff;
+  realLocalStream.getVideoTracks().forEach((t) => {
+    t.enabled = !activeCallState.isCamOff;
+  });
+
+  const btn = el("meetToggleCamBtn");
+  const localAvatarCard = el("meetLocalAvatarCard");
+
+  if (btn) {
+    btn.classList.toggle("btn-active-danger", activeCallState.isCamOff);
+    btn.innerHTML = activeCallState.isCamOff
+      ? '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M21 21l-3.5-3.5M23 7l-7 5 1.5 1.1M1 5l2 2 13 13 2 2"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>'
+      : '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>';
+  }
+
+  if (localAvatarCard) {
+    localAvatarCard.hidden = !activeCallState.isCamOff;
+  }
+
+  if (activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, {
+      type: "cam_status",
+      videoOff: activeCallState.isCamOff
+    });
+  }
+
+  showToast(activeCallState.isCamOff ? "تم إيقاف الكاميرا 📷" : "تم تشغيل الكاميرا 🎥");
+}
+
+// 12. مشاركة الشاشة والعرض (Screen Sharing - مثل صورة المعلمة المرفقة)
+async function toggleMeetScreenShare() {
+  if (!realPeerConnection) return;
+
+  if (activeCallState.isScreenSharing) {
+    stopScreenSharing();
+    return;
+  }
+
+  try {
+    realScreenStream = await navigator.mediaDevices.getDisplayMedia({
+      video: { cursor: "always" },
+      audio: false
+    });
+
+    activeCallState.isScreenSharing = true;
+
+    const screenTrack = realScreenStream.getVideoTracks()[0];
+    const presStage = el("meetPresentationStage");
+    const presVideo = el("meetScreenShareVideo");
+    const sharerNameEl = el("meetScreenSharerName");
+    const stopBtn = el("meetStopSharingBtn");
+
+    if (presStage) presStage.hidden = false;
+    if (presVideo) presVideo.srcObject = realScreenStream;
+    if (sharerNameEl) sharerNameEl.textContent = state.currentUser?.name || "أنت";
+    if (stopBtn) stopBtn.hidden = false;
+
+    // استبدال تراك الكاميرا بتراك الشاشة في WebRTC
+    const videoSender = realPeerConnection.getSenders().find((s) => s.track && s.track.kind === "video");
+    if (videoSender) {
+      await videoSender.replaceTrack(screenTrack);
+    }
+
+    // إشعار الطرف الآخر ببدء مشاركة الشاشة
+    if (activeCallState.partnerEmail) {
+      sendCallSignal(activeCallState.partnerEmail, {
+        type: "screen_share_status",
+        active: true,
+        sharerName: state.currentUser?.name || "المشارك"
+      });
+    }
+
+    screenTrack.onended = () => {
+      stopScreenSharing();
+    };
+
+    const shareBtn = el("meetScreenShareBtn");
+    if (shareBtn) shareBtn.classList.add("btn-active-highlight");
+    showToast("بدأت مشاركة الشاشة والعرض 🖥️");
+  } catch (err) {
+    console.warn("Screen share cancelled/denied:", err);
+  }
+}
+
+async function stopScreenSharing() {
+  if (!activeCallState.isScreenSharing) return;
+  activeCallState.isScreenSharing = false;
+
+  if (realScreenStream) {
+    realScreenStream.getTracks().forEach((t) => t.stop());
+    realScreenStream = null;
+  }
+
+  const presStage = el("meetPresentationStage");
+  const presVideo = el("meetScreenShareVideo");
+  const stopBtn = el("meetStopSharingBtn");
+
+  if (presStage) presStage.hidden = true;
+  if (presVideo) presVideo.srcObject = null;
+  if (stopBtn) stopBtn.hidden = true;
+
+  // إعادة تراك الكاميرا الأصلي
+  if (realPeerConnection && realLocalStream) {
+    const camTrack = realLocalStream.getVideoTracks()[0];
+    const videoSender = realPeerConnection.getSenders().find((s) => s.track && s.track.kind === "video");
+    if (videoSender && camTrack) {
+      await videoSender.replaceTrack(camTrack);
+    }
+  }
+
+  if (activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, {
+      type: "screen_share_status",
+      active: false
+    });
+  }
+
+  const shareBtn = el("meetScreenShareBtn");
+  if (shareBtn) shareBtn.classList.remove("btn-active-highlight");
+  showToast("تم إيقاف مشاركة الشاشة");
+}
+
+function handleRemoteScreenShare(active, sharerName) {
+  const presStage = el("meetPresentationStage");
+  const presVideo = el("meetScreenShareVideo");
+  const sharerNameEl = el("meetScreenSharerName");
+  const stopBtn = el("meetStopSharingBtn");
+
+  if (active) {
+    if (presStage) presStage.hidden = false;
+    if (sharerNameEl) sharerNameEl.textContent = sharerName || "الطرف الآخر";
+    if (stopBtn) stopBtn.hidden = true; // لا يمكنه إيقاف شاشة الطرف الآخر
+    // الفيديو البعيد يحتوي الآن على الشاشة
+    const remoteVid = el("meetRemoteVideo");
+    if (remoteVid && remoteVid.srcObject && presVideo) {
+      presVideo.srcObject = remoteVid.srcObject;
+    }
+    showToast("🖥️ بدأ " + (sharerName || "المشارك") + " بمشاركة الشاشة والعرض");
+  } else {
+    if (presStage) presStage.hidden = true;
+    if (presVideo) presVideo.srcObject = null;
+    showToast("توقفت مشاركة الشاشة");
+  }
+}
+
+// 13. رفع اليد (Raise Hand)
+function toggleMeetRaiseHand() {
+  activeCallState.isHandRaised = !activeCallState.isHandRaised;
+  const localHand = el("meetLocalHandBadge");
+  const btn = el("meetRaiseHandBtn");
+
+  if (localHand) localHand.hidden = !activeCallState.isHandRaised;
+  if (btn) btn.classList.toggle("btn-active-highlight", activeCallState.isHandRaised);
+
+  if (activeCallState.isHandRaised) {
+    callAudio.playHandRaiseChime();
+    showToast("✋ رفعت يدك");
+  }
+
+  if (activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, {
+      type: "raise_hand",
+      raised: activeCallState.isHandRaised
+    });
+  }
+}
+
+// 14. التفاعلات الطائرة (Floating Emoji Reactions)
+function sendMeetReaction(emoji) {
+  spawnFloatingReaction(emoji);
+  const picker = el("meetReactionsPicker");
+  if (picker) picker.hidden = true;
+
+  if (activeCallState.partnerEmail) {
+    sendCallSignal(activeCallState.partnerEmail, {
+      type: "reaction",
+      emoji
+    });
+  }
+}
+
+function spawnFloatingReaction(emoji) {
+  const container = el("meetReactionsContainer");
+  if (!container) return;
+
+  const bubble = document.createElement("div");
+  bubble.className = "floating-reaction-bubble";
+  bubble.textContent = emoji;
+  bubble.style.left = Math.floor(20 + Math.random() * 60) + "%";
+
+  container.appendChild(bubble);
+  setTimeout(() => bubble.remove(), 2600);
+}
+
+// 15. تبديل الكاميرا (Flip Camera للهواتف)
+async function flipMeetCamera() {
+  if (!realLocalStream || !realPeerConnection) return;
+
+  activeCallState.currentCameraFacing = activeCallState.currentCameraFacing === "user" ? "environment" : "user";
+  try {
+    const newStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: activeCallState.currentCameraFacing }
+    });
+
+    const newTrack = newStream.getVideoTracks()[0];
+    const oldTrack = realLocalStream.getVideoTracks()[0];
+    if (oldTrack) oldTrack.stop();
+
+    realLocalStream.removeTrack(oldTrack);
+    realLocalStream.addTrack(newTrack);
+
+    const localVid = el("meetLocalVideo");
+    if (localVid) localVid.srcObject = realLocalStream;
+
+    const videoSender = realPeerConnection.getSenders().find((s) => s.track && s.track.kind === "video");
+    if (videoSender) {
+      await videoSender.replaceTrack(newTrack);
+    }
+    showToast("تم تبديل الكاميرا 🔄");
+  } catch (err) {
+    console.warn("Flip camera error:", err);
+  }
+}
+
+// 16. ربط الأحداث والأزرار بالواجهة
+function initMeetCallListeners() {
+  el("acceptIncomingCallBtn")?.addEventListener("click", acceptIncomingCall);
+  el("rejectIncomingCallBtn")?.addEventListener("click", rejectIncomingCall);
+  el("cancelOutgoingCallBtn")?.addEventListener("click", cancelOutgoingCall);
+
+  el("meetToggleMicBtn")?.addEventListener("click", toggleMeetMic);
+  el("meetToggleCamBtn")?.addEventListener("click", toggleMeetCam);
+  el("meetScreenShareBtn")?.addEventListener("click", toggleMeetScreenShare);
+  el("meetStopSharingBtn")?.addEventListener("click", stopScreenSharing);
+  el("meetRaiseHandBtn")?.addEventListener("click", toggleMeetRaiseHand);
+  el("meetFlipCameraBtn")?.addEventListener("click", flipMeetCamera);
+  el("meetEndCallBtn")?.addEventListener("click", () => endRealCall(true));
+
+  el("meetReactionsTriggerBtn")?.addEventListener("click", () => {
+    const picker = el("meetReactionsPicker");
+    if (picker) picker.hidden = !picker.hidden;
+  });
+
+  document.querySelectorAll(".meet-react-item").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const emoji = btn.getAttribute("data-emoji");
+      if (emoji) sendMeetReaction(emoji);
+    });
+  });
+
+  el("meetFullscreenBtn")?.addEventListener("click", () => {
+    const overlay = el("meetCallOverlay");
+    if (!document.fullscreenElement) {
+      overlay?.requestFullscreen?.().catch(() => {});
+    } else {
+      document.exitFullscreen?.().catch(() => {});
+    }
+  });
+}
+
+// استدعاء تهيئة أزرار المكالمات
+initMeetCallListeners();
+
+// توجيه دوال بدء المكالمة العامة
 function openCall(kind) {
   const chat = getChat();
   if (!chat || !chat.email) {
     showToast("يرجى اختيار محادثة صديق لبدء المكالمة");
     return;
   }
+  const isVideo = kind ? (kind.includes("فيديو") || kind.includes("video")) : true;
+  startRealCall(chat.email, chat.name || chat.email, isVideo);
+}
+
   startAudioCall(chat.email, chat.name);
 }
 
@@ -8766,13 +9492,23 @@ window.openChatSearch = function() {
 };
 
 window.triggerVoiceCall = function() {
-  window.closeAllChatMenus();
-  if (typeof openCall === "function") openCall(typeof t === "function" ? t("voiceCall") : "مكالمة صوتية");
+  window.closeAllChatMenus?.();
+  const chat = typeof getChat === "function" ? getChat() : null;
+  if (!chat || !chat.email) {
+    if (typeof showToast === "function") showToast("يرجى اختيار محادثة صديق لبدء المكالمة");
+    return;
+  }
+  startRealCall(chat.email, chat.name || chat.email, false);
 };
 
 window.triggerVideoCall = function() {
-  window.closeAllChatMenus();
-  if (typeof openCall === "function") openCall(typeof t === "function" ? t("videoCall") : "مكالمة فيديو");
+  window.closeAllChatMenus?.();
+  const chat = typeof getChat === "function" ? getChat() : null;
+  if (!chat || !chat.email) {
+    if (typeof showToast === "function") showToast("يرجى اختيار محادثة صديق لبدء المكالمة");
+    return;
+  }
+  startRealCall(chat.email, chat.name || chat.email, true);
 };
 
 window.openChatMedia = function() {
