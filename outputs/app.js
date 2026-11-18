@@ -4282,9 +4282,6 @@ function openCall(kind) {
   startRealCall(chat.email, chat.name || chat.email, isVideo);
 }
 
-  startAudioCall(chat.email, chat.name);
-}
-
 function openDialog(dialog) {
   if (typeof dialog?.showModal === "function") dialog.showModal();
   else dialog?.setAttribute("open", "");
