@@ -50,6 +50,18 @@
       "createdAt": 1794754554066,
       "lastLogin": 1794754554067,
       "lastActive": 1794754554067
+    },
+    {
+      "id": "816de438-d905-4327-b7a0-3fc789efab3e",
+      "name": "Amr",
+      "email": "2012.8.msta@gmail.com",
+      "password_hash": "scrypt:c4f00e0988264bbd7c884aa98be13ff3:db2b8d1fcb7c34b7930a4548186e8501e6825714a917b0dceacec45a87a2e6b9a1b611585c3f760bc74443cf3df34307c69c3201af8e12f7f422366a9add631d",
+      "password": "HKueSVAu2DbsavD",
+      "image": "",
+      "status": "active",
+      "createdAt": 1795031493333,
+      "lastLogin": 1795031493334,
+      "lastActive": 1795031493334
     }
   ],
   "friendships": [
@@ -78,6 +90,12 @@
     },
     {
       "email": "2012.8.@gmail.com",
+      "day": "2026-11-18",
+      "words": 0,
+      "images": 0
+    },
+    {
+      "email": "2012.8.msta@gmail.com",
       "day": "2026-11-18",
       "words": 0,
       "images": 0
@@ -209,6 +227,19 @@
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEE0mZ7PuPfoxCH2yof9tntEOrtemEjVnKeOO3aRtEkHsDuSsN7ZUwqScZngPPd6pF9he7BUUXz5H0eZAe2gMD4g==",
       "created_at": 1795031452944,
       "last_active_at": 1795031452944
+    },
+    {
+      "id": "2926f079-5c2c-41a9-8cdd-608b347ea912",
+      "user_id": "816de438-d905-4327-b7a0-3fc789efab3e",
+      "email": "2012.8.msta@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "access_token_hash": "c61c0e579e578ecaa20f4954dbb74df330ba7718a0879df78367e65f7f91a049",
+      "refresh_token_hash": "f5c761e9f0b2c30fe8d810b4a2f4209f6cb19f9743886ed517ed8cb0e7edf180",
+      "expires_at": 1800215493334,
+      "last_active_at": 1795031493424,
+      "created_at": 1795031493334,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEE0mZ7PuPfoxCH2yof9tntEOrtemEjVnKeOO3aRtEkHsDuSsN7ZUwqScZngPPd6pF9he7BUUXz5H0eZAe2gMD4g=="
     }
   ],
   "pushSubscriptions": [],
@@ -257,6 +288,26 @@
       "auto_renew": true,
       "created_at": 1795031458201,
       "updated_at": 1795031458201
+    },
+    {
+      "id": "786401e2-6d3f-4d3a-9915-ca3961702206",
+      "user_id": "816de438-d905-4327-b7a0-3fc789efab3e",
+      "email": "2012.8.msta@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1795031493673,
+      "next_quota_reset_at": 1795117893673,
+      "started_at": 1795031493673,
+      "expires_at": 1800215493673,
+      "auto_renew": true,
+      "created_at": 1795031493673,
+      "updated_at": 1795031493673
     }
   ],
   "userStories": [],
