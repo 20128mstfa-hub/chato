@@ -1826,10 +1826,15 @@ async function handleApi(req, res, url) {
   }
 
   if (req.method === "POST" && url.pathname === "/api/calls/signal") {
-    const { from, to, type, sdp, candidate } = await readJsonBody(req);
-    const cleanFrom = String(from || "").trim().toLowerCase();
-    const cleanTo = String(to || "").trim().toLowerCase();
-    broadcastToUser(cleanTo, "call_signal", { from: cleanFrom, to: cleanTo, type, sdp, candidate, timestamp: Date.now() });
+    const body = await readJsonBody(req);
+    const cleanFrom = String(body.from || "").trim().toLowerCase();
+    const cleanTo = String(body.to || "").trim().toLowerCase();
+    broadcastToUser(cleanTo, "call_signal", {
+      ...body,
+      from: cleanFrom,
+      to: cleanTo,
+      timestamp: Date.now()
+    });
     sendJson(res, 200, { ok: true });
     return;
   }
