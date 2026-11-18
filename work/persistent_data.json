@@ -87,7 +87,33 @@
     }
   ],
   "friendRequests": [],
-  "messages": [],
+  "messages": [
+    {
+      "id": "59977467-1073-4ab0-ac88-87dcf7176fde",
+      "chat_id": "2012.8.msta@gmail.com<->2012.8.mtfa@gmail.com",
+      "from": "2012.8.msta@gmail.com",
+      "to": "2012.8.mtfa@gmail.com",
+      "type": "text",
+      "text": "d926",
+      "is_encrypted": true,
+      "encryption_iv": "f0347264b1d0db131b539692",
+      "encryption_auth_tag": "b716efc716c1f64f8a257636fcaf22ba",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1795031536419
+    }
+  ],
   "aiUsage": [
     {
       "email": "az7077407@gmail.com",
@@ -257,7 +283,17 @@
   ],
   "pushSubscriptions": [],
   "emailVerifications": [],
-  "chats": [],
+  "chats": [
+    {
+      "id": "2012.8.msta@gmail.com<->2012.8.mtfa@gmail.com",
+      "direct_pair": "2012.8.msta@gmail.com<->2012.8.mtfa@gmail.com",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1795031536417,
+      "last_message_content": "33",
+      "created_at": 1795031536417
+    }
+  ],
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
@@ -301,26 +337,6 @@
       "auto_renew": true,
       "created_at": 1795031458201,
       "updated_at": 1795031458201
-    },
-    {
-      "id": "7858ddea-a39d-4a14-9a98-9617e677e202",
-      "user_id": "816de438-d905-4327-b7a0-3fc789efab3e",
-      "email": "2012.8.msta@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795031526096,
-      "next_quota_reset_at": 1795117926096,
-      "started_at": 1795031526096,
-      "expires_at": 1800215526096,
-      "auto_renew": true,
-      "created_at": 1795031526096,
-      "updated_at": 1795031526096
     }
   ],
   "userStories": [],
