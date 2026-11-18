@@ -53,16 +53,7 @@
   ],
   "friendships": [],
   "friendRequests": [],
-  "messages": [
-    {
-      "id": "59647ca1-aef3-426b-a9f8-b6229fcc60f2",
-      "from": "2012.8.m@gmail.com",
-      "to": "support@chato.system",
-      "type": "text",
-      "text": "[طلب دعم جديد]: مشكلتى هى انى مش عارف اكتب",
-      "createdAt": 1794754484317
-    }
-  ],
+  "messages": [],
   "aiUsage": [
     {
       "email": "az7077407@gmail.com",
@@ -78,17 +69,7 @@
     }
   ],
   "ads": [],
-  "supportTickets": [
-    {
-      "id": "8f44cd89-c1cf-4f18-aad8-1443505c66f8",
-      "email": "2012.8.m@gmail.com",
-      "name": "دعاء على",
-      "issue": "مشكلتى هى انى مش عارف اكتب",
-      "status": "open",
-      "createdAt": 1794754484317,
-      "updatedAt": 1794754484317
-    }
-  ],
+  "supportTickets": [],
   "userDevices": [
     {
       "id": "81155107-2b90-4e4a-89b5-9ccd14c2f871",
@@ -215,13 +196,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795030416446,
-      "next_quota_reset_at": 1795116816446,
+      "last_quota_reset_at": 1794696341845,
+      "next_quota_reset_at": 1794782741845,
       "started_at": 1794696341845,
       "expires_at": 1799880341845,
       "auto_renew": true,
       "created_at": 1794696341845,
-      "updated_at": 1795030416446
+      "updated_at": 1794696341845
     }
   ],
   "userStories": [],
