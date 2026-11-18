@@ -51,7 +51,15 @@
       "lastActive": 1794754554067
     }
   ],
-  "friendships": [],
+  "friendships": [
+    {
+      "id": "9d977165-522e-4154-abb4-2e47890c2180",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "2012.8.ail@gmail.com",
+      "status": "accepted",
+      "createdAt": 1795030543882
+    }
+  ],
   "friendRequests": [],
   "messages": [],
   "aiUsage": [
