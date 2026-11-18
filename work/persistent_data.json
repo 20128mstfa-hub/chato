@@ -62,6 +62,12 @@
       "createdAt": 1795031493333,
       "lastLogin": 1795031493334,
       "lastActive": 1795031493334
+    },
+    {
+      "id": "e8dd2a5d-f7d0-409c-afdd-a13295446006",
+      "name": "2012.8.mtfa",
+      "email": "2012.8.mtfa@gmail.com",
+      "createdAt": 1795031508444
     }
   ],
   "friendships": [
@@ -71,6 +77,13 @@
       "to": "2012.8.ail@gmail.com",
       "status": "accepted",
       "createdAt": 1795030543882
+    },
+    {
+      "id": "e69d2929-fc82-4974-a540-7204021e284b",
+      "from": "2012.8.mtfa@gmail.com",
+      "to": "2012.8.msta@gmail.com",
+      "status": "accepted",
+      "createdAt": 1795031508444
     }
   ],
   "friendRequests": [],
@@ -288,26 +301,6 @@
       "auto_renew": true,
       "created_at": 1795031458201,
       "updated_at": 1795031458201
-    },
-    {
-      "id": "786401e2-6d3f-4d3a-9915-ca3961702206",
-      "user_id": "816de438-d905-4327-b7a0-3fc789efab3e",
-      "email": "2012.8.msta@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795031493673,
-      "next_quota_reset_at": 1795117893673,
-      "started_at": 1795031493673,
-      "expires_at": 1800215493673,
-      "auto_renew": true,
-      "created_at": 1795031493673,
-      "updated_at": 1795031493673
     }
   ],
   "userStories": [],
