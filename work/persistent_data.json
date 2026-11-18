@@ -239,7 +239,7 @@
       "updated_at": 1795030731579
     },
     {
-      "id": "293569b0-9578-44cb-af44-423b568716d7",
+      "id": "2e7ac922-63c7-45b0-a48c-db4cff9bf6fa",
       "user_id": "2012.8.@gmail.com",
       "email": "2012.8.@gmail.com",
       "plan_code": "free",
@@ -250,13 +250,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795031453132,
-      "next_quota_reset_at": 1795117853132,
-      "started_at": 1795031453132,
-      "expires_at": 1800215453132,
+      "last_quota_reset_at": 1795031458201,
+      "next_quota_reset_at": 1795117858201,
+      "started_at": 1795031458201,
+      "expires_at": 1800215458201,
       "auto_renew": true,
-      "created_at": 1795031453132,
-      "updated_at": 1795031453132
+      "created_at": 1795031458201,
+      "updated_at": 1795031458201
     }
   ],
   "userStories": [],
