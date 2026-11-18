@@ -72,7 +72,7 @@
     {
       "email": "2012.8.mstfa@gmail.com",
       "day": "2026-11-18",
-      "words": 6,
+      "words": 11,
       "images": 0
     }
   ],
@@ -210,17 +210,17 @@
       "plan_title": "الباقة المجانية",
       "is_active": false,
       "daily_words_limit": 90,
-      "daily_words_used": 6,
+      "daily_words_used": 11,
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795030659978,
-      "next_quota_reset_at": 1795117059978,
+      "last_quota_reset_at": 1795030678069,
+      "next_quota_reset_at": 1795117078069,
       "started_at": 1794696341845,
       "expires_at": 1799880341845,
       "auto_renew": true,
       "created_at": 1794696341845,
-      "updated_at": 1795030659978
+      "updated_at": 1795030678069
     }
   ],
   "userStories": [],
