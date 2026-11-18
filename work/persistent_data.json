@@ -61,7 +61,8 @@
       "status": "active",
       "createdAt": 1795031493333,
       "lastLogin": 1795031493334,
-      "lastActive": 1795031493334
+      "lastActive": 1795031493334,
+      "lastOffline": 1795031554074
     },
     {
       "id": "e8dd2a5d-f7d0-409c-afdd-a13295446006",
@@ -277,7 +278,7 @@
       "access_token_hash": "c61c0e579e578ecaa20f4954dbb74df330ba7718a0879df78367e65f7f91a049",
       "refresh_token_hash": "f5c761e9f0b2c30fe8d810b4a2f4209f6cb19f9743886ed517ed8cb0e7edf180",
       "expires_at": 1800215493334,
-      "last_active_at": 1795031525928,
+      "last_active_at": 1795031554239,
       "created_at": 1795031493334,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEE0mZ7PuPfoxCH2yof9tntEOrtemEjVnKeOO3aRtEkHsDuSsN7ZUwqScZngPPd6pF9he7BUUXz5H0eZAe2gMD4g=="
     }
