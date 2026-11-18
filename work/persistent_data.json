@@ -178,6 +178,15 @@
       "last_active_at": 1794754554548,
       "created_at": 1794754554067,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
+    },
+    {
+      "id": "9aa8b12c-1cd6-4398-a5d3-d85184424e1c",
+      "email": "mo.mstfa.85@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQ9kynxvvtvNG5f/KN3aOu5andD0ARFcbIks4pdPnSafSH8htG5q1EKHBqv5XiKYGCAMlTWc3SgUe2PMSiOo/rA==",
+      "created_at": 1795001256775,
+      "last_active_at": 1795001256775
     }
   ],
   "pushSubscriptions": [],
