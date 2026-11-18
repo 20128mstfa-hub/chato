@@ -167,9 +167,9 @@
       "access_token_hash": "7cd97ac62dc1164fcb24d48be9b93b6cb50def3991dd75142fbce7a2a2d3b240",
       "refresh_token_hash": "92857c71cb5c55dffddcafaadf8e458c9487549f0c98698687ae42754cd54cc4",
       "expires_at": 1799879016877,
-      "last_active_at": 1795031520969,
+      "last_active_at": 1794695017292,
       "created_at": 1794695016877,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/qCtOP/H4rJu4ibHL3OMpzrejmAmekhWeMw5MlvUdJkLbckSvyrvAH4m0k9u2LHQ3GlG9Cd6czukkAjlyZGgsA=="
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
     },
     {
       "id": "57ee77a2-add4-4d02-8549-9246c4c28ce4",
@@ -250,7 +250,7 @@
       "access_token_hash": "c61c0e579e578ecaa20f4954dbb74df330ba7718a0879df78367e65f7f91a049",
       "refresh_token_hash": "f5c761e9f0b2c30fe8d810b4a2f4209f6cb19f9743886ed517ed8cb0e7edf180",
       "expires_at": 1800215493334,
-      "last_active_at": 1795031493424,
+      "last_active_at": 1795031525928,
       "created_at": 1795031493334,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEE0mZ7PuPfoxCH2yof9tntEOrtemEjVnKeOO3aRtEkHsDuSsN7ZUwqScZngPPd6pF9he7BUUXz5H0eZAe2gMD4g=="
     }
@@ -301,6 +301,26 @@
       "auto_renew": true,
       "created_at": 1795031458201,
       "updated_at": 1795031458201
+    },
+    {
+      "id": "7858ddea-a39d-4a14-9a98-9617e677e202",
+      "user_id": "816de438-d905-4327-b7a0-3fc789efab3e",
+      "email": "2012.8.msta@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1795031526096,
+      "next_quota_reset_at": 1795117926096,
+      "started_at": 1795031526096,
+      "expires_at": 1800215526096,
+      "auto_renew": true,
+      "created_at": 1795031526096,
+      "updated_at": 1795031526096
     }
   ],
   "userStories": [],
