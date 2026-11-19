@@ -126,7 +126,7 @@
       "access_token_hash": "9e1e82ddb4c427772ef28836498191b7a3e86316bddab9363fc56a54934ef21d",
       "refresh_token_hash": "51a18b51fdbc77818d4ac354363d223f173382a71a2a4df38d580346a8a46c36",
       "expires_at": 1799880357763,
-      "last_active_at": 1795033222029,
+      "last_active_at": 1795103420831,
       "created_at": 1794675686870,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
@@ -253,26 +253,6 @@
       "auto_renew": true,
       "created_at": 1794696341845,
       "updated_at": 1795030731579
-    },
-    {
-      "id": "3d3e2529-a8f0-42cd-9126-08ff28e43f0a",
-      "user_id": "az7077407@gmail.com",
-      "email": "az7077407@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795103401204,
-      "next_quota_reset_at": 1795189801204,
-      "started_at": 1795103401204,
-      "expires_at": 1800287401204,
-      "auto_renew": true,
-      "created_at": 1795103401204,
-      "updated_at": 1795103401204
     }
   ],
   "userStories": [],
