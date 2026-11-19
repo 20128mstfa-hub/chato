@@ -87,6 +87,12 @@
       "day": "2026-11-18",
       "words": 29,
       "images": 0
+    },
+    {
+      "email": "az7077407@gmail.com",
+      "day": "2026-11-19",
+      "words": 0,
+      "images": 0
     }
   ],
   "ads": [
@@ -109,7 +115,7 @@
       "device_type": "web",
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg==",
       "created_at": 1794671884090,
-      "last_active_at": 1794671884090
+      "last_active_at": 1795103400973
     },
     {
       "id": "e66377d3-ac30-444b-85f8-c657bcb5e0b8",
@@ -247,6 +253,26 @@
       "auto_renew": true,
       "created_at": 1794696341845,
       "updated_at": 1795030731579
+    },
+    {
+      "id": "3d3e2529-a8f0-42cd-9126-08ff28e43f0a",
+      "user_id": "az7077407@gmail.com",
+      "email": "az7077407@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1795103401204,
+      "next_quota_reset_at": 1795189801204,
+      "started_at": 1795103401204,
+      "expires_at": 1800287401204,
+      "auto_renew": true,
+      "created_at": 1795103401204,
+      "updated_at": 1795103401204
     }
   ],
   "userStories": [],
