@@ -87,7 +87,58 @@
     }
   ],
   "friendRequests": [],
-  "messages": [],
+  "messages": [
+    {
+      "id": "3079241a-4364-43f7-af02-da857b0278ae",
+      "chat_id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "az7077407@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "1f4a",
+      "is_encrypted": true,
+      "encryption_iv": "ff0fac3dcafb26b1a12a39d4",
+      "encryption_auth_tag": "ae6982ea91bb4b019d3bce7822d6822d",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1795103444397
+    },
+    {
+      "id": "97e2452a-e315-4df7-97c8-a0346c201abe",
+      "chat_id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "az7077407@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "d013",
+      "is_encrypted": true,
+      "encryption_iv": "7076a888ce56d8eedd7de47b",
+      "encryption_auth_tag": "b8dc38e8cebb7a09da6f0e8e5d8426aa",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1795103445023
+    }
+  ],
   "aiUsage": [
     {
       "email": "az7077407@gmail.com",
@@ -242,7 +293,17 @@
   ],
   "pushSubscriptions": [],
   "emailVerifications": [],
-  "chats": [],
+  "chats": [
+    {
+      "id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "direct_pair": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1795103445023,
+      "last_message_content": "..",
+      "created_at": 1795103444393
+    }
+  ],
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
