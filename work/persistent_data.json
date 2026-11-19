@@ -62,6 +62,12 @@
       "createdAt": 1795033360320,
       "lastLogin": 1795033360320,
       "lastActive": 1795033360320
+    },
+    {
+      "id": "4adb037b-9eee-4dad-8129-2c14cfaef5d2",
+      "name": "az7077407",
+      "email": "az7077407@gmail.com",
+      "createdAt": 1795103431049
     }
   ],
   "friendships": [
@@ -71,6 +77,13 @@
       "to": "2012.8.ail@gmail.com",
       "status": "accepted",
       "createdAt": 1795030543882
+    },
+    {
+      "id": "2b767b35-c109-4b5f-a217-6cd0dc892b1a",
+      "from": "az7077407@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "status": "accepted",
+      "createdAt": 1795103431049
     }
   ],
   "friendRequests": [],
