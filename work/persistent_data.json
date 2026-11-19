@@ -68,6 +68,18 @@
       "name": "az7077407",
       "email": "az7077407@gmail.com",
       "createdAt": 1795103431049
+    },
+    {
+      "id": "b7d18c53-3ca9-4f11-8efb-29fa0ad65bc6",
+      "name": "Ali",
+      "email": "z7077407@gmail.com",
+      "password_hash": "scrypt:92eb3fd847f1491166ea9ab85c96cd3e:0e689472f97b05ff561ab57f706e4f13e6a185d9bf568e7613bb1f874a1b08d228a18626df3b110b1bd2aa6d9a201e00c3b8ed78df82bfa3b077796680d19da7",
+      "password": "74RZ7EayxNBj67v",
+      "image": "",
+      "status": "active",
+      "createdAt": 1795103512124,
+      "lastLogin": 1795103512124,
+      "lastActive": 1795103512124
     }
   ],
   "friendships": [
@@ -84,6 +96,13 @@
       "to": "2012.8.mstfa@gmail.com",
       "status": "accepted",
       "createdAt": 1795103431049
+    },
+    {
+      "id": "a4e47019-303b-45ac-9b2c-7a4e4744285c",
+      "from": "z7077407@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "status": "accepted",
+      "createdAt": 1795103516877
     }
   ],
   "friendRequests": [],
@@ -320,6 +339,19 @@
       "last_active_at": 1795033360862,
       "created_at": 1795033360320,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
+    },
+    {
+      "id": "4527780f-0c69-486a-babb-9df6d982fe65",
+      "user_id": "b7d18c53-3ca9-4f11-8efb-29fa0ad65bc6",
+      "email": "z7077407@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "access_token_hash": "774498b16de3a3e9e0a1fb2f17aaa374edab79f3f4e0af7163872ea321fb5820",
+      "refresh_token_hash": "c25b09fa680d0cf5e92927295f90b2f60e50a46c5ebb89b0eebbef3a502dbd1b",
+      "expires_at": 1800287512124,
+      "last_active_at": 1795103512520,
+      "created_at": 1795103512124,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQRgCslRVkxyWWAIZQJbpLzo8pbKk5qUkxaYaNL/cHQd4IRWhZzy/a2Wc/gjXxmjhcbPUqLHMGxVy0HuUC1PrFg=="
     }
   ],
   "pushSubscriptions": [],
