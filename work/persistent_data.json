@@ -232,6 +232,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1795103541115
+    },
+    {
+      "id": "c488dadc-2958-403b-a749-dbfc022b969f",
+      "chat_id": "2012.8.mstfa@gmail.com<->z7077407@gmail.com",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "z7077407@gmail.com",
+      "type": "text",
+      "text": "1c",
+      "is_encrypted": true,
+      "encryption_iv": "5e0222e6aa349da323af7238",
+      "encryption_auth_tag": "161f771c2edeb4dbaad857412fe2ba15",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1795113033538
     }
   ],
   "aiUsage": [
@@ -291,7 +316,7 @@
       "access_token_hash": "9e1e82ddb4c427772ef28836498191b7a3e86316bddab9363fc56a54934ef21d",
       "refresh_token_hash": "51a18b51fdbc77818d4ac354363d223f173382a71a2a4df38d580346a8a46c36",
       "expires_at": 1799880357763,
-      "last_active_at": 1795103600787,
+      "last_active_at": 1795113030657,
       "created_at": 1794675686870,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
@@ -422,8 +447,8 @@
       "direct_pair": "2012.8.mstfa@gmail.com<->z7077407@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1795103541115,
-      "last_message_content": "السلام عليكم",
+      "last_message_at": 1795113033537,
+      "last_message_content": ".",
       "created_at": 1795103530339
     }
   ],
