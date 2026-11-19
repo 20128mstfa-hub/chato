@@ -79,7 +79,8 @@
       "status": "active",
       "createdAt": 1795103512124,
       "lastLogin": 1795103512124,
-      "lastActive": 1795103512124
+      "lastActive": 1795103512124,
+      "lastOffline": 1795103653293
     }
   ],
   "friendships": [
