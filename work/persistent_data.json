@@ -137,6 +137,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1795103445023
+    },
+    {
+      "id": "f9514bd9-4121-4a3a-8918-f3b438fb6c66",
+      "chat_id": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
+      "from": "az7077407@gmail.com",
+      "to": "2012.8.mstfa@gmail.com",
+      "type": "text",
+      "text": "bf",
+      "is_encrypted": true,
+      "encryption_iv": "7ef03583f347baf1517a556d",
+      "encryption_auth_tag": "e25febce9b9e14d4915037b94e2056dc",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1795103458599
     }
   ],
   "aiUsage": [
@@ -154,6 +179,12 @@
     },
     {
       "email": "az7077407@gmail.com",
+      "day": "2026-11-19",
+      "words": 0,
+      "images": 0
+    },
+    {
+      "email": "2012.8.mstfa@gmail.com",
       "day": "2026-11-19",
       "words": 0,
       "images": 0
@@ -299,8 +330,8 @@
       "direct_pair": "2012.8.mstfa@gmail.com<->az7077407@gmail.com",
       "type": "direct",
       "who_can_send": "everyone",
-      "last_message_at": 1795103445023,
-      "last_message_content": "..",
+      "last_message_at": 1795103458599,
+      "last_message_content": ".",
       "created_at": 1795103444393
     }
   ],
@@ -316,7 +347,7 @@
       "plan_title": "الباقة المجانية",
       "is_active": false,
       "daily_words_limit": 90,
-      "daily_words_used": 29,
+      "daily_words_used": 0,
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
