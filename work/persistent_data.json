@@ -181,6 +181,31 @@
       "status": "sent",
       "read": false,
       "createdAt": 1795103458599
+    },
+    {
+      "id": "71220d71-f6ef-4df7-96e8-983a7ec96264",
+      "chat_id": "2012.8.mstfa@gmail.com<->z7077407@gmail.com",
+      "from": "2012.8.mstfa@gmail.com",
+      "to": "z7077407@gmail.com",
+      "type": "text",
+      "text": "6a96e7",
+      "is_encrypted": true,
+      "encryption_iv": "944a5d87aa5bdb808969cc4a",
+      "encryption_auth_tag": "bd3a774603f16d83bb2307e8f52717fa",
+      "sender_public_key": null,
+      "expires_at": null,
+      "expiresAt": null,
+      "imageUrl": "",
+      "fileName": "",
+      "audioUrl": "",
+      "location": null,
+      "poll": null,
+      "sticker": null,
+      "document": null,
+      "reply_to": null,
+      "status": "sent",
+      "read": false,
+      "createdAt": 1795103530340
     }
   ],
   "aiUsage": [
@@ -365,6 +390,15 @@
       "last_message_at": 1795103458599,
       "last_message_content": ".",
       "created_at": 1795103444393
+    },
+    {
+      "id": "2012.8.mstfa@gmail.com<->z7077407@gmail.com",
+      "direct_pair": "2012.8.mstfa@gmail.com<->z7077407@gmail.com",
+      "type": "direct",
+      "who_can_send": "everyone",
+      "last_message_at": 1795103530339,
+      "last_message_content": "...",
+      "created_at": 1795103530339
     }
   ],
   "chatParticipants": [],
