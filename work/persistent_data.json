@@ -81,6 +81,15 @@
       "lastLogin": 1795103512124,
       "lastActive": 1795103512124,
       "lastOffline": 1795103653293
+    },
+    {
+      "id": "db6f3e05-b090-4599-8dc6-4e4f646b3545",
+      "name": "testuser",
+      "email": "testuser@chato.com",
+      "createdAt": 1795304465269,
+      "chatPlusUntil": 1797896465269,
+      "isChatPlus": true,
+      "vipUntil": 1797896465269
     }
   ],
   "friendships": [
@@ -495,6 +504,31 @@
       "auto_renew": true,
       "created_at": 1795103484117,
       "updated_at": 1795103484117
+    },
+    {
+      "id": "0a2598b3-3bb9-4c90-92f4-e2871241e94a",
+      "user_id": "db6f3e05-b090-4599-8dc6-4e4f646b3545",
+      "email": "testuser@chato.com",
+      "created_at": 1795304465269,
+      "plan_code": "chato_plus",
+      "plan_title": "شاتو بلاس (هدية كود)",
+      "is_active": true,
+      "started_at": 1795304465269,
+      "expires_at": 1797896465269,
+      "updated_at": 1795304465269
+    },
+    {
+      "id": "ecdcb7d3-b0a0-4bd6-9549-7054f242ed27",
+      "user_id": "db6f3e05-b090-4599-8dc6-4e4f646b3545",
+      "email": "testuser@chato.com",
+      "created_at": 1795304465269,
+      "plan_code": "chato_ai_plus",
+      "plan_title": "بلاس AI شاتو (هدية كود)",
+      "is_active": true,
+      "daily_words_limit": 500,
+      "daily_ai_images_limit": 20,
+      "expires_at": 1797896465269,
+      "updated_at": 1795304465269
     }
   ],
   "userStories": [],
@@ -609,7 +643,7 @@
       "bonusWords": 1000,
       "bonusImages": 25,
       "maxUses": 1000,
-      "timesUsed": 0,
+      "timesUsed": 1,
       "expiresAt": 1826840448724,
       "isActive": true,
       "createdAt": 1795304448724,
@@ -664,7 +698,14 @@
       "description": "زيادة الرصيد اليومي للذكاء الاصطناعي بمقدار 1500 كلمة و30 صورة مجاناً"
     }
   ],
-  "promoRedemptions": [],
+  "promoRedemptions": [
+    {
+      "id": "2231ce6c-6639-4c53-83ad-d1fdb01968b7",
+      "code": "CHATO2026",
+      "email": "testuser@chato.com",
+      "redeemedAt": 1795304465269
+    }
+  ],
   "stickerPacks": [
     {
       "id": "pack_chato_animated",
