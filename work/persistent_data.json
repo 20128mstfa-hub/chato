@@ -132,6 +132,73 @@
       "is_plus_only": true
     }
   ],
+  "promoCodes": [
+    {
+      "id": "promo_chato2026",
+      "code": "CHATO2026",
+      "title": "كود شاتو الشهري VIP 👑",
+      "type": "both",
+      "durationDays": 30,
+      "discountPercent": 100,
+      "bonusWords": 1000,
+      "bonusImages": 25,
+      "maxUses": 1000,
+      "timesUsed": 0,
+      "expiresAt": 1826841192679,
+      "isActive": true,
+      "createdAt": 1795305192680,
+      "description": "تفعيل باقة شاتو بلاس وباقة الذكاء الاصطناعي VIP مجاناً لمدة شهر كامل!"
+    },
+    {
+      "id": "promo_gift50",
+      "code": "GIFT50",
+      "title": "خصم 50% على جميع الباقات 🏷️",
+      "type": "discount",
+      "durationDays": 60,
+      "discountPercent": 50,
+      "bonusWords": 0,
+      "bonusImages": 0,
+      "maxUses": 500,
+      "timesUsed": 0,
+      "expiresAt": 1826841192680,
+      "isActive": true,
+      "createdAt": 1795305192680,
+      "description": "خصم 50% على تجديد وترقية أي باقة في شاتو"
+    },
+    {
+      "id": "promo_freeplus",
+      "code": "FREEPLUS",
+      "title": "هدية باقة شاتو بلاس للمحادثات 🎨",
+      "type": "chato_plus",
+      "durationDays": 30,
+      "discountPercent": 100,
+      "bonusWords": 0,
+      "bonusImages": 0,
+      "maxUses": 1000,
+      "timesUsed": 0,
+      "expiresAt": 1826841192680,
+      "isActive": true,
+      "createdAt": 1795305192680,
+      "description": "فتح جميع الثيمات الحصرية والترجمة وتثبيت الرسائل والرموز النادرة"
+    },
+    {
+      "id": "promo_aiextra",
+      "code": "AIEXTRA",
+      "title": "هدية رصيد الذكاء الاصطناعي الفائق ⚡",
+      "type": "ai_quota",
+      "durationDays": 30,
+      "discountPercent": 100,
+      "bonusWords": 1500,
+      "bonusImages": 30,
+      "maxUses": 1000,
+      "timesUsed": 0,
+      "expiresAt": 1826841192680,
+      "isActive": true,
+      "createdAt": 1795305192680,
+      "description": "زيادة الرصيد اليومي للذكاء الاصطناعي بمقدار 1500 كلمة و30 صورة مجاناً"
+    }
+  ],
+  "promoRedemptions": [],
   "stickerPacks": [
     {
       "id": "pack_chato_animated",
