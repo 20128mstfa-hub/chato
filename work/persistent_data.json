@@ -1,15 +1,5 @@
 {
-  "users": [
-    {
-      "id": "0e4cc674-d391-421d-9db1-da83401a1242",
-      "name": "user_test",
-      "email": "user_test@chato.com",
-      "createdAt": 1795305314312,
-      "chatPlusUntil": 1797897314312,
-      "isChatPlus": true,
-      "vipUntil": 1797897314312
-    }
-  ],
+  "users": [],
   "friendships": [],
   "friendRequests": [],
   "messages": [],
@@ -31,7 +21,7 @@
       "device_type": "web",
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
       "created_at": 1795304640409,
-      "last_active_at": 1795304679018
+      "last_active_at": 1795305398343
     }
   ],
   "pushSubscriptions": [],
@@ -42,29 +32,24 @@
   "groups": [],
   "userSubscriptions": [
     {
-      "id": "d3d197c2-dec4-42b9-a375-d7acac83a4a0",
-      "user_id": "0e4cc674-d391-421d-9db1-da83401a1242",
-      "email": "user_test@chato.com",
-      "created_at": 1795305314312,
-      "plan_code": "chato_plus",
-      "plan_title": "شاتو بلاس (هدية كود)",
-      "is_active": true,
-      "started_at": 1795305314312,
-      "expires_at": 1797897314312,
-      "updated_at": 1795305314312
-    },
-    {
-      "id": "1a9aaca9-470f-46fe-aaf3-fad57fd7da59",
-      "user_id": "0e4cc674-d391-421d-9db1-da83401a1242",
-      "email": "user_test@chato.com",
-      "created_at": 1795305314312,
-      "plan_code": "chato_ai_plus",
-      "plan_title": "بلاس AI شاتو (هدية كود)",
-      "is_active": true,
-      "daily_words_limit": 500,
-      "daily_ai_images_limit": 20,
-      "expires_at": 1797897314312,
-      "updated_at": 1795305314312
+      "id": "54a910d0-03b1-409a-a7e0-b020a57bd883",
+      "user_id": "2012.8.mstfa@gmail.com",
+      "email": "2012.8.mstfa@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1795305398377,
+      "next_quota_reset_at": 1795391798377,
+      "started_at": 1795305398377,
+      "expires_at": 1800489398377,
+      "auto_renew": true,
+      "created_at": 1795305398377,
+      "updated_at": 1795305398377
     }
   ],
   "userStories": [],
@@ -166,80 +151,6 @@
       "symbol": "⚡🔥",
       "rarity": "rare",
       "is_plus_only": true
-    }
-  ],
-  "promoCodes": [
-    {
-      "id": "promo_chato2026",
-      "code": "CHATO2026",
-      "title": "كود شاتو الشهري VIP 👑",
-      "type": "both",
-      "durationDays": 30,
-      "discountPercent": 100,
-      "bonusWords": 1000,
-      "bonusImages": 25,
-      "maxUses": 1000,
-      "timesUsed": 1,
-      "expiresAt": 1826841192679,
-      "isActive": true,
-      "createdAt": 1795305192680,
-      "description": "تفعيل باقة شاتو بلاس وباقة الذكاء الاصطناعي VIP مجاناً لمدة شهر كامل!"
-    },
-    {
-      "id": "promo_gift50",
-      "code": "GIFT50",
-      "title": "خصم 50% على جميع الباقات 🏷️",
-      "type": "discount",
-      "durationDays": 60,
-      "discountPercent": 50,
-      "bonusWords": 0,
-      "bonusImages": 0,
-      "maxUses": 500,
-      "timesUsed": 0,
-      "expiresAt": 1826841192680,
-      "isActive": true,
-      "createdAt": 1795305192680,
-      "description": "خصم 50% على تجديد وترقية أي باقة في شاتو"
-    },
-    {
-      "id": "promo_freeplus",
-      "code": "FREEPLUS",
-      "title": "هدية باقة شاتو بلاس للمحادثات 🎨",
-      "type": "chato_plus",
-      "durationDays": 30,
-      "discountPercent": 100,
-      "bonusWords": 0,
-      "bonusImages": 0,
-      "maxUses": 1000,
-      "timesUsed": 0,
-      "expiresAt": 1826841192680,
-      "isActive": true,
-      "createdAt": 1795305192680,
-      "description": "فتح جميع الثيمات الحصرية والترجمة وتثبيت الرسائل والرموز النادرة"
-    },
-    {
-      "id": "promo_aiextra",
-      "code": "AIEXTRA",
-      "title": "هدية رصيد الذكاء الاصطناعي الفائق ⚡",
-      "type": "ai_quota",
-      "durationDays": 30,
-      "discountPercent": 100,
-      "bonusWords": 1500,
-      "bonusImages": 30,
-      "maxUses": 1000,
-      "timesUsed": 0,
-      "expiresAt": 1826841192680,
-      "isActive": true,
-      "createdAt": 1795305192680,
-      "description": "زيادة الرصيد اليومي للذكاء الاصطناعي بمقدار 1500 كلمة و30 صورة مجاناً"
-    }
-  ],
-  "promoRedemptions": [
-    {
-      "id": "597507f6-d913-41ae-b9df-c92f780bbd08",
-      "code": "CHATO2026",
-      "email": "user_test@chato.com",
-      "redeemedAt": 1795305314312
     }
   ],
   "stickerPacks": [
