@@ -21,7 +21,7 @@
       "device_type": "web",
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
       "created_at": 1795304640409,
-      "last_active_at": 1795305398343
+      "last_active_at": 1795305563136
     }
   ],
   "pushSubscriptions": [],
@@ -32,7 +32,7 @@
   "groups": [],
   "userSubscriptions": [
     {
-      "id": "54a910d0-03b1-409a-a7e0-b020a57bd883",
+      "id": "a32ab860-20dd-4301-907e-417b1606f412",
       "user_id": "2012.8.mstfa@gmail.com",
       "email": "2012.8.mstfa@gmail.com",
       "plan_code": "free",
@@ -43,13 +43,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795305398377,
-      "next_quota_reset_at": 1795391798377,
-      "started_at": 1795305398377,
-      "expires_at": 1800489398377,
+      "last_quota_reset_at": 1795305563162,
+      "next_quota_reset_at": 1795391963162,
+      "started_at": 1795305563162,
+      "expires_at": 1800489563162,
       "auto_renew": true,
-      "created_at": 1795305398377,
-      "updated_at": 1795305398377
+      "created_at": 1795305563162,
+      "updated_at": 1795305563162
     }
   ],
   "userStories": [],
