@@ -21,7 +21,7 @@
       "device_type": "web",
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
       "created_at": 1795304640409,
-      "last_active_at": 1795304640409
+      "last_active_at": 1795304679018
     }
   ],
   "pushSubscriptions": [],
@@ -30,28 +30,7 @@
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
-  "userSubscriptions": [
-    {
-      "id": "e8a1b1a1-4a8d-462a-a97d-4c419fd0e4b4",
-      "user_id": "2012.8.mstfa@gmail.com",
-      "email": "2012.8.mstfa@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795304640458,
-      "next_quota_reset_at": 1795391040458,
-      "started_at": 1795304640458,
-      "expires_at": 1800488640458,
-      "auto_renew": true,
-      "created_at": 1795304640458,
-      "updated_at": 1795304640458
-    }
-  ],
+  "userSubscriptions": [],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
