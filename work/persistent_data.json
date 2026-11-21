@@ -32,7 +32,7 @@
   "groups": [],
   "userSubscriptions": [
     {
-      "id": "a32ab860-20dd-4301-907e-417b1606f412",
+      "id": "43123235-3419-4d32-aa46-81ac98c2f255",
       "user_id": "2012.8.mstfa@gmail.com",
       "email": "2012.8.mstfa@gmail.com",
       "plan_code": "free",
@@ -43,13 +43,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795305563162,
-      "next_quota_reset_at": 1795391963162,
-      "started_at": 1795305563162,
-      "expires_at": 1800489563162,
+      "last_quota_reset_at": 1795305571315,
+      "next_quota_reset_at": 1795391971315,
+      "started_at": 1795305571315,
+      "expires_at": 1800489571315,
       "auto_renew": true,
-      "created_at": 1795305563162,
-      "updated_at": 1795305563162
+      "created_at": 1795305571315,
+      "updated_at": 1795305571315
     }
   ],
   "userStories": [],
