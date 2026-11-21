@@ -1,5 +1,15 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "0e4cc674-d391-421d-9db1-da83401a1242",
+      "name": "user_test",
+      "email": "user_test@chato.com",
+      "createdAt": 1795305314312,
+      "chatPlusUntil": 1797897314312,
+      "isChatPlus": true,
+      "vipUntil": 1797897314312
+    }
+  ],
   "friendships": [],
   "friendRequests": [],
   "messages": [],
@@ -30,7 +40,33 @@
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
-  "userSubscriptions": [],
+  "userSubscriptions": [
+    {
+      "id": "d3d197c2-dec4-42b9-a375-d7acac83a4a0",
+      "user_id": "0e4cc674-d391-421d-9db1-da83401a1242",
+      "email": "user_test@chato.com",
+      "created_at": 1795305314312,
+      "plan_code": "chato_plus",
+      "plan_title": "شاتو بلاس (هدية كود)",
+      "is_active": true,
+      "started_at": 1795305314312,
+      "expires_at": 1797897314312,
+      "updated_at": 1795305314312
+    },
+    {
+      "id": "1a9aaca9-470f-46fe-aaf3-fad57fd7da59",
+      "user_id": "0e4cc674-d391-421d-9db1-da83401a1242",
+      "email": "user_test@chato.com",
+      "created_at": 1795305314312,
+      "plan_code": "chato_ai_plus",
+      "plan_title": "بلاس AI شاتو (هدية كود)",
+      "is_active": true,
+      "daily_words_limit": 500,
+      "daily_ai_images_limit": 20,
+      "expires_at": 1797897314312,
+      "updated_at": 1795305314312
+    }
+  ],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
@@ -143,7 +179,7 @@
       "bonusWords": 1000,
       "bonusImages": 25,
       "maxUses": 1000,
-      "timesUsed": 0,
+      "timesUsed": 1,
       "expiresAt": 1826841192679,
       "isActive": true,
       "createdAt": 1795305192680,
@@ -198,7 +234,14 @@
       "description": "زيادة الرصيد اليومي للذكاء الاصطناعي بمقدار 1500 كلمة و30 صورة مجاناً"
     }
   ],
-  "promoRedemptions": [],
+  "promoRedemptions": [
+    {
+      "id": "597507f6-d913-41ae-b9df-c92f780bbd08",
+      "code": "CHATO2026",
+      "email": "user_test@chato.com",
+      "redeemedAt": 1795305314312
+    }
+  ],
   "stickerPacks": [
     {
       "id": "pack_chato_animated",
