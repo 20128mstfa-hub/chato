@@ -28,6 +28,15 @@
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
       "created_at": 1795304640409,
       "last_active_at": 1795306480636
+    },
+    {
+      "id": "c75cb1a7-970d-47f6-ac36-b6f6b97f0a5a",
+      "email": "2012.8.stfa@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA==",
+      "created_at": 1795511951658,
+      "last_active_at": 1795511951658
     }
   ],
   "pushSubscriptions": [],
