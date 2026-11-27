@@ -4784,7 +4784,8 @@ async function fetchSubscriptionDetails() {
 
     const subscribeChatPlusBtn = el("subscribeChatPlusBtn");
     if (subscribeChatPlusBtn) {
-      subscribeChatPlusBtn.textContent = isChatPlus ? "🔄 تجديد باقة شاتو بلاس (60 يوماً إضافية)" : "👑 تفعيل باقة شاتو بلاس (20 ريال / شهرين)";
+      const chatPlusPrice = Number(chatData.price) === 10 ? 10 : 20;
+      subscribeChatPlusBtn.textContent = isChatPlus ? "🔄 تجديد باقة شاتو بلاس (60 يوماً إضافية)" : `👑 تفعيل باقة شاتو بلاس (${chatPlusPrice} ريال / شهرين)`;
     }
 
     // تحديث الشارات في بطاقة الاشتراكات المجمعة (Image 3)
@@ -10109,3 +10110,135 @@ if (visitorChatInputFormEl) {
   });
 }
 
+
+
+// ==========================================================================
+// === PROMO & GIFT CODES CONTROLLER (أكواد الهدايا والخصومات) ===
+// ==========================================================================
+
+const promoCodeDialog = el("promoCodeDialog");
+const closePromoCodeDialogBtn = el("closePromoCodeDialogBtn");
+const promoCodeForm = el("promoCodeForm");
+const promoCodeInput = el("promoCodeInput");
+const promoResultBanner = el("promoResultBanner");
+const promoResultTitle = el("promoResultTitle");
+const promoResultMessage = el("promoResultMessage");
+const promoCodeError = el("promoCodeError");
+const redeemPromoSubmitBtn = el("redeemPromoSubmitBtn");
+
+function openPromoCodeDialog(prefillCode = "") {
+  const dlg = el("promoCodeDialog") || document.getElementById("promoCodeDialog");
+  const input = el("promoCodeInput") || document.getElementById("promoCodeInput");
+  const banner = el("promoResultBanner") || document.getElementById("promoResultBanner");
+  const errEl = el("promoCodeError") || document.getElementById("promoCodeError");
+
+  if (banner) banner.hidden = true;
+  if (errEl) errEl.textContent = "";
+  if (input) {
+    input.value = prefillCode ? prefillCode.toUpperCase() : "";
+  }
+  if (dlg) {
+    openDialog(dlg);
+    if (input) {
+      setTimeout(() => input.focus(), 150);
+    }
+  }
+}
+
+function closePromoCodeDialog() {
+  if (promoCodeDialog) closeDialog(promoCodeDialog);
+}
+
+if (closePromoCodeDialogBtn) {
+  closePromoCodeDialogBtn.addEventListener("click", closePromoCodeDialog);
+}
+
+// أزرار فتح النافذة من الإعدادات والاشتراكات
+el("settingsNavPromoCode")?.addEventListener("click", () => {
+  openPromoCodeDialog();
+});
+
+el("subRowPromoCode")?.addEventListener("click", () => {
+  openPromoCodeDialog();
+});
+
+// معالجة نموذج تفعيل الكود
+if (promoCodeForm) {
+  promoCodeForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const code = promoCodeInput?.value.trim().toUpperCase() || "";
+    const email = state.currentUser?.email;
+
+    if (!code) return;
+    if (!email) {
+      if (promoCodeError) promoCodeError.textContent = "يرجى تسجيل الدخول أولاً لتفعيل كود الهدية!";
+      return;
+    }
+
+    if (promoCodeError) promoCodeError.textContent = "";
+    if (promoResultBanner) promoResultBanner.hidden = true;
+    if (redeemPromoSubmitBtn) {
+      redeemPromoSubmitBtn.disabled = true;
+      redeemPromoSubmitBtn.innerHTML = "<span>جاري التحقق والتفعيل... ⏳</span>";
+    }
+
+    try {
+      const res = await fetch("/api/promo/redeem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, email })
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || "فشل تفعيل الكود");
+      }
+
+      // نجاح التفعيل!
+      if (promoResultBanner) promoResultBanner.hidden = false;
+      if (promoResultTitle) promoResultTitle.textContent = data.promo?.title || "تهانينا! 🎉";
+      if (promoResultMessage) promoResultMessage.textContent = data.message || "تم تفعيل الهدية بنجاح!";
+
+      // تحديث حالة المستخدم محلياً
+      if (state.currentUser && data.user) {
+        if (data.user.chatPlusUntil) state.currentUser.chatPlusUntil = data.user.chatPlusUntil;
+        if (data.user.vipUntil) state.currentUser.vipUntil = data.user.vipUntil;
+        if (data.user.promoDiscountPercent) state.currentUser.promoDiscountPercent = data.user.promoDiscountPercent;
+        if (data.user.chatoPlusDiscountPrice) state.currentUser.chatoPlusDiscountPrice = data.user.chatoPlusDiscountPrice;
+        if (typeof saveState === "function") saveState();
+      }
+
+      showToast("🎉 مبروك! تم تفعيل كود الهدية بنجاح على حسابك");
+      triggerHaptic(40);
+
+      // إعادة تحميل خطة الاشتراكات
+      if (typeof loadCurrentSubscriptionPlan === "function") {
+        loadCurrentSubscriptionPlan();
+      }
+      if (typeof fetchSubscriptionDetails === "function") {
+        fetchSubscriptionDetails();
+      }
+    } catch (err) {
+      if (promoCodeError) promoCodeError.textContent = err.message || "تعذر تفعيل الكود";
+    } finally {
+      if (redeemPromoSubmitBtn) {
+        redeemPromoSubmitBtn.disabled = false;
+        redeemPromoSubmitBtn.innerHTML = "<span>تفعيل الكود والحصول على الهدية 🚀</span>";
+      }
+    }
+  });
+}
+
+
+// ربط زر التذكرة على شكل كود والزر في الشريط الجانبي والشريط الترحيبي
+el("promoTicketMainBtn")?.addEventListener("click", () => {
+  openPromoCodeDialog();
+});
+
+el("railPromoCodeBtn")?.addEventListener("click", () => {
+  openPromoCodeDialog();
+});
+
+el("welcomePromoBtn")?.addEventListener("click", () => {
+  openPromoCodeDialog();
+});
