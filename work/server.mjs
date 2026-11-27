@@ -432,6 +432,44 @@ function detectCountry(req, clientTz = "") {
   return "مصر 🇪🇬";
 }
 
+function parseUserAgent(ua = "") {
+  ua = String(ua || "");
+  let os = "نظام غير معروف";
+  let browser = "متصفح غير معروف";
+  let type = "كمبيوتر مكتبي 💻";
+
+  if (/android/i.test(ua)) {
+    os = "Android 📱";
+    type = "هاتف أندرويد 📱";
+  } else if (/iphone/i.test(ua)) {
+    os = "iPhone iOS 🍏";
+    type = "هاتف آيفون 📱";
+  } else if (/ipad/i.test(ua)) {
+    os = "iPadOS 🍏";
+    type = "تابلت آيباد 📱";
+  } else if (/windows nt 10/i.test(ua)) {
+    os = "Windows 10/11 🪟";
+    type = "كمبيوتر مكتبي 💻";
+  } else if (/windows/i.test(ua)) {
+    os = "Windows 🪟";
+    type = "كمبيوتر مكتبي 💻";
+  } else if (/macintosh|mac os x/i.test(ua)) {
+    os = "macOS 🍎";
+    type = "كمبيوتر Mac 💻";
+  } else if (/linux/i.test(ua)) {
+    os = "Linux 🐧";
+    type = "كمبيوتر لينكس 💻";
+  }
+
+  if (/edg/i.test(ua)) browser = "Microsoft Edge 🌐";
+  else if (/chrome|crios/i.test(ua)) browser = "Google Chrome 🌐";
+  else if (/firefox|fxios/i.test(ua)) browser = "Mozilla Firefox 🦊";
+  else if (/safari/i.test(ua)) browser = "Apple Safari 🧭";
+  else if (/opera|opr/i.test(ua)) browser = "Opera 🔴";
+
+  return { os, browser, type };
+}
+
 function recordUserDailyLogin(user, req, timezone = "", accountsCount = 1) {
   const today = new Date().toISOString().slice(0, 10);
   if (!user.dailyLogins || user.dailyLogins.date !== today) {
@@ -445,6 +483,14 @@ function recordUserDailyLogin(user, req, timezone = "", accountsCount = 1) {
   user.clientAccountsCount = Math.max(Number(accountsCount) || 1, user.clientAccountsCount || 1);
   user.lastLogin = Date.now();
   user.lastActive = Date.now();
+  user.userAgent = req.headers["user-agent"] || user.userAgent || "";
+  user.sessionLogs = Array.isArray(user.sessionLogs) ? user.sessionLogs.slice(-29) : [];
+  user.sessionLogs.push({
+    type: "login",
+    time: Date.now(),
+    ip: ip,
+    country: user.country
+  });
 }
 
 function broadcastToAll(eventType, data) {
@@ -482,6 +528,28 @@ function broadcastToUser(email, eventType, data) {
   }
 }
 
+
+// ==========================================================================
+// أكواد الهدايا والخصومات الشهرية التلقائية (Monthly Promo & Gift Codes)
+// ==========================================================================
+const defaultPromoCodes = [
+  {
+    id: "promo_chato1",
+    code: "CHATO1",
+    title: "خصم شاتو بلاس بعد إنجاز 1000 كلمة",
+    type: "discount",
+    targetPlan: "chato_plus",
+    fixedPrice: 10,
+    discountPercent: 50,
+    durationDays: 30,
+    maxUses: 0,
+    timesUsed: 0,
+    isActive: true,
+    createdAt: Date.now(),
+    description: "يحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل."
+  }
+];
+
 async function readDatabase() {
   try {
     const data = JSON.parse(await fs.readFile(databaseFile, "utf8"));
@@ -505,11 +573,13 @@ async function readDatabase() {
       storyViews: Array.isArray(data.storyViews) ? data.storyViews : [],
       pinnedMessages: Array.isArray(data.pinnedMessages) ? data.pinnedMessages : [],
       exclusiveEmojis: Array.isArray(data.exclusiveEmojis) && data.exclusiveEmojis.length ? data.exclusiveEmojis : defaultExclusiveEmojis,
+      promoCodes: Array.isArray(data.promoCodes) && data.promoCodes.length ? data.promoCodes : defaultPromoCodes,
+      promoRedemptions: Array.isArray(data.promoRedemptions) ? data.promoRedemptions : [],
       stickerPacks: Array.isArray(data.stickerPacks) && data.stickerPacks.length ? data.stickerPacks : defaultStickerPacks,
       animatedStickers: Array.isArray(data.animatedStickers) && data.animatedStickers.length ? data.animatedStickers : defaultAnimatedStickers
     };
   } catch {
-    return { users: [], friendships: [], friendRequests: [], messages: [], aiUsage: [], ads: [], supportTickets: [], userDevices: [], pushSubscriptions: [], emailVerifications: [], chats: [], chatParticipants: [], chatSettings: [], groups: [], userSubscriptions: [], userStories: [], storyViews: [], pinnedMessages: [], exclusiveEmojis: defaultExclusiveEmojis, stickerPacks: defaultStickerPacks, animatedStickers: defaultAnimatedStickers };
+    return { users: [], friendships: [], friendRequests: [], messages: [], aiUsage: [], ads: [], supportTickets: [], userDevices: [], pushSubscriptions: [], emailVerifications: [], chats: [], chatParticipants: [], chatSettings: [], groups: [], userSubscriptions: [], userStories: [], storyViews: [], pinnedMessages: [], exclusiveEmojis: defaultExclusiveEmojis, stickerPacks: defaultStickerPacks, animatedStickers: defaultAnimatedStickers, promoCodes: defaultPromoCodes, promoRedemptions: [] };
   }
 }
 
@@ -724,6 +794,43 @@ function utcDay() {
 function countWords(str) {
   if (!str) return 0;
   return String(str).trim().split(/\s+/).filter(Boolean).length;
+}
+
+function getSentWordCount(database, email) {
+  const cleanEmail = String(email || "").trim().toLowerCase();
+  return (database.messages || []).reduce((total, message) => {
+    if (String(message.from || "").toLowerCase() !== cleanEmail) return total;
+    if (message.deleted_at || message.deletedForEveryone) return total;
+    if (String(message.type || "text") !== "text") return total;
+    return total + countWords(prepareDecryptedMessage(message).text || "");
+  }, 0);
+}
+
+function unlockChato1IfEarned(database, email) {
+  const cleanEmail = String(email || "").trim().toLowerCase();
+  const user = (database.users || []).find((item) => String(item.email || "").toLowerCase() === cleanEmail);
+  if (!user) return null;
+  const totalWords = getSentWordCount(database, cleanEmail);
+  user.sentWordCount = totalWords;
+  if (totalWords < 1000 || user.chato1Unlocked) return null;
+
+  user.chato1Unlocked = true;
+  user.chato1UnlockedAt = Date.now();
+  const rewardMessage = {
+    id: crypto.randomUUID(),
+    chat_id: "ai:chatgpt",
+    from: "chatgpt",
+    to: cleanEmail,
+    senderName: "Chato Assistant",
+    type: "text",
+    text: "مبروك! وصلت إلى 1000 كلمة مرسلة في Chato. كودك الخاص هو CHATO1. فعّله من زر أكواد الهدايا لتحويل سعر شاتو بلاس من 20 ريال إلى 10 ريال.",
+    is_encrypted: false,
+    status: "sent",
+    read: false,
+    createdAt: Date.now()
+  };
+  database.messages.push(rewardMessage);
+  return rewardMessage;
 }
 
 // إدارة باقات واشتراكات المستخدمين وتجديد الحصص اليومية وصلاحية الـ 60 يوماً
@@ -3540,6 +3647,7 @@ async function handleApi(req, res, url) {
     database.userSubscriptions = Array.isArray(database.userSubscriptions) ? database.userSubscriptions : [];
 
     if (chosenPlan === "chato_plus") {
+      const chatoPlusPrice = Number(user.chatoPlusDiscountPrice) === 10 ? 10 : 20;
       user.chatPlusUntil = expires;
       user.isChatPlus = true;
       let sub = database.userSubscriptions.find((s) => s.email && s.email.toLowerCase() === cleanEmail && s.plan_code === "chato_plus");
@@ -3557,6 +3665,7 @@ async function handleApi(req, res, url) {
       sub.is_active = true;
       sub.started_at = now;
       sub.expires_at = expires;
+      sub.price_paid = chatoPlusPrice;
       sub.auto_renew = true;
       sub.updated_at = now;
       await writeDatabase(database);
@@ -3565,10 +3674,11 @@ async function handleApi(req, res, url) {
         ok: true,
         plan_code: "chato_plus",
         plan_title: "شاتو بلاس",
+        price: chatoPlusPrice,
         is_active: true,
         expires_at: expires,
         days_remaining: 60,
-        message: "تهانينا! 🎉 تم تفعيل باقة شاتو بلاس بنجاح لمدة شهرين كاملين (60 يوماً)! تم فتح خلفيات المحادثة، والترجمة الفورية، والرموز النادرة والمتحركة، وتثبيت حتى 25 رسالة.",
+        message: `تهانينا! 🎉 تم تفعيل باقة شاتو بلاس بسعر ${chatoPlusPrice} ريال لمدة شهرين كاملين (60 يوماً)! تم فتح خلفيات المحادثة، والترجمة الفورية، والرموز النادرة والمتحركة، وتثبيت حتى 25 رسالة.`,
         chat_plus: {
           is_active: true,
           expires_at: expires,
@@ -3647,6 +3757,7 @@ async function handleApi(req, res, url) {
     const user = (database.users || []).find((u) => u.email.toLowerCase() === email);
     const chatPlusExpires = user?.chatPlusUntil || 0;
     const chatPlusDaysRemaining = isChatPlus ? Math.max(1, Math.ceil((chatPlusExpires - now) / (24 * 3600 * 1000))) : 0;
+    const chatPlusPrice = Number(user?.chatoPlusDiscountPrice) === 10 ? 10 : 20;
 
     sendJson(res, 200, {
       ok: true,
@@ -3684,6 +3795,8 @@ async function handleApi(req, res, url) {
         plan_code: "chato_plus",
         plan_title: "شاتو بلاس",
         is_active: isChatPlus,
+        price: chatPlusPrice,
+        discount_code: user?.chatoPlusDiscountCode || null,
         expires_at: chatPlusExpires,
         days_remaining: chatPlusDaysRemaining
       }
@@ -3896,6 +4009,8 @@ async function handleApi(req, res, url) {
       }
     }
 
+    const chato1RewardMessage = unlockChato1IfEarned(database, sender.email);
+
     await writeDatabase(database);
     const decryptedMessage = prepareDecryptedMessage(message);
 
@@ -3923,6 +4038,15 @@ async function handleApi(req, res, url) {
     if (aiMessage) {
       if (recipient) broadcastToUser(recipient.email, "new_message", aiMessage);
       broadcastToUser(sender.email, "new_message", aiMessage);
+    }
+    if (chato1RewardMessage) {
+      broadcastToUser(sender.email, "new_message", chato1RewardMessage);
+      sendPushToUser(sender.email, {
+        title: "هدية Chato جاهزة",
+        body: "وصلت إلى 1000 كلمة. افتح Chato Assistant لاستلام كودك.",
+        icon: "/logo.png",
+        data: { url: "/?chat=ai:chatgpt", chatId: "ai:chatgpt" }
+      }, database).catch(() => {});
     }
 
     sendJson(res, 201, { ok: true, message: { ...message, text: plainText }, aiMessage });
@@ -4150,11 +4274,45 @@ async function handleApi(req, res, url) {
   }
 
   const ADMIN_MASTER_PIN = "M0102141214";
+  const ADMIN_STAFF_PIN = "Q0102141214";
+
+  // 1. التحقق من الرمز وتحديد الصلاحية (Verify PIN & Role)
+  if (req.method === "POST" && url.pathname === "/api/admin/verify-pin") {
+    const { pin } = await readJsonBody(req);
+    const cleanPin = String(pin || "").trim();
+    if (cleanPin === ADMIN_MASTER_PIN) {
+      sendJson(res, 200, { ok: true, role: "owner", title: "المدير العام والمالك 👑", pin: cleanPin });
+      return;
+    }
+    if (cleanPin === ADMIN_STAFF_PIN) {
+      sendJson(res, 200, { ok: true, role: "staff", title: "فريق العمل والموظفين 👔", pin: cleanPin });
+      return;
+    }
+    sendJson(res, 401, { ok: false, error: "رمز المرور غير صحيح! يرجى التأكد من الرمز وإعادة المحاولة." });
+    return;
+  }
 
   if (url.pathname.startsWith("/api/admin/")) {
     const providedPin = req.headers["x-admin-pin"] || url.searchParams.get("pin");
-    if (providedPin !== ADMIN_MASTER_PIN) {
+    const isOwner = providedPin === ADMIN_MASTER_PIN;
+    const isStaff = providedPin === ADMIN_STAFF_PIN;
+    if (!isOwner && !isStaff) {
       sendJson(res, 401, { error: "غير مصرح - رمز المرور غير صحيح" });
+      return;
+    }
+
+    // الصلاحيات الحصرية للمدير العام فقط (Owner-Only)
+    const ownerOnlyPaths = [
+      "/api/admin/databases",
+      "/api/admin/promo",
+      "/api/admin/ai-config",
+      "/api/admin/reports",
+      "/api/admin/users/reset-password",
+      "/api/admin/users/delete",
+      "/api/admin/user-deep-inspect"
+    ];
+    if (!isOwner && ownerOnlyPaths.some((p) => url.pathname.startsWith(p))) {
+      sendJson(res, 403, { error: "هذه الصلاحية مخصصة للمدير العام (المالك) فقط 👑" });
       return;
     }
   }
@@ -4382,6 +4540,325 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  
+  // ==========================================================================
+  // === PROMO & GIFT CODES ENDPOINTS (أكواد الهدايا والخصومات) ===
+  // ==========================================================================
+
+  // 1. التحقق من كود الهدية أو الخصم (Validate Promo Code)
+  if (req.method === "GET" && url.pathname === "/api/promo/validate") {
+    const rawCode = String(url.searchParams.get("code") || "").trim().toUpperCase();
+    if (!rawCode) {
+      sendJson(res, 400, { error: "يرجى كتابة الكود أولاً" });
+      return;
+    }
+    const database = await readDatabase();
+    database.promoCodes = Array.isArray(database.promoCodes) ? database.promoCodes : defaultPromoCodes;
+    const promo = database.promoCodes.find((p) => p.code.toUpperCase() === rawCode && p.isActive !== false);
+
+    if (!promo) {
+      sendJson(res, 404, { error: "كود غير صحيح أو منتهي الصلاحية" });
+      return;
+    }
+    if (promo.expiresAt && promo.expiresAt < Date.now()) {
+      sendJson(res, 400, { error: "هذا الكود انتهت صلاحيته للأسف" });
+      return;
+    }
+    if (promo.maxUses && promo.timesUsed >= promo.maxUses) {
+      sendJson(res, 400, { error: "وصل هذا الكود للحد الأقصى لعدد الاستخدامات" });
+      return;
+    }
+
+    sendJson(res, 200, {
+      ok: true,
+      promo: {
+        code: promo.code,
+        title: promo.title,
+        type: promo.type,
+        durationDays: promo.durationDays || 30,
+        discountPercent: promo.discountPercent || 0,
+        description: promo.description || ""
+      }
+    });
+    return;
+  }
+
+  // 2. تفعيل كود الهدية أو الخصم للمستخدم (Redeem Promo Code)
+  if (req.method === "POST" && url.pathname === "/api/promo/redeem") {
+    const { code, email } = await readJsonBody(req);
+    const rawCode = String(code || "").trim().toUpperCase();
+    const cleanEmail = String(email || "").trim().toLowerCase();
+
+    if (!rawCode || !cleanEmail) {
+      sendJson(res, 400, { error: "الكود والبريد الإلكتروني مطلوبان" });
+      return;
+    }
+
+    const database = await readDatabase();
+    database.promoCodes = Array.isArray(database.promoCodes) ? database.promoCodes : defaultPromoCodes;
+    database.promoRedemptions = Array.isArray(database.promoRedemptions) ? database.promoRedemptions : [];
+
+    const promo = database.promoCodes.find((p) => p.code.toUpperCase() === rawCode && p.isActive !== false);
+    if (!promo) {
+      sendJson(res, 404, { error: "كود الهدية غير صحيح أو غير متاح" });
+      return;
+    }
+
+    if (promo.expiresAt && promo.expiresAt < Date.now()) {
+      sendJson(res, 400, { error: "هذا الكود انتهت صلاحيته" });
+      return;
+    }
+
+    if (promo.maxUses && promo.timesUsed >= promo.maxUses) {
+      sendJson(res, 400, { error: "تم استنفاد الحد الأقصى لاستخدام هذا الكود" });
+      return;
+    }
+
+    // التحقق هل استخدم المستخدم هذا الكود مسبقاً
+    const alreadyUsed = database.promoRedemptions.some(
+      (r) => r.code.toUpperCase() === rawCode && r.email.toLowerCase() === cleanEmail
+    );
+    if (alreadyUsed) {
+      sendJson(res, 400, { error: "لقد قمت باستخدام هذا الكود من قبل على هذا الحساب 🎁" });
+      return;
+    }
+
+    // تطبيق الهدية على حساب المستخدم
+    database.users = Array.isArray(database.users) ? database.users : [];
+    let user = database.users.find((u) => u.email.toLowerCase() === cleanEmail);
+    const now = Date.now();
+    const durationMs = (promo.durationDays || 30) * 24 * 3600 * 1000;
+
+    if (!user) {
+      user = { id: crypto.randomUUID(), name: cleanEmail.split("@")[0], email: cleanEmail, createdAt: now };
+      database.users.push(user);
+    }
+
+    if (promo.code === "CHATO1" && !user.chato1Unlocked) {
+      sendJson(res, 403, { error: "كود CHATO1 يُمنح فقط بعد إرسال 1000 كلمة في محادثات Chato." });
+      return;
+    }
+
+    database.userSubscriptions = Array.isArray(database.userSubscriptions) ? database.userSubscriptions : [];
+    let rewardMessage = "";
+
+    if (promo.type === "chato_plus" || promo.type === "both") {
+      const currentExp = (user.chatPlusUntil && user.chatPlusUntil > now) ? user.chatPlusUntil : now;
+      user.chatPlusUntil = currentExp + durationMs;
+      user.isChatPlus = true;
+
+      let sub = database.userSubscriptions.find((s) => s.email && s.email.toLowerCase() === cleanEmail && s.plan_code === "chato_plus");
+      if (!sub) {
+        sub = { id: crypto.randomUUID(), user_id: user.id || cleanEmail, email: cleanEmail, created_at: now };
+        database.userSubscriptions.push(sub);
+      }
+      sub.plan_code = "chato_plus";
+      sub.plan_title = "شاتو بلاس (هدية كود)";
+      sub.is_active = true;
+      sub.started_at = now;
+      sub.expires_at = user.chatPlusUntil;
+      sub.updated_at = now;
+      rewardMessage += "👑 تم تفعيل باقة شاتو بلاس VIP للمحادثات والثيمات! ";
+    }
+
+    if (promo.type === "ai_plus" || promo.type === "both") {
+      const currentExp = (user.vipUntil && user.vipUntil > now) ? user.vipUntil : now;
+      user.vipUntil = currentExp + durationMs;
+
+      let sub = database.userSubscriptions.find((s) => s.email && s.email.toLowerCase() === cleanEmail && s.plan_code === "chato_ai_plus");
+      if (!sub) {
+        sub = { id: crypto.randomUUID(), user_id: user.id || cleanEmail, email: cleanEmail, created_at: now };
+        database.userSubscriptions.push(sub);
+      }
+      sub.plan_code = "chato_ai_plus";
+      sub.plan_title = "بلاس AI شاتو (هدية كود)";
+      sub.is_active = true;
+      sub.daily_words_limit = 500;
+      sub.daily_ai_images_limit = 20;
+      sub.expires_at = user.vipUntil;
+      sub.updated_at = now;
+      rewardMessage += "⚡ تم تفعيل باقة الذكاء الاصطناعي AI Plus! ";
+    }
+
+    if (promo.type === "discount") {
+      user.promoDiscountPercent = promo.discountPercent || 50;
+      user.promoDiscountUntil = now + durationMs;
+      if (promo.targetPlan === "chato_plus" && promo.fixedPrice) {
+        user.chatoPlusDiscountPrice = promo.fixedPrice;
+        user.chatoPlusDiscountCode = promo.code;
+        rewardMessage += `🏷️ تم تفعيل خصم شاتو بلاس: السعر أصبح ${promo.fixedPrice} ريال بدلاً من 20 ريال. `;
+      } else {
+        rewardMessage += `🏷️ تم تفعيل خصم ${user.promoDiscountPercent}% على جميع باقات شاتو لمدة ${promo.durationDays} يوماً! `;
+      }
+    }
+
+    if (promo.type === "ai_quota") {
+      user.bonusAiWords = (user.bonusAiWords || 0) + (promo.bonusWords || 1000);
+      user.bonusAiImages = (user.bonusAiImages || 0) + (promo.bonusImages || 25);
+      rewardMessage += `🎁 تم إضافة ${promo.bonusWords || 1000} كلمة و${promo.bonusImages || 25} صورة لرصيدك اليومي! `;
+    }
+
+    // تسجيل الاستخدام
+    database.promoRedemptions.push({
+      id: crypto.randomUUID(),
+      code: promo.code,
+      email: cleanEmail,
+      redeemedAt: now
+    });
+    promo.timesUsed = (promo.timesUsed || 0) + 1;
+
+    await writeDatabase(database);
+
+    sendJson(res, 200, {
+      ok: true,
+      promo: {
+        code: promo.code,
+        title: promo.title,
+        type: promo.type,
+        durationDays: promo.durationDays
+      },
+      message: `تهانينا! 🎉 تم تفعيل الهدية بنجاح: ${rewardMessage}`,
+      user: {
+        chatPlusUntil: user.chatPlusUntil,
+        vipUntil: user.vipUntil,
+        promoDiscountPercent: user.promoDiscountPercent,
+        chatoPlusDiscountPrice: user.chatoPlusDiscountPrice,
+        bonusAiWords: user.bonusAiWords,
+        bonusAiImages: user.bonusAiImages
+      }
+    });
+    return;
+  }
+
+  // 3. لوحة الإدارة: استعراض جميع الأكواد (Admin: List Promo Codes)
+  if (req.method === "GET" && url.pathname === "/api/admin/promo/codes") {
+    const database = await readDatabase();
+    database.promoCodes = Array.isArray(database.promoCodes) ? database.promoCodes : defaultPromoCodes;
+    database.promoRedemptions = Array.isArray(database.promoRedemptions) ? database.promoRedemptions : [];
+
+    sendJson(res, 200, {
+      ok: true,
+      codes: database.promoCodes,
+      totalRedemptions: database.promoRedemptions.length
+    });
+    return;
+  }
+
+  // 4. لوحة الإدارة: إنشاء كود جديد (Admin: Create Promo Code)
+  if (req.method === "POST" && url.pathname === "/api/admin/promo/create") {
+    const {
+      code,
+      title,
+      type = "both",
+      durationDays = 30,
+      discountPercent = 100,
+      bonusWords = 1000,
+      bonusImages = 20,
+      maxUses = 500,
+      description = ""
+    } = await readJsonBody(req);
+
+    const rawCode = String(code || "").trim().toUpperCase();
+    if (!rawCode) {
+      sendJson(res, 400, { error: "يرجى إدخال رمز الكود (مثال: NOV2026)" });
+      return;
+    }
+
+    const database = await readDatabase();
+    database.promoCodes = Array.isArray(database.promoCodes) ? database.promoCodes : defaultPromoCodes;
+
+    const existing = database.promoCodes.find((p) => p.code.toUpperCase() === rawCode);
+    if (existing) {
+      sendJson(res, 400, { error: "هذا الكود مسجل بالفعل! اختر اسماً مختلفاً أو قم بتعديله" });
+      return;
+    }
+
+    const newPromo = {
+      id: "promo_" + Date.now().toString(36),
+      code: rawCode,
+      title: String(title || `كود هدية ${rawCode}`),
+      type,
+      durationDays: Number(durationDays) || 30,
+      discountPercent: Number(discountPercent) || (type === "discount" ? 50 : 100),
+      bonusWords: Number(bonusWords) || 1000,
+      bonusImages: Number(bonusImages) || 20,
+      maxUses: maxUses ? Number(maxUses) : null,
+      timesUsed: 0,
+      expiresAt: Date.now() + ((Number(durationDays) || 30) * 24 * 3600 * 1000),
+      isActive: true,
+      createdAt: Date.now(),
+      description: String(description || "كود هدية شهري حصري لمستخدمي شاتو")
+    };
+
+    database.promoCodes.unshift(newPromo);
+    await writeDatabase(database);
+
+    sendJson(res, 201, { ok: true, promo: newPromo });
+    return;
+  }
+
+  // 5. لوحة الإدارة: حذف أو إيقاف كود (Admin: Delete Promo Code)
+  if (req.method === "POST" && url.pathname === "/api/admin/promo/delete") {
+    const { id, code } = await readJsonBody(req);
+    const database = await readDatabase();
+    database.promoCodes = Array.isArray(database.promoCodes) ? database.promoCodes : defaultPromoCodes;
+
+    const index = database.promoCodes.findIndex((p) => p.id === id || p.code === code);
+    if (index === -1) {
+      sendJson(res, 404, { error: "الكود غير موجود" });
+      return;
+    }
+
+    database.promoCodes.splice(index, 1);
+    await writeDatabase(database);
+    sendJson(res, 200, { ok: true });
+    return;
+  }
+
+  // 6. لوحة الإدارة: نشر الكود كإعلان هدية رسمي لجميع المستخدمين (Admin: Broadcast Promo Code)
+  if (req.method === "POST" && url.pathname === "/api/admin/promo/broadcast") {
+    const { code } = await readJsonBody(req);
+    const rawCode = String(code || "").trim().toUpperCase();
+    const database = await readDatabase();
+    database.promoCodes = Array.isArray(database.promoCodes) ? database.promoCodes : defaultPromoCodes;
+
+    const promo = database.promoCodes.find((p) => p.code.toUpperCase() === rawCode);
+    if (!promo) {
+      sendJson(res, 404, { error: "الكود المطلوب نشره غير موجود" });
+      return;
+    }
+
+    database.ads = Array.isArray(database.ads) ? database.ads : [];
+    const giftAd = {
+      id: crypto.randomUUID(),
+      title: `🎁 هدية شاتو الشهرية: كود ${promo.code}`,
+      content: `🎉 يسر إدارة شاتو تقديم كود الهدية والخصم الشهري الخاص بكم!
+انسخ الكود التالي وفعّله من قائمة (الاشتراكات / الهدايا) في الإعدادات:
+👉 【 ${promo.code} 】 👈
+
+📌 الميزة: ${promo.title}
+${promo.description}
+⏳ الصلاحية: ${promo.durationDays} يوماً`,
+      imageUrl: "",
+      link: "",
+      active: true,
+      promoCode: promo.code,
+      createdAt: Date.now()
+    };
+
+    database.ads.unshift(giftAd);
+    await writeDatabase(database);
+
+    try {
+      broadcastToAll("new_ad", giftAd);
+    } catch (err) {
+      console.warn("Broadcast new_ad error:", err);
+    }
+
+    sendJson(res, 200, { ok: true, ad: giftAd, message: "تم نشر الكود كإعلان هدية بنجاح لجميع المستخدمين!" });
+    return;
+  }
+
   if (req.method === "GET" && url.pathname === "/api/admin/ads") {
     const database = await readDatabase();
     sendJson(res, 200, { ads: database.ads || [] });
@@ -4440,6 +4917,9 @@ async function handleApi(req, res, url) {
     const database = await readDatabase();
     const now = Date.now();
     const todayStr = new Date().toISOString().slice(0, 10);
+    const providedPin = req.headers["x-admin-pin"] || url.searchParams.get("pin");
+    const isStaff = providedPin === ADMIN_STAFF_PIN;
+
     // Group users by IP
     const ipCounts = {};
     for (const u of database.users) {
@@ -4454,8 +4934,8 @@ async function handleApi(req, res, url) {
         id: u.id,
         name: u.name || u.displayName || u.username || (u.email ? u.email.split("@")[0] : "مستخدم"),
         email: u.email,
-        password: u.password || "",
-        pin: u.pin || "",
+        password: isStaff ? undefined : (u.password || ""),
+        pin: isStaff ? undefined : (u.pin || ""),
         image: u.image || "",
         createdAt: u.createdAt || 0,
         lastLogin: u.lastLogin || 0,
@@ -4469,7 +4949,105 @@ async function handleApi(req, res, url) {
         accountsCount
       };
     });
-    sendJson(res, 200, { users });
+    sendJson(res, 200, { users, isStaff });
+    return;
+  }
+
+  // ==========================================
+  // كاشف الحسابات والمعلومات الشاملة الحصري للمدير العام (بدون الباسورد)
+  // ==========================================
+  if (req.method === "GET" && url.pathname === "/api/admin/user-deep-inspect") {
+    const targetEmail = String(url.searchParams.get("email") || "").trim().toLowerCase();
+    const targetId = String(url.searchParams.get("id") || "").trim();
+    const database = await readDatabase();
+    database.users = Array.isArray(database.users) ? database.users : [];
+
+    const user = database.users.find(
+      (u) => (targetEmail && u.email.toLowerCase() === targetEmail) || (targetId && u.id === targetId)
+    );
+    if (!user) {
+      sendJson(res, 404, { ok: false, error: "المستخدم غير موجود" });
+      return;
+    }
+
+    const now = Date.now();
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const isOnline = Boolean(user.lastActive && now - user.lastActive < 65000 && (!user.lastOffline || user.lastActive > user.lastOffline));
+
+    // كاشف الحسابات المتعددة على نفس الـ IP أو البصمة (عندو كام حساب)
+    const linkedUsers = database.users.filter(
+      (u) => u.email.toLowerCase() !== user.email.toLowerCase() && (
+        (user.lastIp && u.lastIp && u.lastIp === user.lastIp) ||
+        (user.deviceFingerprint && u.deviceFingerprint && u.deviceFingerprint === user.deviceFingerprint)
+      )
+    );
+
+    const linkedAccounts = linkedUsers.map((u) => ({
+      id: u.id,
+      name: u.name || u.displayName || u.username || u.email.split("@")[0],
+      email: u.email,
+      createdAt: u.createdAt || 0,
+      country: u.country || "مصر 🇪🇬",
+      status: u.status || "active",
+      isOnline: Boolean(u.lastActive && now - u.lastActive < 65000 && (!u.lastOffline || u.lastActive > u.lastOffline)),
+      sharedReason: (u.lastIp && u.lastIp === user.lastIp) ? "نفس عنوان الـ IP والشبكة" : "نفس بصمة الجهاز"
+    }));
+
+    // إحصائيات النشاط
+    const totalMessagesSent = Array.isArray(database.messages)
+      ? database.messages.filter((m) => String(m.from || "").toLowerCase() === user.email.toLowerCase()).length
+      : 0;
+
+    const totalGroupsJoined = Array.isArray(database.groups)
+      ? database.groups.filter((g) => {
+          const members = Array.isArray(g.members) ? g.members.map((m) => String(m).toLowerCase()) : [];
+          return members.includes(user.email.toLowerCase()) || String(g.admin || "").toLowerCase() === user.email.toLowerCase();
+        }).length
+      : 0;
+
+    const deviceInfo = parseUserAgent(user.userAgent);
+
+    const safeProfile = {
+      id: user.id,
+      name: user.name || user.displayName || user.username || (user.email ? user.email.split("@")[0] : "مستخدم"),
+      email: user.email,
+      phone: user.phone || "غير مسجل",
+      bio: user.bio || "",
+      image: user.image || "",
+      country: user.country || "مصر 🇪🇬",
+      lastIp: user.lastIp || "غير مسجل",
+      status: user.status || "active",
+      suspendedUntil: user.suspendedUntil || null,
+      isOnline,
+      createdAt: user.createdAt || 0,
+      lastLogin: user.lastLogin || 0,
+      lastOffline: user.lastOffline || 0,
+      lastActive: user.lastActive || 0,
+      dailyVisits: (user.dailyLogins && user.dailyLogins.date === todayStr) ? user.dailyLogins.count : (user.lastLogin ? 1 : 0),
+      // كاشف الحسابات:
+      accountsCount: linkedAccounts.length + 1,
+      linkedAccounts,
+      // بيانات الجهاز والدولة:
+      device: {
+        ...deviceInfo,
+        rawUserAgent: user.userAgent || "غير متوفر"
+      },
+      // إحصائيات:
+      stats: {
+        totalMessagesSent,
+        totalGroupsJoined,
+        hasVipPlus: Boolean(user.hasVipPlus || user.isVip),
+        redeemedPromoCodes: user.redeemedPromoCodes || []
+      },
+      // سجل الدخول والخروج (دخل وخرج):
+      sessionLogs: Array.isArray(user.sessionLogs) ? user.sessionLogs.slice(-20).reverse() : [
+        { type: "login", time: user.lastLogin || Date.now(), country: user.country, ip: user.lastIp },
+        ...(user.lastOffline ? [{ type: "logout", time: user.lastOffline }] : [])
+      ]
+      // تنبيه: لا يتم إرجاع كلمة المرور أو تجزئتها نهائياً لضمان الخصوصية
+    };
+
+    sendJson(res, 200, { ok: true, inspection: safeProfile });
     return;
   }
 
