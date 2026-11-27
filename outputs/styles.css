@@ -10115,7 +10115,13 @@ dialog::backdrop {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
-    gap: 3px !important;
+    gap: 4px !important;
+  }
+
+  /* إخفاء العناصر المعطلة أو المخفية في القائمة فوراً وبشكل قاطع */
+  .chat-dropdown-item[hidden],
+  .chat-dropdown-item.is-hidden {
+    display: none !important;
   }
 
   /* زر الخيار الواحد داخل القائمة */
@@ -10126,47 +10132,80 @@ dialog::backdrop {
     width: 100% !important;
     padding: 8px 12px !important;
     min-height: 50px !important;
-    border: none !important;
+    border: 1px solid transparent !important;
     background: transparent !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
     text-align: right !important;
     direction: rtl !important;
     cursor: pointer !important;
     box-sizing: border-box !important;
-    transition: all 0.15s ease !important;
+    transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
   .chat-dropdown-item:hover {
-    background: rgba(2, 132, 199, 0.08) !important;
+    background: rgba(14, 165, 233, 0.08) !important;
+    border-color: rgba(14, 165, 233, 0.15) !important;
     transform: translateX(-2px);
   }
 
   [data-theme="dark"] .chat-dropdown-item:hover {
-    background: rgba(56, 189, 248, 0.12) !important;
+    background: rgba(56, 189, 248, 0.1) !important;
+    border-color: rgba(56, 189, 248, 0.22) !important;
     transform: translateX(-2px);
   }
 
-  /* أيقونة الخيار في مربع أنيق */
+  /* أيقونة الخيار في كارت مربع زجاجي فخم وواضح في الوضع الفاتح والداكن */
   .chat-dropdown-item .dropdown-item-icon {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    border-radius: 10px !important;
-    background: rgba(2, 132, 199, 0.09) !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 12px !important;
+    background: rgba(14, 165, 233, 0.12) !important;
+    border: 1px solid rgba(14, 165, 233, 0.22) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     display: inline-flex !important;
     justify-content: center !important;
     align-items: center !important;
-    font-size: 17px !important;
+    font-size: 18px !important;
     flex-shrink: 0 !important;
-    transition: background 0.15s ease !important;
+    transition: all 0.16s ease !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item .dropdown-item-icon {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  }
+
+  .chat-dropdown-item:hover .dropdown-item-icon {
+    transform: scale(1.06);
+    background: rgba(14, 165, 233, 0.2) !important;
+    border-color: rgba(14, 165, 233, 0.45) !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item:hover .dropdown-item-icon {
+    background: rgba(56, 189, 248, 0.2) !important;
+    border-color: rgba(56, 189, 248, 0.6) !important;
   }
 
   .chat-dropdown-item.text-danger .dropdown-item-icon {
-    background: rgba(239, 68, 68, 0.1) !important;
+    background: rgba(239, 68, 68, 0.14) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item.text-danger .dropdown-item-icon {
+    background: rgba(239, 68, 68, 0.18) !important;
+    border-color: rgba(239, 68, 68, 0.45) !important;
   }
 
   .chat-dropdown-item.text-warning .dropdown-item-icon {
-    background: rgba(245, 158, 11, 0.1) !important;
+    background: rgba(245, 158, 11, 0.14) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item.text-warning .dropdown-item-icon {
+    background: rgba(245, 158, 11, 0.18) !important;
+    border-color: rgba(245, 158, 11, 0.45) !important;
   }
 
   /* عمود النصوص: العنوان والتفاصيل */
@@ -10316,33 +10355,50 @@ dialog::backdrop {
     cursor: pointer !important;
   }
 
+  .chat-dropdown-item[hidden],
+  .chat-dropdown-item.is-hidden {
+    display: none !important;
+  }
+
   .chat-dropdown-item {
-    padding: 10px 12px !important;
+    padding: 10px 14px !important;
     min-height: 52px !important;
     display: flex !important;
     align-items: center !important;
     gap: 12px !important;
     width: 100% !important;
-    border: none !important;
+    border: 1px solid transparent !important;
     background: transparent !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
   }
 
   .chat-dropdown-item:active {
-    background: rgba(2, 132, 199, 0.08) !important;
+    background: rgba(14, 165, 233, 0.12) !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item:active {
+    background: rgba(56, 189, 248, 0.15) !important;
   }
 
   .chat-dropdown-item .dropdown-item-icon {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    border-radius: 10px !important;
-    background: rgba(2, 132, 199, 0.09) !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    border-radius: 12px !important;
+    background: rgba(14, 165, 233, 0.12) !important;
+    border: 1px solid rgba(14, 165, 233, 0.22) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     display: inline-flex !important;
     justify-content: center !important;
     align-items: center !important;
-    font-size: 17px !important;
+    font-size: 19px !important;
     flex-shrink: 0 !important;
+  }
+
+  [data-theme="dark"] .chat-dropdown-item .dropdown-item-icon {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
   }
 
   .dropdown-item-text {
