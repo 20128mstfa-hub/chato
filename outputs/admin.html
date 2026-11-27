@@ -39,22 +39,24 @@
       }
       button { cursor: pointer; }
 
-      /* شاشة قفل المالك المستقلة */
+      /* شاشة قفل وتسجيل الدخول الثنائية */
       .lock-screen {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 20px;
+        background: radial-gradient(circle at 50% 20%, #111b21 0%, #080d11 100%);
       }
       .lock-card {
         background: var(--bg-card);
         border: 1px solid var(--line);
         border-radius: var(--radius);
         padding: 36px 30px;
-        width: min(420px, 100%);
+        width: min(440px, 100%);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         text-align: center;
+        position: relative;
       }
       .lock-card h1 {
         margin: 12px 0 6px;
@@ -66,6 +68,260 @@
         color: var(--muted);
         font-size: 14px;
       }
+
+      /* بوابة تسجيل الدخول الثنائية (Dual Portal Gateway) */
+      .portal-selection-card {
+        width: min(820px, 96%) !important;
+        padding: 40px 32px !important;
+      }
+      .portal-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+        margin-top: 24px;
+        text-align: right;
+      }
+      .portal-option {
+        background: #0d151c;
+        border: 2px solid #1f2c34;
+        border-radius: 16px;
+        padding: 26px 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .portal-option:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+      }
+      .portal-option.owner-card:hover {
+        border-color: var(--gold);
+        box-shadow: 0 14px 32px rgba(255, 183, 3, 0.25);
+      }
+      .portal-option.staff-card:hover {
+        border-color: var(--teal);
+        box-shadow: 0 14px 32px rgba(0, 168, 132, 0.25);
+      }
+      .portal-icon-wrap {
+        width: 58px;
+        height: 58px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-size: 28px;
+      }
+      .owner-card .portal-icon-wrap {
+        background: rgba(255, 183, 3, 0.15);
+        border: 1px solid rgba(255, 183, 3, 0.4);
+      }
+      .staff-card .portal-icon-wrap {
+        background: rgba(0, 168, 132, 0.15);
+        border: 1px solid rgba(0, 168, 132, 0.4);
+      }
+      .portal-option h3 {
+        margin: 12px 0 6px;
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .owner-card h3 { color: var(--gold); }
+      .staff-card h3 { color: var(--teal); }
+      .portal-option p {
+        margin: 0;
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .portal-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 6px;
+      }
+      .owner-badge-tag {
+        background: rgba(255, 183, 3, 0.2);
+        color: var(--gold);
+        border: 1px solid rgba(255, 183, 3, 0.4);
+      }
+      .staff-badge-tag {
+        background: rgba(0, 168, 132, 0.2);
+        color: var(--teal);
+        border: 1px solid rgba(0, 168, 132, 0.4);
+      }
+      .btn-portal {
+        width: 100%;
+        padding: 13px 16px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.2s;
+        margin-top: auto;
+      }
+      .btn-portal:hover { opacity: 0.92; }
+      .owner-btn {
+        background: linear-gradient(135deg, #ffb703, #f59e0b);
+        color: #0b0f13;
+      }
+      .staff-btn {
+        background: linear-gradient(135deg, #00a884, #059669);
+        color: #ffffff;
+      }
+      .btn-back-portal {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 16px;
+        transition: all 0.2s;
+      }
+      .btn-back-portal:hover {
+        color: #fff;
+        border-color: #fff;
+      }
+      .portal-icon-badge {
+        width: 62px;
+        height: 62px;
+        border-radius: 16px;
+        font-size: 32px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 12px;
+      }
+      .portal-icon-badge.owner-badge {
+        background: rgba(255, 183, 3, 0.15);
+        border: 1px solid var(--gold);
+      }
+      .portal-icon-badge.staff-badge {
+        background: rgba(0, 168, 132, 0.15);
+        border: 1px solid var(--teal);
+      }
+      .lock-error-text {
+        color: var(--rose);
+        font-size: 13px;
+        margin: 0 0 12px;
+        min-height: 18px;
+      }
+
+      /* كاشف الحسابات والمعلومات الشاملة للمدير (Deep Inspector) */
+      .deep-inspector-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .inspector-top-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px 22px;
+      }
+      .inspect-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 18px;
+      }
+      .inspect-card {
+        background: var(--bg-card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+      }
+      .inspect-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 12px;
+        margin-bottom: 14px;
+      }
+      .inspect-card-head h3 {
+        margin: 0;
+        font-size: 16px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .inspect-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 9px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        font-size: 13.5px;
+      }
+      .inspect-row:last-child {
+        border-bottom: none;
+      }
+      .inspect-label {
+        color: var(--muted);
+      }
+      .inspect-val {
+        color: #fff;
+        font-weight: 600;
+      }
+      .timeline-box {
+        max-height: 220px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-left: 4px;
+      }
+      .timeline-entry {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 12.5px;
+      }
+      .timeline-entry.login {
+        border-right: 3px solid var(--leaf);
+      }
+      .timeline-entry.logout {
+        border-right: 3px solid var(--rose);
+      }
+      .linked-accounts-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 220px;
+        overflow-y: auto;
+      }
+      .linked-acc-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 12px;
+        background: #090f13;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
       .field {
         text-align: right;
         margin-bottom: 16px;
@@ -720,19 +976,66 @@
     </style>
   </head>
   <body>
-    <!-- 1. شاشة قفل المالك المستقلة المنفصلة تماماً -->
+    <!-- 1. شاشة قفل وتسجيل الدخول الثنائية للمدير والموظفين -->
     <div class="lock-screen" id="lockScreen">
-      <div class="lock-card">
-        <div class="brand-badge" style="margin: 0 auto 12px; width: 54px; height: 54px; font-size: 26px;">ش</div>
-        <h1>لوحة تحكم شاتو</h1>
-        <p>الوصول مقتصر على مالك التطبيق فقط</p>
-        <form id="lockForm">
+      <!-- بطاقة اختيار البوابة -->
+      <div class="lock-card portal-selection-card" id="portalChoiceWrap">
+        <div class="brand-badge" style="margin: 0 auto 12px; width: 56px; height: 56px; font-size: 26px;">ش</div>
+        <h1>بوابة لوحة تحكم شاتو</h1>
+        <p>الرجاء اختيار بوابة الدخول المناسبة للمتابعة</p>
+
+        <div class="portal-grid">
+          <!-- زرار لوحة المدير العام -->
+          <div class="portal-option owner-card" id="btnSelectOwnerPortal">
+            <div>
+              <div class="portal-icon-wrap">👑</div>
+              <h3>بوابة المدير العام (المالك) <span class="portal-badge owner-badge-tag">حماية مشددة 🔒</span></h3>
+              <p>تحكم كامل بنظام شاتو، كاشف الحسابات الشامل، قواعد البيانات، أكواد الهدايا، وصلاحيات المالك الكاملة.</p>
+            </div>
+            <button type="button" class="btn-portal owner-btn">دخول لوحة المدير العام 👑</button>
+          </div>
+
+          <!-- زرار لوحة فريق العمل والموظفين -->
+          <div class="portal-option staff-card" id="btnSelectStaffPortal">
+            <div>
+              <div class="portal-icon-wrap">👔</div>
+              <h3>بوابة فريق العمل والموظفين <span class="portal-badge staff-badge-tag">فريق شاتو 👥</span></h3>
+              <p>مراقبة الأشخاص المتواجدين (الدولة، ساعة الدخول، مرات التواجد اليوم)، الدعم الفني، وإدارة الإعلانات.</p>
+            </div>
+            <button type="button" class="btn-portal staff-btn">دخول لوحة الموظفين 👔</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- نموذج إدخال رمز المدير العام -->
+      <div class="lock-card pin-entry-card" id="ownerPinWrap" style="display: none;">
+        <button type="button" class="btn-back-portal" id="btnBackFromOwner">← الرجوع لاختيار البوابة</button>
+        <div class="portal-icon-badge owner-badge">👑</div>
+        <h2 style="margin: 0 0 6px; font-size: 22px; color: var(--gold);">بوابة المدير العام (المالك)</h2>
+        <p style="color: var(--muted); font-size: 13.5px; margin: 0 0 20px;">الوصول مقتصر على مالك التطبيق فقط برمز المرور السري</p>
+        <form id="ownerLockForm">
           <label class="field">
-            <span>رمز المرور الرئيسي (Master PIN)</span>
-            <input id="masterPinInput" type="password" placeholder="أدخل رمز المالك" required autofocus />
+            <span>رمز مرور المدير العام (Master PIN)</span>
+            <input id="ownerPinInput" type="password" placeholder="أدخل رمز مرور المدير العام" required />
           </label>
-          <p id="lockError" style="color: var(--rose); font-size: 13px; margin: 0 0 12px;" role="alert"></p>
-          <button class="btn-primary" type="submit">دخول لوحة التحكم</button>
+          <p id="ownerLockError" class="lock-error-text" role="alert"></p>
+          <button class="btn-primary owner-btn" type="submit" style="color: #0b0f13; font-weight: 800;">دخول لوحة المدير 👑</button>
+        </form>
+      </div>
+
+      <!-- نموذج إدخال رمز فريق العمل والموظفين -->
+      <div class="lock-card pin-entry-card" id="staffPinWrap" style="display: none;">
+        <button type="button" class="btn-back-portal" id="btnBackFromStaff">← الرجوع لاختيار البوابة</button>
+        <div class="portal-icon-badge staff-badge">👔</div>
+        <h2 style="margin: 0 0 6px; font-size: 22px; color: var(--teal);">بوابة فريق العمل والموظفين</h2>
+        <p style="color: var(--muted); font-size: 13.5px; margin: 0 0 20px;">منطقة مخصصة للموظفين لإدارة المستخدمين والدعم الفني والإعلانات</p>
+        <form id="staffLockForm">
+          <label class="field">
+            <span>رمز مرور الموظفين (Staff PIN)</span>
+            <input id="staffPinInput" type="password" placeholder="أدخل رمز مرور الموظفين (Q0102141214)" required />
+          </label>
+          <p id="staffLockError" class="lock-error-text" role="alert"></p>
+          <button class="btn-primary staff-btn" type="submit" style="font-weight: 800;">دخول لوحة الموظفين 👔</button>
         </form>
       </div>
     </div>
@@ -742,36 +1045,51 @@
       <!-- القائمة الجانبية -->
       <aside class="sidebar">
         <div class="brand-header">
-          <div class="brand-badge">ش</div>
+          <div class="brand-badge" id="adminSidebarBadge">ش</div>
           <div>
-            <h2>Chato Admin</h2>
-            <span>مالك التطبيق</span>
+            <h2 id="adminSidebarTitle">Chato Admin</h2>
+            <span id="adminSidebarRole">لوحة التحكم</span>
           </div>
         </div>
 
-        <button class="nav-btn active" data-tab="usersTab">
-          <span>👥</span> إدارة المستخدمين
+        <!-- 1. زرار الأشخاص والمستخدمين (متاح للموظفين والمدير) -->
+        <button class="nav-btn active" data-tab="usersTab" id="navUsersTab">
+          <span>👥</span> <span id="navUsersLabel">الأشخاص والمستخدمين</span>
         </button>
 
-        <button class="nav-btn" data-tab="reportsTab">
-          <span>🚩</span> البلاغات والشكاوى
-          <span class="badge-pill" id="reportsBadge" style="background: var(--rose); color: #fff;" hidden>0</span>
+        <!-- 2. زرار حصري للمدير العام: كاشف الحسابات والمعلومات الشاملة (ما عدا الباسورد) -->
+        <button class="nav-btn owner-only-nav" data-tab="deepInspectorTab" id="navDeepInspectorTab">
+          <span>🔎</span> كاشف الحسابات الشامل
+          <span class="badge-pill" style="background: var(--gold); color: #000; font-weight: 800;">خاص 👑</span>
         </button>
 
-        <button class="nav-btn" data-tab="aiConfigTab">
-          <span>🤖</span> الذكاء الاصطناعي
-        </button>
-
-        <button class="nav-btn" data-tab="supportTab">
+        <!-- 3. زرار الدعم الفني (متاح للموظفين والمدير) -->
+        <button class="nav-btn" data-tab="supportTab" id="navSupportTab">
           <span>🎧</span> الدعم الفني المباشر
           <span class="badge-pill" id="supportBadge" hidden>0</span>
         </button>
 
-        <button class="nav-btn" data-tab="adsTab">
+        <!-- 4. زرار الإعلانات (متاح للموظفين والمدير) -->
+        <button class="nav-btn" data-tab="adsTab" id="navAdsTab">
           <span>📢</span> إدارة الإعلانات
         </button>
 
-        <button class="nav-btn" data-tab="databasesTab">
+        <!-- أزرار حصرية للمدير فقط (Owner Only) -->
+        <button class="nav-btn owner-only-nav" data-tab="reportsTab" id="navReportsTab">
+          <span>🚩</span> البلاغات والشكاوى
+          <span class="badge-pill" id="reportsBadge" style="background: var(--rose); color: #fff;" hidden>0</span>
+        </button>
+
+        <button class="nav-btn owner-only-nav" data-tab="aiConfigTab" id="navAiConfigTab">
+          <span>🤖</span> الذكاء الاصطناعي
+        </button>
+
+        <button class="nav-btn owner-only-nav" data-tab="promoCodesTab" id="navPromoCodesTab">
+          <span>🎁</span> أكواد الهدايا والخصومات
+          <span class="badge-pill" id="promoCountBadge" style="background: #ec4899; color: #fff;">0</span>
+        </button>
+
+        <button class="nav-btn owner-only-nav" data-tab="databasesTab" id="navDatabasesTab">
           <span>🗄️</span> قواعد البيانات المعزولة
           <span class="badge-pill" id="dbCountBadge" style="background: var(--teal); color: #000;">0</span>
         </button>
@@ -788,10 +1106,13 @@
         <!-- شريط علوي -->
         <header class="top-nav">
           <div>
-            <h1 id="pageTitle">إدارة المستخدمين والحسابات</h1>
-            <p style="margin: 4px 0 0; color: var(--muted); font-size: 14px;">مراقبة الجلسات، مسح أي حساب نهائياً، الحظر، والرسائل الإدارية</p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h1 id="pageTitle" style="margin: 0;">إدارة المستخدمين والحسابات</h1>
+              <span id="adminCurrentRoleBadge" class="badge-pill" style="background: var(--gold); color: #000; font-weight: 800; font-size: 12px; padding: 3px 10px;">المدير العام 👑</span>
+            </div>
+            <p id="pageSubtitle" style="margin: 4px 0 0; color: var(--muted); font-size: 14px;">مراقبة الجلسات، مسح أي حساب نهائياً، الحظر، والرسائل الإدارية</p>
           </div>
-          <div style="display: flex; gap: 10px;">
+          <div style="display: flex; gap: 10px; align-items: center;">
             <a href="/" target="_blank" class="btn-sm-outline" style="text-decoration: none;">فتح شاتو ↗</a>
             <button class="btn-sm-outline" id="refreshBtn">تحديث البيانات ⟳</button>
           </div>
@@ -817,15 +1138,17 @@
           </div>
         </section>
 
-        <!-- تبويب 1: إدارة المستخدمين ومسح الحسابات -->
+        <!-- تبويب 1: إدارة المستخدمين والأشخاص المتواجدين -->
         <section class="tab-pane" id="usersTab">
           <div class="card-box">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
-              <h3 style="margin: 0;"><span>قائمة المستخدمين في شاتو وإدارة الحسابات</span></h3>
+              <h3 style="margin: 0;"><span id="usersTableSectionTitle">قائمة المستخدمين في شاتو وإدارة الحسابات</span></h3>
               <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-                <input class="user-search-bar" id="userSearchInput" type="search" placeholder="بحث بالاسم أو البريد..." style="width: 220px; padding: 7px 12px; font-size: 13px;" />
-                <input id="directDeleteEmailInput" type="email" placeholder="اكتب بريد أي حساب لمسحه..." style="width: 230px; padding: 7px 12px; font-size: 13px; background: #0c141a; border: 1px solid var(--rose); color: #fff; border-radius: 6px;" />
-                <button class="btn-sm-outline danger" id="directDeleteBtn" type="button" style="background: rgba(239, 68, 68, 0.2); border-color: var(--rose); color: #f87171; font-weight: 700; padding: 7px 14px;">🗑️ مسح الحساب فوراً</button>
+                <input class="user-search-bar" id="userSearchInput" type="search" placeholder="بحث بالاسم أو البريد أو الدولة..." style="width: 220px; padding: 7px 12px; font-size: 13px;" />
+                <div id="userManagementDirectDeleteWrap" class="owner-only" style="display: flex; gap: 8px;">
+                  <input id="directDeleteEmailInput" type="email" placeholder="اكتب بريد أي حساب لمسحه..." style="width: 230px; padding: 7px 12px; font-size: 13px; background: #0c141a; border: 1px solid var(--rose); color: #fff; border-radius: 6px;" />
+                  <button class="btn-sm-outline danger" id="directDeleteBtn" type="button" style="background: rgba(239, 68, 68, 0.2); border-color: var(--rose); color: #f87171; font-weight: 700; padding: 7px 14px;">🗑️ مسح الحساب فوراً</button>
+                </div>
               </div>
             </div>
 
@@ -835,21 +1158,169 @@
                   <tr>
                     <th>المستخدم</th>
                     <th>البريد الإلكتروني</th>
-                    <th>كلمة المرور (Password)</th>
+                    <th class="owner-th">كلمة المرور</th>
                     <th>الحالة الحالية</th>
-                    <th>الدولة</th>
-                    <th>دخول اليوم</th>
-                    <th>الحسابات</th>
-                    <th>وقت الدخول (Login)</th>
-                    <th>وقت الخروج (Logout)</th>
-                    <th>تاريخ التسجيل</th>
-                    <th>إجراءات التحكم والمسح</th>
+                    <th>الدولة التي دخل منها 🌍</th>
+                    <th>ساعة الدخول ⏰</th>
+                    <th>دخول اليوم 🔄</th>
+                    <th class="owner-th">الحسابات 👥</th>
+                    <th class="owner-th">وقت الخروج 🔴</th>
+                    <th class="owner-th">تاريخ التسجيل</th>
+                    <th>إجراءات التحكم</th>
                   </tr>
                 </thead>
                 <tbody id="usersTableBody">
                   <!-- Users rows populated via JS -->
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- تبويب حصري للمدير العام: كاشف الحسابات والمعلومات الشاملة (ما عدا الباسورد) -->
+        <section class="tab-pane owner-only" id="deepInspectorTab" hidden>
+          <div class="card-box" style="padding: 20px;">
+            <div class="inspector-top-bar">
+              <div>
+                <h2 style="margin: 0 0 6px; font-size: 19px; color: var(--gold); display: flex; align-items: center; gap: 8px;">
+                  <span>🔎</span> كاشف الحسابات والمعلومات الشاملة للمدير العام
+                </h2>
+                <p style="margin: 0; color: var(--muted); font-size: 13.5px;">
+                  فحص دقيق لكافة تفاصيل المستخدم، أوقات الدخول والخروج، كاشف الحسابات المتعددة، والدولة والشبكة (الباسورد محمي ومحجوب تماماً)
+                </p>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <select id="deepInspectUserSelect" style="background: #090f13; border: 1px solid var(--gold); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13.5px; min-width: 250px;">
+                  <option value="">-- اختر مستخدماً للفحص الشامل --</option>
+                </select>
+                <button type="button" class="btn-sm-outline" id="btnRefreshDeepInspect" style="border-color: var(--gold); color: var(--gold);">تحديث الفحص ⟳</button>
+              </div>
+            </div>
+
+            <!-- محتوى بطاقات الفحص -->
+            <div id="deepInspectResultWrap" style="margin-top: 20px; display: none;">
+              <div class="inspect-grid">
+                <!-- بطاقة 1: بطاقة الهوية والحساب -->
+                <div class="inspect-card">
+                  <div class="inspect-card-head">
+                    <h3><span>👤</span> بيانات الهوية والحساب</h3>
+                    <span class="status-pill online" id="inspStatusBadge">نشط</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                    <div id="inspAvatar" style="width: 52px; height: 52px; border-radius: 50%; background: #223742; display: grid; place-items: center; font-size: 22px; font-weight: 700; border: 2px solid var(--gold);">U</div>
+                    <div>
+                      <strong id="inspName" style="font-size: 16px; color: #fff; display: block;">---</strong>
+                      <span id="inspEmail" style="font-size: 13px; color: var(--muted); direction: ltr; display: block;">---</span>
+                    </div>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">معرف المستخدم (ID):</span>
+                    <span class="inspect-val" id="inspId" style="font-family: monospace; font-size: 12px;">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">رقم الهاتف:</span>
+                    <span class="inspect-val" id="inspPhone">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">تاريخ إنشاء الحساب:</span>
+                    <span class="inspect-val" id="inspCreatedAt">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">نوع العضوية:</span>
+                    <span class="inspect-val" id="inspTier" style="color: var(--gold);">---</span>
+                  </div>
+                  <div class="inspect-row" style="background: rgba(239, 68, 68, 0.08); padding: 8px 10px; border-radius: 6px; margin-top: 6px;">
+                    <span class="inspect-label" style="color: #f87171;">🔒 كلمة المرور:</span>
+                    <span class="inspect-val" style="color: #f87171;">[محمية ومشفرة - لا تظهر] 🛡️</span>
+                  </div>
+                </div>
+
+                <!-- بطاقة 2: سجل الدخول والخروج (دخل وخرج) -->
+                <div class="inspect-card">
+                  <div class="inspect-card-head">
+                    <h3><span>🚪</span> مواعيد الدخول والخروج (دخل وخرج)</h3>
+                    <span class="badge-pill" id="inspOnlineStateBadge" style="background: var(--leaf); color: #000;">متصل</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">🟢 وقت آخر دخول (Login):</span>
+                    <span class="inspect-val" id="inspLastLogin" style="color: var(--leaf);">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">🔴 وقت آخر خروج (Logout):</span>
+                    <span class="inspect-val" id="inspLastOffline" style="color: var(--rose);">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">⚡ آخر نشاط مسجل:</span>
+                    <span class="inspect-val" id="inspLastActive">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">🔄 مرات الدخول اليوم:</span>
+                    <span class="inspect-val" id="inspDailyVisits" style="color: var(--teal); font-weight: 800;">---</span>
+                  </div>
+                  <div style="margin-top: 12px;">
+                    <strong style="font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px;">📜 السجل الزمني للجلسات (Session Timeline):</strong>
+                    <div class="timeline-box" id="inspTimelineBox">
+                      <!-- Session timeline logs -->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- بطاقة 3: كاشف الحسابات المتعددة (عندو كام حساب) -->
+                <div class="inspect-card">
+                  <div class="inspect-card-head">
+                    <h3><span>👥</span> كاشف الحسابات المتعددة</h3>
+                    <span class="badge-pill" id="inspAccountsCountBadge" style="background: #a855f7; color: #fff;">1 حساب</span>
+                  </div>
+                  <p style="margin: 0 0 10px; font-size: 13px; color: var(--muted);">
+                    كشف الحسابات المسجلة أو المستخدمة من نفس الجهاز أو عنوان الـ IP والشبكة:
+                  </p>
+                  <div class="linked-accounts-box" id="inspLinkedAccountsBox">
+                    <!-- Linked accounts list -->
+                  </div>
+                </div>
+
+                <!-- بطاقة 4: الدولة والموقع والشبكة والجهاز (من أي دولة) -->
+                <div class="inspect-card">
+                  <div class="inspect-card-head">
+                    <h3><span>🌍</span> الدولة والشبكة والجهاز</h3>
+                    <span class="badge-pill" id="inspCountryBadge" style="background: #0284c7; color: #fff;">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">📍 الدولة:</span>
+                    <span class="inspect-val" id="inspCountryName" style="font-size: 15px;">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">🌐 عنوان الـ IP:</span>
+                    <span class="inspect-val" id="inspIp" style="font-family: monospace;">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">💻 نوع الجهاز:</span>
+                    <span class="inspect-val" id="inspDeviceType">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">🪟 نظام التشغيل:</span>
+                    <span class="inspect-val" id="inspOs">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">🌐 المتصفح:</span>
+                    <span class="inspect-val" id="inspBrowser">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">✉️ إجمالي الرسائل المرسلة:</span>
+                    <span class="inspect-val" id="inspTotalMessages" style="color: var(--teal); font-weight: 700;">---</span>
+                  </div>
+                  <div class="inspect-row">
+                    <span class="inspect-label">👥 المجموعات المشترك فيها:</span>
+                    <span class="inspect-val" id="inspTotalGroups">---</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="deepInspectEmptyState" style="text-align: center; padding: 48px 20px; color: var(--muted);">
+              <div style="font-size: 42px; margin-bottom: 12px;">🔎</div>
+              <h3 style="margin: 0 0 8px; color: var(--text);">اختر مستخدماً من القائمة أعلاه لبدء الفحص الشامل</h3>
+              <p style="margin: 0; font-size: 14px;">سيعرض النظام سجلاً كاملاً لدخوله وخروجه، عدد حساباته، ودولته وجهازه، بدون إظهار الباسورد.</p>
             </div>
           </div>
         </section>
@@ -901,7 +1372,101 @@
         </section>
 
         <!-- تبويب 3: إدارة الإعلانات -->
-        <section class="tab-pane" id="adsTab" hidden>
+        
+      <!-- تبويب 7: إدارة أكواد الهدايا والخصومات الشهرية -->
+      <section class="tab-pane" id="promoCodesTab" hidden>
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h2 style="margin: 0; font-size: 20px;">🎁 إدارة أكواد الهدايا والخصومات الشهرية</h2>
+              <p style="margin: 4px 0 0; color: var(--muted); font-size: 13.5px;">إنشاء وتنزيل أكواد هدايا شهرية وباقات VIP مجانية وخصومات للمستخدمين ونشرها فوراً.</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnToggleNewPromoForm">
+              ➕ إنشاء كود هدية جديد
+            </button>
+          </div>
+
+          <!-- إحصائيات الأكواد -->
+          <div class="admin-promo-stats">
+            <div class="admin-promo-stat-card">
+              <span>إجمالي الأكواد النشطة</span>
+              <strong id="adminPromoActiveCount">0</strong>
+            </div>
+            <div class="admin-promo-stat-card">
+              <span>إجمالي مرات الاستخدام</span>
+              <strong id="adminPromoTotalRedeemed">0</strong>
+            </div>
+            <div class="admin-promo-stat-card">
+              <span>أحدث كود تم نشره</span>
+              <strong id="adminPromoLatestCode" style="font-size: 16px; font-family: monospace;">---</strong>
+            </div>
+          </div>
+
+          <!-- نموذج إنشاء كود جديد -->
+          <div id="newPromoFormWrap" style="display: none; background: rgba(255,255,255,0.03); border: 1.5px dashed rgba(236,72,153,0.4); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h3 style="margin-top: 0; font-size: 16px; color: #ec4899;">إضافة كود هدية أو خصم جديد</h3>
+            <form id="createPromoCodeForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+              <label class="field">
+                <span>رمز الكود (بالإنجليزية - حروف وأرقام) *</span>
+                <input type="text" id="adminNewPromoCode" placeholder="مثال: DEC2026 أو EID_GIFT" required style="text-transform: uppercase; font-family: monospace; font-weight: bold;" />
+              </label>
+
+              <label class="field">
+                <span>اسم الكود / المناسبة *</span>
+                <input type="text" id="adminNewPromoTitle" placeholder="مثال: كود هدية شهر ديسمبر 👑" required />
+              </label>
+
+              <label class="field">
+                <span>نوع الهدية أو الباقة *</span>
+                <select id="adminNewPromoType" style="height: 42px; border-radius: 8px; padding: 0 10px; background: var(--bg); color: var(--text); border: 1px solid var(--line);">
+                  <option value="both">👑 باقة شاتو بلاس + AI Plus معاً (شامل)</option>
+                  <option value="chato_plus">🎨 باقة شاتو بلاس VIP (محادثات وثيمات)</option>
+                  <option value="ai_plus">⚡ باقة الذكاء الاصطناعي AI Plus</option>
+                  <option value="discount">🏷️ خصم مئوي على الاشتراكات (%)</option>
+                  <option value="ai_quota">🎁 رصيد ذكاء اصطناعي إضافي</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>مدة الصلاحية (بالأيام)</span>
+                <input type="number" id="adminNewPromoDays" value="30" min="1" max="365" />
+              </label>
+
+              <label class="field" id="adminDiscountField" style="display: none;">
+                <span>نسبة الخصم (%)</span>
+                <input type="number" id="adminNewPromoDiscount" value="50" min="1" max="100" />
+              </label>
+
+              <label class="field">
+                <span>الحد الأقصى للمستخدمين (فارغ = غير محدود)</span>
+                <input type="number" id="adminNewPromoMaxUses" placeholder="مثال: 500" />
+              </label>
+
+              <label class="field" style="grid-column: 1 / -1;">
+                <span>وصف الهدية وما يحصل عليه المستخدم</span>
+                <input type="text" id="adminNewPromoDesc" placeholder="مثال: تفعيل باقة شاتو بلاس وباقة AI Plus مجاناً لمدة شهر كامل" />
+              </label>
+
+              <div style="grid-column: 1 / -1; display: flex; gap: 10px; margin-top: 8px;">
+                <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">
+                  حفظ الكود ونشره الآن 💾
+                </button>
+                <button type="button" class="btn" id="btnCancelNewPromoForm" style="background: rgba(255,255,255,0.08);">
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- قائمة الأكواد الحالية -->
+          <h3 style="font-size: 16px; margin: 0 0 12px;">قائمة الأكواد المتاحة:</h3>
+          <div id="adminPromoCodesList" style="display: grid; gap: 12px;">
+            <p style="color: var(--muted); text-align: center;">جاري تحميل الأكواد...</p>
+          </div>
+        </div>
+      </section>
+  
+      <section class="tab-pane" id="adsTab" hidden>
           <div class="card-box">
             <h3><span>إضافة إعلان أو تنبيه جديد لشاتو</span></h3>
             <form id="createAdForm">
@@ -1144,9 +1709,14 @@
     </dialog>
 
     <script>
-      // كلمة المرور الخاصة بالمالك
+      // كلمات المرور والأدوار المعتمدة
       const MASTER_PIN = "M0102141214";
-      const AUTH_KEY = "chato_admin_auth";
+      const STAFF_PIN = "Q0102141214";
+      const AUTH_PIN_KEY = "chato_admin_pin";
+      const AUTH_ROLE_KEY = "chato_admin_role";
+
+      let currentPin = sessionStorage.getItem(AUTH_PIN_KEY) || MASTER_PIN;
+      let currentRole = sessionStorage.getItem(AUTH_ROLE_KEY) || "owner";
 
       let allUsers = [];
       let allTickets = [];
@@ -1156,17 +1726,86 @@
 
       const el = (id) => document.getElementById(id);
 
-      // دالة إرسال الطلبات إلى الخادم مع توثيق الرمز السري للأدمن
+      // دالة إرسال الطلبات إلى الخادم مع توثيق الرمز السري للأدمن أو الموظف
       function adminFetch(url, options = {}) {
         const headers = options.headers || {};
-        headers["x-admin-pin"] = MASTER_PIN;
+        headers["x-admin-pin"] = currentPin;
         return fetch(url, { ...options, headers });
+      }
+
+      function resetLockScreen() {
+        if (el("portalChoiceWrap")) el("portalChoiceWrap").style.display = "block";
+        if (el("ownerPinWrap")) el("ownerPinWrap").style.display = "none";
+        if (el("staffPinWrap")) el("staffPinWrap").style.display = "none";
+        if (el("ownerLockError")) el("ownerLockError").textContent = "";
+        if (el("staffLockError")) el("staffLockError").textContent = "";
+        if (el("ownerPinInput")) el("ownerPinInput").value = "";
+        if (el("staffPinInput")) el("staffPinInput").value = "";
+      }
+
+      function applyRolePermissions(role) {
+        document.body.className = "role-" + role;
+        const isStaff = role === "staff";
+
+        // تحديث شريط الهيدر الجانبي
+        if (el("adminSidebarBadge")) el("adminSidebarBadge").textContent = isStaff ? "👔" : "👑";
+        if (el("adminSidebarTitle")) el("adminSidebarTitle").textContent = isStaff ? "Chato Staff" : "Chato Master";
+        if (el("adminSidebarRole")) el("adminSidebarRole").textContent = isStaff ? "فريق العمل والموظفين" : "المدير العام والمالك";
+
+        // تحديث شارة الدور في الشريط العلوي
+        if (el("adminCurrentRoleBadge")) {
+          el("adminCurrentRoleBadge").textContent = isStaff ? "فريق العمل والموظفين 👔" : "المدير العام 👑";
+          el("adminCurrentRoleBadge").style.background = isStaff ? "var(--teal)" : "var(--gold)";
+          el("adminCurrentRoleBadge").style.color = isStaff ? "#fff" : "#000";
+        }
+
+        // إخفاء/إظهار التبويبات الحصرية للمدير
+        document.querySelectorAll(".owner-only-nav").forEach(b => {
+          b.style.display = isStaff ? "none" : "flex";
+        });
+
+        // إخفاء/إظهار أعمدة الجدول الحصرية للمدير
+        document.querySelectorAll(".owner-th").forEach(th => {
+          th.style.display = isStaff ? "none" : "";
+        });
+
+        // إخفاء نموذج مسح الحسابات المباشر للموظف
+        const directDel = el("userManagementDirectDeleteWrap");
+        if (directDel) {
+          directDel.style.display = isStaff ? "none" : "flex";
+        }
+
+        // تخصيص العناوين بحسب الصلاحية
+        const pageTitle = el("pageTitle");
+        const pageSubtitle = el("pageSubtitle");
+        const usersTableTitle = el("usersTableSectionTitle");
+
+        if (isStaff) {
+          if (pageTitle) pageTitle.textContent = "👥 مراقبة وإدارة المستخدمين المتواجدين";
+          if (pageSubtitle) pageSubtitle.textContent = "متابعة الدولة، وقت وساعة الدخول، مرات التواجد، وإجراءات الباند والرسائل الإدارية";
+          if (usersTableTitle) usersTableTitle.textContent = "قائمة الأشخاص المتواجدين في البرنامج (صلاحيات الموظف)";
+        } else {
+          if (pageTitle) pageTitle.textContent = "إدارة المستخدمين والحسابات";
+          if (pageSubtitle) pageSubtitle.textContent = "مراقبة الجلسات، مسح أي حساب نهائياً، الحظر، والرسائل الإدارية";
+          if (usersTableTitle) usersTableTitle.textContent = "قائمة المستخدمين في شاتو وإدارة الحسابات (التحكم الكامل)";
+        }
+
+        // إذا كان الموظف على تبويب خاص بالمدير، نعيده لتبويب المستخدمين فوراً
+        const activeNav = document.querySelector(".nav-btn.active");
+        if (isStaff && activeNav && activeNav.classList.contains("owner-only-nav")) {
+          switchTab("usersTab");
+        }
       }
 
       // 1. فحص تسجيل دخول الأدمن وفصل الشاشتين تماماً
       function checkAuth() {
-        const savedAuth = sessionStorage.getItem(AUTH_KEY);
-        if (savedAuth === MASTER_PIN) {
+        const savedPin = sessionStorage.getItem(AUTH_PIN_KEY);
+        const savedRole = sessionStorage.getItem(AUTH_ROLE_KEY);
+
+        if ((savedPin === MASTER_PIN && savedRole === "owner") || (savedPin === STAFF_PIN && savedRole === "staff")) {
+          currentPin = savedPin;
+          currentRole = savedRole;
+          applyRolePermissions(currentRole);
           el("lockScreen").style.display = "none";
           el("adminLayout").style.display = "grid";
           loadDashboardData();
@@ -1176,6 +1815,7 @@
         } else {
           el("lockScreen").style.display = "flex";
           el("adminLayout").style.display = "none";
+          resetLockScreen();
           if (window.pollTimer) {
             clearInterval(window.pollTimer);
             window.pollTimer = null;
@@ -1183,49 +1823,308 @@
         }
       }
 
-      el("lockForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const pin = el("masterPinInput").value.trim();
-        if (pin === MASTER_PIN) {
-          sessionStorage.setItem(AUTH_KEY, MASTER_PIN);
-          el("lockError").textContent = "";
-          checkAuth();
-        } else {
-          el("lockError").textContent = "رمز المرور غير صحيح! حاول مرة أخرى.";
-        }
-      });
+      // أحداث أزرار اختيار البوابة في شاشة القفل
+      const btnSelectOwner = el("btnSelectOwnerPortal");
+      if (btnSelectOwner) {
+        btnSelectOwner.addEventListener("click", () => {
+          el("portalChoiceWrap").style.display = "none";
+          el("ownerPinWrap").style.display = "block";
+          el("ownerLockError").textContent = "";
+          setTimeout(() => el("ownerPinInput").focus(), 100);
+        });
+      }
+
+      const btnSelectStaff = el("btnSelectStaffPortal");
+      if (btnSelectStaff) {
+        btnSelectStaff.addEventListener("click", () => {
+          el("portalChoiceWrap").style.display = "none";
+          el("staffPinWrap").style.display = "block";
+          el("staffLockError").textContent = "";
+          setTimeout(() => el("staffPinInput").focus(), 100);
+        });
+      }
+
+      const btnBackOwner = el("btnBackFromOwner");
+      if (btnBackOwner) {
+        btnBackOwner.addEventListener("click", () => resetLockScreen());
+      }
+
+      const btnBackStaff = el("btnBackFromStaff");
+      if (btnBackStaff) {
+        btnBackStaff.addEventListener("click", () => resetLockScreen());
+      }
+
+      // تسجيل دخول المدير العام (Master PIN)
+      const ownerLockForm = el("ownerLockForm");
+      if (ownerLockForm) {
+        ownerLockForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const pin = el("ownerPinInput").value.trim();
+          if (pin === MASTER_PIN) {
+            sessionStorage.setItem(AUTH_PIN_KEY, MASTER_PIN);
+            sessionStorage.setItem(AUTH_ROLE_KEY, "owner");
+            el("ownerLockError").textContent = "";
+            checkAuth();
+          } else if (pin === STAFF_PIN) {
+            el("ownerLockError").textContent = "عفواً، هذه البوابة مخصصة للمدير العام فقط! يرجى الدخول من بوابة الموظفين 🔒";
+          } else {
+            el("ownerLockError").textContent = "رمز مرور المدير العام غير صحيح! حاول مرة أخرى.";
+          }
+        });
+      }
+
+      // تسجيل دخول الموظفين (Staff PIN)
+      const staffLockForm = el("staffLockForm");
+      if (staffLockForm) {
+        staffLockForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const pin = el("staffPinInput").value.trim();
+          if (pin === STAFF_PIN) {
+            sessionStorage.setItem(AUTH_PIN_KEY, STAFF_PIN);
+            sessionStorage.setItem(AUTH_ROLE_KEY, "staff");
+            el("staffLockError").textContent = "";
+            checkAuth();
+          } else if (pin === MASTER_PIN) {
+            sessionStorage.setItem(AUTH_PIN_KEY, MASTER_PIN);
+            sessionStorage.setItem(AUTH_ROLE_KEY, "owner");
+            el("staffLockError").textContent = "";
+            checkAuth();
+          } else {
+            el("staffLockError").textContent = "رمز مرور الموظفين غير صحيح! يرجى التأكد من الرمز (Q0102141214) والمحاولة ثانية.";
+          }
+        });
+      }
 
       el("lockoutBtn").addEventListener("click", () => {
-        sessionStorage.removeItem(AUTH_KEY);
+        sessionStorage.removeItem(AUTH_PIN_KEY);
+        sessionStorage.removeItem(AUTH_ROLE_KEY);
         location.reload();
       });
 
       // التنقل بين التبويبات
-      document.querySelectorAll(".nav-btn[data-tab]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".nav-btn[data-tab]").forEach((b) => b.classList.remove("active"));
-          document.querySelectorAll(".tab-pane").forEach((p) => (p.hidden = true));
-          btn.classList.add("active");
-          const tabId = btn.getAttribute("data-tab");
-          el(tabId).hidden = false;
+      
 
-          if (tabId === "usersTab") el("pageTitle").textContent = "إدارة المستخدمين والحسابات";
-          if (tabId === "reportsTab") {
-            el("pageTitle").textContent = "إدارة البلاغات والشكاوى ضد المستخدمين 🚩";
-            loadReports();
-          }
-          if (tabId === "aiConfigTab") {
-            el("pageTitle").textContent = "إعدادات محركات الذكاء الاصطناعي (Chato Assistant) 🤖";
-            loadAiConfig();
-          }
-          if (tabId === "supportTab") el("pageTitle").textContent = "مركز الدعم الفني المباشر";
-          if (tabId === "adsTab") el("pageTitle").textContent = "إدارة الإعلانات والتنبيهات";
-          if (tabId === "databasesTab") {
-            el("pageTitle").textContent = "نظام قواعد البيانات المعزولة (Database-per-User & Database-per-Chat)";
-            loadDatabasesOverview();
-          }
-        });
+    // ==========================================================================
+    // إدارة أكواد الهدايا والخصومات (Admin Promo Codes Controller)
+    // ==========================================================================
+    const btnToggleNewPromoForm = document.getElementById("btnToggleNewPromoForm");
+    const btnCancelNewPromoForm = document.getElementById("btnCancelNewPromoForm");
+    const newPromoFormWrap = document.getElementById("newPromoFormWrap");
+    const createPromoCodeForm = document.getElementById("createPromoCodeForm");
+    const adminNewPromoType = document.getElementById("adminNewPromoType");
+    const adminDiscountField = document.getElementById("adminDiscountField");
+
+    if (btnToggleNewPromoForm) {
+      btnToggleNewPromoForm.addEventListener("click", () => {
+        if (newPromoFormWrap) {
+          const isHidden = newPromoFormWrap.style.display === "none";
+          newPromoFormWrap.style.display = isHidden ? "block" : "none";
+          btnToggleNewPromoForm.textContent = isHidden ? "✕ إغلاق النموذج" : "➕ إنشاء كود هدية جديد";
+        }
       });
+    }
+
+    if (btnCancelNewPromoForm) {
+      btnCancelNewPromoForm.addEventListener("click", () => {
+        if (newPromoFormWrap) newPromoFormWrap.style.display = "none";
+        if (btnToggleNewPromoForm) btnToggleNewPromoForm.textContent = "➕ إنشاء كود هدية جديد";
+      });
+    }
+
+    if (adminNewPromoType) {
+      adminNewPromoType.addEventListener("change", () => {
+        if (adminDiscountField) {
+          adminDiscountField.style.display = adminNewPromoType.value === "discount" ? "block" : "none";
+        }
+      });
+    }
+
+    async function loadAdminPromoCodes() {
+      try {
+        const res = await fetch("/api/admin/promo/codes?pin=" + encodeURIComponent(currentPin));
+        if (!res.ok) return;
+        const data = await res.json();
+        const codes = Array.isArray(data.codes) ? data.codes : [];
+
+        const badge = document.getElementById("promoCountBadge");
+        if (badge) badge.textContent = String(codes.length);
+
+        const activeCountEl = document.getElementById("adminPromoActiveCount");
+        const totalRedeemedEl = document.getElementById("adminPromoTotalRedeemed");
+        const latestCodeEl = document.getElementById("adminPromoLatestCode");
+
+        if (activeCountEl) activeCountEl.textContent = String(codes.filter(c => c.isActive !== false).length);
+        if (totalRedeemedEl) totalRedeemedEl.textContent = String(data.totalRedemptions || 0);
+        if (latestCodeEl) latestCodeEl.textContent = codes[0]?.code || "---";
+
+        renderAdminPromoCodesList(codes);
+      } catch (err) {
+        console.error("Failed to load admin promo codes:", err);
+      }
+    }
+
+    function renderAdminPromoCodesList(codes) {
+      const listEl = document.getElementById("adminPromoCodesList");
+      if (!listEl) return;
+
+      if (codes.length === 0) {
+        listEl.innerHTML = '<p style="color: var(--muted); text-align: center; padding: 20px;">لا توجد أكواد هدايا مسجلة حالياً.</p>';
+        return;
+      }
+
+      listEl.innerHTML = codes.map((c) => {
+        const typeLabel = c.type === "both" ? "👑 باقة شاملة (Plus + AI)"
+          : c.type === "chato_plus" ? "🎨 باقة شاتو بلاس"
+          : c.type === "ai_plus" ? "⚡ باقة AI Plus"
+          : c.type === "discount" ? ("🏷️ خصم " + (c.discountPercent || 50) + "%")
+          : "🎁 رصيد ذكاء اصطناعي إضافي";
+
+        const expiryStr = c.expiresAt ? new Date(c.expiresAt).toLocaleDateString("ar-EG") : "غير محدد";
+        const isExpired = c.expiresAt && c.expiresAt < Date.now();
+
+        return `
+          <div class="promo-code-item-card">
+            <div class="promo-code-top-row">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="promo-code-badge">${c.code}</span>
+                <strong style="font-size: 15px;">${c.title || c.code}</strong>
+                <span class="badge-pill" style="background: rgba(14,165,233,0.18); color: #38bdf8;">${typeLabel}</span>
+                ${isExpired ? '<span class="badge-pill" style="background:#ef4444; color:#fff;">منتهي</span>' : '<span class="badge-pill" style="background:#22c55e; color:#fff;">نشط</span>'}
+              </div>
+
+              <div class="promo-code-actions">
+                <button type="button" class="btn-broadcast-promo" onclick="broadcastPromoCode('${c.code}')" title="نشر الكود كإعلان رسمي فوري لجميع المستخدمين">
+                  📢 نشر كإعلان هدية
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" onclick="deletePromoCode('${c.id}')" title="حذف الكود">
+                  🗑️ حذف
+                </button>
+              </div>
+            </div>
+
+            <p style="margin: 0; font-size: 13.5px; color: var(--muted);">${c.description || "لا يوجد وصف"}</p>
+
+            <div style="display: flex; gap: 18px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px;">
+              <span>⏳ الصلاحية: <strong>${c.durationDays || 30} يوماً</strong> (حتى ${expiryStr})</span>
+              <span>👥 مرات الاستخدام: <strong>${c.timesUsed || 0} ${c.maxUses ? '/ ' + c.maxUses : '(غير محدود)'}</strong></span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // إنشاء كود جديد من لوحة الأدمن
+    if (createPromoCodeForm) {
+      createPromoCodeForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const code = document.getElementById("adminNewPromoCode")?.value.trim().toUpperCase();
+        const title = document.getElementById("adminNewPromoTitle")?.value.trim();
+        const type = document.getElementById("adminNewPromoType")?.value;
+        const durationDays = Number(document.getElementById("adminNewPromoDays")?.value) || 30;
+        const discountPercent = Number(document.getElementById("adminNewPromoDiscount")?.value) || 50;
+        const maxUses = document.getElementById("adminNewPromoMaxUses")?.value;
+        const description = document.getElementById("adminNewPromoDesc")?.value.trim();
+
+        try {
+          const res = await fetch("/api/admin/promo/create?pin=" + encodeURIComponent(currentPin), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              code,
+              title,
+              type,
+              durationDays,
+              discountPercent,
+              maxUses: maxUses ? Number(maxUses) : null,
+              description
+            })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "فشل إنشاء الكود");
+
+          alert("تم إنشاء كود الهدية بنجاح! 🎁");
+          createPromoCodeForm.reset();
+          if (newPromoFormWrap) newPromoFormWrap.style.display = "none";
+          if (btnToggleNewPromoForm) btnToggleNewPromoForm.textContent = "➕ إنشاء كود هدية جديد";
+          loadAdminPromoCodes();
+        } catch (err) {
+          alert("خطأ: " + err.message);
+        }
+      });
+    }
+
+    // نشر الكود كإعلان فوري لجميع المستخدمين
+    window.broadcastPromoCode = async function(code) {
+      if (!confirm(`هل أنت متأكد من نشر الكود [${code}] كإعلان رسمي لجميع المستخدمين في قناة الإعلانات فوراً؟`)) return;
+      try {
+        const res = await fetch("/api/admin/promo/broadcast?pin=" + encodeURIComponent(currentPin), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "فشل نشر الإعلان");
+        alert("🎉 تم نشر كود الهدية كإعلان فوري في شاتو لجميع المستخدمين!");
+      } catch (err) {
+        alert("خطأ أثناء النشر: " + err.message);
+      }
+    };
+
+    // حذف الكود
+    window.deletePromoCode = async function(id) {
+      if (!confirm("هل أنت متأكد من حذف هذا الكود؟ لن يتمكن المستخدمون الجدد من استخدامه.")) return;
+      try {
+        const res = await fetch("/api/admin/promo/delete?pin=" + encodeURIComponent(currentPin), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id })
+        });
+        if (!res.ok) throw new Error("فشل حذف الكود");
+        loadAdminPromoCodes();
+      } catch (err) {
+        alert("خطأ: " + err.message);
+      }
+    };
+  
+    function switchTab(tabId) {
+      document.querySelectorAll(".nav-btn[data-tab]").forEach((b) => b.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach((p) => (p.hidden = true));
+      const activeBtn = document.querySelector(`.nav-btn[data-tab="${tabId}"]`);
+      if (activeBtn) activeBtn.classList.add("active");
+      const pane = el(tabId);
+      if (pane) pane.hidden = false;
+
+      const isStaff = currentRole === "staff";
+      if (tabId === "usersTab") {
+        el("pageTitle").textContent = isStaff ? "👥 مراقبة وإدارة المستخدمين المتواجدين" : "👥 إدارة المستخدمين والحسابات";
+      } else if (tabId === "deepInspectorTab") {
+        el("pageTitle").textContent = "🔎 كاشف الحسابات والمعلومات الشاملة للمدير العام 👑";
+        populateDeepInspectSelect();
+      } else if (tabId === "reportsTab") {
+        el("pageTitle").textContent = "إدارة البلاغات والشكاوى ضد المستخدمين 🚩";
+        loadReports();
+      } else if (tabId === "aiConfigTab") {
+        el("pageTitle").textContent = "إعدادات محركات الذكاء الاصطناعي (Chato Assistant) 🤖";
+        loadAiConfig();
+      } else if (tabId === "supportTab") {
+        el("pageTitle").textContent = "🎧 مركز الدعم الفني المباشر";
+      } else if (tabId === "promoCodesTab") {
+        el("pageTitle").textContent = "أكواد الهدايا والخصومات الترويجية 🎁";
+        loadAdminPromoCodes();
+      } else if (tabId === "adsTab") {
+        el("pageTitle").textContent = "إدارة الإعلانات والتنبيهات 📢";
+      } else if (tabId === "databasesTab") {
+        el("pageTitle").textContent = "نظام قواعد البيانات المعزولة (Database-per-User & Database-per-Chat)";
+        loadDatabasesOverview();
+      }
+    }
+
+    document.querySelectorAll(".nav-btn[data-tab]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tabId = btn.getAttribute("data-tab");
+        switchTab(tabId);
+      });
+    });
 
       el("refreshDbsBtn")?.addEventListener("click", () => {
         loadDatabasesOverview();
@@ -1330,6 +2229,22 @@
         }).format(ts);
       }
 
+      function formatLoginTime(ts) {
+        if (!ts) return "—";
+        try {
+          const d = new Date(ts);
+          const today = new Date().toISOString().slice(0, 10);
+          const itemDay = d.toISOString().slice(0, 10);
+          const timeStr = d.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit", hour12: true });
+          if (itemDay === today) {
+            return `اليوم ⏰ ${timeStr}`;
+          }
+          return `${d.toLocaleDateString("ar-EG", { month: "numeric", day: "numeric" })} ⏰ ${timeStr}`;
+        } catch {
+          return formatDate(ts);
+        }
+      }
+
       // ==========================================
       // رندرة المستخدمين
       // ==========================================
@@ -1338,14 +2253,17 @@
         const tbody = el("usersTableBody");
         tbody.innerHTML = "";
 
+        const isStaff = currentRole === "staff";
+
         const filtered = allUsers.filter((u) => {
           const uName = String(u.name || u.displayName || u.username || "").toLowerCase();
           const uEmail = String(u.email || "").toLowerCase();
-          return uName.includes(query) || uEmail.includes(query);
+          const uCountry = String(u.country || "").toLowerCase();
+          return uName.includes(query) || uEmail.includes(query) || uCountry.includes(query);
         });
 
         if (!filtered.length) {
-          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--muted); padding: 24px;">لا يوجد مستخدمون مطابقون</td></tr>';
+          tbody.innerHTML = `<tr><td colspan="${isStaff ? 7 : 11}" style="text-align:center; color: var(--muted); padding: 24px;">لا يوجد مستخدمون مطابقون</td></tr>`;
           return;
         }
 
@@ -1378,62 +2296,67 @@
 
           // بريد
           const emailCell = document.createElement("td");
+          emailCell.style.direction = "ltr";
+          emailCell.style.textAlign = "right";
           emailCell.textContent = u.email;
 
-          // كلمة المرور (Password)
+          // كلمة المرور (Password) - للمدير فقط
           const passwordCell = document.createElement("td");
-          if (u.password) {
-            const pwWrapper = document.createElement("div");
-            pwWrapper.style.display = "inline-flex";
-            pwWrapper.style.alignItems = "center";
-            pwWrapper.style.gap = "6px";
-            pwWrapper.style.background = "#090f13";
-            pwWrapper.style.border = "1px solid var(--line)";
-            pwWrapper.style.borderRadius = "6px";
-            pwWrapper.style.padding = "3px 8px";
+          passwordCell.className = "owner-td";
+          if (!isStaff) {
+            if (u.password) {
+              const pwWrapper = document.createElement("div");
+              pwWrapper.style.display = "inline-flex";
+              pwWrapper.style.alignItems = "center";
+              pwWrapper.style.gap = "6px";
+              pwWrapper.style.background = "#090f13";
+              pwWrapper.style.border = "1px solid var(--line)";
+              pwWrapper.style.borderRadius = "6px";
+              pwWrapper.style.padding = "3px 8px";
 
-            const pwVal = document.createElement("span");
-            pwVal.dataset.revealed = "0";
-            pwVal.textContent = "••••••••";
-            pwVal.style.fontFamily = "monospace";
-            pwVal.style.fontSize = "13px";
-            pwVal.style.color = "var(--gold)";
+              const pwVal = document.createElement("span");
+              pwVal.dataset.revealed = "0";
+              pwVal.textContent = "••••••••";
+              pwVal.style.fontFamily = "monospace";
+              pwVal.style.fontSize = "13px";
+              pwVal.style.color = "var(--gold)";
 
-            const eyeBtn = document.createElement("button");
-            eyeBtn.type = "button";
-            eyeBtn.textContent = "👁️";
-            eyeBtn.title = "إظهار / إخفاء كلمة المرور";
-            eyeBtn.style.background = "transparent";
-            eyeBtn.style.border = "none";
-            eyeBtn.style.cursor = "pointer";
-            eyeBtn.style.fontSize = "12px";
-            eyeBtn.addEventListener("click", () => {
-              if (pwVal.dataset.revealed === "1") {
-                pwVal.textContent = "••••••••";
-                pwVal.dataset.revealed = "0";
-              } else {
-                pwVal.textContent = u.password;
-                pwVal.dataset.revealed = "1";
-              }
-            });
+              const eyeBtn = document.createElement("button");
+              eyeBtn.type = "button";
+              eyeBtn.textContent = "👁️";
+              eyeBtn.title = "إظهار / إخفاء كلمة المرور";
+              eyeBtn.style.background = "transparent";
+              eyeBtn.style.border = "none";
+              eyeBtn.style.cursor = "pointer";
+              eyeBtn.style.fontSize = "12px";
+              eyeBtn.addEventListener("click", () => {
+                if (pwVal.dataset.revealed === "1") {
+                  pwVal.textContent = "••••••••";
+                  pwVal.dataset.revealed = "0";
+                } else {
+                  pwVal.textContent = u.password;
+                  pwVal.dataset.revealed = "1";
+                }
+              });
 
-            const copyBtn = document.createElement("button");
-            copyBtn.type = "button";
-            copyBtn.textContent = "📋";
-            copyBtn.title = "نسخ كلمة المرور للحافظة";
-            copyBtn.style.background = "transparent";
-            copyBtn.style.border = "none";
-            copyBtn.style.cursor = "pointer";
-            copyBtn.style.fontSize = "12px";
-            copyBtn.addEventListener("click", () => {
-              navigator.clipboard.writeText(u.password);
-              alert("تم نسخ كلمة المرور: " + u.password);
-            });
+              const copyBtn = document.createElement("button");
+              copyBtn.type = "button";
+              copyBtn.textContent = "📋";
+              copyBtn.title = "نسخ كلمة المرور للحافظة";
+              copyBtn.style.background = "transparent";
+              copyBtn.style.border = "none";
+              copyBtn.style.cursor = "pointer";
+              copyBtn.style.fontSize = "12px";
+              copyBtn.addEventListener("click", () => {
+                navigator.clipboard.writeText(u.password);
+                alert("تم نسخ كلمة المرور: " + u.password);
+              });
 
-            pwWrapper.append(pwVal, eyeBtn, copyBtn);
-            passwordCell.appendChild(pwWrapper);
-          } else {
-            passwordCell.innerHTML = `<span style="color:var(--muted); font-size:11.5px;">[غير مسجلة]</span>`;
+              pwWrapper.append(pwVal, eyeBtn, copyBtn);
+              passwordCell.appendChild(pwWrapper);
+            } else {
+              passwordCell.innerHTML = `<span style="color:var(--muted); font-size:11.5px;">[غير مسجلة]</span>`;
+            }
           }
 
           // الحالة
@@ -1452,48 +2375,226 @@
           const countryCell = document.createElement("td");
           countryCell.innerHTML = `<strong style="font-size:13px; color:var(--text);">${u.country || "مصر 🇪🇬"}</strong>`;
 
+          // ساعة الدخول
+          const loginCell = document.createElement("td");
+          loginCell.style.fontSize = "12.5px";
+          loginCell.style.color = "var(--leaf)";
+          loginCell.style.fontWeight = "600";
+          loginCell.innerHTML = formatLoginTime(u.lastLogin);
+
           // دخول اليوم
           const dailyCell = document.createElement("td");
           dailyCell.innerHTML = `<span class="status-pill online" style="background:rgba(2, 132, 199, 0.15); color:#0284c7; font-weight:700;">${u.dailyVisits || 1} مرات</span>`;
 
-          // عدد الحسابات
+          // عدد الحسابات (خاص بالمدير)
           const accountsCell = document.createElement("td");
+          accountsCell.className = "owner-td";
           accountsCell.innerHTML = `<span class="status-pill" style="background:rgba(168, 85, 247, 0.15); color:#a855f7; font-weight:700;">${u.accountsCount || 1} حسابات 👥</span>`;
 
-          // وقت الدخول والخروج
-          const loginCell = document.createElement("td");
-          loginCell.style.fontSize = "12px";
-          loginCell.textContent = formatDate(u.lastLogin);
-
+          // وقت الخروج (خاص بالمدير)
           const activeCell = document.createElement("td");
+          activeCell.className = "owner-td";
           activeCell.style.fontSize = "12px";
           activeCell.textContent = u.isOnline ? "متصل الآن 🟢" : formatDate(u.lastOffline || u.lastActive);
 
+          // تاريخ التسجيل (خاص بالمدير)
           const createdCell = document.createElement("td");
+          createdCell.className = "owner-td";
           createdCell.style.fontSize = "12px";
           createdCell.textContent = formatDate(u.createdAt);
 
           // أزرار التحكم والمسح
           const actionsCell = document.createElement("td");
-          actionsCell.innerHTML = `
-            <div class="action-btns">
-              <button class="btn-action-icon danger" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.5); color: #f87171; font-weight: 700;" title="مسح وحذف هذا الحساب نهائياً من قاعدة البيانات" onclick="deleteUserAccount('${u.email}', '${u.name}')">🗑️ مسح الحساب</button>
-              <button class="btn-action-icon" style="background: rgba(255, 183, 3, 0.15); border-color: rgba(255, 183, 3, 0.5); color: #ffb703; font-weight:600;" title="تغيير أو إعادة تعيين كلمة المرور للمستخدم" onclick="openResetPasswordModal('${u.email}', '${u.name}')">🔑 تغيير الباسورد</button>
-              <button class="btn-action-icon" title="إرسال رسالة خاصة مؤقتة له" onclick="openDirectMessage('${u.email}', '${u.name}')">✉️ رسالة بوقت</button>
-              ${
-                u.status === "banned" || u.status === "suspended"
-                  ? `<button class="btn-action-icon success" title="إلغاء الحظر وتفعيل الحساب" onclick="changeUserStatus('${u.email}', 'active')">✓ تفعيل</button>`
-                  : `
-                    <button class="btn-action-icon warn" title="إيقاف مؤقت" onclick="openSuspendModal('${u.email}', '${u.name}')">⏳ إيقاف</button>
-                    <button class="btn-action-icon danger" title="حظر دائم" onclick="banUser('${u.email}')">🚫 حظر</button>
-                  `
-              }
-            </div>
-          `;
+          if (isStaff) {
+            // إجراءات الموظف الثلاثة المطلوبة حصراً:
+            // 1. يبنده (حظر دائم)
+            // 2. تبنيد مؤقت
+            // 3. يبعتله رسالة من إدارة شاتو
+            actionsCell.innerHTML = `
+              <div class="action-btns">
+                <button class="btn-action-icon" style="background: rgba(0, 168, 132, 0.2); border-color: var(--teal); color: #2dd4bf; font-weight: 700;" title="إرسال رسالة رسمية له من إدارة شاتو" onclick="openDirectMessage('${u.email}', '${u.name}')">✉️ رسالة إدارة شاتو</button>
+                ${
+                  u.status === "banned" || u.status === "suspended"
+                    ? `<button class="btn-action-icon success" title="إلغاء الحظر وتفعيل الحساب" onclick="changeUserStatus('${u.email}', 'active')">✓ تفعيل</button>`
+                    : `
+                      <button class="btn-action-icon warn" title="تبنيد مؤقت للمستخدم لعدة ساعات أو أيام" onclick="openSuspendModal('${u.email}', '${u.name}')">⏳ تبنيد مؤقت</button>
+                      <button class="btn-action-icon danger" title="تبنيد وحظر الحساب بشكل دائم" onclick="banUser('${u.email}')">🚫 تبنيد دائم</button>
+                    `
+                }
+              </div>
+            `;
+            tr.append(userCell, emailCell, statusCell, countryCell, loginCell, dailyCell, actionsCell);
+          } else {
+            actionsCell.innerHTML = `
+              <div class="action-btns">
+                <button class="btn-action-icon" style="background: rgba(255, 183, 3, 0.2); border-color: var(--gold); color: #fbbf24; font-weight: 800;" title="فتح كاشف الحسابات والمعلومات الشاملة لهذا المستخدم" onclick="openDeepInspect('${u.email}')">🔎 فحص شامل</button>
+                <button class="btn-action-icon danger" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.5); color: #f87171; font-weight: 700;" title="مسح وحذف هذا الحساب نهائياً من قاعدة البيانات" onclick="deleteUserAccount('${u.email}', '${u.name}')">🗑️ مسح الحساب</button>
+                <button class="btn-action-icon" style="background: rgba(255, 183, 3, 0.15); border-color: rgba(255, 183, 3, 0.5); color: #ffb703; font-weight:600;" title="تغيير أو إعادة تعيين كلمة المرور للمستخدم" onclick="openResetPasswordModal('${u.email}', '${u.name}')">🔑 تغيير الباسورد</button>
+                <button class="btn-action-icon" title="إرسال رسالة خاصة مؤقتة له" onclick="openDirectMessage('${u.email}', '${u.name}')">✉️ رسالة إدارة شاتو</button>
+                ${
+                  u.status === "banned" || u.status === "suspended"
+                    ? `<button class="btn-action-icon success" title="إلغاء الحظر وتفعيل الحساب" onclick="changeUserStatus('${u.email}', 'active')">✓ تفعيل</button>`
+                    : `
+                      <button class="btn-action-icon warn" title="إيقاف مؤقت" onclick="openSuspendModal('${u.email}', '${u.name}')">⏳ إيقاف</button>
+                      <button class="btn-action-icon danger" title="حظر دائم" onclick="banUser('${u.email}')">🚫 حظر</button>
+                    `
+                }
+              </div>
+            `;
+            tr.append(userCell, emailCell, passwordCell, statusCell, countryCell, loginCell, dailyCell, accountsCell, activeCell, createdCell, actionsCell);
+          }
 
-          tr.append(userCell, emailCell, passwordCell, statusCell, countryCell, dailyCell, accountsCell, loginCell, activeCell, createdCell, actionsCell);
           tbody.appendChild(tr);
         });
+
+        populateDeepInspectSelect();
+      }
+
+      // ==========================================
+      // كاشف الحسابات والمعلومات الشاملة الحصري للمدير (بدون الباسورد)
+      // ==========================================
+      function populateDeepInspectSelect() {
+        const select = el("deepInspectUserSelect");
+        if (!select) return;
+        const currentVal = select.value;
+        select.innerHTML = '<option value="">-- اختر مستخدماً للفحص الشامل --</option>';
+        allUsers.forEach((u) => {
+          const opt = document.createElement("option");
+          opt.value = u.email;
+          const uName = u.name || u.displayName || u.username || u.email.split("@")[0];
+          opt.textContent = `${uName} (${u.email}) - ${u.country || "مصر 🇪🇬"}`;
+          if (u.email === currentVal) opt.selected = true;
+          select.appendChild(opt);
+        });
+      }
+
+      const selectDeepInspect = el("deepInspectUserSelect");
+      if (selectDeepInspect) {
+        selectDeepInspect.addEventListener("change", (e) => {
+          const email = e.target.value;
+          fetchAndRenderDeepInspect(email);
+        });
+      }
+
+      const btnRefreshDeepInspect = el("btnRefreshDeepInspect");
+      if (btnRefreshDeepInspect) {
+        btnRefreshDeepInspect.addEventListener("click", () => {
+          const email = el("deepInspectUserSelect")?.value;
+          if (email) fetchAndRenderDeepInspect(email);
+        });
+      }
+
+      window.openDeepInspect = function (email) {
+        switchTab("deepInspectorTab");
+        const select = el("deepInspectUserSelect");
+        if (select) {
+          select.value = email;
+        }
+        fetchAndRenderDeepInspect(email);
+      };
+
+      async function fetchAndRenderDeepInspect(email) {
+        if (!email) {
+          el("deepInspectResultWrap").style.display = "none";
+          el("deepInspectEmptyState").style.display = "block";
+          return;
+        }
+        try {
+          const res = await adminFetch("/api/admin/user-deep-inspect?email=" + encodeURIComponent(email));
+          if (!res.ok) {
+            alert("تعذر جلب تفاصيل الفحص الشامل للمستخدم");
+            return;
+          }
+          const data = await res.json();
+          const insp = data.inspection;
+          if (!insp) return;
+
+          el("deepInspectEmptyState").style.display = "none";
+          el("deepInspectResultWrap").style.display = "block";
+
+          // ملء بيانات الهوية
+          el("inspName").textContent = insp.name;
+          el("inspEmail").textContent = insp.email;
+          el("inspId").textContent = insp.id;
+          el("inspPhone").textContent = insp.phone || "غير مسجل";
+          el("inspCreatedAt").textContent = formatDate(insp.createdAt);
+          el("inspTier").textContent = insp.stats?.hasVipPlus ? "عضوية VIP بلس 👑" : "عضوية عادية";
+          el("inspStatusBadge").textContent = insp.status === "banned" ? "محظور نهائياً 🚫" : (insp.status === "suspended" ? "موقوف مؤقتاً ⏳" : "نشط ✓");
+          el("inspStatusBadge").className = "status-pill " + (insp.status === "banned" ? "banned" : (insp.status === "suspended" ? "suspended" : "online"));
+
+          const avEl = el("inspAvatar");
+          if (insp.image) {
+            avEl.innerHTML = `<img src="${insp.image}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />`;
+          } else {
+            avEl.textContent = (insp.name[0] || "U").toUpperCase();
+          }
+
+          // ملء مواعيد الدخول والخروج (دخل وخرج)
+          el("inspOnlineStateBadge").textContent = insp.isOnline ? "متصل الآن 🟢" : "غير متصل ⚪";
+          el("inspOnlineStateBadge").style.background = insp.isOnline ? "var(--leaf)" : "var(--line)";
+          el("inspOnlineStateBadge").style.color = insp.isOnline ? "#000" : "#fff";
+          el("inspLastLogin").textContent = formatLoginTime(insp.lastLogin);
+          el("inspLastOffline").textContent = insp.lastOffline ? formatLoginTime(insp.lastOffline) : "لم يسجل خروجاً بعد";
+          el("inspLastActive").textContent = formatDate(insp.lastActive);
+          el("inspDailyVisits").textContent = (insp.dailyVisits || 1) + " مرات دخول اليوم";
+
+          // عرض السجل الزمني للجلسات
+          const timelineBox = el("inspTimelineBox");
+          timelineBox.innerHTML = "";
+          if (insp.sessionLogs && insp.sessionLogs.length) {
+            insp.sessionLogs.forEach((log) => {
+              const item = document.createElement("div");
+              item.className = "timeline-entry " + log.type;
+              const isLogin = log.type === "login";
+              const icon = isLogin ? "🟢 تسجيل دخول" : "🔴 تسجيل خروج";
+              const timeStr = formatLoginTime(log.time);
+              const loc = log.country ? ` | الدولة: ${log.country}` : "";
+              const ipStr = log.ip ? ` | IP: ${log.ip}` : "";
+              item.innerHTML = `<strong>${icon}</strong>: ${timeStr}${loc}${ipStr}`;
+              timelineBox.appendChild(item);
+            });
+          } else {
+            timelineBox.innerHTML = '<div style="color:var(--muted); font-size:12.5px; padding:8px;">لا توجد سجلات دخول سابقة للمستخدم</div>';
+          }
+
+          // كاشف الحسابات المتعددة (عندو كام حساب)
+          el("inspAccountsCountBadge").textContent = (insp.accountsCount || 1) + " حسابات مكتشفة 👥";
+          const linkedBox = el("inspLinkedAccountsBox");
+          linkedBox.innerHTML = "";
+          if (insp.linkedAccounts && insp.linkedAccounts.length) {
+            insp.linkedAccounts.forEach((acc) => {
+              const accEl = document.createElement("div");
+              accEl.className = "linked-acc-item";
+              accEl.innerHTML = `
+                <div>
+                  <strong style="color:#fff; font-size:13.5px;">${acc.name}</strong>
+                  <span style="display:block; color:var(--muted); font-size:11.5px; direction:ltr; text-align:right;">${acc.email}</span>
+                  <span style="display:block; color:var(--teal); font-size:11px; margin-top:2px;">الربط: ${acc.sharedReason}</span>
+                </div>
+                <div style="text-align:left; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                  <span class="status-pill ${acc.isOnline ? "online" : "offline"}" style="font-size:11px; padding:2px 6px;">${acc.isOnline ? "متصل" : "غير متصل"}</span>
+                  <button type="button" class="btn-sm-outline" style="font-size:11px; padding:3px 8px; border-color:var(--gold); color:var(--gold);" onclick="openDeepInspect('${acc.email}')">فحص الحساب ↗</button>
+                </div>
+              `;
+              linkedBox.appendChild(accEl);
+            });
+          } else {
+            linkedBox.innerHTML = '<div style="color:var(--muted); font-size:13px; padding:12px; text-align:center;">لا توجد حسابات أخرى مرتبطة بهذا الجهاز أو الـ IP (حساب فردي مستقل) ✓</div>';
+          }
+
+          // الدولة والشبكة والجهاز (من أي دولة)
+          el("inspCountryBadge").textContent = insp.country || "مصر 🇪🇬";
+          el("inspCountryName").textContent = insp.country || "مصر 🇪🇬";
+          el("inspIp").textContent = insp.lastIp || "غير مسجل";
+          el("inspDeviceType").textContent = insp.device?.type || "كمبيوتر مكتبي 💻";
+          el("inspOs").textContent = insp.device?.os || "نظام غير معروف";
+          el("inspBrowser").textContent = insp.device?.browser || "متصفح غير معروف";
+          el("inspTotalMessages").textContent = (insp.stats?.totalMessagesSent || 0) + " رسالة مرسلة";
+          el("inspTotalGroups").textContent = (insp.stats?.totalGroupsJoined || 0) + " مجموعات";
+
+        } catch (err) {
+          console.error("Deep inspect error:", err);
+        }
       }
 
       el("userSearchInput").addEventListener("input", renderUsers);
