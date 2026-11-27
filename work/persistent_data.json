@@ -64,7 +64,7 @@
     {
       "email": "mo.mstfa.85@gmail.com",
       "day": "2026-11-27",
-      "words": 242,
+      "words": 352,
       "images": 0
     }
   ],
@@ -151,7 +151,7 @@
       "plan_title": "الباقة المجانية",
       "is_active": false,
       "daily_words_limit": 90,
-      "daily_words_used": 242,
+      "daily_words_used": 352,
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
