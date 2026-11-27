@@ -10,7 +10,7 @@
       "status": "active",
       "createdAt": 1795512110822,
       "lastLogin": 1795816427192,
-      "lastActive": 1795817792687,
+      "lastActive": 1795818044647,
       "dailyLogins": {
         "date": "2026-11-27",
         "count": 30
@@ -277,8 +277,8 @@
     {
       "email": "2012.8.mtfa@gmail.com",
       "day": "2026-11-27",
-      "words": 0,
-      "images": 0
+      "words": 18,
+      "images": 3
     }
   ],
   "ads": [
