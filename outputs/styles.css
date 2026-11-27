@@ -9798,3 +9798,424 @@ dialog::backdrop {
     width: 60px !important;
   }
 }
+
+
+/* ==========================================================================
+   أكواد الهدايا والخصومات الشهرية (Promo & Gift Codes System)
+   ========================================================================== */
+
+.promo-code-dialog {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: auto !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+}
+
+.promo-code-card {
+  width: 440px;
+  max-width: 94vw;
+  padding: 28px 24px;
+  border-radius: 26px;
+  background: radial-gradient(circle at top right, rgba(236, 72, 153, 0.15), transparent 50%), #0f172a;
+  border: 1.5px solid rgba(236, 72, 153, 0.35);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .promo-code-card {
+  background: radial-gradient(circle at top right, rgba(236, 72, 153, 0.1), transparent 50%), #ffffff;
+  border-color: rgba(236, 72, 153, 0.35);
+  color: #0f172a;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.promo-card-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.promo-gift-icon-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ec4899, #f43f5e);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  box-shadow: 0 8px 24px rgba(236, 72, 153, 0.45);
+  margin-bottom: 6px;
+  animation: giftBounce 2s infinite ease-in-out;
+}
+
+@keyframes giftBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.promo-card-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  color: #f8fafc;
+}
+
+[data-theme="light"] .promo-card-header h2 {
+  color: #0f172a;
+}
+
+.promo-card-subhead {
+  font-size: 13.5px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.promo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.promo-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+
+.promo-input-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.promo-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.promo-input-wrap input {
+  flex: 1;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+[data-theme="light"] .promo-input-wrap input {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.promo-input-wrap input:focus {
+  border-color: #ec4899;
+  background: rgba(236, 72, 153, 0.08);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.25);
+}
+
+.promo-paste-btn {
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  background: rgba(236, 72, 153, 0.15);
+  border: 1.5px solid rgba(236, 72, 153, 0.4);
+  color: #ec4899;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.promo-paste-btn:hover {
+  background: rgba(236, 72, 153, 0.25);
+  border-color: #ec4899;
+  color: #ffffff;
+}
+
+.promo-result-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1.5px solid rgba(34, 197, 94, 0.4);
+  color: #22c55e;
+  animation: resultSlide 0.3s ease-out;
+}
+
+@keyframes resultSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.promo-result-icon {
+  font-size: 28px;
+}
+
+.promo-result-text strong {
+  font-size: 14.5px;
+  display: block;
+}
+
+.promo-result-text p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+[data-theme="light"] .promo-result-text p {
+  color: #334155;
+}
+
+.promo-submit-btn {
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ec4899, #f43f5e) !important;
+  color: #ffffff !important;
+  font-size: 15px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+  transition: all 0.2s ease;
+}
+
+.promo-submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(236, 72, 153, 0.6);
+}
+
+/* تنسيقات إدارة الأكواد في لوحة الأدمن */
+.admin-promo-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.admin-promo-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 16px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-promo-stat-card span {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.admin-promo-stat-card strong {
+  font-size: 24px;
+  color: #ec4899;
+}
+
+.promo-code-item-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.promo-code-item-card:hover {
+  border-color: #ec4899;
+}
+
+.promo-code-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.promo-code-badge {
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  background: rgba(236, 72, 153, 0.15);
+  color: #ec4899;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+.promo-code-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-broadcast-promo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-broadcast-promo:hover {
+  background: #0369a1;
+}
+
+
+/* ==========================================================================
+   زر على شكل كود كوبون هدية وخصومات شهري (Promo Code Ticket Button)
+   ========================================================================== */
+.promo-ticket-bar-wrap {
+  padding: 8px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.promo-ticket-btn {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.16), rgba(244, 63, 94, 0.16));
+  border: 1.5px dashed rgba(244, 63, 94, 0.65);
+  color: #fb7185;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.15);
+  animation: ticketGlow 3s infinite alternate;
+}
+
+@keyframes ticketGlow {
+  0% { box-shadow: 0 2px 10px rgba(236, 72, 153, 0.15); border-color: rgba(244, 63, 94, 0.5); }
+  100% { box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4); border-color: #f43f5e; }
+}
+
+[data-theme="light"] .promo-ticket-btn {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(244, 63, 94, 0.1));
+  border-color: rgba(244, 63, 94, 0.5);
+  color: #e11d48;
+}
+
+.promo-ticket-btn:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.28), rgba(244, 63, 94, 0.28));
+  border-color: #f43f5e;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(236, 72, 153, 0.45);
+}
+
+.promo-ticket-btn .ticket-icon {
+  font-size: 19px;
+  margin-inline-end: 8px;
+  animation: ticketIconWiggle 2.5s infinite ease-in-out;
+}
+
+@keyframes ticketIconWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-12deg) scale(1.15); }
+  75% { transform: rotate(12deg) scale(1.15); }
+}
+
+.promo-ticket-btn .ticket-text {
+  flex: 1;
+  text-align: start;
+  letter-spacing: -0.2px;
+}
+
+.promo-ticket-btn .ticket-badge {
+  background: linear-gradient(135deg, #ec4899, #f43f5e);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.5);
+}
+
+/* الأطراف المقصوصة مثل تذكرة الكوبون */
+.ticket-cutout {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0f172a;
+  transform: translateY(-50%);
+  border: 1.5px dashed rgba(244, 63, 94, 0.65);
+}
+
+[data-theme="light"] .ticket-cutout {
+  background: #ffffff;
+}
+
+.ticket-cutout.left { left: -7px; }
+.ticket-cutout.right { right: -7px; }
+
+.rail-promo-btn {
+  color: #fb7185 !important;
+  background: rgba(236, 72, 153, 0.12) !important;
+  border: 1px solid rgba(236, 72, 153, 0.3) !important;
+}
+
+.rail-promo-btn:hover {
+  background: rgba(236, 72, 153, 0.25) !important;
+  border-color: #ec4899 !important;
+  transform: scale(1.08) !important;
+}
+
+.welcome-promo-btn {
+  border-color: rgba(236, 72, 153, 0.4) !important;
+  color: #fb7185 !important;
+  background: rgba(236, 72, 153, 0.1) !important;
+}
+
+.welcome-promo-btn:hover {
+  background: rgba(236, 72, 153, 0.25) !important;
+  border-color: #ec4899 !important;
+  color: #ffffff !important;
+}
