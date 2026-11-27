@@ -48,56 +48,7 @@
       "id": "e32f5aef-3e99-4f47-bf1a-5c78192f3932",
       "name": "mo.mstfa.85",
       "email": "mo.mstfa.85@gmail.com",
-      "createdAt": 1795792608733,
-      "lastActive": 1795813030149
-    },
-    {
-      "id": "de9d1555-9b3c-4384-828f-d068b4d02721",
-      "name": "أحمد محمد",
-      "email": "chato_mobile_1795793232160@test.com",
-      "password_hash": "scrypt:db73e3390125f55881ff8c3e41589fc3:922bbf3861eeec31816dbc9928b5ac6b49ebc06307e15af4d63dc5b0781ae8a4ee93163db028302f4be37a5a68827f83bd41eaf5737941a07398fca877868fad",
-      "password": "Pass123456!",
-      "image": "",
-      "status": "active",
-      "createdAt": 1795793232261,
-      "lastLogin": 1795793232261,
-      "lastActive": 1795793232261
-    },
-    {
-      "id": "49583f08-0043-472d-9b24-db687b089ebb",
-      "name": "ياسين صهـنط",
-      "email": "chato_mobile_1795793332309@test.com",
-      "password_hash": "scrypt:f9a7c5e28d232ebed2597446acf99d89:fa4bc0319adb569ade3d518db2b495522262ad9761429c3c105cac0f351ae7d1a1d3c0dafb9213ebbba8aaf0a83d607f7fb1dbb629f7d245ff12caebc312cad0",
-      "password": "Pass123456!",
-      "image": "",
-      "status": "active",
-      "createdAt": 1795793332400,
-      "lastLogin": 1795793332400,
-      "lastActive": 1795793332400
-    },
-    {
-      "id": "840928f5-7f1e-4abd-ab40-4ca52159f4fc",
-      "name": "ياسين رلصي",
-      "email": "chato_mobile_1795793434808@test.com",
-      "password_hash": "scrypt:c36c1e1f07d911528d2fa013033e7295:8aa7c480e62dd75c357fad5f8c216395b5ccd5b498494f608ef539e0a61391493006895b95c74da1db6d6f0371e8924f66a4cd981cf3e13ff0fb4609af5dd43a",
-      "password": "Pass123456!",
-      "image": "",
-      "status": "active",
-      "createdAt": 1795793434889,
-      "lastLogin": 1795793434889,
-      "lastActive": 1795793434889
-    },
-    {
-      "id": "26766eb3-0d7a-4d66-88fb-164b5079312c",
-      "name": "Mohamed Mustafa",
-      "email": "momstfa.85@gmail.com",
-      "password_hash": "scrypt:7c2108a99045f490a459ecffc4eeefa2:e6bea567176b8edf58bb33b97b3ede24b977a7911720cb918921e91f2babe566826bb281736fd974eb673b68ca82af6e0bcfcc85c31a3810a9c53019df330992",
-      "password": "Mm0102141214",
-      "image": "",
-      "status": "active",
-      "createdAt": 1795813061545,
-      "lastLogin": 1795813061545,
-      "lastActive": 1795813149047
+      "createdAt": 1795792608733
     }
   ],
   "friendships": [
@@ -236,7 +187,7 @@
       "device_type": "web",
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug==",
       "created_at": 1795792602058,
-      "last_active_at": 1795813030095
+      "last_active_at": 1795792602058
     },
     {
       "id": "e46c357c-a499-4cef-834d-e833d0f1a8b1",
@@ -276,19 +227,6 @@
       "last_active_at": 1795793434931,
       "created_at": 1795793434890,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3sHtf7UhmAtDQMrvRD5oImwU0fhY6iZ26ZG8BG2yQiy1MX8l03hy/e7tJhaQdDc8NN8yA4MKATNd6V7THk7Sqg=="
-    },
-    {
-      "id": "23f163e9-2c6f-4321-8d54-c373d90cf4cf",
-      "user_id": "26766eb3-0d7a-4d66-88fb-164b5079312c",
-      "email": "momstfa.85@gmail.com",
-      "device_id": "web",
-      "device_type": "web",
-      "access_token_hash": "dac65c46d468f3c1d9ffe9c7d7f6cefd9b8dfe3bcb497e912a2805f38bc185b1",
-      "refresh_token_hash": "281ecb198c1f2b5325b0c95a258532cb759b476c2c78cefae9726a247314411a",
-      "expires_at": 1800997061546,
-      "last_active_at": 1795813061634,
-      "created_at": 1795813061546,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug=="
     }
   ],
   "pushSubscriptions": [],
