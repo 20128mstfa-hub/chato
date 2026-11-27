@@ -9,17 +9,23 @@
       "image": "",
       "status": "active",
       "createdAt": 1795512110822,
-      "lastLogin": 1795817357770,
-      "lastActive": 1795817360203,
+      "lastLogin": 1795816427192,
+      "lastActive": 1795817532645,
       "dailyLogins": {
         "date": "2026-11-27",
-        "count": 31
+        "count": 30
       },
-      "lastIp": "127.0.0.1",
-      "country": "مصر 🇪🇬",
+      "lastIp": "51.39.231.48",
+      "country": "السعودية 🇸🇦",
       "clientAccountsCount": 1,
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36",
       "sessionLogs": [
+        {
+          "type": "login",
+          "time": 1795793526718,
+          "ip": "127.0.0.1",
+          "country": "مصر 🇪🇬"
+        },
         {
           "type": "login",
           "time": 1795814006339,
@@ -190,17 +196,12 @@
         },
         {
           "type": "login",
-          "time": 1795817349687,
-          "ip": "127.0.0.1",
-          "country": "مصر 🇪🇬"
-        },
-        {
-          "type": "login",
-          "time": 1795817357770,
-          "ip": "127.0.0.1",
-          "country": "مصر 🇪🇬"
+          "time": 1795816427192,
+          "ip": "51.39.231.48",
+          "country": "السعودية 🇸🇦"
         }
-      ]
+      ],
+      "lastOffline": 1795815983752
     },
     {
       "id": "dd15c9ef-1a99-4f4c-aea8-46e07c124109",
@@ -276,7 +277,7 @@
     {
       "email": "2012.8.mtfa@gmail.com",
       "day": "2026-11-27",
-      "words": 42,
+      "words": 0,
       "images": 0
     }
   ],
@@ -338,12 +339,11 @@
       "email": "2012.8.mtfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "05a9681361c93bf9932f94c86ca9b7b16077ed3e43da740c87170b79d8abd277",
-      "refresh_token_hash": "8d82695d783820701bc6215b4317e763783c0604beb62aabc3a1e6cf14863a61",
-      "expires_at": 1801001357770,
-      "last_active_at": 1795817357801,
-      "created_at": 1795512110824,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE4BNhckd3E5mwGqz7W4zb1SMGDhhs7XP04mUMmG62xBzNyMpjV5IzTxusp4gZD1KMhs1rKkxgG/Q4eY/msyW8Eg=="
+      "access_token_hash": "d6a2d7da89a9e22dbaad453a43a50f8a6d1ddd6c1ce97881bd45ee2cdafe9ecf",
+      "refresh_token_hash": "599a958833442a5400904825b83395749bcec0c45e14473cfedac9c293abddb2",
+      "expires_at": 1801000427192,
+      "last_active_at": 1795816427192,
+      "created_at": 1795512110824
     },
     {
       "id": "29145435-1d1f-4b04-81d0-9309691c758a",
@@ -463,26 +463,6 @@
       "auto_renew": true,
       "created_at": 1795792894150,
       "updated_at": 1795792894150
-    },
-    {
-      "id": "c2bed04c-b2a1-43e8-8ece-666ae27ffaf8",
-      "user_id": "76b5a60a-d4e6-41f8-8589-1db9845aa608",
-      "email": "2012.8.mtfa@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 42,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795817521274,
-      "next_quota_reset_at": 1795903921274,
-      "started_at": 1795817521274,
-      "expires_at": 1801001521274,
-      "auto_renew": true,
-      "created_at": 1795817521274,
-      "updated_at": 1795817521274
     }
   ],
   "userStories": [],
