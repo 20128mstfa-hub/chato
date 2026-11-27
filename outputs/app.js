@@ -971,23 +971,18 @@ function getChatLatestTimestamp(chatId) {
 function getChats() {
   const list = [];
 
-  // قناة إعلانات وتحديثات شاتو الرسمية (تظهر فقط عندما ينشر الأدمن إعلاناً، وتختفي إذا حذفها المستخدم حتى يأتي إعلان جديد)
-  const deletedAdsUntil = Number(localStorage.getItem("chato_announcements_deleted_until") || 0);
-  const latestAdTime = (Array.isArray(state.ads) && state.ads.length > 0) ? Number(state.ads[0].createdAt || 0) : 0;
-  const hasActiveAds = Boolean(state.ads && state.ads.length > 0 && latestAdTime > deletedAdsUntil);
-
-  if (hasActiveAds) {
-    list.push({
-      id: "chato_announcements",
-      type: "announcements",
-      name: "إعلانات Chato الرسمية 📢",
-      meta: state.ads[0].title || "أحدث الإعلانات والتحديثات الرسمية",
-      image: "./favicon.png",
-      initial: "ش",
-      readonly: true,
-      isOfficial: true
-    });
-  }
+  // محادثة اعلانات شاتو الرسمية
+  const latestAd = (Array.isArray(state.ads) && state.ads.length > 0) ? state.ads[0] : null;
+  list.push({
+    id: "chato_announcements",
+    type: "announcements",
+    name: "اعلانات شاتو 📢",
+    meta: latestAd ? (latestAd.title || "إعلان جديد من الإدارة") : "القناة الرسمية للإعلانات وأكواد الهدايا",
+    image: "./favicon.png",
+    initial: "📢",
+    readonly: true,
+    isOfficial: true
+  });
 
   // محادثة الذكاء الاصطناعي Chato Assistant
   list.push({
@@ -1281,6 +1276,7 @@ function openChat(id) {
   const isReadOnly = chat.type === "admin_notice" || chat.readonly || isAnnouncements;
   const readOnlyNotice = el("readOnlyNotice");
   const announcementReadOnlyNotice = el("announcementReadOnlyNotice");
+  const announcementsChannelBar = el("announcementsChannelBar");
   const groupReadOnlyNotice = el("groupReadOnlyNotice");
   const composer = el("composer");
   const composerForm = el("composerForm");
@@ -1292,14 +1288,17 @@ function openChat(id) {
       composer.style.display = "none";
     }
     if (composerForm) composerForm.style.display = "none";
+    if (announcementsChannelBar) announcementsChannelBar.hidden = false;
     if (announcementReadOnlyNotice) {
       announcementReadOnlyNotice.hidden = true;
       announcementReadOnlyNotice.style.display = "none";
     }
     if (readOnlyNotice) readOnlyNotice.hidden = true;
     if (groupReadOnlyNotice) groupReadOnlyNotice.hidden = true;
+    try { loadAds(); } catch {}
   } else {
     document.body.classList.remove("in-announcements");
+    if (announcementsChannelBar) announcementsChannelBar.hidden = true;
     if (announcementReadOnlyNotice) announcementReadOnlyNotice.hidden = true;
     if (composer) {
       composer.hidden = false;
@@ -1329,6 +1328,7 @@ function openChat(id) {
     if (composer) composer.hidden = false;
     if (readOnlyNotice) readOnlyNotice.hidden = true;
     if (groupReadOnlyNotice) groupReadOnlyNotice.hidden = true;
+    try { loadAds(); } catch {}
   }
 
   // التعامل مع شات الذكاء الاصطناعي Chato Assistant
@@ -1386,7 +1386,7 @@ function renderMessages() {
     // إضافة شريط القناة الرسمي الحصري داخل شات الإعلانات فقط
     const topBanner = document.createElement("div");
     topBanner.className = "announcement-chat-top-notice";
-    topBanner.innerHTML = "<span>📢 هذه القناة مخصصة لإعلانات وتحديثات Chato الرسمية (للقراءة فقط) 🔒</span>";
+    topBanner.innerHTML = "<span>📢 قناة اعلانات شاتو الرسمية والموثقة 🔰 (للقراءة فقط)</span>";
     messages.appendChild(topBanner);
 
     const ads = state.ads || [];
@@ -1402,14 +1402,47 @@ function renderMessages() {
       const card = document.createElement("article");
       card.className = "announcement-chat-card";
       const adImg = ad.imageUrl || ad.image || ad.img || "";
+
+      // فحص واستخراج كود الهدية أو الخصم
+      let promoCode = ad.promoCode || "";
+      if (!promoCode && ad.content) {
+        const match = ad.content.match(/【\s*([A-Za-z0-9_-]+)\s*】/) || ad.content.match(/كود[:\s]+([A-Za-z0-9_-]+)/i);
+        if (match) promoCode = match[1];
+      }
+      if (!promoCode && ad.title) {
+        const matchTitle = ad.title.match(/كود\s+([A-Za-z0-9_-]+)/i);
+        if (matchTitle) promoCode = matchTitle[1];
+      }
+
+      let promoBoxHtml = "";
+      if (promoCode) {
+        promoBoxHtml = `
+          <div class="ad-promo-box">
+            <div class="ad-promo-head">
+              <span class="ad-promo-badge">🎁 كود الهدية والخصم</span>
+              <strong class="ad-promo-code-val">${escapeHtml(promoCode)}</strong>
+            </div>
+            <div class="ad-promo-actions">
+              <button type="button" class="ad-promo-btn ad-copy-btn" onclick="copyAdCode('${escapeHtml(promoCode)}', this)">
+                📋 نسخ الكود
+              </button>
+              <button type="button" class="ad-promo-btn ad-redeem-btn" onclick="openPromoCodeDialog('${escapeHtml(promoCode)}')">
+                🚀 تفعيل الكود الآن
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
       card.innerHTML = `
         <div class="announcement-card-head">
           <span class="announcement-card-title">📢 ${escapeHtml(ad.title)}</span>
           <span class="announcement-card-date">${formatStoryTime(ad.createdAt)}</span>
         </div>
         <div class="announcement-card-text">${escapeHtml(ad.content)}</div>
+        ${promoBoxHtml}
         ${adImg ? `<div class="announcement-card-media"><img src="${adImg}" class="announcement-card-img" alt="صورة الإعلان" onclick="openMediaLightbox('${adImg}')" onerror="this.parentElement.style.display='none'" /></div>` : ""}
-        ${ad.link ? `<a href="${ad.link}" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; color:#0284c7; font-weight:700;">🔗 المزيد من التفاصيل</a>` : ""}
+        ${ad.link ? `<a href="${ad.link}" target="_blank" rel="noopener" class="ad-card-external-link">🔗 المزيد من التفاصيل ↗</a>` : ""}
       `;
       messages.appendChild(card);
     });
@@ -5498,6 +5531,7 @@ function showApp() {
   try { refreshFriends(); } catch {}
   try { updateMyStoryAvatar(); } catch {}
   try { fetchStories(); } catch {}
+  try { loadAds(); } catch {}
   try { initRealtimeStream(); } catch {}
   if (typeof registerWebPushNotifications === "function") {
     try { registerWebPushNotifications(); } catch {}
@@ -5678,7 +5712,7 @@ if (supportRequestForm) {
   });
 }
 
-// 1. نظام جلب وعرض الإعلانات
+// 1. نظام جلب وعرض الإعلانات (يتم عرضها حصرياً داخل محادثة "اعلانات شاتو")
 async function loadAds() {
   try {
     const res = await fetch("/api/ads");
@@ -5690,31 +5724,7 @@ async function loadAds() {
     if (state.activeChatId === "chato_announcements") {
       renderMessages();
     }
-    const banner = el("announcementBanner");
-    if (!banner) return;
-    if (activeAds.length > 0 && !sessionStorage.getItem("chato_ad_closed")) {
-      const ad = activeAds[0];
-      el("adBannerTitle").textContent = ad.title;
-      el("adBannerText").textContent = ad.content;
-      if (ad.link) {
-        el("adBannerLink").href = ad.link;
-        el("adBannerLink").hidden = false;
-      } else {
-        el("adBannerLink").hidden = true;
-      }
-      banner.hidden = false;
-    } else {
-      banner.hidden = true;
-    }
   } catch {}
-}
-
-const closeAdBtn = el("closeAdBtn");
-if (closeAdBtn) {
-  closeAdBtn.addEventListener("click", () => {
-    if (el("announcementBanner")) el("announcementBanner").hidden = true;
-    sessionStorage.setItem("chato_ad_closed", "true");
-  });
 }
 
 // 2. فحص حالة المستخدم والتحديث المستمر للدخول والخروج (Heartbeat)
@@ -10264,3 +10274,24 @@ el("railPromoCodeBtn")?.addEventListener("click", () => {
 el("welcomePromoBtn")?.addEventListener("click", () => {
   openPromoCodeDialog();
 });
+
+// ربط زر تفعيل الكود في شريط محادثة اعلانات شاتو
+el("announcementsRedeemBarBtn")?.addEventListener("click", () => {
+  openPromoCodeDialog();
+});
+
+window.copyAdCode = function(code, btn) {
+  if (!code) return;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(() => {
+      const orig = btn ? btn.textContent : "";
+      if (btn) btn.textContent = "✅ تم النسخ!";
+      if (typeof showToast === "function") showToast("📋 تم نسخ الكود: " + code);
+      setTimeout(() => { if (btn) btn.textContent = orig; }, 2000);
+    }).catch(() => {
+      prompt("انسخ الكود التالي:", code);
+    });
+  } else {
+    prompt("انسخ الكود التالي:", code);
+  }
+};
