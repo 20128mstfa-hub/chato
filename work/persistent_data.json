@@ -27,6 +27,12 @@
       "name": "cf0cdc9f-b584-4788-b43b-08526a37224f",
       "email": "cf0cdc9f-b584-4788-b43b-08526a37224f",
       "createdAt": 1795788949481
+    },
+    {
+      "id": "e32f5aef-3e99-4f47-bf1a-5c78192f3932",
+      "name": "mo.mstfa.85",
+      "email": "mo.mstfa.85@gmail.com",
+      "createdAt": 1795792608733
     }
   ],
   "friendships": [
@@ -36,6 +42,13 @@
       "to": "cf0cdc9f-b584-4788-b43b-08526a37224f",
       "status": "accepted",
       "createdAt": 1795788949481
+    },
+    {
+      "id": "07f5348f-d62b-40ac-9fee-0675d806eb99",
+      "from": "mo.mstfa.85@gmail.com",
+      "to": "2012.8.mtfa@gmail.com",
+      "status": "accepted",
+      "createdAt": 1795792608733
     }
   ],
   "friendRequests": [],
