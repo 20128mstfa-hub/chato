@@ -10,7 +10,7 @@
       "status": "active",
       "createdAt": 1795512110822,
       "lastLogin": 1795814286262,
-      "lastActive": 1795814286262,
+      "lastActive": 1795814501428,
       "dailyLogins": {
         "date": "2026-11-27",
         "count": 4
@@ -44,7 +44,8 @@
           "ip": "51.39.231.48",
           "country": "السعودية 🇸🇦"
         }
-      ]
+      ],
+      "lastOffline": 1795814500019
     }
   ],
   "friendships": [],
@@ -119,10 +120,10 @@
       "email": "2012.8.mtfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "bfd0bf43c34da5118e697ef414c353a498dfc51ec05494e5ef61a1a2c18770cc",
+      "access_token_hash": "f96b61671dcc5eeb32b0c4b9be86cc4b309375688ee1517deaebac71552c50dc",
       "refresh_token_hash": "5773e3a81b97c83bde789788fe93633eea99f179e79641d618883e2848c36b7f",
       "expires_at": 1800998286262,
-      "last_active_at": 1795814286609,
+      "last_active_at": 1795814501468,
       "created_at": 1795512110824,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
     },
@@ -293,7 +294,24 @@
       "is_plus_only": true
     }
   ],
-  "promoCodes": [],
+  "promoCodes": [
+    {
+      "id": "promo_mwzhkqyt",
+      "code": "M01021414214M",
+      "title": "الجمعه الزرقاء",
+      "type": "discount",
+      "durationDays": 30,
+      "discountPercent": 90,
+      "bonusWords": 1000,
+      "bonusImages": 20,
+      "maxUses": 10,
+      "timesUsed": 0,
+      "expiresAt": 1798406482565,
+      "isActive": true,
+      "createdAt": 1795814482565,
+      "description": "خصم على جميع الاشتركات"
+    }
+  ],
   "promoRedemptions": [
     {
       "id": "7eee1cf5-f720-4c2b-aff1-201c183e405d",
