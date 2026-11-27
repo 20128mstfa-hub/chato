@@ -57,6 +57,18 @@
       "createdAt": 1795793332400,
       "lastLogin": 1795793332400,
       "lastActive": 1795793332400
+    },
+    {
+      "id": "840928f5-7f1e-4abd-ab40-4ca52159f4fc",
+      "name": "ياسين رلصي",
+      "email": "chato_mobile_1795793434808@test.com",
+      "password_hash": "scrypt:c36c1e1f07d911528d2fa013033e7295:8aa7c480e62dd75c357fad5f8c216395b5ccd5b498494f608ef539e0a61391493006895b95c74da1db6d6f0371e8924f66a4cd981cf3e13ff0fb4609af5dd43a",
+      "password": "Pass123456!",
+      "image": "",
+      "status": "active",
+      "createdAt": 1795793434889,
+      "lastLogin": 1795793434889,
+      "lastActive": 1795793434889
     }
   ],
   "friendships": [
@@ -222,6 +234,19 @@
       "last_active_at": 1795793332446,
       "created_at": 1795793332400,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEJhcHSqI3JbsaHmToqFl/Ct8epQetcKvHahrC3zlgNAsOCowK5rNq1441SNBescsk4CcXzKLDsRccQW7h0LAQmA=="
+    },
+    {
+      "id": "09756aa5-a19e-4278-a8e4-8d95b9e95dd3",
+      "user_id": "840928f5-7f1e-4abd-ab40-4ca52159f4fc",
+      "email": "chato_mobile_1795793434808@test.com",
+      "device_id": "web",
+      "device_type": "web",
+      "access_token_hash": "54f6b4c6fb9fb9a29420fae71d5699f169799d25691bb3da5cf789fff0cadb76",
+      "refresh_token_hash": "7ba48d6633e8e0c7c71ca6164e0fd31d2db52a663f9d2be8b46d6a595f9102a2",
+      "expires_at": 1800977434890,
+      "last_active_at": 1795793434931,
+      "created_at": 1795793434890,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3sHtf7UhmAtDQMrvRD5oImwU0fhY6iZ26ZG8BG2yQiy1MX8l03hy/e7tJhaQdDc8NN8yA4MKATNd6V7THk7Sqg=="
     }
   ],
   "pushSubscriptions": [],
