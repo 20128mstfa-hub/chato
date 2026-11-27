@@ -19,7 +19,11 @@
   box-sizing: border-box;
 }
 
-[hidden] {
+[hidden],
+.login-screen[hidden],
+.app-screen[hidden],
+#loginScreen[hidden],
+#appScreen[hidden] {
   display: none !important;
 }
 
@@ -8515,7 +8519,11 @@ dialog::backdrop {
     padding: 6px 8px !important;
   }
 
-  .login-screen {
+  .install-header-pill {
+    display: none !important;
+  }
+
+  .login-screen:not([hidden]) {
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
@@ -8523,6 +8531,13 @@ dialog::backdrop {
     padding: 8px 0 24px !important;
     width: 100% !important;
     box-sizing: border-box !important;
+  }
+
+  .login-screen[hidden],
+  .app-screen[hidden],
+  #loginScreen[hidden],
+  #appScreen[hidden] {
+    display: none !important;
   }
 
   .login-layout {
@@ -10218,4 +10233,13 @@ dialog::backdrop {
   background: rgba(236, 72, 153, 0.25) !important;
   border-color: #ec4899 !important;
   color: #ffffff !important;
+}
+
+/* ضمان إخفاء الشاشات ذات الخاصية hidden بشكل قاطع على جميع الأجهزة والشاشات */
+#loginScreen[hidden],
+#appScreen[hidden],
+.login-screen[hidden],
+.app-screen[hidden],
+[hidden] {
+  display: none !important;
 }
