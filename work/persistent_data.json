@@ -10,7 +10,8 @@
       "status": "active",
       "createdAt": 1795512110822,
       "lastLogin": 1795512110822,
-      "lastActive": 1795512110822
+      "lastActive": 1795512110822,
+      "suspendedUntil": null
     },
     {
       "id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
@@ -47,7 +48,19 @@
   ],
   "friendships": [],
   "friendRequests": [],
-  "messages": [],
+  "messages": [
+    {
+      "id": "0cb7a8d1-b5d4-4f3d-a5da-77bfca1ca388",
+      "from": "admin@chato.system",
+      "fromName": "إدارة Chato",
+      "to": "2012.8.mtfa@gmail.com",
+      "type": "admin_notice",
+      "readonly": true,
+      "text": "تنبيه رسمي من إدارة شاتو للتجربة 🛡️",
+      "expiresAt": 1795789036628,
+      "createdAt": 1795788436630
+    }
+  ],
   "aiUsage": [
     {
       "email": "2012.8.mstfa@gmail.com",
