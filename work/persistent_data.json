@@ -67,6 +67,18 @@
       "name": "mo.mstfa.85",
       "email": "mo.mstfa.85@gmail.com",
       "createdAt": 1795792608733
+    },
+    {
+      "id": "21fec23d-f306-4080-ade6-1be23b7b96e9",
+      "name": "Mohamed Mustafa",
+      "email": "momstfa.85@gmail.com",
+      "password_hash": "scrypt:60a8d512001e12bd45d3f193a0d83ea3:f3c641248104ffd3298ecd354a8688e09f94f15926f27a022e1c2514e4d919866a7d94ca5abc07fc9c86c515738e38eba2e5358928096d58d36bed60509d90e2",
+      "password": "Qq0102141214",
+      "image": "",
+      "status": "active",
+      "createdAt": 1795814619097,
+      "lastLogin": 1795814619097,
+      "lastActive": 1795814619097
     }
   ],
   "friendships": [
@@ -224,6 +236,19 @@
       "last_active_at": 1795793434931,
       "created_at": 1795793434890,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3sHtf7UhmAtDQMrvRD5oImwU0fhY6iZ26ZG8BG2yQiy1MX8l03hy/e7tJhaQdDc8NN8yA4MKATNd6V7THk7Sqg=="
+    },
+    {
+      "id": "19f71c39-9bcc-4e35-964f-4fd4a508fc95",
+      "user_id": "21fec23d-f306-4080-ade6-1be23b7b96e9",
+      "email": "momstfa.85@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "access_token_hash": "9376d01990d2df556997ade29f97a5774fde9e384583609b71ce50c900f93bc8",
+      "refresh_token_hash": "dd33917f8faa8f3a3c0836a1e60e239647b18e9a1c89d337b4199ecc9c8a2f96",
+      "expires_at": 1800998619098,
+      "last_active_at": 1795814619169,
+      "created_at": 1795814619098,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERPEDi2QEXcIBjr0WCqmls3lLMXHQ0dH43H+Ts+NCNJVZy34zQ37qH+WebhVVP52McDTeEfJAbyLL2+Kh/EApAQ=="
     }
   ],
   "pushSubscriptions": [],
