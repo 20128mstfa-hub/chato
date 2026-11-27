@@ -38,7 +38,8 @@
           "ip": "127.0.0.1",
           "country": "مصر 🇪🇬"
         }
-      ]
+      ],
+      "lastOffline": 1795788203699
     }
   ],
   "friendships": [],
@@ -107,8 +108,9 @@
       "access_token_hash": "456a9407c5a3e3600ecd6fd7c8dbdb74701109aafd1d4518a3f613460e01355d",
       "refresh_token_hash": "6e751e6c6032cfcfc63633f5c34d4d3f46557edf426aac284fcf730e3e9dfd35",
       "expires_at": 1800972113395,
-      "last_active_at": 1795788113395,
-      "created_at": 1795787899536
+      "last_active_at": 1795788203951,
+      "created_at": 1795787899536,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug=="
     }
   ],
   "pushSubscriptions": [],
