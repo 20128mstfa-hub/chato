@@ -1032,7 +1032,7 @@
         <form id="staffLockForm">
           <label class="field">
             <span>رمز مرور الموظفين (Staff PIN)</span>
-            <input id="staffPinInput" type="password" placeholder="أدخل رمز مرور الموظفين (Q0102141214)" required />
+            <input id="staffPinInput" type="password" placeholder="أدخل رمز المرور السري..." required />
           </label>
           <p id="staffLockError" class="lock-error-text" role="alert"></p>
           <button class="btn-primary staff-btn" type="submit" style="font-weight: 800;">دخول لوحة الموظفين 👔</button>
@@ -1890,7 +1890,7 @@
             el("staffLockError").textContent = "";
             checkAuth();
           } else {
-            el("staffLockError").textContent = "رمز مرور الموظفين غير صحيح! يرجى التأكد من الرمز (Q0102141214) والمحاولة ثانية.";
+            el("staffLockError").textContent = "رمز مرور الموظفين غير صحيح! يرجى التأكد من الرمز والمحاولة ثانية.";
           }
         });
       }
