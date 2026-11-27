@@ -41,7 +41,8 @@
       ],
       "lastOffline": 1795788203699,
       "promoDiscountPercent": 50,
-      "promoDiscountUntil": 1798380218835
+      "promoDiscountUntil": 1798380218835,
+      "vipUntil": 1800972313810
     }
   ],
   "friendships": [],
@@ -161,6 +162,26 @@
       "auto_renew": true,
       "created_at": 1795788088814,
       "updated_at": 1795788088814
+    },
+    {
+      "id": "23c52557-1fd3-4df8-8027-984c4aa7b3c7",
+      "user_id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
+      "email": "mo.mstfa.85@gmail.com",
+      "created_at": 1795788308746,
+      "plan_code": "chato_ai_plus",
+      "plan_title": "بلاس AI شاتو (99 ريال)",
+      "is_active": true,
+      "daily_words_limit": 500,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 20,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": true,
+      "started_at": 1795788313810,
+      "expires_at": 1800972313810,
+      "last_quota_reset_at": 1795788313810,
+      "next_quota_reset_at": 1795874713810,
+      "auto_renew": true,
+      "updated_at": 1795788313810
     }
   ],
   "userStories": [],
