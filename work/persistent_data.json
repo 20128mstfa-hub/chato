@@ -17,7 +17,9 @@
       "name": "2012.8.mstfa",
       "email": "2012.8.mstfa@gmail.com",
       "createdAt": 1795788949480,
-      "sentWordCount": 1
+      "sentWordCount": 1,
+      "promoDiscountPercent": 30,
+      "promoDiscountUntil": 1796653106836
     },
     {
       "id": "a2173a10-d6d9-48cc-a08b-7e903888783e",
@@ -178,13 +180,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795305571315,
-      "next_quota_reset_at": 1795391971315,
+      "last_quota_reset_at": 1795789107122,
+      "next_quota_reset_at": 1795875507122,
       "started_at": 1795305571315,
       "expires_at": 1800489571315,
       "auto_renew": true,
       "created_at": 1795305571315,
-      "updated_at": 1795305571315
+      "updated_at": 1795789107122
     }
   ],
   "userStories": [],
@@ -299,7 +301,7 @@
       "bonusWords": 1000,
       "bonusImages": 20,
       "maxUses": 20,
-      "timesUsed": 0,
+      "timesUsed": 1,
       "expiresAt": 1796653072144,
       "isActive": true,
       "createdAt": 1795789072144,
@@ -321,7 +323,14 @@
       "description": "يحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل."
     }
   ],
-  "promoRedemptions": [],
+  "promoRedemptions": [
+    {
+      "id": "7eee1cf5-f720-4c2b-aff1-201c183e405d",
+      "code": "CH9Z",
+      "email": "2012.8.mstfa@gmail.com",
+      "redeemedAt": 1795789106836
+    }
+  ],
   "stickerPacks": [
     {
       "id": "pack_chato_animated",
