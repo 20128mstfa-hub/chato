@@ -276,7 +276,7 @@
     {
       "email": "2012.8.mtfa@gmail.com",
       "day": "2026-11-27",
-      "words": 16,
+      "words": 42,
       "images": 0
     }
   ],
@@ -465,24 +465,24 @@
       "updated_at": 1795792894150
     },
     {
-      "id": "3e6beac9-9197-46c3-b682-dd5fdfa5b21b",
+      "id": "c2bed04c-b2a1-43e8-8ece-666ae27ffaf8",
       "user_id": "76b5a60a-d4e6-41f8-8589-1db9845aa608",
       "email": "2012.8.mtfa@gmail.com",
       "plan_code": "free",
       "plan_title": "الباقة المجانية",
       "is_active": false,
       "daily_words_limit": 90,
-      "daily_words_used": 16,
+      "daily_words_used": 42,
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795817506958,
-      "next_quota_reset_at": 1795903906958,
-      "started_at": 1795817506958,
-      "expires_at": 1801001506958,
+      "last_quota_reset_at": 1795817521274,
+      "next_quota_reset_at": 1795903921274,
+      "started_at": 1795817521274,
+      "expires_at": 1801001521274,
       "auto_renew": true,
-      "created_at": 1795817506958,
-      "updated_at": 1795817506958
+      "created_at": 1795817521274,
+      "updated_at": 1795817521274
     }
   ],
   "userStories": [],
