@@ -9,16 +9,16 @@
       "image": "",
       "status": "active",
       "createdAt": 1795512110822,
-      "lastLogin": 1795815915507,
-      "lastActive": 1795816414489,
+      "lastLogin": 1795816427192,
+      "lastActive": 1795816512628,
       "dailyLogins": {
         "date": "2026-11-27",
-        "count": 29
+        "count": 30
       },
-      "lastIp": "127.0.0.1",
-      "country": "مصر 🇪🇬",
+      "lastIp": "51.39.231.48",
+      "country": "السعودية 🇸🇦",
       "clientAccountsCount": 1,
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36",
       "sessionLogs": [
         {
           "type": "login",
@@ -193,6 +193,12 @@
           "time": 1795815915507,
           "ip": "127.0.0.1",
           "country": "مصر 🇪🇬"
+        },
+        {
+          "type": "login",
+          "time": 1795816427192,
+          "ip": "51.39.231.48",
+          "country": "السعودية 🇸🇦"
         }
       ],
       "lastOffline": 1795815983752
@@ -333,12 +339,11 @@
       "email": "2012.8.mtfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "996109f428078b65e145ef089950095159d12ea7ccd0db8ed61d2d3165401ef9",
-      "refresh_token_hash": "d0635d88b7ab87c01c0b67b77f05a2045cb0f15e24fe81e0dfcd148353b79f83",
-      "expires_at": 1800999915508,
-      "last_active_at": 1795816414406,
-      "created_at": 1795512110824,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg=="
+      "access_token_hash": "d6a2d7da89a9e22dbaad453a43a50f8a6d1ddd6c1ce97881bd45ee2cdafe9ecf",
+      "refresh_token_hash": "599a958833442a5400904825b83395749bcec0c45e14473cfedac9c293abddb2",
+      "expires_at": 1801000427192,
+      "last_active_at": 1795816427192,
+      "created_at": 1795512110824
     },
     {
       "id": "29145435-1d1f-4b04-81d0-9309691c758a",
