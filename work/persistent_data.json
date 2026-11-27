@@ -21,8 +21,24 @@
       "image": "",
       "status": "active",
       "createdAt": 1795787899535,
-      "lastLogin": 1795787899535,
-      "lastActive": 1795787899535
+      "lastLogin": 1795788113394,
+      "lastActive": 1795788113394,
+      "dailyLogins": {
+        "date": "2026-11-27",
+        "count": 1
+      },
+      "lastIp": "127.0.0.1",
+      "country": "مصر 🇪🇬",
+      "clientAccountsCount": 1,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0",
+      "sessionLogs": [
+        {
+          "type": "login",
+          "time": 1795788113394,
+          "ip": "127.0.0.1",
+          "country": "مصر 🇪🇬"
+        }
+      ]
     }
   ],
   "friendships": [],
@@ -88,12 +104,11 @@
       "email": "mo.mstfa.85@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "b7af401c2e41bf0a10e792eff12fc3080357d17cb130f1be3cb2d8ecf019458e",
-      "refresh_token_hash": "1c51da9a36b1adf091e86939f4f0f25dd77d68eca63ead3bf8d628c0fc78bb1e",
-      "expires_at": 1800971899536,
-      "last_active_at": 1795787899630,
-      "created_at": 1795787899536,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug=="
+      "access_token_hash": "456a9407c5a3e3600ecd6fd7c8dbdb74701109aafd1d4518a3f613460e01355d",
+      "refresh_token_hash": "6e751e6c6032cfcfc63633f5c34d4d3f46557edf426aac284fcf730e3e9dfd35",
+      "expires_at": 1800972113395,
+      "last_active_at": 1795788113395,
+      "created_at": 1795787899536
     }
   ],
   "pushSubscriptions": [],
