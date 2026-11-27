@@ -10,7 +10,7 @@
       "status": "active",
       "createdAt": 1795512110822,
       "lastLogin": 1795816427192,
-      "lastActive": 1795818044647,
+      "lastActive": 1795818098485,
       "dailyLogins": {
         "date": "2026-11-27",
         "count": 30
@@ -201,7 +201,8 @@
           "country": "السعودية 🇸🇦"
         }
       ],
-      "lastOffline": 1795815983752
+      "lastOffline": 1795818099119,
+      "vipUntil": 1801002074366
     },
     {
       "id": "dd15c9ef-1a99-4f4c-aea8-46e07c124109",
@@ -277,8 +278,8 @@
     {
       "email": "2012.8.mtfa@gmail.com",
       "day": "2026-11-27",
-      "words": 18,
-      "images": 3
+      "words": 6,
+      "images": 0
     }
   ],
   "ads": [
@@ -463,6 +464,26 @@
       "auto_renew": true,
       "created_at": 1795792894150,
       "updated_at": 1795792894150
+    },
+    {
+      "id": "21ea4d46-2c01-4023-806d-09ccf1734d68",
+      "user_id": "76b5a60a-d4e6-41f8-8589-1db9845aa608",
+      "email": "2012.8.mtfa@gmail.com",
+      "created_at": 1795818074366,
+      "plan_code": "chato_ai_plus",
+      "plan_title": "بلاس AI شاتو (99 ريال)",
+      "is_active": true,
+      "daily_words_limit": 500,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 20,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": true,
+      "started_at": 1795818074366,
+      "expires_at": 1801002074366,
+      "last_quota_reset_at": 1795818074366,
+      "next_quota_reset_at": 1795904474366,
+      "auto_renew": true,
+      "updated_at": 1795818074366
     }
   ],
   "userStories": [],
