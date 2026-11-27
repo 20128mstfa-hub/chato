@@ -11,6 +11,18 @@
       "createdAt": 1795512110822,
       "lastLogin": 1795512110822,
       "lastActive": 1795512110822
+    },
+    {
+      "id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
+      "name": "Mohamed Mustafa",
+      "email": "mo.mstfa.85@gmail.com",
+      "password_hash": "scrypt:743bc8f419ed2b5b204c985574b5df59:e2cf29296e94e27bfce581fe9a39861e528e3b35052aa731c7336e0e07a1b10d9132d78392599dfbdb693ae9bf701c9c4a4e17b2809bf092d85b73b610769857",
+      "password": "Mm0102141214",
+      "image": "",
+      "status": "active",
+      "createdAt": 1795787899535,
+      "lastLogin": 1795787899535,
+      "lastActive": 1795787899535
     }
   ],
   "friendships": [],
@@ -26,6 +38,12 @@
     {
       "email": "2012.8.mstfa@gmail.com",
       "day": "2026-11-22",
+      "words": 0,
+      "images": 0
+    },
+    {
+      "email": "mo.mstfa.85@gmail.com",
+      "day": "2026-11-27",
       "words": 0,
       "images": 0
     }
@@ -63,6 +81,19 @@
       "last_active_at": 1795512111229,
       "created_at": 1795512110824,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
+    },
+    {
+      "id": "0aa3c7b8-43f5-4969-8e2f-41590eeecafe",
+      "user_id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
+      "email": "mo.mstfa.85@gmail.com",
+      "device_id": "web",
+      "device_type": "web",
+      "access_token_hash": "b7af401c2e41bf0a10e792eff12fc3080357d17cb130f1be3cb2d8ecf019458e",
+      "refresh_token_hash": "1c51da9a36b1adf091e86939f4f0f25dd77d68eca63ead3bf8d628c0fc78bb1e",
+      "expires_at": 1800971899536,
+      "last_active_at": 1795787899630,
+      "created_at": 1795787899536,
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug=="
     }
   ],
   "pushSubscriptions": [],
