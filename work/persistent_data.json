@@ -168,13 +168,13 @@
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795788956584,
-      "next_quota_reset_at": 1795875356584,
+      "last_quota_reset_at": 1795788965866,
+      "next_quota_reset_at": 1795875365866,
       "started_at": 1795305571315,
       "expires_at": 1800489571315,
       "auto_renew": true,
       "created_at": 1795305571315,
-      "updated_at": 1795788956584
+      "updated_at": 1795788965866
     }
   ],
   "userStories": [],
