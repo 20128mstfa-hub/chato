@@ -9179,6 +9179,17 @@ window.toggleChatDropdown = function(event) {
     }
     menu.removeAttribute("hidden");
     menu.style.display = "flex";
+    if (window.innerWidth >= 769) {
+      menu.style.setProperty("left", "0px", "important");
+      menu.style.setProperty("right", "auto", "important");
+      menu.style.removeProperty("inset-inline-start");
+      menu.style.removeProperty("inset-inline-end");
+    } else {
+      menu.style.removeProperty("left");
+      menu.style.removeProperty("right");
+      menu.style.removeProperty("inset-inline-start");
+      menu.style.removeProperty("inset-inline-end");
+    }
     if (backdrop) {
       backdrop.removeAttribute("hidden");
       backdrop.style.display = "block";
