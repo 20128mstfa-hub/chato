@@ -50,7 +50,14 @@
   "friendships": [],
   "friendRequests": [],
   "messages": [],
-  "aiUsage": [],
+  "aiUsage": [
+    {
+      "email": "2012.8.mtfa@gmail.com",
+      "day": "2026-11-27",
+      "words": 0,
+      "images": 0
+    }
+  ],
   "ads": [
     {
       "id": "3a04bba0-21ab-48a6-a14a-55a54f96ef7e",
@@ -181,7 +188,28 @@
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
-  "userSubscriptions": [],
+  "userSubscriptions": [
+    {
+      "id": "943d83bd-7374-4bda-9d73-1d5b29c2161e",
+      "user_id": "76b5a60a-d4e6-41f8-8589-1db9845aa608",
+      "email": "2012.8.mtfa@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1795814292560,
+      "next_quota_reset_at": 1795900692560,
+      "started_at": 1795814292560,
+      "expires_at": 1800998292560,
+      "auto_renew": true,
+      "created_at": 1795814292560,
+      "updated_at": 1795814292560
+    }
+  ],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
