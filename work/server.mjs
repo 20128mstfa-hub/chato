@@ -995,39 +995,117 @@ async function callOpenAi(pathname, body) {
   return data;
 }
 
-// دالة الذكاء الاصطناعي Chato Assistant مع دعم Google Gemini و OpenAI والمحركات الذكية المباشرة
-async function askChatGPT(prompt) {
+function parseImagePayload(imageUrl) {
+  if (!imageUrl || typeof imageUrl !== "string") return null;
+  const str = imageUrl.trim();
+  // 1. Data URL
+  const match = str.match(/^data:([^;]+);base64,(.+)$/);
+  if (match) {
+    return { mimeType: match[1], base64Data: match[2] };
+  }
+  // 2. ملف مرفوع محلياً
+  if (str.startsWith("/uploads/") || str.startsWith("uploads/")) {
+    const filename = path.basename(str);
+    const candidatePaths = [
+      path.join(root, "uploads", filename),
+      path.join(workspaceRoot, "outputs", "uploads", filename),
+      path.join(workspaceRoot, "uploads", filename)
+    ];
+    for (const p of candidatePaths) {
+      if (fsSync.existsSync(p)) {
+        const buf = fsSync.readFileSync(p);
+        const ext = path.extname(filename).toLowerCase();
+        const mimeMap = { ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".gif": "image/gif" };
+        return { mimeType: mimeMap[ext] || "image/jpeg", base64Data: buf.toString("base64") };
+      }
+    }
+  }
+  return null;
+}
+
+// دالة الذكاء الاصطناعي Chato Assistant مع دعم Google Gemini للرؤية والنصوص وحل الامتحانات و OpenAI
+async function askChatGPT(prompt, imageUrl = null) {
   const aiCfg = await getAiConfig();
   const geminiKey = (aiCfg.geminiApiKey || process.env.GEMINI_API_KEY || "").trim();
   const openAiKey = (aiCfg.openaiApiKey || process.env.OPENAI_API_KEY || "").trim();
+  const parsedImage = parseImagePayload(imageUrl);
 
-  // 1. فحص محرك Google Gemini الفائق السرعة
-  if (geminiKey) {
-    try {
-      const gRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: `أنت Chato Assistant، المساعد الذكي لتطبيق Chato (Powered by Advanced AI). تجيب بأسلوب عربي فصيح ودقيق وواضح وتساعد في كافة المجالات والمعلومات والبرمجة والترجمة وكتابة النصوص:\n\n${prompt}` }] }]
-        })
+  const cleanPrompt = String(prompt || "").trim() || (parsedImage ? "حل واشرح الأسئلة والمسائل والامتحانات الموجودة في هذه الصورة بالكامل خطوة بخطوة، وقدم الحلول النموذجية بأسلوب واضح وشامل ومفصل." : "مرحباً! كيف يمكنني مساعدتك اليوم؟");
+
+  // تعليمات النموذج الأكاديمية الذكية لحل الامتحانات والمسائل بدقة
+  const systemInstruction = `أنت Chato AI، المساعد الذكي الفائق والشامل لتطبيق Chato، مدعوم بأحدث قدرات Google Gemini و OpenAI المتطورة للرؤية والذكاء الفائق.
+أنت خبير ومعلم عبقري وأكاديمي متميز في:
+1. حل وتفسير الامتحانات، أوراق الأسئلة، الاختبارات المدرسية والجامعية، والواجبات المنزلية بدقة متناهية.
+2. حل المسائل الرياضية، الفيزياء، الكيمياء، والأحياء خطوة بخطوة مع توضيح القوانين والمعادلات الرياضية والشرح المفصل والإجابة النهائية النموذجية.
+3. قراءة وفحص الصور والخطوط المكتوبة يدوياً أو المطبوعة، والجداول والمخططات والرسوم البيانية والمستندات بدقة شديدة.
+4. كتابة وشرح وتصحيح الأكواد البرمجية في كافة لغات البرمجة وتحديد الأخطاء واقتراح الحلول الأمثل.
+5. الإجابة باللغة العربية الفصحى الراقية، المنظمة، الشافية والواضحة، مع استخدام تنسيق Markdown العريض، العناوين، النقاط، والجداول لتسهيل القراءة والفهم.
+
+إذا أرسل المستخدم صورة امتحان أو سؤال:
+- اكتب نص السؤال بوضوح.
+- اشرح طريقة التفكير والحل خطوة بخطوة بالترتيب.
+- حدد الإجابة الصحيحة بشكل قاطع ونهائي (مثل: الإجابة الصحيحة هي: الخيار (ب)).`;
+
+  // 1. فحص محرك Google Gemini الفائق السرعة للرؤية والنصوص
+  if (geminiKey && geminiKey !== "TEST_GEMINI_KEY_123") {
+    const parts = [];
+    parts.push({ text: `${systemInstruction}\n\nطلب واستفسار المستخدم:\n${cleanPrompt}` });
+
+    if (parsedImage && parsedImage.base64Data) {
+      parts.push({
+        inline_data: {
+          mime_type: parsedImage.mimeType || "image/jpeg",
+          data: parsedImage.base64Data
+        }
       });
-      const gData = await gRes.json();
-      const text = gData.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (text) return text;
-    } catch (err) {
-      console.warn("Gemini API error, fallback to other engines:", err.message);
+    }
+
+    const modelsToTry = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"];
+    for (const m of modelsToTry) {
+      try {
+        const gRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${geminiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts }] })
+        });
+        const gData = await gRes.json();
+        const text = gData.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) return text;
+        if (gData.error) {
+          console.warn(`Gemini model ${m} error:`, gData.error.message);
+        }
+      } catch (mErr) {
+        console.warn(`Gemini model ${m} fetch error:`, mErr.message);
+      }
     }
   }
 
-  // 2. فحص محرك OpenAI (ChatGPT)
-  if (openAiKey) {
+  // 2. فحص محرك OpenAI (ChatGPT) مع دعم الرؤية GPT-4o
+  if (openAiKey && openAiKey !== "TEST_OPENAI_KEY_456") {
     try {
+      let userContent;
+      if (parsedImage && parsedImage.base64Data) {
+        userContent = [
+          { type: "text", text: cleanPrompt },
+          {
+            type: "image_url",
+            image_url: {
+              url: `data:${parsedImage.mimeType || "image/jpeg"};base64,${parsedImage.base64Data}`,
+              detail: "high"
+            }
+          }
+        ];
+      } else {
+        userContent = cleanPrompt;
+      }
+
       const data = await callOpenAi("/chat/completions", {
         model: process.env.OPENAI_TEXT_MODEL || "gpt-4o-mini",
         messages: [
-          { role: "system", content: "أنت Chato Assistant، مساعد ذكاء اصطناعي ذكي وشامل في تطبيق Chato. تجيب بأسلوب عربي فصيح ودقيق وواضح وتساعد في كافة المجالات والمعلومات والبرمجة والترجمة وكتابة النصوص." },
-          { role: "user", content: String(prompt || "") }
-        ]
+          { role: "system", content: systemInstruction },
+          { role: "user", content: userContent }
+        ],
+        temperature: 0.5
       });
       const text = data.choices?.[0]?.message?.content;
       if (text) return text;
@@ -1036,39 +1114,49 @@ async function askChatGPT(prompt) {
     }
   }
 
-  // 3. المحرك المباشر الشامل (نموذج الذكاء الاصطناعي المجاني المباشر)
-  try {
-    const res = await fetch("https://text.pollinations.ai/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [
-          { role: "system", content: "أنت Chato Assistant، مساعد ذكاء اصطناعي ذكي وشامل في تطبيق Chato (Powered by Advanced AI). تجيب بأسلوب عربي فصيح ودقيق وواضح وتساعد في كافة المجالات والمعلومات والبرمجة والترجمة وكتابة النصوص." },
-          { role: "user", content: String(prompt || "") }
-        ],
-        model: "openai"
-      })
-    });
-    const text = await res.text();
-    if (text && !text.includes("Free limit reached")) {
-      return text;
+  // 3. المحرك المباشر الشامل (نموذج الذكاء الاصطناعي المجاني المباشر للنصوص)
+  if (!parsedImage) {
+    try {
+      const res = await fetch("https://text.pollinations.ai/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: systemInstruction },
+            { role: "user", content: cleanPrompt }
+          ],
+          model: "openai",
+          seed: Math.floor(Math.random() * 1000000)
+        })
+      });
+      const text = await res.text();
+      if (text && !text.includes("Free limit reached") && text.length > 5) {
+        return text;
+      }
+    } catch (err) {
+      console.warn("Pollinations Chato AI error:", err?.message);
     }
-  } catch (err) {
-    console.warn("Pollinations Chato Assistant error:", err?.message);
+
+    // محاولة بديلة سريعة
+    try {
+      const fallbackRes = await fetch("https://text.pollinations.ai/" + encodeURIComponent(cleanPrompt) + "?model=openai&system=" + encodeURIComponent(systemInstruction));
+      const fallbackText = await fallbackRes.text();
+      if (fallbackText && !fallbackText.includes("Free limit reached") && fallbackText.length > 5) {
+        return fallbackText;
+      }
+    } catch (err) {
+      console.warn("Pollinations GET fallback error:", err?.message);
+    }
+  } else {
+    // إذا كانت هناك صورة ولم يتم تزويد مفتاح Gemini بعد
+    return `تم استلام صورة المسألة / الامتحان بنجاح! 🖼️📝
+
+لتحليل وحل صور الامتحانات والواجبات بدقة خارقة وسرعة فائقة (Google Gemini Vision):
+يرجى إدخال مفتاح **Google Gemini API Key** المجاني من لوحة التحكم (الإعدادات > الذكاء الاصطناعي)، حيث يمكنك الحصول عليه مجاناً فوراً من [Google AI Studio](https://aistudio.google.com).
+سيعمل بعدها Chato AI كمعلم وعبقري في قراءة أي صورة امتحان وحلها خطوة بخطوة بالكامل! ✨🎯`;
   }
 
-  // محاولة بديلة سريعة
-  try {
-    const fallbackRes = await fetch("https://text.pollinations.ai/" + encodeURIComponent(String(prompt || "")) + "?model=openai");
-    const fallbackText = await fallbackRes.text();
-    if (fallbackText && !fallbackText.includes("Free limit reached")) {
-      return fallbackText;
-    }
-  } catch (err) {
-    console.warn("Pollinations GET fallback error:", err?.message);
-  }
-
-  return "أنا Chato Assistant حاضر معكم في المحادثة وجاهز لمساعدتكم! 🤖✨ أرجو طرح سؤالك مرة أخرى وسأجيبكم على الفور.";
+  return "أنا Chato AI حاضر معكم في المحادثة وجاهز لمساعدتكم! 🤖✨ أرجو طرح سؤالك مرة أخرى وسأجيبك فوراً بتفصيل وشرح وافٍ.";
 }
 
 // دالة الترجمة الفورية بالذكاء الاصطناعي الحصرية لمشتركي بلاس
@@ -1087,30 +1175,62 @@ async function translateText(content, targetLang = "ar") {
   return translated.replace(/^["'«»]|["'«»]$/g, "").trim();
 }
 
-// دالة توليد الصور بالذكاء الاصطناعي (حتى 4 صور يومياً)
-async function generateAiImage(prompt) {
+// دالة توليد الصور بالذكاء الاصطناعي فائق الدقة (Flux Model + Smart Arabic Prompt Enhancer)
+async function generateAiImage(rawPrompt) {
+  const promptText = String(rawPrompt || "").trim();
+  if (!promptText) throw new Error("يرجى كتابة وصف الصورة المطلوبة.");
+
+  // 1. تحسين وترجمة الوصف بالذكاء الاصطناعي إذا كان بالعربية أو مختصراً لضمان أعلى جودة فنية وواقعية
+  let visualPrompt = promptText;
+  const hasArabic = /[\u0600-\u06FF]/.test(promptText);
+  if (hasArabic || promptText.split(/\s+/).length < 5) {
+    try {
+      const enhancerPrompt = `You are an expert AI prompt engineer for Flux and Midjourney. Convert the following user request into a rich, highly-detailed, photorealistic, cinematic prompt in English for image generation. Include details about lighting, textures, camera angle, and atmosphere. Output ONLY the raw enhanced English prompt without any quotes, explanations, or notes:\n\nUser request: ${promptText}`;
+      const enhanced = await askChatGPT(enhancerPrompt);
+      if (enhanced && enhanced.length > 15 && !enhanced.includes("Chato AI") && !enhanced.includes("Google AI Studio")) {
+        visualPrompt = enhanced.replace(/^["'«»]|["'«»]$/g, "").trim();
+      }
+    } catch (e) {
+      console.warn("Smart prompt enhancement fallback:", e?.message);
+    }
+  }
+
+  // 2. إذا كان مفتاح OpenAI متوفراً (DALL-E-3)
   if (process.env.OPENAI_API_KEY) {
     try {
       const data = await callOpenAi("/images/generations", {
         model: process.env.OPENAI_IMAGE_MODEL || "dall-e-3",
-        prompt: String(prompt || ""),
+        prompt: visualPrompt,
         size: "1024x1024",
+        quality: "hd",
         response_format: "b64_json"
       });
       const b64 = data.data?.[0]?.b64_json;
       if (b64) return `data:image/jpeg;base64,${b64}`;
     } catch (err) {
-      console.warn("OpenAI Image error, fallback to Pollinations Image engine:", err.message);
+      console.warn("OpenAI Image error, fallback to Flux:", err.message);
     }
   }
 
-  // توليد صور فوري بجودة عالية
-  const imgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=768&nologo=true`;
-  const resImg = await fetch(imgUrl);
-  if (!resImg.ok) throw new Error("تعذر إنشاء الصورة حالياً.");
-  const arrayBuf = await resImg.arrayBuffer();
-  const b64 = Buffer.from(arrayBuf).toString("base64");
-  return `data:image/jpeg;base64,${b64}`;
+  // 3. التوليد بمحرك Flux فائق الدقة والواقعية (1024x1024 بجودة 8K)
+  try {
+    const fluxUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=1024&height=1024&model=flux&nologo=true&seed=${Math.floor(Math.random() * 1000000)}`;
+    const resImg = await fetch(fluxUrl);
+    if (resImg.ok) {
+      const arrayBuf = await resImg.arrayBuffer();
+      const b64 = Buffer.from(arrayBuf).toString("base64");
+      return `data:image/jpeg;base64,${b64}`;
+    }
+  } catch (fluxErr) {
+    console.warn("Flux generation error, trying fallback:", fluxErr.message);
+  }
+
+  // 4. المحاولة الاحتياطية السريعة
+  const fallbackUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(visualPrompt)}?width=768&height=768&model=turbo&nologo=true`;
+  const fbRes = await fetch(fallbackUrl);
+  if (!fbRes.ok) throw new Error("تعذر إنشاء الصورة حالياً، يرجى المحاولة بعد قليل.");
+  const fbBuf = await fbRes.arrayBuffer();
+  return `data:image/jpeg;base64,${Buffer.from(fbBuf).toString("base64")}`;
 }
 
 function isValidPassword(password) {
@@ -3584,12 +3704,8 @@ async function handleApi(req, res, url) {
     }
 
     try {
-      let reply;
-      if (imageUrl && !prompt) {
-        reply = "تم استلام صورتك بنجاح! 🖼️ صورة ممتازة، تفضل بسؤالي حول أي شيء تريده في هذه الصورة أو في أي موضوع.";
-      } else {
-        reply = await askChatGPT(prompt);
-      }
+      const finalPrompt = (prompt || "").trim() || (imageUrl ? "حل واشرح الأسئلة والمسائل والامتحانات الموجودة في هذه الصورة بالكامل خطوة بخطوة، وقدم الحلول النموذجية بأسلوب واضح وشامل ومفصل." : "");
+      const reply = await askChatGPT(finalPrompt, imageUrl);
       usage.words = (usage.words || 0) + promptWordCount;
       await writeDatabase(database);
       sendJson(res, 200, { text: reply, usage: usageSummary(usage, database) });
