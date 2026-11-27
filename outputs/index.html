@@ -14,7 +14,44 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>شاتو - Chato Messenger</title>
-    <link rel="stylesheet" href="./styles.css?v=8.1" />
+    <link rel="stylesheet" href="./styles.css?v=8.2" />
+    <!-- نافذة تفعيل أكواد الهدايا والخصومات الشهرية (Promo & Gift Codes Modal) -->
+    <dialog class="app-dialog promo-code-dialog" id="promoCodeDialog" aria-labelledby="promoCodeTitle">
+      <div class="dialog-content promo-code-card">
+        <button type="button" class="dialog-close-btn" id="closePromoCodeDialogBtn" aria-label="إغلاق">✕</button>
+        
+        <div class="promo-card-header">
+          <div class="promo-gift-icon-ring">🎁</div>
+          <h2 id="promoCodeTitle">أكواد الهدايا والخصومات</h2>
+          <p class="promo-card-subhead">أدخل كود الهدية أو الخصم الذي حصلت عليه من إدارة شاتو.</p>
+        </div>
+
+        <form class="promo-form" id="promoCodeForm">
+          <div class="promo-input-group">
+            <label for="promoCodeInput">رمز الكود (Code)</label>
+            <div class="promo-input-wrap">
+              <input type="text" id="promoCodeInput" placeholder="اكتب الكود هنا" autocomplete="off" maxlength="24" required />
+            </div>
+          </div>
+
+          <!-- بطاقة النتيجة عند التفعيل -->
+          <div class="promo-result-banner" id="promoResultBanner" hidden>
+            <div class="promo-result-icon" id="promoResultIcon">🎉</div>
+            <div class="promo-result-text">
+              <strong id="promoResultTitle">تهانينا!</strong>
+              <p id="promoResultMessage">تم تفعيل الهدية بنجاح</p>
+            </div>
+          </div>
+
+          <p class="error-line" id="promoCodeError" style="color: #ef4444; font-size: 13.5px; margin: 4px 0;" role="alert"></p>
+
+          <button type="submit" class="primary-action promo-submit-btn" id="redeemPromoSubmitBtn">
+            <span>تفعيل الكود والحصول على الهدية 🚀</span>
+          </button>
+        </form>
+      </div>
+    </dialog>
+
     <script>
       // Apply theme immediately on startup to prevent flashing
       (function() {
@@ -81,6 +118,12 @@
               </button>
 
               <!-- 2. زر تغيير اللغة -->
+              
+              <!-- زر كود الهدية في شريط البوابة الترحيبية -->
+              <button type="button" class="welcome-top-action-btn welcome-promo-btn" id="welcomePromoBtn" aria-label="أكواد الهدايا والخصومات" title="أكواد الهدايا والخصومات">
+                <span class="action-btn-icon">🎟️</span>
+                <span>كود الهدية</span>
+              </button>
               <button type="button" class="welcome-top-action-btn welcome-lang-btn" id="welcomeLangBtn" aria-label="تغيير اللغة" title="تغيير اللغة">
                 <span class="action-btn-icon">🌐</span>
                 <span id="welcomeLangBadge">ع</span>
@@ -345,6 +388,10 @@
                 hidden 
               />
             </div>
+            
+            <button class="rail-button rail-promo-btn" id="railPromoCodeBtn" type="button" aria-label="أكواد الهدايا والخصومات" data-title="أكواد الهدايا" title="أكواد الهدايا والخصومات 🎟️">
+              <span style="font-size: 20px;">🎟️</span>
+            </button>
             <button class="rail-button" id="createGroupButton" type="button" aria-label="إنشاء مجموعة جديدة" data-title="إنشاء مجموعة" data-i18n-title="createGroup">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -521,6 +568,18 @@
 
           <div class="content-grid" id="contentGrid">
             <aside class="conversation-list" aria-label="المحادثات">
+              
+              <!-- زر على شكل كود وتذكرة كوبون هدايا وخصومات -->
+              <div class="promo-ticket-bar-wrap">
+                <button type="button" class="promo-ticket-btn" id="promoTicketMainBtn" title="أدخل كود الهدية والخصم الشهري">
+                  <span class="ticket-cutout left"></span>
+                  <span class="ticket-icon">🎟️</span>
+                  <span class="ticket-text">أدخل كود الهدية أو الخصم</span>
+                  <span class="ticket-badge">كود شهري 🎁</span>
+                  <span class="ticket-cutout right"></span>
+                </button>
+              </div>
+
               <div class="list-head">
                 <h3 data-i18n="conversationsHeading">المحادثات</h3>
                 <span id="conversationCount">0</span>
@@ -1005,6 +1064,9 @@
           </div>
         </section>
       </section>
+    
+    
+  
     </main>
 
     <!-- نافذة إنشاء مجموعة -->
@@ -1239,6 +1301,28 @@
               <span class="settings-menu-arrow">‹</span>
             </button>
 
+            
+            <!-- قسم: الهدايا وأكواد الخصم الشهرية -->
+            <button type="button" class="settings-menu-item" id="settingsNavPromoCode">
+              <div class="settings-menu-icon" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                  <rect x="2" y="7" width="20" height="5"></rect>
+                  <line x1="12" y1="22" x2="12" y2="7"></line>
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                </svg>
+              </div>
+              <div class="settings-menu-text">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <strong>الهدايا وأكواد الخصم</strong>
+                  <span class="settings-menu-badge" style="background: linear-gradient(135deg, #ec4899, #f43f5e); color: #fff;">كود شهري 🎁</span>
+                </div>
+                <p>تفعيل كود الخصم، الباقات المجانية، وهدايا الشهور</p>
+              </div>
+              <span class="settings-menu-arrow">‹</span>
+            </button>
+  
             <!-- قسم 2: الاشتراكات وباقة AI -->
             <button type="button" class="settings-menu-item" id="settingsNavSubscriptions">
               <div class="settings-menu-icon icon-subscription">
@@ -1397,7 +1481,27 @@
             </div>
           </div>
 
-          <!-- 2. تفاصيل باقة شاتو بلاس Chato Plus (تفتح عند الضغط على الصف 1) -->
+          
+              <div class="sub-ios-separator"></div>
+
+              <!-- الصف 3: أكواد الهدايا والخصومات الشهرية -->
+              <button type="button" class="sub-ios-item-row" id="subRowPromoCode">
+                <span class="sub-ios-arrow">‹</span>
+                <div class="sub-ios-text-col">
+                  <div class="sub-ios-title-line">
+                    <strong class="sub-ios-title">أكواد الهدايا والخصومات</strong>
+                    <span class="sub-ios-active-pill" style="background: linear-gradient(135deg, #ec4899, #f43f5e); color: #fff;">كود شهري 🎁</span>
+                  </div>
+                  <p class="sub-ios-desc">أدخل كود الهدية الشهري أو الخصم للحصول على باقات ومميزات VIP مجاناً.</p>
+                </div>
+                <div class="sub-ios-icon-badge" style="background: linear-gradient(135deg, #ec4899, #f43f5e); color: #fff;">
+                  <span>🎁</span>
+                </div>
+              </button>
+  
+            </div>
+
+            <!-- 2. تفاصيل باقة شاتو بلاس Chato Plus (تفتح عند الضغط على الصف 1) -->
           <div class="sub-plan-detail-view" id="subPlanChatPanel" hidden>
             <div style="margin-bottom: 14px;">
               <button type="button" class="back-to-subs-hub-btn" id="backFromChatDetailBtn">
@@ -1477,7 +1581,7 @@
             <!-- زر تفعيل أو تجديد باقة شاتو بلاس -->
             <div style="margin-top: 16px;">
               <button type="button" class="primary-action sub-upgrade-btn" id="subscribeChatPlusBtn" style="width: 100%;">
-                👑 تفعيل باقة شاتو بلاس (99 ريال / شهرين)
+                👑 تفعيل باقة شاتو بلاس (20 ريال / شهرين)
               </button>
             </div>
           </div>
@@ -2524,10 +2628,11 @@
 
     <script src="./qrcode.min.js"></script>
     <script src="./jsqr.min.js"></script>
-    <script src="./app.js?v=8.1"></script>
+    <script src="./app.js?v=8.2"></script>
   
     <!-- طبقة شفافة تماماً لإغلاق القوائم باللمس أو النقر على الهاتف والكمبيوتر بدون أي غباش -->
     <!-- حاوية إشعارات واتساب الجانبية والعلوية للهاتف والكمبيوتر -->
     <div id="whatsappNotificationContainer" class="whatsapp-notif-container"></div>
-  </body>
+  
+</body>
 </html>
