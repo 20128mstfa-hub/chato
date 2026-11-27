@@ -97,12 +97,13 @@
       "status": "active",
       "createdAt": 1795813061545,
       "lastLogin": 1795813061545,
-      "lastActive": 1795813673039,
+      "lastActive": 1795813752548,
       "promoDiscountPercent": 30,
       "promoDiscountUntil": 1796677431513,
       "chatPlusUntil": 1800997450965,
       "isChatPlus": true,
-      "sentWordCount": 6
+      "sentWordCount": 6,
+      "lastOffline": 1795813754064
     }
   ],
   "friendships": [
@@ -119,13 +120,6 @@
       "to": "2012.8.mtfa@gmail.com",
       "status": "accepted",
       "createdAt": 1795792608733
-    },
-    {
-      "id": "06dca5a0-95bf-49f0-8bb4-41587f4ffb13",
-      "from": "momstfa.85@gmail.com",
-      "to": "chato_mobile_1795793232160@test.com",
-      "status": "accepted",
-      "createdAt": 1795813471721
     }
   ],
   "friendRequests": [],
@@ -390,10 +384,10 @@
       "email": "momstfa.85@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "dac65c46d468f3c1d9ffe9c7d7f6cefd9b8dfe3bcb497e912a2805f38bc185b1",
+      "access_token_hash": "60e5621f54c4ed0ccc87858b76677640e066361ccbece64cf87e196851b85ee8",
       "refresh_token_hash": "281ecb198c1f2b5325b0c95a258532cb759b476c2c78cefae9726a247314411a",
       "expires_at": 1800997061546,
-      "last_active_at": 1795813061634,
+      "last_active_at": 1795813716642,
       "created_at": 1795813061546,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug=="
     }
