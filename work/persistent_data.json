@@ -37,37 +37,11 @@
       "promoDiscountPercent": 30,
       "promoDiscountUntil": 1796653106836,
       "lastOffline": 1795789309638
-    },
-    {
-      "id": "e32f5aef-3e99-4f47-bf1a-5c78192f3932",
-      "name": "mo.mstfa.85",
-      "email": "mo.mstfa.85@gmail.com",
-      "createdAt": 1795792608733
     }
   ],
-  "friendships": [
-    {
-      "id": "07f5348f-d62b-40ac-9fee-0675d806eb99",
-      "from": "mo.mstfa.85@gmail.com",
-      "to": "2012.8.mtfa@gmail.com",
-      "status": "accepted",
-      "createdAt": 1795792608733
-    }
-  ],
+  "friendships": [],
   "friendRequests": [],
-  "messages": [
-    {
-      "id": "81f4947b-bdfc-4396-87dd-0dec9b39a123",
-      "from": "admin@chato.system",
-      "fromName": "إدارة Chato",
-      "to": "mo.mstfa.85@gmail.com",
-      "type": "admin_notice",
-      "readonly": true,
-      "text": "يرج استخدام حسابك او ايما الحظر",
-      "expiresAt": 1795900292009,
-      "createdAt": 1795813892009
-    }
-  ],
+  "messages": [],
   "aiUsage": [
     {
       "email": "2012.8.mstfa@gmail.com",
@@ -238,26 +212,6 @@
       "auto_renew": true,
       "created_at": 1795305571315,
       "updated_at": 1795789107122
-    },
-    {
-      "id": "52c5fe35-0c70-4a79-abb3-668a9c9f1fd2",
-      "user_id": "e32f5aef-3e99-4f47-bf1a-5c78192f3932",
-      "email": "mo.mstfa.85@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795792894150,
-      "next_quota_reset_at": 1795879294150,
-      "started_at": 1795792894150,
-      "expires_at": 1800976894150,
-      "auto_renew": true,
-      "created_at": 1795792894150,
-      "updated_at": 1795792894150
     }
   ],
   "userStories": [],
