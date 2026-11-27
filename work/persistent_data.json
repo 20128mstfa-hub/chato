@@ -9,11 +9,11 @@
       "image": "",
       "status": "active",
       "createdAt": 1795512110822,
-      "lastLogin": 1795793526718,
-      "lastActive": 1795793526718,
+      "lastLogin": 1795814006339,
+      "lastActive": 1795814006339,
       "dailyLogins": {
         "date": "2026-11-27",
-        "count": 1
+        "count": 2
       },
       "lastIp": "127.0.0.1",
       "country": "مصر 🇪🇬",
@@ -23,6 +23,12 @@
         {
           "type": "login",
           "time": 1795793526718,
+          "ip": "127.0.0.1",
+          "country": "مصر 🇪🇬"
+        },
+        {
+          "type": "login",
+          "time": 1795814006339,
           "ip": "127.0.0.1",
           "country": "مصر 🇪🇬"
         }
@@ -37,11 +43,37 @@
       "promoDiscountPercent": 30,
       "promoDiscountUntil": 1796653106836,
       "lastOffline": 1795789309638
+    },
+    {
+      "id": "e32f5aef-3e99-4f47-bf1a-5c78192f3932",
+      "name": "mo.mstfa.85",
+      "email": "mo.mstfa.85@gmail.com",
+      "createdAt": 1795792608733
     }
   ],
-  "friendships": [],
+  "friendships": [
+    {
+      "id": "07f5348f-d62b-40ac-9fee-0675d806eb99",
+      "from": "mo.mstfa.85@gmail.com",
+      "to": "2012.8.mtfa@gmail.com",
+      "status": "accepted",
+      "createdAt": 1795792608733
+    }
+  ],
   "friendRequests": [],
-  "messages": [],
+  "messages": [
+    {
+      "id": "81f4947b-bdfc-4396-87dd-0dec9b39a123",
+      "from": "admin@chato.system",
+      "fromName": "إدارة Chato",
+      "to": "mo.mstfa.85@gmail.com",
+      "type": "admin_notice",
+      "readonly": true,
+      "text": "يرج استخدام حسابك او ايما الحظر",
+      "expiresAt": 1795900292009,
+      "createdAt": 1795813892009
+    }
+  ],
   "aiUsage": [
     {
       "email": "2012.8.mstfa@gmail.com",
@@ -66,7 +98,7 @@
     {
       "id": "3a04bba0-21ab-48a6-a14a-55a54f96ef7e",
       "title": "🎁 هدية شاتو الشهرية: كود CH9Z",
-      "content": "🎉 يسر إدارة شاتو تقديم كود الهدية والخصم الشهري الخاص بكم!\nانسخ الكود التالي وفعّله من قائمة (الاشتراكات / الهدايا) في الإعدادات:\n👉 【 CH9Z 】 👈\n\n📌 الميزة: مرور شهر\nخصم على جميع الاشتركات\n⏳ الصلاحية: 10 يوماً",
+      "content": "🎉 يسر إدارة شاتو تقديم كود الهدية والخصم الشهري الخاص بكم!\nاضغط على زر (تفعيل الكود الآن 🚀) أدناه أو انسخ الكود التالي:\n👉 【 CH9Z 】 👈\n\n📌 الميزة: مرور شهر\nخصم على جميع الاشتركات\n⏳ الصلاحية: 10 يوماً",
       "imageUrl": "",
       "link": "",
       "active": true,
@@ -76,7 +108,7 @@
     {
       "id": "c8d35915-a236-426a-b536-37d1eeb6bda1",
       "title": "🎁 هدية شاتو الشهرية: كود CHATO1",
-      "content": "🎉 يسر إدارة شاتو تقديم كود الهدية والخصم الشهري الخاص بكم!\nانسخ الكود التالي وفعّله من قائمة (الاشتراكات / الهدايا) في الإعدادات:\n👉 【 CHATO1 】 👈\n\n📌 الميزة: خصم شاتو بلاس بعد إنجاز 1000 كلمة\nيحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل.\n⏳ الصلاحية: 30 يوماً",
+      "content": "🎉 يسر إدارة شاتو تقديم كود الهدية والخصم الشهري الخاص بكم!\nاضغط على زر (تفعيل الكود الآن 🚀) أدناه أو انسخ الكود التالي:\n👉 【 CHATO1 】 👈\n\n📌 الميزة: خصم شاتو بلاس بعد إنجاز 1000 كلمة\nيحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل.\n⏳ الصلاحية: 30 يوماً",
       "imageUrl": "",
       "link": "",
       "active": true,
@@ -86,7 +118,7 @@
     {
       "id": "727bb198-b00e-476d-a18f-e3251eaf7d54",
       "title": "🎁 هدية شاتو الشهرية: كود CHATO1",
-      "content": "🎉 يسر إدارة شاتو تقديم كود الهدية والخصم الشهري الخاص بكم!\nانسخ الكود التالي وفعّله من قائمة (الاشتراكات / الهدايا) في الإعدادات:\n👉 【 CHATO1 】 👈\n\n📌 الميزة: خصم شاتو بلاس بعد إنجاز 1000 كلمة\nيحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل.\n⏳ الصلاحية: 30 يوماً",
+      "content": "🎉 يسر إدارة شاتو تقديم كود الهدية والخصم الشهري الخاص بكم!\nاضغط على زر (تفعيل الكود الآن 🚀) أدناه أو انسخ الكود التالي:\n👉 【 CHATO1 】 👈\n\n📌 الميزة: خصم شاتو بلاس بعد إنجاز 1000 كلمة\nيحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل.\n⏳ الصلاحية: 30 يوماً",
       "imageUrl": "",
       "link": "",
       "active": true,
@@ -120,12 +152,12 @@
       "email": "2012.8.mtfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "b2322b8a9692bf17708bc612e0c89ec003db1207a08f55b5b0acda849e086256",
-      "refresh_token_hash": "174ec834179cc4242940908771d5d577fc5af7dced1781a57d2ffe985cb3090f",
-      "expires_at": 1800977526718,
-      "last_active_at": 1795793526759,
+      "access_token_hash": "bffb8d0bdfbd4d21a03e6c847140491ac4d444773d62399bc30d6fa74ccb2104",
+      "refresh_token_hash": "f6c476fae8b320a3ce2b5df0f713a9a2780f450b915aa7015adba796653a1316",
+      "expires_at": 1800998006340,
+      "last_active_at": 1795814006358,
       "created_at": 1795512110824,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEx17Ca+6/2Dj5n5jBfuUdmnTazf/+2z/RHqqjw3GeArBRtUtrzK398ML64vQzi+Lf1bJ4hgAxCAq5elFO8U/Flg=="
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwnNas2rbJLuLMotdCZiX7M17neZhFJjqpSHsQzxRCj1nfxZNEE8RZOikf23sJgfC+bQLtijTh2mWvgYsy2pT4g=="
     },
     {
       "id": "29145435-1d1f-4b04-81d0-9309691c758a",
@@ -212,6 +244,26 @@
       "auto_renew": true,
       "created_at": 1795305571315,
       "updated_at": 1795789107122
+    },
+    {
+      "id": "52c5fe35-0c70-4a79-abb3-668a9c9f1fd2",
+      "user_id": "e32f5aef-3e99-4f47-bf1a-5c78192f3932",
+      "email": "mo.mstfa.85@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1795792894150,
+      "next_quota_reset_at": 1795879294150,
+      "started_at": 1795792894150,
+      "expires_at": 1800976894150,
+      "auto_renew": true,
+      "created_at": 1795792894150,
+      "updated_at": 1795792894150
     }
   ],
   "userStories": [],
