@@ -188,28 +188,7 @@
   "chatParticipants": [],
   "chatSettings": [],
   "groups": [],
-  "userSubscriptions": [
-    {
-      "id": "943d83bd-7374-4bda-9d73-1d5b29c2161e",
-      "user_id": "76b5a60a-d4e6-41f8-8589-1db9845aa608",
-      "email": "2012.8.mtfa@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795814292560,
-      "next_quota_reset_at": 1795900692560,
-      "started_at": 1795814292560,
-      "expires_at": 1800998292560,
-      "auto_renew": true,
-      "created_at": 1795814292560,
-      "updated_at": 1795814292560
-    }
-  ],
+  "userSubscriptions": [],
   "userStories": [],
   "storyViews": [],
   "pinnedMessages": [],
@@ -311,39 +290,7 @@
       "is_plus_only": true
     }
   ],
-  "promoCodes": [
-    {
-      "id": "promo_mwz2g45s",
-      "code": "CH9Z",
-      "title": "مرور شهر",
-      "type": "discount",
-      "durationDays": 10,
-      "discountPercent": 30,
-      "bonusWords": 1000,
-      "bonusImages": 20,
-      "maxUses": 20,
-      "timesUsed": 1,
-      "expiresAt": 1796653072144,
-      "isActive": true,
-      "createdAt": 1795789072144,
-      "description": "خصم على جميع الاشتركات"
-    },
-    {
-      "id": "promo_chato1",
-      "code": "CHATO1",
-      "title": "خصم شاتو بلاس بعد إنجاز 1000 كلمة",
-      "type": "discount",
-      "targetPlan": "chato_plus",
-      "fixedPrice": 10,
-      "discountPercent": 50,
-      "durationDays": 30,
-      "maxUses": 0,
-      "timesUsed": 0,
-      "isActive": true,
-      "createdAt": 1795788600039,
-      "description": "يحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل."
-    }
-  ],
+  "promoCodes": [],
   "promoRedemptions": [
     {
       "id": "7eee1cf5-f720-4c2b-aff1-201c183e405d",
