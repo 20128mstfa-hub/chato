@@ -42,7 +42,7 @@
       "lastOffline": 1795788203699,
       "promoDiscountPercent": 50,
       "promoDiscountUntil": 1798380218835,
-      "vipUntil": 1800972313810
+      "vipUntil": 1800972402948
     }
   ],
   "friendships": [],
@@ -64,7 +64,7 @@
     {
       "email": "mo.mstfa.85@gmail.com",
       "day": "2026-11-27",
-      "words": 352,
+      "words": 180,
       "images": 0
     }
   ],
@@ -151,7 +151,7 @@
       "plan_title": "الباقة المجانية",
       "is_active": false,
       "daily_words_limit": 90,
-      "daily_words_used": 352,
+      "daily_words_used": 180,
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
@@ -176,12 +176,12 @@
       "daily_ai_images_limit": 20,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": true,
-      "started_at": 1795788313810,
-      "expires_at": 1800972313810,
-      "last_quota_reset_at": 1795788313810,
-      "next_quota_reset_at": 1795874713810,
+      "started_at": 1795788402948,
+      "expires_at": 1800972402948,
+      "last_quota_reset_at": 1795788402948,
+      "next_quota_reset_at": 1795874802948,
       "auto_renew": true,
-      "updated_at": 1795788313810
+      "updated_at": 1795788402948
     }
   ],
   "userStories": [],
