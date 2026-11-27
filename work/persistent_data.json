@@ -9,8 +9,24 @@
       "image": "",
       "status": "active",
       "createdAt": 1795512110822,
-      "lastLogin": 1795512110822,
-      "lastActive": 1795512110822
+      "lastLogin": 1795793526718,
+      "lastActive": 1795793526718,
+      "dailyLogins": {
+        "date": "2026-11-27",
+        "count": 1
+      },
+      "lastIp": "127.0.0.1",
+      "country": "مصر 🇪🇬",
+      "clientAccountsCount": 1,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+      "sessionLogs": [
+        {
+          "type": "login",
+          "time": 1795793526718,
+          "ip": "127.0.0.1",
+          "country": "مصر 🇪🇬"
+        }
+      ]
     },
     {
       "id": "dd15c9ef-1a99-4f4c-aea8-46e07c124109",
@@ -193,12 +209,12 @@
       "email": "2012.8.mtfa@gmail.com",
       "device_id": "web",
       "device_type": "web",
-      "access_token_hash": "e151b80ea32cb50c5f78382eeaef1a16392b1be6e344f3df8c0a0341bd96288d",
-      "refresh_token_hash": "5395e351c2517237c22d2b4401806fd4c919ecceecf696033800f399c14878db",
-      "expires_at": 1800696110824,
-      "last_active_at": 1795512111229,
+      "access_token_hash": "b2322b8a9692bf17708bc612e0c89ec003db1207a08f55b5b0acda849e086256",
+      "refresh_token_hash": "174ec834179cc4242940908771d5d577fc5af7dced1781a57d2ffe985cb3090f",
+      "expires_at": 1800977526718,
+      "last_active_at": 1795793526759,
       "created_at": 1795512110824,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
+      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEx17Ca+6/2Dj5n5jBfuUdmnTazf/+2z/RHqqjw3GeArBRtUtrzK398ML64vQzi+Lf1bJ4hgAxCAq5elFO8U/Flg=="
     },
     {
       "id": "29145435-1d1f-4b04-81d0-9309691c758a",
