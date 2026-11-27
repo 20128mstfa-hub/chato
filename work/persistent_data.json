@@ -164,17 +164,17 @@
       "plan_title": "الباقة المجانية",
       "is_active": false,
       "daily_words_limit": 90,
-      "daily_words_used": 0,
+      "daily_words_used": 1,
       "daily_ai_images_limit": 3,
       "daily_ai_images_used": 0,
       "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795305571315,
-      "next_quota_reset_at": 1795391971315,
+      "last_quota_reset_at": 1795788956584,
+      "next_quota_reset_at": 1795875356584,
       "started_at": 1795305571315,
       "expires_at": 1800489571315,
       "auto_renew": true,
       "created_at": 1795305571315,
-      "updated_at": 1795305571315
+      "updated_at": 1795788956584
     }
   ],
   "userStories": [],
