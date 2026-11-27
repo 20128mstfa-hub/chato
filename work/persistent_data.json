@@ -48,7 +48,8 @@
       "id": "e32f5aef-3e99-4f47-bf1a-5c78192f3932",
       "name": "mo.mstfa.85",
       "email": "mo.mstfa.85@gmail.com",
-      "createdAt": 1795792608733
+      "createdAt": 1795792608733,
+      "lastActive": 1795813030149
     },
     {
       "id": "de9d1555-9b3c-4384-828f-d068b4d02721",
@@ -223,7 +224,7 @@
       "device_type": "web",
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug==",
       "created_at": 1795792602058,
-      "last_active_at": 1795792602058
+      "last_active_at": 1795813030095
     },
     {
       "id": "e46c357c-a499-4cef-834d-e833d0f1a8b1",
