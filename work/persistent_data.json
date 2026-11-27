@@ -194,7 +194,23 @@
       "is_plus_only": true
     }
   ],
-  "promoCodes": [],
+  "promoCodes": [
+    {
+      "id": "promo_chato1",
+      "code": "CHATO1",
+      "title": "خصم شاتو بلاس بعد إنجاز 1000 كلمة",
+      "type": "discount",
+      "targetPlan": "chato_plus",
+      "fixedPrice": 10,
+      "discountPercent": 50,
+      "durationDays": 30,
+      "maxUses": 0,
+      "timesUsed": 0,
+      "isActive": true,
+      "createdAt": 1795787869971,
+      "description": "يحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل."
+    }
+  ],
   "promoRedemptions": [],
   "stickerPacks": [
     {
