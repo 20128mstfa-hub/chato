@@ -34,6 +34,12 @@
       "day": "2026-11-27",
       "words": 0,
       "images": 0
+    },
+    {
+      "email": "mo.mstfa.85@gmail.com",
+      "day": "2026-11-27",
+      "words": 0,
+      "images": 0
     }
   ],
   "ads": [
@@ -118,6 +124,26 @@
       "auto_renew": true,
       "created_at": 1795305571315,
       "updated_at": 1795305571315
+    },
+    {
+      "id": "44ca53d1-0a09-4b12-8247-31c8cb2cba8a",
+      "user_id": "mo.mstfa.85@gmail.com",
+      "email": "mo.mstfa.85@gmail.com",
+      "plan_code": "free",
+      "plan_title": "الباقة المجانية",
+      "is_active": false,
+      "daily_words_limit": 90,
+      "daily_words_used": 0,
+      "daily_ai_images_limit": 3,
+      "daily_ai_images_used": 0,
+      "unlimited_media_sending": false,
+      "last_quota_reset_at": 1795788844821,
+      "next_quota_reset_at": 1795875244821,
+      "started_at": 1795788844821,
+      "expires_at": 1800972844821,
+      "auto_renew": true,
+      "created_at": 1795788844821,
+      "updated_at": 1795788844821
     }
   ],
   "userStories": [],
