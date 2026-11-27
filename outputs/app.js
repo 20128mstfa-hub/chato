@@ -4388,7 +4388,11 @@ async function handleSignIn(event) {
     syncCurrentAccountToSaved();
     state.activeChatId = "support";
     saveState();
-    initE2EEKeys();
+    try {
+      await initE2EEKeys();
+    } catch (e) {
+      console.warn("E2EE key init error:", e);
+    }
     showApp();
   } catch (error) {
     loginError.textContent = error.message;
@@ -4523,7 +4527,11 @@ async function handleSignUp(event) {
     syncCurrentAccountToSaved();
     state.activeChatId = "support";
     saveState();
-    initE2EEKeys();
+    try {
+      await initE2EEKeys();
+    } catch (e) {
+      console.warn("E2EE key init error:", e);
+    }
     showApp();
   } catch (error) {
     registerError.textContent = error.message;
@@ -4668,7 +4676,9 @@ function addNewAccount() {
 
   closeDialog(settingsDialog);
   appScreen.hidden = true;
+  appScreen.style.setProperty("display", "none", "important");
   loginScreen.hidden = false;
+  loginScreen.style.removeProperty("display");
 
   if (loginEmailInput) loginEmailInput.value = "";
   if (loginPasswordInput) loginPasswordInput.value = "";
@@ -5465,12 +5475,14 @@ function showApp() {
   ensureSupport();
   saveState();
   loginScreen.hidden = true;
+  loginScreen.style.setProperty("display", "none", "important");
   appScreen.hidden = false;
+  appScreen.style.removeProperty("display");
   // إيقاف تشغيل حركة النقاط الزرقاء مؤقتاً لتوفير المعالج والبطارية أثناء استخدام المحادثة
   if (window._particleEngine && typeof window._particleEngine.stop === "function") {
     window._particleEngine.stop();
   }
-  userTitle.textContent = state.currentUser.name;
+  userTitle.textContent = state.currentUser ? (state.currentUser.name || state.currentUser.email) : "المستخدم";
   renderConversations();
   if (window.innerWidth > 820) {
     let initialChat = state.activeChatId || "support";
@@ -5482,18 +5494,24 @@ function showApp() {
     el("contentGrid")?.classList.remove("in-chat");
     el("appScreen")?.classList.remove("in-chat-mobile");
   }
-  refreshNotifications();
-  refreshFriends();
-  updateMyStoryAvatar();
-  fetchStories();
-  initRealtimeStream();
-  registerWebPushNotifications();
-  loadAnimatedStickers("pack_chato_animated");
+  try { refreshNotifications(); } catch {}
+  try { refreshFriends(); } catch {}
+  try { updateMyStoryAvatar(); } catch {}
+  try { fetchStories(); } catch {}
+  try { initRealtimeStream(); } catch {}
+  if (typeof registerWebPushNotifications === "function") {
+    try { registerWebPushNotifications(); } catch {}
+  }
+  if (typeof loadAnimatedStickers === "function") {
+    try { loadAnimatedStickers("pack_chato_animated"); } catch {}
+  }
 }
 
 function showLogin(resetFields = false) {
   appScreen.hidden = true;
+  appScreen.style.setProperty("display", "none", "important");
   loginScreen.hidden = false;
+  loginScreen.style.removeProperty("display");
   state.myStories = [];
   state.otherStories = [];
   renderStoriesFeed();
@@ -7618,7 +7636,11 @@ async function performBarcodeLogin(qrData) {
     syncCurrentAccountToSaved();
     state.activeChatId = "support";
     saveState();
-    initE2EEKeys();
+    try {
+      await initE2EEKeys();
+    } catch (e) {
+      console.warn("E2EE key init error:", e);
+    }
     showApp();
   } catch (err) {
     alert("خطأ أثناء تسجيل الدخول بالباركود: " + err.message);
