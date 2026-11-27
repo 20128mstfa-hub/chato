@@ -10,57 +10,12 @@
       "status": "active",
       "createdAt": 1795512110822,
       "lastLogin": 1795512110822,
-      "lastActive": 1795512110822,
-      "suspendedUntil": null
-    },
-    {
-      "id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
-      "name": "Mohamed Mustafa",
-      "email": "mo.mstfa.85@gmail.com",
-      "password_hash": "scrypt:743bc8f419ed2b5b204c985574b5df59:e2cf29296e94e27bfce581fe9a39861e528e3b35052aa731c7336e0e07a1b10d9132d78392599dfbdb693ae9bf701c9c4a4e17b2809bf092d85b73b610769857",
-      "password": "Mm0102141214",
-      "image": "",
-      "status": "active",
-      "createdAt": 1795787899535,
-      "lastLogin": 1795788113394,
-      "lastActive": 1795788113394,
-      "dailyLogins": {
-        "date": "2026-11-27",
-        "count": 1
-      },
-      "lastIp": "127.0.0.1",
-      "country": "مصر 🇪🇬",
-      "clientAccountsCount": 1,
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0",
-      "sessionLogs": [
-        {
-          "type": "login",
-          "time": 1795788113394,
-          "ip": "127.0.0.1",
-          "country": "مصر 🇪🇬"
-        }
-      ],
-      "lastOffline": 1795788418262,
-      "promoDiscountPercent": 50,
-      "promoDiscountUntil": 1798380218835,
-      "vipUntil": 1800972402948
+      "lastActive": 1795512110822
     }
   ],
   "friendships": [],
   "friendRequests": [],
-  "messages": [
-    {
-      "id": "0cb7a8d1-b5d4-4f3d-a5da-77bfca1ca388",
-      "from": "admin@chato.system",
-      "fromName": "إدارة Chato",
-      "to": "2012.8.mtfa@gmail.com",
-      "type": "admin_notice",
-      "readonly": true,
-      "text": "تنبيه رسمي من إدارة شاتو للتجربة 🛡️",
-      "expiresAt": 1795789036628,
-      "createdAt": 1795788436630
-    }
-  ],
+  "messages": [],
   "aiUsage": [
     {
       "email": "2012.8.mstfa@gmail.com",
@@ -72,12 +27,6 @@
       "email": "2012.8.mstfa@gmail.com",
       "day": "2026-11-22",
       "words": 0,
-      "images": 0
-    },
-    {
-      "email": "mo.mstfa.85@gmail.com",
-      "day": "2026-11-27",
-      "words": 180,
       "images": 0
     }
   ],
@@ -91,7 +40,7 @@
       "device_type": "web",
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmVEhGi3zN6E5G2k19QDpIjOWx0MqyMtFC1RHwzbrmugTA4MJgvSbiFV7/fFJVFsyIPx3gam9gDBoTCOMnxScKg==",
       "created_at": 1795304640409,
-      "last_active_at": 1795306480636
+      "last_active_at": 1795788556478
     },
     {
       "id": "c75cb1a7-970d-47f6-ac36-b6f6b97f0a5a",
@@ -114,19 +63,6 @@
       "last_active_at": 1795512111229,
       "created_at": 1795512110824,
       "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mNcFC7AbyAJ3m+no/LtNDXJl3l2u0kdfGGN+aKXgY8lQmUVnwfB405A3oN1Tzh0XeJXfgUpCVQsfMDKS9gxBA=="
-    },
-    {
-      "id": "0aa3c7b8-43f5-4969-8e2f-41590eeecafe",
-      "user_id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
-      "email": "mo.mstfa.85@gmail.com",
-      "device_id": "web",
-      "device_type": "web",
-      "access_token_hash": "456a9407c5a3e3600ecd6fd7c8dbdb74701109aafd1d4518a3f613460e01355d",
-      "refresh_token_hash": "6e751e6c6032cfcfc63633f5c34d4d3f46557edf426aac284fcf730e3e9dfd35",
-      "expires_at": 1800972113395,
-      "last_active_at": 1795788203951,
-      "created_at": 1795787899536,
-      "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERixWKzfEZvPL7NqpDP0swOiiLCX0QV/7XrQKHDjLBc1SQ8MCBMknyHn7XXFc9LMPgv3NWJrIlHH2LuM30R9fug=="
     }
   ],
   "pushSubscriptions": [],
@@ -155,46 +91,6 @@
       "auto_renew": true,
       "created_at": 1795305571315,
       "updated_at": 1795305571315
-    },
-    {
-      "id": "374343cd-cb19-43b8-b043-26a5ed3ad713",
-      "user_id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
-      "email": "mo.mstfa.85@gmail.com",
-      "plan_code": "free",
-      "plan_title": "الباقة المجانية",
-      "is_active": false,
-      "daily_words_limit": 90,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 3,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": false,
-      "last_quota_reset_at": 1795788088814,
-      "next_quota_reset_at": 1795874488814,
-      "started_at": 1795788088814,
-      "expires_at": 1800972088814,
-      "auto_renew": true,
-      "created_at": 1795788088814,
-      "updated_at": 1795788088814
-    },
-    {
-      "id": "23c52557-1fd3-4df8-8027-984c4aa7b3c7",
-      "user_id": "6f97d01e-fd29-4e12-9328-aab4bf94f3a0",
-      "email": "mo.mstfa.85@gmail.com",
-      "created_at": 1795788308746,
-      "plan_code": "chato_ai_plus",
-      "plan_title": "بلاس AI شاتو (99 ريال)",
-      "is_active": true,
-      "daily_words_limit": 500,
-      "daily_words_used": 0,
-      "daily_ai_images_limit": 20,
-      "daily_ai_images_used": 0,
-      "unlimited_media_sending": true,
-      "started_at": 1795788402948,
-      "expires_at": 1800972402948,
-      "last_quota_reset_at": 1795788402948,
-      "next_quota_reset_at": 1795874802948,
-      "auto_renew": true,
-      "updated_at": 1795788402948
     }
   ],
   "userStories": [],
@@ -296,31 +192,6 @@
       "symbol": "⚡🔥",
       "rarity": "rare",
       "is_plus_only": true
-    }
-  ],
-  "promoCodes": [
-    {
-      "id": "promo_chato1",
-      "code": "CHATO1",
-      "title": "خصم شاتو بلاس بعد إنجاز 1000 كلمة",
-      "type": "discount",
-      "targetPlan": "chato_plus",
-      "fixedPrice": 10,
-      "discountPercent": 50,
-      "durationDays": 30,
-      "maxUses": 0,
-      "timesUsed": 1,
-      "isActive": true,
-      "createdAt": 1795787869971,
-      "description": "يحوّل سعر شاتو بلاس من 20 ريال إلى 10 ريال للحساب المؤهل."
-    }
-  ],
-  "promoRedemptions": [
-    {
-      "id": "750808d3-de6f-4562-8ef1-0073acb54183",
-      "code": "CHATO1",
-      "email": "mo.mstfa.85@gmail.com",
-      "redeemedAt": 1795788218835
     }
   ],
   "stickerPacks": [
